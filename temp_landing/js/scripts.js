@@ -13,7 +13,10 @@
 	//ROUNDED TIMES COUNTDOWN
 	
 	if(isExists('#rounded-countdown')){
-		var remainingSec = $('.countdown').data('remaining-sec');
+		// var remainingSec = $('.countdown').data('remaining-sec');
+		var now = new Date();
+		var deploy_date = new Date(2021, 5, 1, 12, 0, 0, 0);
+		var remainingSec = parseInt((deploy_date.getTime() - now.getTime()) / 1000);
 		$('.countdown').ClassyCountdown({
 			theme: "flat-colors-very-wide",
 			end: $.now() + remainingSec
