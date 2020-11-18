@@ -1,0 +1,9 @@
+runtime: python27
+api_version: 1
+threadsafe: true
+handlers:
+- url: /
+  static_files: temp_landing/landing.html
+  upload: temp_landing/landing.html
+- url: /
+  static_dir: temp_landing
