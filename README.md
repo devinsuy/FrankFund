@@ -1,2 +1,2 @@
 # FrankFund
-Production Domain: https://frankfund.wl.r.appspot.com/
+Production Domain: https://frankfund.appspot.com/
