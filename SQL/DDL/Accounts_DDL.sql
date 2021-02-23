@@ -1,0 +1,10 @@
+---ACCOUNTS DDL---
+CREATE TABLE Accounts (
+	AccountID	 	VARCHAR(255)	NOT NULL,
+	AccountUsername		VARCHAR(255)	NOT NULL,
+	EmailAddress		VARCHAR(255)	NOT NULL,
+	Password		VARCHAR(255)	NOT NULL,
+	FacebookID		DECIMAL		NOT NULL,
+	GoogleID		DECIMAL		NOT NULL
+);
+---END DDL---
