@@ -1,0 +1,37 @@
+// Sample Accounts table entry
+// Relevant Schema form: 
+// AccountId, AccountUserName, EmailAddress, Password, FacebookID, GoogleID
+
+EX comma separated entry: 
+'1','FrankMurgolo','Frank@gmail.com','teamFrank',32,14
+
+
+
+
+// Sample Receipts table entry
+// Relevant Schema form: 
+// RID, PurchaseDate, Notes (nullable)
+
+EX comma separated entry: 
+1,'2021-02-04',"Movie"
+
+
+
+
+// Sample Subscriptions table entry
+// Relevant Schema form: 
+// SID, PurchaseDate, Notes(nullable), Amount
+
+EX comma separated entry: 
+1,'2021-01-14',"Netflix",8.99
+
+
+
+
+
+// Sample Transaction table entry
+// Relevant Schema form: 
+// TID, TransactionName, Amount, DateTransactionMade, DateTransactionEntered, IsExpense, TransactionCategory
+
+EX comma separated entry: 
+1,"In N Out",7.85,'2021-01-18','2021-01-19',True,"Food"  
