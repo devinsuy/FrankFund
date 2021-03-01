@@ -14,7 +14,7 @@ namespace ServiceLayer
             this.UserAccountDataAccess = new DataAccessLayer.UserAccountDataAccess(client);
         }
 
-        public string GetAccounts(string ID)
+        public string GetAccountUsingID(string ID)
         {
             var retrievedUserAccount = UserAccountDataAccess.GetUserAccountUsingID(ID);
             return retrievedUserAccount.GetEnumerator().ToString();
