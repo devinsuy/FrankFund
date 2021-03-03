@@ -9,7 +9,7 @@ namespace ServiceLayer
     public class UserAccountService
     {
         private readonly UserAccountDataAccess UserAccountDataAccess;
-        public UserAccountService(BigQueryClient client)
+        public UserAccountService()
         {
             this.UserAccountDataAccess = new UserAccountDataAccess();
         }
@@ -18,6 +18,10 @@ namespace ServiceLayer
         {
             var retrievedUserAccount = UserAccountDataAccess.GetUserAccountUsingID(ID);
             return retrievedUserAccount.GetEnumerator().ToString();
+        }
+
+        public long getNextAvailID(){
+            return UserAccountDataAccess.getNextAvailID();
         }
     }
 }

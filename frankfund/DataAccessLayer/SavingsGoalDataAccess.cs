@@ -40,20 +40,8 @@ namespace DataAccessLayer
         }
 
         // Query the DB and get the next available SGID
-        public int getNextAvailSGID(){
-            string query = $"SELECT MAX(SGID) AS maxSGID FROM {tableID}";
-            int maxSGID = 1;
-            Console.WriteLine("Running Query:\n--------------\n" + query + "\n");
-
-            foreach (BigQueryRow row in dataHelper.query(query)){                   // Aggregate query will return only a single row
-                if(row["maxSGID"] == null){
-                    return 1;
-                }
-                else{
-                    maxSGID = (int)row["maxSGID"];
-                }
-            }
-            return maxSGID + 1;
+        public long getNextAvailSGID(){
+            return this.dataHelper.getNextAvailID(this.tableID);
         }
         
     }
