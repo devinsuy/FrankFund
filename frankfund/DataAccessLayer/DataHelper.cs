@@ -24,5 +24,6 @@ namespace DataAccessLayer
         {
             return this.client.ExecuteQuery(query, parameters);
         }
+
     }
 }
