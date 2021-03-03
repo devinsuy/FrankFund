@@ -43,7 +43,7 @@ namespace ServiceLayer
 
 
         // Constructor: create SavingsGoal with amount by endDate
-        public SavingsGoal(int SGID, string name, decimal goalAmt, contrPeriod period, DateTime endDate)
+        public SavingsGoal(long SGID, string name, decimal goalAmt, contrPeriod period, DateTime endDate)
         {
             this.SGID = SGID;
             this.name = name;
@@ -57,7 +57,7 @@ namespace ServiceLayer
         }
 
         // Constructor: create SavingsGoal with amount and specified contribution
-        public SavingsGoal(int SGID, string name, decimal goalAmt, contrPeriod period, decimal contrAmt)
+        public SavingsGoal(long SGID, string name, decimal goalAmt, contrPeriod period, decimal contrAmt)
         {
             this.SGID = SGID;
             this.name = name;

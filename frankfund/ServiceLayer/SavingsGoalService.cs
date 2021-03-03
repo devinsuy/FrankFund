@@ -69,7 +69,7 @@ namespace ServiceLayer
         /* Wrapper method, query DB for next available SGID
             Returns: Next available SGID (1 + the maximum SGID currently in the DB)
         */
-        public int getNextAvailSGID(){
+        public long getNextAvailSGID(){
             return SavingsGoalDataAccess.getNextAvailSGID();
         }
     }

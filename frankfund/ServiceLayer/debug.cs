@@ -21,7 +21,7 @@ namespace ServiceLayer
 
             // SavingsGoalService layer functionality 
             SavingsGoalService sgService = new SavingsGoalService();
-            int SGID = sgService.getNextAvailSGID();
+            long SGID = sgService.getNextAvailSGID();
             DateTime endDate = new DateTime(2021, 12, 25, 0, 0, 0).Date;
             SavingsGoal sampleGoal = new SavingsGoal(SGID, "Christmas Gift", (decimal)250.25, contrPeriod.Monthly, endDate);
 
