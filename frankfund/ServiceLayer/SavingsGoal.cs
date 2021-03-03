@@ -43,12 +43,13 @@ namespace ServiceLayer
 
 
         // Constructor: create SavingsGoal with amount by endDate
-        public SavingsGoal(string name, decimal goalAmt, contrPeriod period, DateTime endDate)
+        public SavingsGoal(int SGID, string name, decimal goalAmt, contrPeriod period, DateTime endDate)
         {
+            this.SGID = SGID;
             this.name = name;
             this.goalAmt = goalAmt;
             this.period = period;
-            this.startDate = DateTime.Now;
+            this.startDate = DateTime.Now.Date;
 
             this.endDate = endDate.Date;
             this.numPeriods = calcPeriodsWithDate();
@@ -56,8 +57,9 @@ namespace ServiceLayer
         }
 
         // Constructor: create SavingsGoal with amount and specified contribution
-        public SavingsGoal(string name, decimal goalAmt, contrPeriod period, decimal contrAmt)
+        public SavingsGoal(int SGID, string name, decimal goalAmt, contrPeriod period, decimal contrAmt)
         {
+            this.SGID = SGID;
             this.name = name;
             this.goalAmt = goalAmt;
             this.period = period;
@@ -68,7 +70,7 @@ namespace ServiceLayer
             this.contrAmt = contrAmt;
         }
 
-        // Constructor: reinstantiate an pre-existing SavingsGoal from database records
+        // TODO: Constructor: reinstantiate an pre-existing SavingsGoal from database records
 
         public string getPeriodNoun(){
             if(period == contrPeriod.Daily){
@@ -85,7 +87,7 @@ namespace ServiceLayer
         public override string ToString(){
             return $"\"{name}\" Savings Goal"
                 + $"\n   For the amount of ${goalAmt}"
-                + $"\n   Began on {startDate.ToShortDateString()} and ends on {endDate.ToShortDateString()}"
+                + $"\n   Began on {startDate.ToString("yyyy-MM-dd")} and ends on {endDate.ToString("yyyy-MM-dd")}"
                 + $"\n   Requires a {period} contribution of ${contrAmt} for {numPeriods} {getPeriodNoun()}";
         }
     }
