@@ -66,3 +66,4 @@ msbuild.wrn
 # Visual Studio 2015
 .vs/
 Credentials/GCPDemo/tempCodeRunnerFile.cs
+Credentials/GCPDemo/team_members.txt
