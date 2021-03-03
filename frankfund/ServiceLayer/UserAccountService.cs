@@ -11,7 +11,7 @@ namespace ServiceLayer
         private readonly UserAccountDataAccess UserAccountDataAccess;
         public UserAccountService(BigQueryClient client)
         {
-            this.UserAccountDataAccess = new DataAccessLayer.UserAccountDataAccess(client);
+            this.UserAccountDataAccess = new UserAccountDataAccess();
         }
 
         public string GetAccountUsingID(string ID)
