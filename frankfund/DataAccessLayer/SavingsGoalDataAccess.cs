@@ -9,12 +9,14 @@ namespace DataAccessLayer
     {
         private readonly DataHelper dataHelper;
         private readonly string tableID;
+        
         public SavingsGoalDataAccess()
         {
             this.dataHelper = new DataHelper();
             this.tableID = this.dataHelper.getQualifiedTableName("SavingsGoals");
         }
-
+        
+        // TODO: Parse DB query into SavingsGoal runtime
         public BigQueryResults GetSavingsGoalUsingID(string ID)
         {
             string query = $"SELECT * FROM {this.tableID} WHERE SGID = {ID}";        
