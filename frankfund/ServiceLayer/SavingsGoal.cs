@@ -83,10 +83,10 @@ namespace ServiceLayer
         }
 
         public override string ToString(){
-            return $"\"{name}\" Savings Goal" + 
-                $"\n   For the amount of ${goalAmt}" +
-                $"\n   Began on {startDate.ToShortDateString()} and ends on {endDate.ToShortDateString()}" +  
-                $"\n   Requires a {period} contribution of ${contrAmt} for {numPeriods} {getPeriodNoun()}";
+            return $"\"{name}\" Savings Goal"
+                + $"\n   For the amount of ${goalAmt}"
+                + $"\n   Began on {startDate.ToShortDateString()} and ends on {endDate.ToShortDateString()}"
+                + $"\n   Requires a {period} contribution of ${contrAmt} for {numPeriods} {getPeriodNoun()}";
         }
     }
 }
