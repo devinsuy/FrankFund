@@ -10,7 +10,7 @@ namespace ServiceLayer
 
     public class SavingsGoal
     {
-        public readonly int SGID;
+        public readonly long SGID;
         public string name; 
         public decimal goalAmt;
         public decimal contrAmt;
