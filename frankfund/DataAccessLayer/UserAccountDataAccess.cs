@@ -7,25 +7,17 @@ namespace DataAccessLayer
 {
     public class UserAccountDataAccess
     {
-        private readonly BigQueryClient client;
-        public UserAccountDataAccess(BigQueryClient client)
+        private readonly DataHelper dataHelper;
+        public UserAccountDataAccess()
         {
-            this.client = client;
+            this.dataHelper = new DataHelper();
         }
 
         public BigQueryResults GetUserAccountUsingID(string ID)
         {
-            BigQueryResults retrievedUserAccount = null;
-            string query = @"SELECT
-                CONCAT(
-                    'https://stackoverflow.com/questions/',
-                    CAST(id as STRING)) as url, view_count
-                FROM `bigquery-public-data.stackoverflow.posts_questions`
-                WHERE tags like '%google-bigquery%'
-                ORDER BY view_count DESC
-                LIMIT 10";
-            retrievedUserAccount = client.ExecuteQuery(query, parameters: null);
-            return retrievedUserAccount;
+            string tableID = this.dataHelper.getQualifiedTableName("Accounts");
+            string query = $"SELECT * FROM {tableID} WHERE AccountID = {ID}";        
+            return this.dataHelper.query(query, parameters: null);
         }
     }
 }
