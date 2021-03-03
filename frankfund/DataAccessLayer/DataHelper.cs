@@ -16,16 +16,13 @@ namespace DataAccessLayer
             this.client = BigQueryClient.Create(projectID);                    
         }
 
-        public string getFullQualifiedTableName(string tableID){
+        public string getQualifiedTableName(string tableID){
             return this.projectID + "." + this.datasetID + "." + tableID;
         }
 
-        public BigQueryResults executeQuery(string query, IEnumerable<BigQueryParameter> parameters=null)
+        public BigQueryResults query(string query, IEnumerable<BigQueryParameter> parameters=null)
         {
             return this.client.ExecuteQuery(query, parameters);
         }
-
-
-
     }
 }
