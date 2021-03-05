@@ -17,16 +17,16 @@ namespace ServiceLayer
         public contrPeriod period;
         public DateTime startDate;
         public DateTime endDate;
-        public int numPeriods;
+        public long numPeriods;
 
-        private int calcPeriodsWithDate()
+        private long calcPeriodsWithDate()
         {
-            return (int)Math.Ceiling((endDate - startDate).TotalDays / (int)period);
+            return (long)Math.Ceiling((endDate - startDate).TotalDays / (long)period);
         }
 
-        private int calcPeriodsWithAmt()
+        private long calcPeriodsWithAmt()
         {
-            return (int) Math.Ceiling(goalAmt / contrAmt);
+            return (long) Math.Ceiling(goalAmt / contrAmt);
         }
 
         private decimal calcContrAmt()
@@ -36,13 +36,13 @@ namespace ServiceLayer
 
         private DateTime calcEndDate()
         {
-            int numDays = numPeriods * (int)period;
+            long numDays = numPeriods * (long)period;
             DateTime endDate = startDate.AddDays(numDays).Date;
             return endDate;
         }
 
 
-        // Constructor: create SavingsGoal with amount by endDate
+        // Constructor: create SavingsGoal by endDate
         public SavingsGoal(long SGID, string name, decimal goalAmt, contrPeriod period, DateTime endDate)
         {
             this.SGID = SGID;
@@ -56,7 +56,7 @@ namespace ServiceLayer
             this.contrAmt = calcContrAmt();
         }
 
-        // Constructor: create SavingsGoal with amount and specified contribution
+        // Constructor: create SavingsGoal by specified contribution
         public SavingsGoal(long SGID, string name, decimal goalAmt, contrPeriod period, decimal contrAmt)
         {
             this.SGID = SGID;
@@ -70,7 +70,18 @@ namespace ServiceLayer
             this.contrAmt = contrAmt;
         }
 
-        // TODO: Constructor: reinstantiate an pre-existing SavingsGoal from database records
+        // Constructor: reinstantiate a pre-existing SavingsGoal from database records
+        public SavingsGoal(long SGID, string name, decimal goalAmt, decimal contrAmt, contrPeriod period, long numPeriods, DateTime startDate, DateTime endDate)
+        {
+            this.SGID = SGID;
+            this.name = name;
+            this.goalAmt = goalAmt;
+            this.contrAmt = contrAmt;
+            this.period = period;
+            this.numPeriods = numPeriods;
+            this.startDate = startDate;
+            this.endDate = endDate;
+        }
 
         public string getPeriodNoun(){
             if(period == contrPeriod.Daily){

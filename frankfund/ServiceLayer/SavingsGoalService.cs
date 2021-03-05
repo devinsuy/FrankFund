@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using DataAccessLayer;
 using Google.Cloud.BigQuery.V2;
 
@@ -14,11 +12,36 @@ namespace ServiceLayer
             this.SavingsGoalDataAccess = new SavingsGoalDataAccess();
         }
 
-        // TODO: Parse BigQueryResults into SavingsGoal runtime object
-        public string GetAccountUsingID(string ID)
+        /* Cast a period string to contrPeriod enum
+            Params: The period string to cast
+            Returns: The corresponding enum contrPeriod
+        */
+        public contrPeriod castPeriod(string p){
+            if(p.Equals("Daily"))
+                return contrPeriod.Daily;
+            else if(p.Equals("Weekly"))
+                return contrPeriod.Weekly;
+            else
+                return contrPeriod.Monthly;
+        }
+
+        /* Retrieve a SavingsGoal from db with a given SGID
+            Params: The SGID of the Savings Goal to retrieve
+            Returns: A reinstantiated Savings Goal matching the SGID or null if non existant
+        */
+        public SavingsGoal GetSavingsGoalUsingID(int SGID)
         {
-            var retrievedSavingsGoal = this.SavingsGoalDataAccess.GetSavingsGoalUsingID(ID);
-            return retrievedSavingsGoal.GetEnumerator().ToString();
+            SavingsGoal sGoal = null;
+            foreach(BigQueryRow row in this.SavingsGoalDataAccess.GetSavingsGoalUsingID(SGID)){
+                sGoal = new SavingsGoal (
+                    (long)row["SGID"], (string)row["Name"], 
+                    ((BigQueryNumeric)row["GoalAmt"]).ToDecimal(LossOfPrecisionHandling.Truncate), 
+                    ((BigQueryNumeric)row["ContrAmt"]).ToDecimal(LossOfPrecisionHandling.Truncate), 
+                    this.castPeriod((string)row["Period"]), (long)row["NumPeriods"], 
+                    (DateTime)row["StartDate"], (DateTime)row["EndDate"]
+                );
+            }
+            return sGoal;
         }
 
         /*
@@ -32,6 +55,7 @@ namespace ServiceLayer
                 s.goalAmt.ToString(),
                 s.contrAmt.ToString(),
                 s.period.ToString(),
+                s.numPeriods.ToString(),
                 s.startDate.ToString("yyyy-MM-dd"),
                 s.endDate.ToString("yyyy-MM-dd")
             }; 
@@ -50,8 +74,9 @@ namespace ServiceLayer
                 + $"\"GoalAmt\":{serialized[2]},"
                 + $"\"ContrAmt\":{serialized[3]},"
                 + $"\"Period\":\"" + serialized[4] + "\","
-                + $"\"StartDate\":\"" + serialized[5] + "\","
-                + $"\"EndDate\":\"" + serialized[6] + "\""
+                + $"\"NumPeriods\":{serialized[5]},"
+                + $"\"StartDate\":\"" + serialized[6] + "\","
+                + $"\"EndDate\":\"" + serialized[7] + "\""
             + "}";
             Console.WriteLine($"\nSavingsGoal JSON Representation:\n--------------------------------\n{jsonStr}\n");
             return jsonStr;

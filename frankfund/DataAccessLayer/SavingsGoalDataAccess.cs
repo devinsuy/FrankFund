@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Google.Cloud.BigQuery.V2;
 
 namespace DataAccessLayer
@@ -17,7 +15,7 @@ namespace DataAccessLayer
         }
         
         // TODO: Parse DB query into SavingsGoal runtime
-        public BigQueryResults GetSavingsGoalUsingID(string ID)
+        public BigQueryResults GetSavingsGoalUsingID(int ID)
         {
             string query = $"SELECT * FROM {this.tableID} WHERE SGID = {ID}";        
             return this.dataHelper.query(query, parameters: null);
@@ -32,9 +30,10 @@ namespace DataAccessLayer
                 + $"\"{savingsGoal[1]}\","                                          // StartDate
                 + Convert.ToDecimal(savingsGoal[2]) + ","                           // GoalAmt
                 + Convert.ToDecimal(savingsGoal[3]) + ","                           // ContrAmt
-                + $"\"{savingsGoal[4]}\","                                          // StartDate
-                + $"\"{savingsGoal[5]}\","                                          // StartDate
-                + $"\"{savingsGoal[6]}\")";                                         // EndDate
+                + $"\"{savingsGoal[4]}\","                                          // Period
+                + Convert.ToInt64(savingsGoal[5]) + ","                             // NumPeriods
+                + $"\"{savingsGoal[6]}\","                                          // StartDate
+                + $"\"{savingsGoal[7]}\")";                                         // EndDate
             Console.WriteLine("Running Insert Query:\n---------------------\n" + query);
             this.dataHelper.query(query);
         }
