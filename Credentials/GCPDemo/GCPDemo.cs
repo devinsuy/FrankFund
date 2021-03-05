@@ -5,10 +5,13 @@ using System.IO;
 
 namespace GCPDemo
 {
+
     class GCPDemo
     {
+
         static void Main(string[] args)
         {
+
             // -------------------------------------------- Setup GCP Credentials -------------------------------------------- 
 
             // Replace with path to wherever Auth<name>.json file is on your local machine
