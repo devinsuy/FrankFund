@@ -21,8 +21,12 @@ namespace ServiceLayer
                 return contrPeriod.Daily;
             else if(p.Equals("Weekly"))
                 return contrPeriod.Weekly;
-            else
+            else if(p.Equals("BiWeekly"))
+                return contrPeriod.BiWeekly;
+            else if(p.Equals("Monthly"))
                 return contrPeriod.Monthly;
+            else
+                return contrPeriod.BiMonthly;
         }
 
         /* Retrieve a SavingsGoal from db with a given SGID
@@ -97,30 +101,5 @@ namespace ServiceLayer
             return SavingsGoalDataAccess.getNextAvailSGID();
         }
 
-
-        // ---------- SavingsGoal Setters ----------
-        public void updateName(SavingsGoal s, string newName){
-            s.changed = true;
-            s.name = newName;
-        }
-
-        /* Updating the goal amount requires either the contribution amount or the end date to be recalculated
-            Params: extendEndDate - 
-                        True: Keep payments fixed per period, but increase the number of periods and end date.
-                        False: Keep number of periods and end date fixed, but increase payment amount per period.
-        */
-        public void updateGoalAmt(SavingsGoal s, decimal newGoalAmt, bool extendEndDate){
-            s.changed = true;
-            s.goalAmt = newGoalAmt;       
-
-            // Reflect the updated goal amount in either a new end date and #periods or increase the contrAmt
-            if(extendEndDate){
-                s.numPeriods = s.calcPeriodsWithAmt();
-                s.endDate = s.calcEndDate();
-            }
-            else{
-                s.contrAmt = s.calcContrAmt();
-            }
-        }
     }
 }
