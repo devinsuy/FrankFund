@@ -83,12 +83,11 @@ namespace ServiceLayer
         }
         
         /*
-        Serialize a savings goal and write it to the DB
+        Serialize a savings goal object and write it to the DB
             Params: s - Savings Goal runtime object
         */
         public void writeSavingsGoal(SavingsGoal s){
-            string[] serializedSavingsGoal = this.serializeSavingsGoal(s);
-            this.SavingsGoalDataAccess.writeSavingsGoal(serializedSavingsGoal);
+            this.SavingsGoalDataAccess.writeSavingsGoal(this.serializeSavingsGoal(s), s.newlyCreated, s.changed);
         }
 
         /* Wrapper method, query DB for next available SGID
@@ -96,6 +95,32 @@ namespace ServiceLayer
         */
         public long getNextAvailSGID(){
             return SavingsGoalDataAccess.getNextAvailSGID();
+        }
+
+
+        // ---------- SavingsGoal Setters ----------
+        public void updateName(SavingsGoal s, string newName){
+            s.changed = true;
+            s.name = newName;
+        }
+
+        /* Updating the goal amount requires either the contribution amount or the end date to be recalculated
+            Params: extendEndDate - 
+                        True: Keep payments fixed per period, but increase the number of periods and end date.
+                        False: Keep number of periods and end date fixed, but increase payment amount per period.
+        */
+        public void updateGoalAmt(SavingsGoal s, decimal newGoalAmt, bool extendEndDate){
+            s.changed = true;
+            s.goalAmt = newGoalAmt;       
+
+            // Reflect the updated goal amount in either a new end date and #periods or increase the contrAmt
+            if(extendEndDate){
+                s.numPeriods = s.calcPeriodsWithAmt();
+                s.endDate = s.calcEndDate();
+            }
+            else{
+                s.contrAmt = s.calcContrAmt();
+            }
         }
     }
 }

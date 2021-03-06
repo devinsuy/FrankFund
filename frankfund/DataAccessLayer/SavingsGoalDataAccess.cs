@@ -21,17 +21,27 @@ namespace DataAccessLayer
             return this.dataHelper.query(query, parameters: null);
         }
 
-        /* Write a NEW SavingsGoal to DB
+        /* Write a SavingsGoal to DB
             Params: String array of serialized newly created SavingsGoal object 
         */
-        public void writeSavingsGoal(string[] savingsGoal){
-            string query = $"INSERT INTO {this.tableID} VALUES ("
-                + Convert.ToInt64(savingsGoal[0]) + ","                             // SGID
-                + $"\"{savingsGoal[1]}\","                                          // StartDate
-                + Convert.ToDecimal(savingsGoal[2]) + ","                           // GoalAmt
-                + Convert.ToDecimal(savingsGoal[3]) + ","                           // ContrAmt
+        public void writeSavingsGoal(string[] savingsGoal, bool newlyCreated, bool changed){
+            string query;
+            if(!newlyCreated){                                                      // Only write to DB a pre-existing SavingsGoal if it changed during runtime
+                if(changed){                                                        // SavingsGoal was updated, delete old record before reinsertion
+                    query = $"DELETE FROM {this.tableID} WHERE SGID = {savingsGoal[0]}";
+                    Console.WriteLine("SavingsGoal with SGID " + savingsGoal[0] + " was changed, updating records");
+                    this.dataHelper.query(query);
+                }
+                else                                                                // SavingsGoal has not changed, nothing to write
+                    return;
+            }
+            query = $"INSERT INTO {this.tableID} VALUES ("
+                + savingsGoal[0] + ","                                              // SGID
+                + $"\"{savingsGoal[1]}\","                                          // Name
+                + savingsGoal[2] + ","                                              // GoalAmt
+                + savingsGoal[3] + ","                                              // ContrAmt
                 + $"\"{savingsGoal[4]}\","                                          // Period
-                + Convert.ToInt64(savingsGoal[5]) + ","                             // NumPeriods
+                + savingsGoal[5] + ","                                              // NumPeriods
                 + $"\"{savingsGoal[6]}\","                                          // StartDate
                 + $"\"{savingsGoal[7]}\")";                                         // EndDate
             Console.WriteLine("Running Insert Query:\n---------------------\n" + query);
