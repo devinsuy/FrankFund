@@ -24,23 +24,19 @@ namespace ServiceLayer
         public bool newlyCreated;
         public bool changed;
 
-        public long calcPeriodsWithDate()
-        {
+        public long calcPeriodsWithDate() {
             return (long)Math.Ceiling((endDate - startDate).TotalDays / (long)period);
         }
 
-        public long calcPeriodsWithAmt()
-        {
+        public long calcPeriodsWithAmt() {
             return (long) Math.Ceiling(goalAmt / contrAmt);
         }
 
-        public decimal calcContrAmt()
-        {
+        public decimal calcContrAmt() {
             return Math.Round(goalAmt / numPeriods, 2);
         }
 
-        public DateTime calcEndDate()
-        {
+        public DateTime calcEndDate() {
             long numDays = numPeriods * (long)period;
             DateTime endDate = startDate.AddDays(numDays).Date;
             return endDate;
