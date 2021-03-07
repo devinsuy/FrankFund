@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <StartupObject>FrankFund.Program</StartupObject>
+    <StartupObject>ServiceLayer.debug</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>

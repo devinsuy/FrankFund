@@ -10,7 +10,10 @@ namespace ServiceLayer
     {
         // Test reinstantiation of SavingsGoal from db, modification methods, writing changes back to db
         static void Main(string[] args){
-            string pathToCreds = "/Users/devin/Documents/GitHub/FrankFund/Credentials/AuthDevin.json";  
+            // Devin's Credentials
+            //string pathToCreds = "/Users/devin/Documents/GitHub/FrankFund/Credentials/AuthDevin.json";
+            //Autumn's Credentials
+            string pathToCreds = "/Users/steve/OneDrive/Documents/GitHub/FrankFund/Credentials/AuthAutumn.json";
             System.Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", pathToCreds);
 
             SavingsGoalService sgService = new SavingsGoalService();
