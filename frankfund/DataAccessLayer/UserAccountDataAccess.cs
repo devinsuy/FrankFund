@@ -18,13 +18,17 @@ namespace DataAccessLayer
 
         public BigQueryResults GetUserAccountUsingID(int ID)
         {
-            string query = $"SELECT * FROM {this.tableID} WHERE AccountID = {ID}";        
+            string query = $"SELECT * FROM {this.tableID} WHERE AccountID = {ID}";
+            // Print out query to Sprint 2 testing purposes. To be deleted in future
+            Console.WriteLine("Query performed: " + query);
             return this.dataHelper.query(query, parameters: null);
         }
 
         public BigQueryResults GetUserAccountUsingUsername(string username)
         {
-            string query = $"SELECT * FROM {this.tableID} WHERE AccountUsername = {username}";
+            string query = $"SELECT * FROM {this.tableID} WHERE AccountUsername = '{username}'";
+            // Print out query to Sprint 2 testing purposes. To be deleted in future
+            Console.WriteLine("Query performed: " + query);
             return this.dataHelper.query(query, parameters: null);
         }
 
@@ -46,13 +50,13 @@ namespace DataAccessLayer
                     return;
             }
             query = $"INSERT INTO {this.tableID} VALUES ("
-                + getNextAvailID() + ","                                            // AccountID
-                + userAccount.AccountUsername + ","                                 // AccountUsername
-                + userAccount.EmailAddress + ","                                    // Email Address
-                + userAccount.PasswordHash + ","                                    // PasswordHash
-                                                                                    // Need to add PasswordSalt
-                + userAccount.FacebookID + ","                                      // FacebookID
-                + userAccount.GoogleID + ",";                                     // GoogleID
+                + getNextAvailID().ToString() + ", '"               // AccountID
+                + userAccount.AccountUsername.ToString() + "' ,'"   // AccountUsername
+                + userAccount.EmailAddress.ToString() + "' ,'"      // Email Address
+                + userAccount.PasswordHash.ToString() + "' ,"       // PasswordHash
+                                                                    // Need to add PasswordSalt
+                + 0 + ","                                           // FacebookID
+                + 0 + ")";                                          // GoogleID
             Console.WriteLine("Running Insert Query:\n---------------------\n" + query);
             this.dataHelper.query(query);
         }

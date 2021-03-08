@@ -26,13 +26,20 @@ namespace ServiceLayer
 
             // ---------------------------------------------- Sample Test of Creating User Account ----------------------------------------------
             UserAccountService uaService = new UserAccountService();
-            String existingAccount = uaService.GetAccountUsingUsername("AutumnNguyen").AccountUsername;
-            //String existingAccount2 = uaService.GetAccountUsingID(1).AccountUsername;
-            Console.WriteLine(existingAccount);
-            //Console.WriteLine(existingAccount2);
 
-            //UserAccount testAccount = new UserAccount (5, "test", "test@gmail.com", "password", null, 0, 0 );
-            //Console.WriteLine(uaService.GetAccountUsingID(5));
+            Console.WriteLine("\n-------------------- Sample Tests of Getting and Creating a new User Account --------------------");
+            Console.WriteLine("\n1. Testing GetAccountUsingUsername function | Prints out AccountUsername found");
+            String existingAccount = uaService.GetAccountUsingUsername("AutumnNguyen").AccountUsername;
+            Console.WriteLine("Username: " + existingAccount);
+
+            Console.WriteLine("\n2. Testing GetAccountUsingID function | Prints out AccountUsername found");
+            String existingAccount2 = uaService.GetAccountUsingID(2).AccountUsername;
+            Console.WriteLine("Username: " + existingAccount2);
+
+            Console.WriteLine("\n3. Testing CreateUserAccount function | Prints out AccountUsername of made account");
+            UserAccount testAccount = new UserAccount (5, "test", "test@gmail.com", "password", null);
+            uaService.CreateUserAccount(testAccount);
+            Console.WriteLine("Username: " + uaService.GetAccountUsingID(5).AccountUsername);
         }
 
 

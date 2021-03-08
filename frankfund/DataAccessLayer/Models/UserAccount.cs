@@ -12,19 +12,20 @@ namespace DataAccessLayer.Models
         public string EmailAddress;
         public string PasswordHash;
         public byte[] PasswordSalt;
-        public long FacebookID;
-        public long GoogleID;
+        // TODO: Have to look into the Facebook and Google API more on what it stores
+        //public int FacebookID;
+        //public int GoogleID;
 
         // ---------------------------------------- UserAccount Constructors  ----------------------------------------
-        public UserAccount(long AccountID, string username, string email, string pass, byte[] passSalt, long fb, long google)
+        public UserAccount(long AccountID, string username, string email, string pass, byte[] passSalt)
         {
             this.AccountID = AccountID;
             this.AccountUsername = username;
             this.EmailAddress = email;
             this.PasswordHash = pass;
             // need to add PasswordSalt
-            this.FacebookID = fb;
-            this.GoogleID = google;
+            //this.FacebookID = fb;
+            //this.GoogleID = google;
         }
 
         // ---------------------------------------- UserAccount Setters ----------------------------------------

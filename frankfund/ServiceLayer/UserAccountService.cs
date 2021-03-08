@@ -28,6 +28,7 @@ namespace ServiceLayer
             var retrievedUser = GetAccountUsingUsername(userAccount.AccountUsername);
             if (retrievedUser != null) // Checks if user already exists
             {
+                Console.WriteLine("Username already exists.");
                 return new OkObjectResult("User already exists");
             }
 
@@ -43,15 +44,13 @@ namespace ServiceLayer
 
         public UserAccount GetAccountUsingUsername(string username)
         {
-            //return UserAccountDataAccess.GetUserAccountUsingUsername(username);
-
             UserAccount user = null;
             foreach (BigQueryRow row in this.UserAccountDataAccess.GetUserAccountUsingUsername(username))
             {
                 user = new UserAccount(
                     (long)row["AccountID"], (string)row["AccountUsername"],
-                    (string)row["EmailAddress"], (string)row["Password"], null, // Need to Add Password Salt
-                    (long)row["FacebookID"], (long)row["GoogleID"]
+                    (string)row["EmailAddress"], (string)row["Password"], null // Need to Add Password Salt
+                    //(int)row["FacebookID"], (BigQueryNumeric)row["GoogleID"].ToDecimal(LossOfPrecisionHandling.Truncate)
                 );
             }
             return user;
@@ -64,8 +63,8 @@ namespace ServiceLayer
             {
                 user = new UserAccount(
                     (long)row["AccountID"], (string)row["AccountUsername"],
-                    (string)row["EmailAddress"], (string)row["Password"], null, // Need to Add Password Salt
-                    (long)row["FacebookID"], (long)row["GoogleID"]
+                    (string)row["EmailAddress"], (string)row["Password"], null // Need to Add Password Salt
+                    //(int)row["FacebookID"], (int)row["GoogleID"]
                 );
             }
             return user;
