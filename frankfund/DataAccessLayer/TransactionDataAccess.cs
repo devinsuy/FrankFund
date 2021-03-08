@@ -6,7 +6,7 @@ using DataAccessLayer.Models;
 
 namespace DataAccessLayer
 {
-    class TransactionDataAccess
+    public class TransactionDataAccess
     {
         private readonly DataHelper dataHelper;
         private readonly string tableID;
