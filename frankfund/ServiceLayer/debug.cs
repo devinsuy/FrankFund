@@ -3,6 +3,7 @@ using Google.Cloud.BigQuery.V2;
 using Google.Cloud.Storage.V1;
 using System.IO;
 using ServiceLayer;
+using DataAccessLayer.Models;
 
 namespace ServiceLayer
 {
@@ -22,6 +23,16 @@ namespace ServiceLayer
             existingGoal.updatePeriod(contrPeriod.BiWeekly);
             Console.WriteLine("\n" + existingGoal);
             sgService.writeSavingsGoal(existingGoal);
+
+            // ---------------------------------------------- Sample Test of Creating User Account ----------------------------------------------
+            UserAccountService uaService = new UserAccountService();
+            String existingAccount = uaService.GetAccountUsingUsername("AutumnNguyen").AccountUsername;
+            //String existingAccount2 = uaService.GetAccountUsingID(1).AccountUsername;
+            Console.WriteLine(existingAccount);
+            //Console.WriteLine(existingAccount2);
+
+            //UserAccount testAccount = new UserAccount (5, "test", "test@gmail.com", "password", null, 0, 0 );
+            //Console.WriteLine(uaService.GetAccountUsingID(5));
         }
 
 
@@ -58,7 +69,7 @@ namespace ServiceLayer
         //     // Write SavingsGoal object to DB
         //     sgService.writeSavingsGoal(sampleGoal);
         // }
-            // ---------------------------------------------- End Savings Goal Sample Test  ----------------------------------------------
+        // ---------------------------------------------- End Savings Goal Sample Test  ----------------------------------------------
 
 
 

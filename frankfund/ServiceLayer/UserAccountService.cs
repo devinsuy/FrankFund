@@ -23,21 +23,52 @@ namespace ServiceLayer
             {
                 return new BadRequestObjectResult("Invalid Email address");
             }
-            else
+
+            // Checking if username already exists
+            var retrievedUser = GetAccountUsingUsername(userAccount.AccountUsername);
+            if (retrievedUser != null) // Checks if user already exists
             {
-                this.UserAccountDataAccess.writeUserAccount(userAccount, true, false);
-                
-                return new StatusCodeResult(500);
+                return new OkObjectResult("User already exists");
             }
 
-            // TODO: Check if username already exists in the database
+            // TODO: Need to add password service and salt/hash
+
+            // If all the checks are passed then writeUserAccount to database
+            this.UserAccountDataAccess.writeUserAccount(userAccount, true, false);
+
+            return new OkObjectResult("Account successfully created");
+
 
         }
 
-        public string GetAccountUsingID(string ID)
+        public UserAccount GetAccountUsingUsername(string username)
         {
-            var retrievedUserAccount = UserAccountDataAccess.GetUserAccountUsingID(ID);
-            return retrievedUserAccount.GetEnumerator().ToString();
+            //return UserAccountDataAccess.GetUserAccountUsingUsername(username);
+
+            UserAccount user = null;
+            foreach (BigQueryRow row in this.UserAccountDataAccess.GetUserAccountUsingUsername(username))
+            {
+                user = new UserAccount(
+                    (long)row["AccountID"], (string)row["AccountUsername"],
+                    (string)row["EmailAddress"], (string)row["Password"], null, // Need to Add Password Salt
+                    (long)row["FacebookID"], (long)row["GoogleID"]
+                );
+            }
+            return user;
+        }
+
+        public UserAccount GetAccountUsingID(int ID)
+        {
+            UserAccount user = null;
+            foreach (BigQueryRow row in this.UserAccountDataAccess.GetUserAccountUsingID(ID))
+            {
+                user = new UserAccount(
+                    (long)row["AccountID"], (string)row["AccountUsername"],
+                    (string)row["EmailAddress"], (string)row["Password"], null, // Need to Add Password Salt
+                    (long)row["FacebookID"], (long)row["GoogleID"]
+                );
+            }
+            return user;
         }
 
         public long getNextAvailID(){

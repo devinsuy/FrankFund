@@ -16,9 +16,15 @@ namespace DataAccessLayer
             this.tableID = dataHelper.getQualifiedTableName("Accounts");
         }
 
-        public BigQueryResults GetUserAccountUsingID(string ID)
+        public BigQueryResults GetUserAccountUsingID(int ID)
         {
-            string query = $"SELECT * FROM {tableID} WHERE AccountID = {ID}";        
+            string query = $"SELECT * FROM {this.tableID} WHERE AccountID = {ID}";        
+            return this.dataHelper.query(query, parameters: null);
+        }
+
+        public BigQueryResults GetUserAccountUsingUsername(string username)
+        {
+            string query = $"SELECT * FROM {this.tableID} WHERE AccountUsername = {username}";
             return this.dataHelper.query(query, parameters: null);
         }
 
@@ -32,8 +38,8 @@ namespace DataAccessLayer
             {                                                      // Only write to DB a pre-existing SavingsGoal if it changed during runtime
                 if (changed)
                 {                                                        // SavingsGoal was updated, delete old record before reinsertion
-                    query = $"DELETE FROM {this.tableID} WHERE SGID = {userAccount.AccountID}";
-                    Console.WriteLine("SavingsGoal with SGID " + userAccount.AccountID + " was changed, updating records");
+                    query = $"DELETE FROM {this.tableID} WHERE AccountID = {userAccount.AccountID}";
+                    Console.WriteLine("User Account with AccountID " + userAccount.AccountID + " was changed, updating records");
                     this.dataHelper.query(query);
                 }
                 else                                                                // SavingsGoal has not changed, nothing to write
@@ -41,7 +47,7 @@ namespace DataAccessLayer
             }
             query = $"INSERT INTO {this.tableID} VALUES ("
                 + getNextAvailID() + ","                                            // AccountID
-                + userAccount.AccountUsername + ","                                 // UserName
+                + userAccount.AccountUsername + ","                                 // AccountUsername
                 + userAccount.EmailAddress + ","                                    // Email Address
                 + userAccount.PasswordHash + ","                                    // PasswordHash
                                                                                     // Need to add PasswordSalt
