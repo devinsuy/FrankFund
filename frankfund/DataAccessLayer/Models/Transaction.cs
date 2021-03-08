@@ -22,6 +22,9 @@ namespace DataAccessLayer.Models
         //Date transaction was entered
         private DateTime dateTransactionEntered;
 
+        public bool newlyCreated;
+        public bool changed;
+
         //Constructor
         public Transaction(long TID, long accountID, string transactionName, DateTime dateTransactionMade, bool isExpense, string transactionCategory)
         {
@@ -33,8 +36,10 @@ namespace DataAccessLayer.Models
             this.transactionCategory = transactionCategory;
             //Assign the current time using the DateTime library method Now.
             dateTransactionEntered = DateTime.Now;
-        }
 
+            newlyCreated = true;
+        }
+        
         //Getter Methods
         public long getTID()
         {
@@ -76,21 +81,25 @@ namespace DataAccessLayer.Models
         public void setTransactionName(string transactionName)
         {
             this.transactionName = transactionName;
+            changed = true;
         }
 
         public void setDateTransactionMade(DateTime dateTransactionMade)
         {
             this.dateTransactionMade = dateTransactionMade;
+            changed = true;
         }
 
         public void setIsExpense(bool isExpense)
         {
             this.isExpense = isExpense;
+            changed = true;
         }
 
         public void setTransactionCategory(string transactionCategory)
         {
             this.transactionCategory = transactionCategory;
+            changed = true;
         }
     }
 }
