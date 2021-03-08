@@ -1,6 +1,6 @@
 ---ACCOUNTS DDL---
 CREATE TABLE FrankFund.Accounts (
-	AccountID	 	STRING	NOT NULL,
+	AccountID	 	INT64	NOT NULL,
 	AccountUsername	STRING	NOT NULL,
 	EmailAddress	STRING	NOT NULL,
 	Password		STRING	NOT NULL,
