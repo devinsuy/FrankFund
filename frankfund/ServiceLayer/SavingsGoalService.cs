@@ -1,6 +1,7 @@
 ﻿using System;
 using DataAccessLayer;
 using Google.Cloud.BigQuery.V2;
+using DataAccessLayer.Models;
 
 namespace ServiceLayer
 {
