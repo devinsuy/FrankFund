@@ -17,7 +17,7 @@ namespace DataAccessLayer
             this.tableID = this.dataHelper.getQualifiedTableName("Transactions");
         }
 
-        public BigQueryResults GetTransactionUsingID(int ID)
+        public BigQueryResults GetTransactionUsingID(long ID)
         {
             string query = $"SELECT * from {this.tableID} WHERE TID = {ID}";
             return this.dataHelper.query(query, parameters: null);
@@ -25,28 +25,29 @@ namespace DataAccessLayer
 
         /* Write a Transaction to DB Params: String array of serialized newly created Transaction object */
 
-        public void writeTransaction(Transaction transaction, bool newlyCreated, bool changed)
+        public void writeTransaction(string[] transaction, bool newlyCreated, bool changed)
         {
             string query;
             if (!newlyCreated)
             {
                 if (changed)
                 {
-                    query = $"DELETE FROM {this.tableID} WHERE SGID = {transaction.getTID()}";
-                    Console.WriteLine("Transaction with TID " + transaction.getTID() + " was changed, updating records");
+                    query = $"DELETE FROM {this.tableID} WHERE TID = {transaction[0]}";
+                    Console.WriteLine("Transaction with TID " + transaction[0] + " was changed, updating records");
                     this.dataHelper.query(query);
                 }
                 else
                     return;
             }
             query = $"INSERT INTO {this.tableID} VALUES ("
-                + getNextAvailID() + ","                                            // TransactionID
-                + transaction.getAccountID() + ","                                  // AccountID
-                + transaction.getTransactionName() + ","                            // Transaction Name
-                + transaction.getDateTransactionMade() + ","                        // DateTime Transaction was made
-                + transaction.getIsExpense() + ","                                  // Expense or Income
-                + transaction.getTransactionCategory() + ","                        // Transaction Category
-                + transaction.getDateTransactionEntered() + ",";                    // DateTime Transaction entered
+                + transaction[0] + ","                                            // TransactionID
+                + transaction[1] + ","                                  // AccountID
+                + transaction[2] + ","                            // Transaction Name
+                + transaction[3] + ","                                     // Amount of transaction
+                + transaction[4] + ","                        // DateTime Transaction was made
+                + transaction[5] + ","                                  // Expense or Income
+                + transaction[6] + ","                        // Transaction Category
+                + transaction[7] + ",";                    // DateTime Transaction entered
             Console.WriteLine("Running Insert Query:\n---------------------\n" + query);
             this.dataHelper.query(query);
         }

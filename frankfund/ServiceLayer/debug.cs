@@ -12,10 +12,13 @@ namespace ServiceLayer
         static void authenticateGCP()
         {
             // Devin's Credentials
-            string pathToCreds = "/Users/devin/Documents/GitHub/FrankFund/Credentials/AuthDevin.json";
+            //string pathToCreds = "/Users/devin/Documents/GitHub/FrankFund/Credentials/AuthDevin.json";
 
             // Autumn's Credentials
             //string pathToCreds = "/Users/steve/OneDrive/Documents/GitHub/FrankFund/Credentials/AuthAutumn.json";
+
+            // Kenneth's Credentials
+            string pathToCreds = "/Users/015909177/Desktop/Github Repos/FrankFund/Credentials/AuthKenny.json";
 
             System.Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", pathToCreds);
         }
@@ -136,6 +139,29 @@ namespace ServiceLayer
             uaService.CreateUserAccount(testAccount);
             Console.WriteLine("Username: " + uaService.GetAccountUsingID(5).AccountUsername);
         }
+        
+        static Transaction testAddTransaction()
+        {
+            Console.WriteLine("\n-------------------- Test: Creating A New Transaction, Write -------------------------");
+            // Query DB for the next avail ID
+            TransactionService ts = new TransactionService();
+            long TID = ts.getNextAvailTID();
+            Console.WriteLine("Next available TID that can be assigned: " + TID + "\n");
+
+            // Create a new Transaction
+            //Temp Account ID
+            long tempAccountID = 1;
+            Transaction sampleTransaction = new Transaction(TID, tempAccountID, "Netflix", (decimal)9.99, new DateTime(2021, 12, 14, 0, 0, 0).Date, true, "Entertainment");
+
+            // Print summary of goal that was just created
+            Console.WriteLine("Transaction Summary:\n---------------------");
+            Console.WriteLine(sampleTransaction);
+
+            // Write SavingsGoal object to DB
+            ts.AddTransaction(sampleTransaction);
+
+            return sampleTransaction;
+        }
 
 
 
@@ -167,6 +193,9 @@ namespace ServiceLayer
             // ---------------------------------------------- Test: Creating User Account ------------------------------------------------------
             //testCreateUserAcc();
 
+
+            // ---------------------------------------------- Test: Transaction Create ---------------------------------------------------------
+            Transaction sampleTrans1 = testAddTransaction();
         }
 
     }
