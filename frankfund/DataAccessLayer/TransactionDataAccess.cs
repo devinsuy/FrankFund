@@ -57,5 +57,15 @@ namespace DataAccessLayer
         {
             return this.dataHelper.getNextAvailID(this.tableID);
         }
+
+        // Overload wrappers to cast BigQuery Numeric type to C# decimal type
+        public decimal castBQNumeric(BigQueryNumeric val)
+        {
+            return this.dataHelper.castBQNumeric(val);
+        }
+        public decimal castBQNumeric(object val)
+        {
+            return this.dataHelper.castBQNumeric(val);
+        }
     }
 }

@@ -29,11 +29,11 @@ namespace ServiceLayer
                 transaction = new Transaction(
                     (long)row["TID"], (long)row["accountID"], (long)row["SGID"],
                     (string)row["transactionName"],
-                    ((BigQueryNumeric)row["amount"]).ToDecimal(LossOfPrecisionHandling.Truncate),
+                    this.TransactionDataAccess.castBQNumeric(row["amount"]),
                     (DateTime)row["dateTransactionMade"],
                     (bool)row["isExpense"],
                     (string)row["transactionCategory"]
-                );
+                ); ;
             }
             return transaction;
         }
