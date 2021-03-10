@@ -17,6 +17,9 @@ namespace ServiceLayer
             // Autumn's Credentials
             //string pathToCreds = "/Users/steve/OneDrive/Documents/GitHub/FrankFund/Credentials/AuthAutumn.json";
 
+            // Kenneth's Credentials
+            //string pathToCreds = "/Users/015909177/Desktop/Github Repos/FrankFund/Credentials/AuthKenny.json";
+
             System.Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", pathToCreds);
         }
 
