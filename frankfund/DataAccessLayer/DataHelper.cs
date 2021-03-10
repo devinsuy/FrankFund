@@ -55,6 +55,13 @@ namespace DataAccessLayer
             }
             return maxID + 1;
         }
+         
+        public decimal castBQNumeric(BigQueryNumeric val){
+            return val.ToDecimal(LossOfPrecisionHandling.Truncate);
+        }
+        public decimal castBQNumeric(object val){
+            return castBQNumeric((BigQueryNumeric) val);
+        }
 
     }
 }

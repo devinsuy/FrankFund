@@ -41,8 +41,8 @@ namespace ServiceLayer
             foreach(BigQueryRow row in this.SavingsGoalDataAccess.GetSavingsGoalUsingID(SGID)){
                 sGoal = new SavingsGoal (
                     (long)row["SGID"], (string)row["Name"], 
-                    ((BigQueryNumeric)row["GoalAmt"]).ToDecimal(LossOfPrecisionHandling.Truncate), 
-                    ((BigQueryNumeric)row["ContrAmt"]).ToDecimal(LossOfPrecisionHandling.Truncate), 
+                    this.SavingsGoalDataAccess.castBQNumeric(row["GoalAmt"]), 
+                    this.SavingsGoalDataAccess.castBQNumeric(row["ContrAmt"]), 
                     this.castPeriod((string)row["Period"]), (long)row["NumPeriods"], 
                     (DateTime)row["StartDate"], (DateTime)row["EndDate"]
                 );
