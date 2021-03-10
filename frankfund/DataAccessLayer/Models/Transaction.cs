@@ -10,7 +10,8 @@ namespace DataAccessLayer.Models
         private readonly long TID;
         //Account ID
         private readonly long accountID;
-        //private readonly long SGID;
+        //Savings Goal ID
+        private readonly long SGID;
         //Name of Transaction
         private string transactionName;
         //Amount of Transaction
@@ -28,10 +29,11 @@ namespace DataAccessLayer.Models
         public bool newlyCreated;
 
         //Constructor
-        public Transaction(long TID, long accountID, string transactionName, decimal amount, DateTime dateTransactionMade, bool isExpense, string transactionCategory)
+        public Transaction(long TID, long accountID, long SGID, string transactionName, decimal amount, DateTime dateTransactionMade, bool isExpense, string transactionCategory)
         {
             this.TID = TID;
             this.accountID = accountID;
+            this.SGID = SGID;
             this.transactionName = transactionName;
             this.amount = amount;
             this.dateTransactionMade = dateTransactionMade;
@@ -52,6 +54,11 @@ namespace DataAccessLayer.Models
         public long getAccountID()
         {
             return accountID;
+        }
+
+        public long getSGID()
+        {
+            return SGID;
         }
 
         public string getTransactionName()

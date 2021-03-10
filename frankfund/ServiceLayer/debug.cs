@@ -151,7 +151,8 @@ namespace ServiceLayer
             // Create a new Transaction
             //Temp Account ID
             long tempAccountID = 1;
-            Transaction sampleTransaction = new Transaction(TID, tempAccountID, "Netflix", (decimal)9.99, new DateTime(2021, 12, 14, 0, 0, 0).Date, true, "Entertainment");
+            long SGID = 2;
+            Transaction sampleTransaction = new Transaction(TID, tempAccountID, SGID, "Netflix", (decimal)9.99, new DateTime(2021, 12, 14, 0, 0, 0).Date, true, "Entertainment");
 
             // Print summary of goal that was just created
             Console.WriteLine("Transaction Summary:\n---------------------");
