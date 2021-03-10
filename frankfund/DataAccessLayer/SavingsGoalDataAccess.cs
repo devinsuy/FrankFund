@@ -14,8 +14,7 @@ namespace DataAccessLayer
             this.tableID = this.dataHelper.getQualifiedTableName("SavingsGoals");
         }
         
-        // TODO: Parse DB query into SavingsGoal runtime
-        public BigQueryResults GetSavingsGoalUsingID(int ID)
+        public BigQueryResults GetSavingsGoalUsingID(long ID)
         {
             string query = $"SELECT * FROM {this.tableID} WHERE SGID = {ID}";        
             return this.dataHelper.query(query, parameters: null);

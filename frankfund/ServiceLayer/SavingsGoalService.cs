@@ -2,6 +2,7 @@
 using DataAccessLayer;
 using Google.Cloud.BigQuery.V2;
 using DataAccessLayer.Models;
+using DataAccessLayer;
 
 namespace ServiceLayer
 {
@@ -34,7 +35,7 @@ namespace ServiceLayer
             Params: The SGID of the Savings Goal to retrieve
             Returns: A reinstantiated Savings Goal matching the SGID or null if non existant
         */
-        public SavingsGoal GetSavingsGoalUsingID(int SGID)
+        public SavingsGoal GetSavingsGoalUsingID(long SGID)
         {
             SavingsGoal sGoal = null;
             foreach(BigQueryRow row in this.SavingsGoalDataAccess.GetSavingsGoalUsingID(SGID)){

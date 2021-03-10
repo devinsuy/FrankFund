@@ -61,7 +61,7 @@ namespace ServiceLayer
         }
 
         public override string ToString(){
-            return $"\"{name}\" Savings Goal"
+            return $"\"{name}\" Savings Goal With SGID #" + SGID
                 + $"\n   For the amount of ${goalAmt}"
                 + $"\n   Began on {startDate.ToString("yyyy-MM-dd")} and ends on {endDate.ToString("yyyy-MM-dd")}"
                 + $"\n   Requires a {period} contribution of ${contrAmt} {formatPeriodStr()}";
@@ -94,9 +94,9 @@ namespace ServiceLayer
             this.startDate = DateTime.Now.Date;
             this.newlyCreated = true;
 
+            this.contrAmt = contrAmt;
             this.numPeriods = calcPeriodsWithAmt();
             this.endDate = calcEndDate();
-            this.contrAmt = contrAmt;
         }
 
         // Constructor: reinstantiate a pre-existing SavingsGoal from database records
