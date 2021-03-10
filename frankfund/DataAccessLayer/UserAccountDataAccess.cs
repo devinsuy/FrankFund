@@ -55,8 +55,8 @@ namespace DataAccessLayer
                 + userAccount.EmailAddress.ToString() + "' ,'"      // Email Address
                 + userAccount.PasswordHash.ToString() + "' ,"       // PasswordHash
                                                                     // Need to add PasswordSalt
-                + 0 + ","                                           // FacebookID
-                + 0 + ")";                                          // GoogleID
+                + "null" + ","                                           // FacebookID
+                + "null" + ")";                                          // GoogleID
             Console.WriteLine("Running Insert Query:\n---------------------\n" + query);
             this.dataHelper.query(query);
         }

@@ -15,10 +15,10 @@ namespace ServiceLayer
             //string pathToCreds = "/Users/devin/Documents/GitHub/FrankFund/Credentials/AuthDevin.json";
 
             // Autumn's Credentials
-            //string pathToCreds = "/Users/steve/OneDrive/Documents/GitHub/FrankFund/Credentials/AuthAutumn.json";
+            string pathToCreds = "/Users/steve/OneDrive/Documents/GitHub/FrankFund/Credentials/AuthAutumn.json";
 
             // Kenneth's Credentials
-            string pathToCreds = "/Users/015909177/Desktop/Github Repos/FrankFund/Credentials/AuthKenny.json";
+            //string pathToCreds = "/Users/015909177/Desktop/Github Repos/FrankFund/Credentials/AuthKenny.json";
 
             System.Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", pathToCreds);
         }
@@ -138,6 +138,11 @@ namespace ServiceLayer
             UserAccount testAccount = new UserAccount(5, "test", "test@gmail.com", "password", null);
             uaService.CreateUserAccount(testAccount);
             Console.WriteLine("Username: " + uaService.GetAccountUsingID(5).AccountUsername);
+
+            //Console.WriteLine("\n4. Testing CreateUserAccount function - New | Prints out AccountUsername of made account");
+            //UserAccount testAccount2 = new UserAccount(6, "test2", "test2@gmail.com", "password", null);
+            //uaService.CreateUserAccount(testAccount2);
+            //Console.WriteLine("Username: " + uaService.GetAccountUsingID(6).AccountUsername);
         }
         
         static Transaction testAddTransaction()
@@ -192,7 +197,7 @@ namespace ServiceLayer
 
 
             // ---------------------------------------------- Test: Creating User Account ------------------------------------------------------
-            //testCreateUserAcc();
+            testAccCreate();
 
 
             // ---------------------------------------------- Test: Transaction Create ---------------------------------------------------------
