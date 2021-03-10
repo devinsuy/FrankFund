@@ -9,25 +9,120 @@ namespace ServiceLayer
 {
     class debug
     {
-        // Test reinstantiation of SavingsGoal from db, modification methods, writing changes back to db
-        static void Main(string[] args){
+        static void authenticateGCP()
+        {
             // Devin's Credentials
-            //string pathToCreds = "/Users/devin/Documents/GitHub/FrankFund/Credentials/AuthDevin.json";
-            //Autumn's Credentials
-            string pathToCreds = "/Users/steve/OneDrive/Documents/GitHub/FrankFund/Credentials/AuthAutumn.json";
+            string pathToCreds = "/Users/devin/Documents/GitHub/FrankFund/Credentials/AuthDevin.json";
+
+            // Autumn's Credentials
+            //string pathToCreds = "/Users/steve/OneDrive/Documents/GitHub/FrankFund/Credentials/AuthAutumn.json";
+
             System.Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", pathToCreds);
+        }
 
+        static SavingsGoal testSGCreateByDate()
+        {
+            Console.WriteLine("\n-------------------- Test: Creating A New Savings Goal By End Date, Write --------------------");
+
+            // Query DB for the next avail ID
             SavingsGoalService sgService = new SavingsGoalService();
-            SavingsGoal existingGoal = sgService.GetSavingsGoalUsingID(1);      
-            Console.WriteLine(existingGoal);       
-            existingGoal.updatePeriod(contrPeriod.BiWeekly);
-            Console.WriteLine("\n" + existingGoal);
-            sgService.writeSavingsGoal(existingGoal);
+            long SGID = sgService.getNextAvailSGID();
+            Console.WriteLine("Next available SGID that can be assigned: " + SGID + "\n");
 
-            // ---------------------------------------------- Sample Test of Creating User Account ----------------------------------------------
+            // Create a new Savings Goal for the amount of $150 ending on December 20th, dynamically calculate payments
+            DateTime endDate = new DateTime(2021, 12, 20, 0, 0, 0).Date;
+            SavingsGoal sampleGoal = new SavingsGoal(SGID, "Christmas Gift", (decimal)150.00, contrPeriod.Monthly, endDate);
+
+            // Print summary of goal that was just created
+            Console.WriteLine("Savings Goal Summary:\n---------------------");
+            Console.WriteLine(sampleGoal);
+
+            // Write SavingsGoal object to DB
+            sgService.writeSavingsGoal(sampleGoal);
+
+            return sampleGoal;
+        }
+
+        static SavingsGoal testSGCreateByContrAmt()
+        {
+            Console.WriteLine("\n\n-------------------- Test: Creating A New Savings Goal By Contribution Amount, Write --------------------");
+
+            // Query DB for the next avail ID
+            SavingsGoalService sgService = new SavingsGoalService();
+            long SGID = sgService.getNextAvailSGID();
+            Console.WriteLine("Next available SGID that can be assigned: " + SGID + "\n");
+
+            // Create a new Savings Goal for the amount of $300 dynamically calculate end date
+            DateTime endDate = new DateTime(2021, 12, 20, 0, 0, 0).Date;
+            SavingsGoal sampleGoal = new SavingsGoal(SGID, "Tuition", (decimal)3425.00, contrPeriod.Weekly, (decimal)325.00);
+
+            // Print summary of goal that was just created
+            Console.WriteLine("Savings Goal Summary:\n---------------------");
+            Console.WriteLine(sampleGoal);
+
+            // Write SavingsGoal object to DB
+            sgService.writeSavingsGoal(sampleGoal);
+
+            return sampleGoal;
+        }
+
+        static void testSGShowSerialize(SavingsGoal sg)
+        {
+            Console.WriteLine("\n\n-------------------- Test: Display String Serialization of SavingsGoal Object --------------------");
+
+            // Serialize the runtime object to String[]
+            SavingsGoalService sgService = new SavingsGoalService();
+            string[] serialized = sgService.serializeSavingsGoal(sg);
+            Console.WriteLine("\nSavingsGoal Serialized:\n-----------------------\n");
+
+            // Print the serialized SavingsGoal
+            foreach (string attr in serialized)
+            {
+                Console.WriteLine("   " + attr);
+            }
+        }
+
+        static void testSGShowJSON(SavingsGoal sg)
+        {
+            Console.WriteLine("\n\n-------------------- Test: Display JSON of SavingsGoal Object --------------------");
+
+            // Print the JSON representation of the goal we created
+            SavingsGoalService sgService = new SavingsGoalService();
+            sgService.getJSON(sg);
+        }
+
+        static void testSGReadModifyRewrite(long SGID)
+        {
+            Console.WriteLine("\n\n-------------------- Test: Recreate, Modify, Rewrite Existing SavingsGoal--------------------");
+
+            // Reinstantiate a SavingsGoal from DB records
+            SavingsGoalService sgService = new SavingsGoalService();
+            SavingsGoal existingGoal = sgService.GetSavingsGoalUsingID(SGID);
+
+            // Print summary of goal that was just reinstantiated
+            Console.WriteLine("Savings Goal Summary:\n---------------------");
+            Console.WriteLine(existingGoal + "\n");
+
+            // Modify the payment period, system recalculates end date, redisplay summary
+            existingGoal.updatePeriod(contrPeriod.Weekly);
+            Console.WriteLine("Savings Goal Summary:\n---------------------");
+            Console.WriteLine(existingGoal + "\n");
+
+            // Modify the payment amound to half, system recalculates number of payment periods needed and end date, redisplay summary
+            existingGoal.updateContrAmt(existingGoal.contrAmt * 2);
+            Console.WriteLine("Savings Goal Summary:\n---------------------");
+            Console.WriteLine(existingGoal + "\n");
+
+            // Rewrite the modified goal to DB
+            sgService.writeSavingsGoal(existingGoal);
+        }
+
+
+        static void testAccCreate()
+        {
             UserAccountService uaService = new UserAccountService();
 
-            Console.WriteLine("\n-------------------- Sample Tests of Getting and Creating a new User Account --------------------");
+            Console.WriteLine("\n-------------------- Test: Getting and Creating a new User Account --------------------");
             Console.WriteLine("\n1. Testing GetAccountUsingUsername function | Prints out AccountUsername found");
             String existingAccount = uaService.GetAccountUsingUsername("AutumnNguyen").AccountUsername;
             Console.WriteLine("Username: " + existingAccount);
@@ -37,102 +132,42 @@ namespace ServiceLayer
             Console.WriteLine("Username: " + existingAccount2);
 
             Console.WriteLine("\n3. Testing CreateUserAccount function | Prints out AccountUsername of made account");
-            UserAccount testAccount = new UserAccount (5, "test", "test@gmail.com", "password", null);
+            UserAccount testAccount = new UserAccount(5, "test", "test@gmail.com", "password", null);
             uaService.CreateUserAccount(testAccount);
             Console.WriteLine("Username: " + uaService.GetAccountUsingID(5).AccountUsername);
         }
 
 
-        // static void Main(string[] args)
-        // {
-        //     // ---------------------------------------------- GCP AUTH ----------------------------------------------
 
-        //     // Replace with path to wherever Auth<name>.json file is on your local machine
-        //     string pathToCreds = "/Users/devin/Documents/GitHub/FrankFund/Credentials/AuthDevin.json";  
-        //     System.Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", pathToCreds);
+        static void Main(string[] args){
+            // ---------------------------------------------- GCP Auth -------------------------------------------------------------------------
+            authenticateGCP();
 
 
-        //     // ---------------------------------------------- Sample Test of Savings Goal Layers ----------------------------------------------
-
-        //     // SavingsGoalService layer functionality 
-        //     SavingsGoalService sgService = new SavingsGoalService();
-        //     long SGID = sgService.getNextAvailSGID();
-        //     DateTime endDate = new DateTime(2021, 12, 25, 0, 0, 0).Date;
-        //     SavingsGoal sampleGoal = new SavingsGoal(SGID, "Christmas Gift", (decimal)250.25, contrPeriod.Monthly, endDate);
-
-        //     // Print goal summary
-        //     Console.WriteLine("Savings Goal Summary:\n---------------------\n");
-        //     Console.WriteLine(sampleGoal);
-
-        //     // Serialize the runtime object to String[] and JSON string
-        //     string[] serialized = sgService.serializeSavingsGoal(sampleGoal);
-        //     Console.WriteLine("\nSavingsGoal Serialized:\n-----------------------\n");
-        //     foreach(string attr in serialized){
-        //         Console.WriteLine("   " + attr);
-        //     }
-        //     sgService.getJSON(sampleGoal);
+            //----------------------------------------------- Test: SG Create By End Date, Write------------------------------------------------
+            SavingsGoal sampleOne = testSGCreateByDate();
 
 
-        //     // Write SavingsGoal object to DB
-        //     sgService.writeSavingsGoal(sampleGoal);
-        // }
-        // ---------------------------------------------- End Savings Goal Sample Test  ----------------------------------------------
+            // ---------------------------------------------- Test: SG Create By Contribution Amount, Write ------------------------------------
+            SavingsGoal sampleTwo = testSGCreateByContrAmt();
 
 
-
-        //     // ---------------------------------------------- Sample Test of Accounts Layers ----------------------------------------------
-        //     Console.WriteLine("\nQuerying Account IDs\n--------------------");
-        //     UserAccountService accService = new UserAccountService();
-        //     long nextID = accService.getNextAvailID();
-        //     Console.WriteLine("Next available Account ID: " + nextID);
-
-        //     // ---------------------------------------------- End Accounts Sample Test  ----------------------------------------------
+            // ---------------------------------------------- Test: Display String Serialization -----------------------------------------------
+            testSGShowSerialize(sampleOne);
 
 
-
-        //         /*
-        //         Console Output:
-
-        //             Running Query:
-        //             --------------
-        //             SELECT MAX(CAST(SGID AS INT64)) AS maxID FROM frankfund.FrankFund.SavingsGoals
-
-        //             Savings Goal Summary:
-        //             ---------------------
-
-        //             "Christmas Gift" Savings Goal
-        //             For the amount of $250.25
-        //             Began on 2021-03-03 and ends on 2021-12-25
-        //             Requires a Monthly contribution of $25.02 for 10 months
-
-        //             SavingsGoal Serialized:
-        //             -----------------------
-
-        //             3
-        //             Christmas Gift
-        //             250.25
-        //             25.02
-        //             Monthly
-        //             2021-03-03
-        //             2021-12-25
-
-        //             SavingsGoal JSON Representation:
-        //             --------------------------------
-        //             {"SGID":3,"Name":"Christmas Gift","GoalAmt":250.25,"ContrAmt":25.02,"Period":"Monthly","StartDate":"2021-03-03","EndDate":"2021-12-25"}
-
-        //             Running Insert Query:
-        //             ---------------------
-        //             INSERT INTO frankfund.FrankFund.SavingsGoals VALUES (3,"Christmas Gift",250.25,25.02,"Monthly","2021-03-03","2021-12-25")
+            // ---------------------------------------------- Test: Display JSON Representation ------------------------------------------------
+            testSGShowJSON(sampleTwo);
 
 
-        //             Querying Account IDs
-        //             --------------------
-        //             Running Query:
-        //             --------------
-        //             SELECT MAX(CAST(AccountID AS INT64)) AS maxID FROM frankfund.FrankFund.Accounts
+            // ---------------------------------------------- Sample Test of SG Read, Modify, Rewrite ------------------------------------------
+            //testSGReadModifyRewrite(SGID: 1);
 
-        //             Next available Account ID: 5
-        //         */
-        // }
+
+            // ---------------------------------------------- Test: Creating User Account ------------------------------------------------------
+            //testCreateUserAcc();
+
+        }
+
     }
 }
