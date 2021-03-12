@@ -1,0 +1,10 @@
+// Sample Subscriptions table entry
+// Relevant Schema form: 
+// SID, PurchaseDate, Notes(nullable), Amount
+
+EX comma separated entry: 
+1,'2021-01-14',"Netflix",8.99
+2,'2021-02-10',"Monthly tea box",25.00
+3,'2021-03-20',"CauseBox",54.95
+4,'2021-04'21',"Tonishi Me Box",20.75
+5,'2021-03-02',"Disney Plus",6.99

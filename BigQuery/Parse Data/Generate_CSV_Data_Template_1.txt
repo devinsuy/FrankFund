@@ -1,0 +1,22 @@
+// Sample Transaction table entry
+// Relevant Schema form: 
+// TID, TransactionName, Amount, DateTransactionMade, DateTransactionEntered, IsExpense, TransactionCategory
+
+EX comma separated entry: 
+1,"In N Out",7.85,'2021-01-18','2021-01-19',True,"Food"  
+2,"Netflix", 9.99, '2021-02-01','2021-02-01',True,"Entertainment"
+3,"McDonalds",12.41,'2021-02-01,'2021-02-02',True,"Food"
+4,"Direct Deposit",500.00,'2021-02-05','2021-02-10',False,"Deposit"
+5,"BestBuy",1334.12,'2021-02-07','2021-02-10',True,"Shopping"
+6,"Uber Eats",53.23,'2021-02-10','2021-02-11',True,"Food"
+7,"Lyft",7.81,'2021-03-1','2021-03-04',True,"Travel"
+8,"AMC Movies",'2021-03-10','2021-03-10',True,"Entertainment"
+9,"Apple App Store",'2021-03-10','2021-03-10',True,"Entertainment"
+10,"WholeFoods Market", 341.20,'2021-03-11','2021-03-12',True,"Food"
+11,"Apple App Store Refund",'2021-03-15','2021-03-15',False,"Deposit"
+12,"CHOC Medical Bill Payment",399.99,'2021-03-15','2021-03-16',True,"Health"
+13,"CHOC Medical Bill Payment",399.99,'2021-04-15','2021-04-16',True,"Health"
+14,"CHOC Medical Bill Payment",399.99,'2021-05-15','2021-05-16',True,"Health"
+15,"Netflix", 9.99, '2021-03-01','2021-03-01',True,"Entertainment"
+16,"Netflix", 9.99, '2021-04-01','2021-04-01',True,"Entertainment"
+17,"Netflix", 9.99, '2021-05-01','2021-05-01',True,"Entertainment"

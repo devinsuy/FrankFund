@@ -1,0 +1,23 @@
+// Sample Receipts table entry
+// Relevant Schema form: 
+// RID, PurchaseDate, Notes (nullable)
+
+EX comma separated entry: 
+1,'2021-02-04',"Movie"
+2,'2021-02-02',"McDonalds"
+3,'2021-03-15',"Doctors Visit"
+4,'2021-04-15',"Doctors Visit"
+5,'2021-02-01',"Walmart" 
+6,'2021-03-30',"Cap and gown"
+7,'2021-04-28',"Birthday cake"
+8,'2021-03-21',"Bookstore"
+9,'2021-04-23',"Boba"
+
+
+
+
+
+
+
+
+
