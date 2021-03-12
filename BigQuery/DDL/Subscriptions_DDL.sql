@@ -3,5 +3,6 @@ CREATE TABLE FrankFund.Subscriptions(
     RID 			INT64,
     PurchaseDate 	DATE 		NOT NULL,
     Notes 			STRING,
-    Amount 			DECIMAL 	NOT NULL
+    Amount 			DECIMAL 	NOT NULL,
+    RenewFrequency  STRING      NOT NULL
 )
