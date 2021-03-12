@@ -42,12 +42,13 @@ namespace DataAccessLayer
             query = $"INSERT INTO {this.tableID} VALUES ("
                 + transaction[0] + ","                                            // TransactionID
                 + transaction[1] + ","                                  // AccountID
-                + transaction[2] + ","                            // Transaction Name
-                + transaction[3] + ","                                     // Amount of transaction
-                + transaction[4] + ","                        // DateTime Transaction was made
-                + transaction[5] + ","                                  // Expense or Income
-                + transaction[6] + ","                        // Transaction Category
-                + transaction[7] + ",";                    // DateTime Transaction entered
+                + transaction[2] + ","                                  //SGID
+                + $"\"{transaction[3]}\","                            // Transaction Name
+                + transaction[4] + ","                                     // Amount of transaction
+                + $"\"{transaction[5]}\","                        // DateTime Transaction was made
+                + $"\"{transaction[6]}\","                                  // DateTime Transaction entered
+                + transaction[7] + ","                        // Expense or Income
+                + $"\"{transaction[8]}\")";                    // Transaction Category
             Console.WriteLine("Running Insert Query:\n---------------------\n" + query);
             this.dataHelper.query(query);
         }
@@ -55,6 +56,16 @@ namespace DataAccessLayer
         public long getNextAvailID()
         {
             return this.dataHelper.getNextAvailID(this.tableID);
+        }
+
+        // Overload wrappers to cast BigQuery Numeric type to C# decimal type
+        public decimal castBQNumeric(BigQueryNumeric val)
+        {
+            return this.dataHelper.castBQNumeric(val);
+        }
+        public decimal castBQNumeric(object val)
+        {
+            return this.dataHelper.castBQNumeric(val);
         }
     }
 }

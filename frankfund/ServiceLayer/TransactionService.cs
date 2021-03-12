@@ -27,13 +27,13 @@ namespace ServiceLayer
             foreach (BigQueryRow row in this.TransactionDataAccess.GetTransactionUsingID(TID))
             {
                 transaction = new Transaction(
-                    (long)row["TID"], (long)row["accountID"],
+                    (long)row["TID"], (long)row["accountID"], (long)row["SGID"],
                     (string)row["transactionName"],
-                    ((BigQueryNumeric)row["amount"]).ToDecimal(LossOfPrecisionHandling.Truncate),
+                    this.TransactionDataAccess.castBQNumeric(row["amount"]),
                     (DateTime)row["dateTransactionMade"],
                     (bool)row["isExpense"],
                     (string)row["transactionCategory"]
-                );
+                ); ;
             }
             return transaction;
         }
@@ -47,12 +47,13 @@ namespace ServiceLayer
             return new string[] {
                 t.getTID().ToString(),
                 t.getAccountID().ToString(),
-                t.getTransactionName(),
+                t.getSGID().ToString(),
+                t.getTransactionName().ToString(),
                 t.getAmount().ToString(),
                 t.getDateTransactionMade().ToString("yyyy-MM-dd"),
+                t.getDateTransactionEntered().ToString("yyyy-MM-dd"),
                 t.getIsExpense().ToString(),
-                t.getTransactionCategory(),
-                t.getDateTransactionEntered().ToString("yyyy-MM-dd")
+                t.getTransactionCategory().ToString()
             };
         }
 
