@@ -84,7 +84,7 @@ namespace ServiceLayer
                 + $"\"StartDate\":\"" + serialized[6] + "\","
                 + $"\"EndDate\":\"" + serialized[7] + "\""
             + "}";
-            Console.WriteLine($"\nSavingsGoal JSON Representation:\n--------------------------------\n{jsonStr}\n");
+            //Console.WriteLine($"\nSavingsGoal JSON Representation:\n--------------------------------\n{jsonStr}\n");
             return jsonStr;
         }
         
