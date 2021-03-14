@@ -15,24 +15,24 @@ namespace REST
 {
     public class Startup
     {
-        static void authenticateGCP()
-        {
-            // Devin's Credentials
-            string pathToCreds = "/Users/devin/Documents/GitHub/FrankFund/Credentials/AuthDevin.json";
+        //static void authenticateGCP()
+        //{
+        //    // Devin's Credentials
+        //    string pathToCreds = "/Users/devin/Documents/GitHub/FrankFund/Credentials/AuthDevin.json";
 
-            // Autumn's Credentials
-            //string pathToCreds = "/Users/steve/OneDrive/Documents/GitHub/FrankFund/Credentials/AuthAutumn.json";
+        //    // Autumn's Credentials
+        //    //string pathToCreds = "/Users/steve/OneDrive/Documents/GitHub/FrankFund/Credentials/AuthAutumn.json";
 
-            // Kenneth's Credentials
-            //string pathToCreds = "/Users/015909177/Desktop/Github Repos/FrankFund/Credentials/AuthKenny.json";
+        //    // Kenneth's Credentials
+        //    //string pathToCreds = "/Users/015909177/Desktop/Github Repos/FrankFund/Credentials/AuthKenny.json";
 
-            System.Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", pathToCreds);
-        }
+        //    System.Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", pathToCreds);
+        //}
 
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            authenticateGCP();
+            //authenticateGCP();
         }
 
         public IConfiguration Configuration { get; }
