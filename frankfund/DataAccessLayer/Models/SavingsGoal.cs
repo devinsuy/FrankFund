@@ -1,5 +1,5 @@
 ﻿using System;
-namespace ServiceLayer
+namespace DataAccessLayer.Models
 {   
     // Time period noun = numDays in the period
     public enum contrPeriod
