@@ -32,7 +32,13 @@ namespace ServiceLayer
                 return new OkObjectResult("User already exists");
             }
 
-            // TODO: Need to add password service and salt/hash
+            // TODO: Need to add password service and salt/hash and meets requirements
+            // Minimum Requirements
+            // Uppercase letter (A-Z)
+            // Lowercase letter(a-z)
+            // Digit(0 - 9)
+            // Special Character(~`!@#$%^&*()+=_-{}[]\|:;”’?/<>,.)
+
 
             // If all the checks are passed then writeUserAccount to database
             this.UserAccountDataAccess.WriteUserAccount(userAccount, true, false);
