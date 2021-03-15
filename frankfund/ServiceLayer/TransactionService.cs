@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using DataAccessLayer;
 using Google.Cloud.BigQuery.V2;
 using DataAccessLayer.Models;
-using Microsoft.AspNetCore.Mvc;
 
 namespace ServiceLayer
 {
-    class TransactionService
+    public class TransactionService
     {
         private readonly TransactionDataAccess TransactionDataAccess;
 
@@ -23,17 +20,22 @@ namespace ServiceLayer
         */
         public Transaction GetTransactionUsingID(long TID)
         {
+            long SGID = -1; // Nullable attribute
             Transaction transaction = null;
             foreach (BigQueryRow row in this.TransactionDataAccess.GetTransactionUsingID(TID))
             {
+                if(row["SGID"] != null)
+                {
+                    SGID = (long)row["SGID"];
+                }
                 transaction = new Transaction(
-                    (long)row["TID"], (long)row["accountID"], (long)row["SGID"],
-                    (string)row["transactionName"],
-                    this.TransactionDataAccess.castBQNumeric(row["amount"]),
-                    (DateTime)row["dateTransactionMade"],
-                    (bool)row["isExpense"],
-                    (string)row["transactionCategory"]
-                ); ;
+                    (long)row["TID"], (long)row["AccountID"], SGID,
+                    (string)row["TransactionName"],
+                    this.TransactionDataAccess.castBQNumeric(row["Amount"]),
+                    (DateTime)row["DateTransactionMade"],
+                    (bool)row["IsExpense"],
+                    (string)row["TransactionCategory"]
+                );
             }
             return transaction;
         }
@@ -55,6 +57,32 @@ namespace ServiceLayer
                 t.getIsExpense().ToString(),
                 t.getTransactionCategory().ToString()
             };
+        }
+
+        /*
+        Convert a Transaction object into JSON format
+            Params: A Transaction object to convert
+            Returns: The JSON string representation of the object
+        */
+        public string getJSON(Transaction t)
+        {
+            if (t == null)
+            {
+                return "{}";
+            }
+            string[] serialized = serializeTransaction(t);
+            string jsonStr = "{"
+                + $"\"TID\":{serialized[0]},"
+                + $"\"AccountID\":{serialized[1]},"
+                + $"\"SGID\":{serialized[2]},"
+                + $"\"TransactionName\":\"" + serialized[3] + "\","
+                + $"\"Amount\":{serialized[4]},"
+                + $"\"DateTransactionMade\":\"" + serialized[5] + "\","
+                + $"\"DateTransactionEntered\":\"" + serialized[6] + "\","
+                + $"\"IsExpense\":{serialized[7]},"
+                + $"\"TransactionCategory\":\"" + serialized[8] + "\""
+            + "}";
+            return jsonStr;
         }
 
         /*
