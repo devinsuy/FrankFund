@@ -20,7 +20,7 @@ namespace ServiceLayer
         */
         public Transaction GetTransactionUsingID(long TID)
         {
-            long SGID = -1; // Nullable attribute
+            long SGID = -1;                     // Nullable attribute
             Transaction transaction = null;
             foreach (BigQueryRow row in this.TransactionDataAccess.GetTransactionUsingID(TID))
             {
@@ -54,7 +54,7 @@ namespace ServiceLayer
                 t.getAmount().ToString(),
                 t.getDateTransactionMade().ToString("yyyy-MM-dd"),
                 t.getDateTransactionEntered().ToString("yyyy-MM-dd"),
-                t.getIsExpense().ToString(),
+                t.getIsExpense().ToString().ToLower(),                  // BigQuery stores boolean as {True, False}, C# stores as {true, false}
                 t.getTransactionCategory().ToString()
             };
         }

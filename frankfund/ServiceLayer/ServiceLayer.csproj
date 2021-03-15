@@ -16,4 +16,7 @@
     <ProjectReference Include="..\DataAccessLayer\DataAccessLayer.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="debug.cs" />
+  </ItemGroup>
 </Project>
