@@ -35,7 +35,7 @@ namespace DataAccessLayer
         /* Write a SavingsGoal to DB
             Params: String array of serialized newly created SavingsGoal object 
         */
-        public void writeUserAccount(UserAccount userAccount, bool newlyCreated, bool changed)
+        public void WriteUserAccount(UserAccount userAccount, bool newlyCreated, bool changed)
         {
             string query;
             if (!newlyCreated)
@@ -57,6 +57,14 @@ namespace DataAccessLayer
                                                                     // Need to add PasswordSalt
                 + "null" + ","                                           // FacebookID
                 + "null" + ")";                                          // GoogleID
+            Console.WriteLine("Running Insert Query:\n---------------------\n" + query);
+            this.dataHelper.query(query);
+        }
+
+        public void DisableUserAccount(UserAccount userAccount)
+        {
+            string query;
+            query = $"DELETE FROM {this.tableID} WHERE AccountID = {userAccount.AccountID}";
             Console.WriteLine("Running Insert Query:\n---------------------\n" + query);
             this.dataHelper.query(query);
         }

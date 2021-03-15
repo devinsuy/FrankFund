@@ -32,14 +32,38 @@ namespace ServiceLayer
                 return new OkObjectResult("User already exists");
             }
 
-            // TODO: Need to add password service and salt/hash
+            // TODO: Need to add password service and salt/hash and meets requirements
+            // Minimum Requirements
+            // Uppercase letter (A-Z)
+            // Lowercase letter(a-z)
+            // Digit(0 - 9)
+            // Special Character(~`!@#$%^&*()+=_-{}[]\|:;”’?/<>,.)
+
 
             // If all the checks are passed then writeUserAccount to database
-            this.UserAccountDataAccess.writeUserAccount(userAccount, true, false);
+            this.UserAccountDataAccess.WriteUserAccount(userAccount, true, false);
 
             return new OkObjectResult("Account successfully created");
 
 
+        }
+
+        public ActionResult DisableUserAccount(UserAccount userAccount, bool confirm)
+        {
+            UserAccount user = GetAccountUsingUsername(userAccount.AccountUsername);
+
+            // Need to add password validation as a input and password service
+
+            // User Confirmation to Delete
+            if (confirm == true)
+            {
+                this.UserAccountDataAccess.DisableUserAccount(userAccount);
+                 return new OkObjectResult("User successfully deleted");
+            }
+            else
+            {
+                return new StatusCodeResult(500);
+            }
         }
 
         public UserAccount GetAccountUsingUsername(string username)

@@ -28,6 +28,16 @@ namespace DataAccessLayer.Models
             //this.GoogleID = google;
         }
 
+        public UserAccount(string username, string email, string pass, byte[] passSalt)
+        {
+            this.AccountUsername = username;
+            this.EmailAddress = email;
+            this.PasswordHash = pass;
+            // need to add PasswordSalt
+            //this.FacebookID = fb;
+            //this.GoogleID = google;
+        }
+
         // ---------------------------------------- UserAccount Setters ----------------------------------------
 
     }
