@@ -1,9 +1,9 @@
 # FrankFund REST API
 
-# Overview
+## Overview
 Endpoints return data from GCP BigQuery in JSON format
 
-# Authentication
+## Authentication
 HTTP requests must be in the form:
 
 "http://frankfund.appspot.com/api/...&apikey={apikey}"
@@ -16,7 +16,7 @@ You can find your developer **apikey** in the Github repo:
 
 Your corrseponding apikey is labeled **"private_key_id"** in your Auth.json file.
 
-# Error Codes
+## Error Codes
 Improperly authenticated requests will return a HTTP 401 Unauthorized.
 
 Improperly formated requests will return a HTTP 400 Bad Request.
@@ -24,7 +24,7 @@ Improperly formated requests will return a HTTP 400 Bad Request.
 Retrieving data that returns 0 rows in BigQuery will return a HTTP 204 No Content.
 
 
-# Active Endpoints
+## Active Endpoints
 
 ```[GET] http://frankfund.appspot.com/api/SGID={SGID}&apikey={apikey})```
 
