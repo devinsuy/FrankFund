@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -32,7 +33,7 @@ namespace REST
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            authenticateGCP();
+            //authenticateGCP();
         }
 
         public IConfiguration Configuration { get; }
@@ -50,6 +51,11 @@ namespace REST
             {
                 app.UseDeveloperExceptionPage();
             }
+            DefaultFilesOptions options = new DefaultFilesOptions();
+            options.DefaultFileNames.Clear();
+            options.DefaultFileNames.Add("Index.html");
+            app.UseDefaultFiles(options);
+            app.UseStaticFiles();
 
             app.UseHttpsRedirection();
 

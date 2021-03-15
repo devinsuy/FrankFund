@@ -146,7 +146,7 @@ namespace ServiceLayer
 
             Console.WriteLine("\n4. Testing DeleteUserAccount function | Prints out AccountUsername of deleted account");
             //UserAccount testAccount = new UserAccount(5, "test", "test@gmail.com", "password", null);
-            uaService.DeleteUserAccount(testAccount, true);
+            //uaService.DeleteUserAccount(testAccount, true);
             //Console.WriteLine("Delete Username: " + uaService.GetAccountUsingID(5).AccountUsername);
         }
         
