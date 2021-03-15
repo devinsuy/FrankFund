@@ -5,11 +5,10 @@ Endpoints return data from GCP BigQuery in JSON format
 
 ## Authentication
 HTTP requests must be in the form:
-
-"http://frankfund.appspot.com/api/...&apikey={apikey}"
+'''"http://frankfund.appspot.com/api/...&apikey={apikey}"'''
 
 The trailing part of the endpoint should be the literal "&apikey="
-followed immediately by your issued developer API key.
+followed immediately by your issued developer API key (see endpoints below).
 
 You can find your developer **apikey** in the Github repo:
     /Credentials/Auth{YourName}.json
