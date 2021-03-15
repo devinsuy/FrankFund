@@ -8,11 +8,11 @@ namespace REST.Controllers
     [ApiController]
     public class UserAccountController : ControllerBase
     {
-        private readonly ILogger<SavingsGoalController> _logger;
+        private readonly ILogger<UserAccountController> _logger;
         private readonly APIHelper api;
         private readonly UserAccountService uas;
 
-        public UserAccountController(ILogger<SavingsGoalController> logger)
+        public UserAccountController(ILogger<UserAccountController> logger)
         {
             _logger = logger;
             api = new APIHelper();
