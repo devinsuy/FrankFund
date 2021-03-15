@@ -31,12 +31,7 @@ namespace REST.Controllers
             {
                 return BadRequest();
             }
-            long maxAccID = uas.getNextAvailID() - 1;
-            if (accID > maxAccID)
-            {
-                return NoContent();
-            }
-            return new OkObjectResult(uas.getJSON(uas.GetAccountUsingID(accID)));
+            return api.serveJson(uas.getJSON(uas.GetAccountUsingID(accID)));
         }
     }
 }

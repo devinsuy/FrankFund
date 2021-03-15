@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
+
 
 namespace REST.Controllers
 {
-    public class APIHelper
+    public class APIHelper: ControllerBase
     {
         private readonly HashSet<string> validKeys;
 
@@ -20,6 +22,18 @@ namespace REST.Controllers
         public bool validAPIKey(string apiKey)
         {
             return this.validKeys.Contains(apiKey);
+        }
+
+        public IActionResult serveJson(string json)
+        {
+            if (json.Equals("{}"))
+            {
+                return NoContent();
+            }
+            else
+            {
+                return new OkObjectResult(json);
+            }
         }
     }
 }

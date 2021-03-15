@@ -31,12 +31,7 @@ namespace REST.Controllers
             {
                 return BadRequest();
             }
-            long maxTID = ts.getNextAvailTID() - 1;
-            if (TID > maxTID)
-            {
-                return NoContent();
-            }
-            return new OkObjectResult(ts.getJSON(ts.GetTransactionUsingID(TID)));
+            return api.serveJson(ts.getJSON(ts.GetTransactionUsingID(TID)));
         }
     }
 }

@@ -30,12 +30,7 @@ namespace REST.Controllers
             if(SGID < 1) {
                 return BadRequest();
             }
-            long maxSGID = sgs.getNextAvailSGID() - 1;
-            if(SGID > maxSGID)
-            {
-                return NoContent();
-            }
-            return new OkObjectResult(sgs.getJSON(sgs.GetSavingsGoalUsingID(SGID)));
+            return api.serveJson(sgs.getJSON(sgs.GetSavingsGoalUsingID(SGID)));
         }
     }
 }
