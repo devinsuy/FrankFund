@@ -122,5 +122,17 @@ namespace DataAccessLayer.Models
             this.transactionCategory = transactionCategory;
             changed = true;
         }
+
+        //Override ToString()
+        public override string ToString()
+        {
+            return "Transaction with TID #" + getTID()
+                + $"\n \"{getTransactionName()}\""
+                + $"\n Amount: $" + getAmount()
+                + $"\n This transaction is an \"{getIsExpense()}\""
+                + $"\n Categorized as \"{getTransactionCategory()}\""
+                + $"\n Made on {getDateTransactionMade().ToString("yyyy-MM-dd")}"
+                + $"\n This transaction was entered into the system on {getDateTransactionEntered().ToString("yyyy-MM-dd")}";
+        }
     }
 }
