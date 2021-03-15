@@ -2,7 +2,6 @@
 using DataAccessLayer;
 using Google.Cloud.BigQuery.V2;
 using DataAccessLayer.Models;
-using DataAccessLayer;
 
 namespace ServiceLayer
 {
@@ -73,6 +72,10 @@ namespace ServiceLayer
             Returns: The JSON string representation of the object
         */
         public string getJSON(SavingsGoal s){
+            if(s == null)
+            {
+                return "{}";
+            }
             string[] serialized = serializeSavingsGoal(s);
             string jsonStr = "{"
                 + $"\"SGID\":{serialized[0]},"
