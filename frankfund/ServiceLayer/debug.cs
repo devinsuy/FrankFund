@@ -143,6 +143,11 @@ namespace ServiceLayer
             //UserAccount testAccount2 = new UserAccount(6, "test2", "test2@gmail.com", "password", null);
             //uaService.CreateUserAccount(testAccount2);
             //Console.WriteLine("Username: " + uaService.GetAccountUsingID(6).AccountUsername);
+
+            Console.WriteLine("\n4. Testing DeleteUserAccount function | Prints out AccountUsername of deleted account");
+            //UserAccount testAccount = new UserAccount(5, "test", "test@gmail.com", "password", null);
+            uaService.DeleteUserAccount(testAccount, true);
+            //Console.WriteLine("Delete Username: " + uaService.GetAccountUsingID(5).AccountUsername);
         }
         
         static Transaction testAddTransaction()
