@@ -26,12 +26,16 @@ Retrieving data that returns 0 rows in BigQuery will return a HTTP 204 No Conten
 
 ## Active Endpoints
 
+### SavingsGoals
+
 ```[GET] http://frankfund.appspot.com/api/SGID={SGID}&apikey={apikey})```
 
 Returns JSON data of the SavingsGoal with the given SGID
 
 **Example Request:** WebRequest.Create("http://frankfund.appspot.com/api/SGID=1&apikey=c55f8d138f6ccfd43612b15c98706943e1f4bea3");
 
+
+### UserAccounts
 
 ```[GET] http://frankfund.appspot.com/api/accID={accID}&apikey={apikey})```
 
