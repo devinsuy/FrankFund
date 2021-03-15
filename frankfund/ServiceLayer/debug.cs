@@ -12,10 +12,10 @@ namespace ServiceLayer
         static void authenticateGCP()
         {
             // Devin's Credentials
-            string pathToCreds = "/Users/devin/Documents/GitHub/FrankFund/Credentials/AuthDevin.json";
+            //string pathToCreds = "/Users/devin/Documents/GitHub/FrankFund/Credentials/AuthDevin.json";
 
             // Autumn's Credentials
-            //string pathToCreds = "/Users/steve/OneDrive/Documents/GitHub/FrankFund/Credentials/AuthAutumn.json";
+            string pathToCreds = "/Users/steve/OneDrive/Documents/GitHub/FrankFund/Credentials/AuthAutumn.json";
 
             // Kenneth's Credentials
             //string pathToCreds = "/Users/015909177/Desktop/Github Repos/FrankFund/Credentials/AuthKenny.json";
@@ -145,9 +145,9 @@ namespace ServiceLayer
             //Console.WriteLine("Username: " + uaService.GetAccountUsingID(6).AccountUsername);
 
             Console.WriteLine("\n4. Testing DeleteUserAccount function | Prints out AccountUsername of deleted account");
-            //UserAccount testAccount = new UserAccount(5, "test", "test@gmail.com", "password", null);
-            //uaService.DeleteUserAccount(testAccount, true);
-            //Console.WriteLine("Delete Username: " + uaService.GetAccountUsingID(5).AccountUsername);
+            UserAccount testAccount2 = new UserAccount(5, "test", "test@gmail.com", "password", null);
+            Console.WriteLine("Disable Username: " + uaService.GetAccountUsingID(5).AccountUsername);
+            uaService.DisableUserAccount(testAccount2, true);
         }
         
         static Transaction testAddTransaction()
