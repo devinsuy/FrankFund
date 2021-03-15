@@ -9,7 +9,7 @@ HTTP requests must be in the form:
 ```http://frankfund.appspot.com/api/...&apikey={apikey}```
 
 The trailing part of the endpoint should be the literal "&apikey="
-followed immediately by your issued developer API key (see endpoints below).
+followed immediately by your issued developer API key
 
 You can find your developer **apikey** in the Github repo:
     /Credentials/Auth{YourName}.json
