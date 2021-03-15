@@ -6,7 +6,7 @@ Endpoints return data from GCP BigQuery in JSON format
 ## Authentication
 HTTP requests must be in the form:
 
-```http://frankfund.appspot.com/api/...&apikey={apikey}```
+```https://frankfund.appspot.com/api/...&apikey={apikey}```
 
 The trailing part of the endpoint should be the literal "&apikey="
 followed immediately by your issued developer API key
@@ -28,29 +28,29 @@ Retrieving data that returns 0 rows in BigQuery will return a HTTP 204 No Conten
 
 ### SavingsGoals
 
-```[GET] http://frankfund.appspot.com/api/SGID={SGID}&apikey={apikey})```
+```[GET] https://frankfund.appspot.com/api/SGID={SGID}&apikey={apikey})```
 
 Returns JSON data of the SavingsGoal with the given SGID
 
-**Example Request:** WebRequest.Create("http://frankfund.appspot.com/api/SGID=1&apikey=c55f8d138f6ccfd43612b15c98706943e1f4bea3");
-\
+**Example Request:** WebRequest.Create("https://frankfund.appspot.com/api/SGID=1&apikey=c55f8d138f6ccfd43612b15c98706943e1f4bea3");
+
 
 
 ### UserAccounts
 
-```[GET] http://frankfund.appspot.com/api/accID={accID}&apikey={apikey})```
+```[GET] https://frankfund.appspot.com/api/accID={accID}&apikey={apikey})```
 
 Returns JSON data of the UserAccount with the given AccountID
 
-**Example Request:** WebRequest.Create("http://frankfund.appspot.com/api/accID=1&apikey=f2f1178729cb2e1c9188ed847066743c4e843a21");
-\
+**Example Request:** WebRequest.Create("https://frankfund.appspot.com/api/accID=1&apikey=f2f1178729cb2e1c9188ed847066743c4e843a21");
+
 
 
 ### Transactions
 
-```[GET] http://frankfund.appspot.com/api/TID={TID}&apikey={apikey})```
+```[GET] https://frankfund.appspot.com/api/TID={TID}&apikey={apikey})```
 
 Returns JSON data of the Transaction with the given TransactionID
 
-**Example Request:** WebRequest.Create("http://frankfund.appspot.com/api/TID=1&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0");
+**Example Request:** WebRequest.Create("https://frankfund.appspot.com/api/TID=1&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0");
 
