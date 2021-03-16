@@ -23,49 +23,59 @@
     <Compile Remove="Controllers\LandingController.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="wwwroot\" />
-    <Folder Include="wwwroot\css\" />
-    <Folder Include="wwwroot\fonts\" />
-    <Folder Include="wwwroot\js\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Remove="wwwroot\css\ionicons.css" />
-    <Content Remove="wwwroot\css\jquery.classycountdown.css" />
-    <Content Remove="wwwroot\css\responsive.css" />
-    <Content Remove="wwwroot\css\styles.css" />
-    <Content Remove="wwwroot\fonts\ionicons.eot" />
-    <Content Remove="wwwroot\fonts\ionicons.svg" />
-    <Content Remove="wwwroot\fonts\ionicons.ttf" />
-    <Content Remove="wwwroot\fonts\ionicons.woff" />
-    <Content Remove="wwwroot\js\bootstrap.css" />
-    <Content Remove="wwwroot\js\jquery.classycountdown.js" />
-    <Content Remove="wwwroot\js\jquery.countdown.min.js" />
-    <Content Remove="wwwroot\js\jquery.knob.js" />
-    <Content Remove="wwwroot\js\jquery.throttle.js" />
-    <Content Remove="wwwroot\js\jquery-3.1.1.min.js" />
-    <Content Remove="wwwroot\js\scripts.js" />
-    <Content Remove="wwwroot\js\tether.min.js" />
-    <Content Remove="wwwroot\js\TimeCircles.js" />
-    <Content Remove="wwwroot\index.html" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="wwwroot\css\ionicons.css" />
-    <None Include="wwwroot\css\jquery.classycountdown.css" />
-    <None Include="wwwroot\css\responsive.css" />
-    <None Include="wwwroot\css\styles.css" />
-    <None Include="wwwroot\fonts\ionicons.eot" />
-    <None Include="wwwroot\fonts\ionicons.svg" />
-    <None Include="wwwroot\fonts\ionicons.ttf" />
-    <None Include="wwwroot\fonts\ionicons.woff" />
-    <None Include="wwwroot\js\bootstrap.css" />
-    <None Include="wwwroot\js\jquery.classycountdown.js" />
-    <None Include="wwwroot\js\jquery.countdown.min.js" />
-    <None Include="wwwroot\js\jquery.knob.js" />
-    <None Include="wwwroot\js\jquery.throttle.js" />
-    <None Include="wwwroot\js\jquery-3.1.1.min.js" />
-    <None Include="wwwroot\js\scripts.js" />
-    <None Include="wwwroot\js\tether.min.js" />
-    <None Include="wwwroot\js\TimeCircles.js" />
-    <None Include="wwwroot\index.html" />
+    <None Include="bin\Release\netcoreapp3.1\publish\static\index.html">
+      <Link>static\index.html</Link>
+    </None>
+    <None Include="bin\Release\netcoreapp3.1\publish\static\css\jquery.classycountdown.css">
+      <Link>static\css\jquery.classycountdown.css</Link>
+    </None>
+    <None Include="bin\Release\netcoreapp3.1\publish\static\css\styles.css">
+      <Link>static\css\styles.css</Link>
+    </None>
+    <None Include="bin\Release\netcoreapp3.1\publish\static\css\responsive.css">
+      <Link>static\css\responsive.css</Link>
+    </None>
+    <None Include="bin\Release\netcoreapp3.1\publish\static\css\ionicons.css">
+      <Link>static\css\ionicons.css</Link>
+    </None>
+    <None Include="bin\Release\netcoreapp3.1\publish\static\js\jquery.countdown.min.js">
+      <Link>static\js\jquery.countdown.min.js</Link>
+    </None>
+    <None Include="bin\Release\netcoreapp3.1\publish\static\js\jquery.throttle.js">
+      <Link>static\js\jquery.throttle.js</Link>
+    </None>
+    <None Include="bin\Release\netcoreapp3.1\publish\static\js\bootstrap.css">
+      <Link>static\js\bootstrap.css</Link>
+    </None>
+    <None Include="bin\Release\netcoreapp3.1\publish\static\js\jquery.classycountdown.js">
+      <Link>static\js\jquery.classycountdown.js</Link>
+    </None>
+    <None Include="bin\Release\netcoreapp3.1\publish\static\js\scripts.js">
+      <Link>static\js\scripts.js</Link>
+    </None>
+    <None Include="bin\Release\netcoreapp3.1\publish\static\js\TimeCircles.js">
+      <Link>static\js\TimeCircles.js</Link>
+    </None>
+    <None Include="bin\Release\netcoreapp3.1\publish\static\js\jquery-3.1.1.min.js">
+      <Link>static\js\jquery-3.1.1.min.js</Link>
+    </None>
+    <None Include="bin\Release\netcoreapp3.1\publish\static\js\tether.min.js">
+      <Link>static\js\tether.min.js</Link>
+    </None>
+    <None Include="bin\Release\netcoreapp3.1\publish\static\js\jquery.knob.js">
+      <Link>static\js\jquery.knob.js</Link>
+    </None>
+    <None Include="bin\Release\netcoreapp3.1\publish\static\fonts\ionicons.eot">
+      <Link>static\fonts\ionicons.eot</Link>
+    </None>
+    <None Include="bin\Release\netcoreapp3.1\publish\static\fonts\ionicons.woff">
+      <Link>static\fonts\ionicons.woff</Link>
+    </None>
+    <None Include="bin\Release\netcoreapp3.1\publish\static\fonts\ionicons.ttf">
+      <Link>static\fonts\ionicons.ttf</Link>
+    </None>
+    <None Include="bin\Release\netcoreapp3.1\publish\static\fonts\ionicons.svg">
+      <Link>static\fonts\ionicons.svg</Link>
+    </None>
   </ItemGroup>
 </Project>

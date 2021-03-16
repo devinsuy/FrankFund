@@ -52,7 +52,7 @@ namespace REST
             // Serve landing page for non API routing
             DefaultFilesOptions options = new DefaultFilesOptions();
             options.DefaultFileNames.Clear();
-            options.DefaultFileNames.Add("Index.html");
+            options.DefaultFileNames.Add("index.html");
             app.UseDefaultFiles(options);
             app.UseStaticFiles();
 

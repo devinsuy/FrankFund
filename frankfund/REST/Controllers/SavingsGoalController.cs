@@ -26,7 +26,7 @@ namespace REST.Controllers
             if (!api.validAPIKey(apiKey))
             {
                 return new UnauthorizedResult();
-            }
+            }   
             if(SGID < 1) {
                 return BadRequest();
             }
