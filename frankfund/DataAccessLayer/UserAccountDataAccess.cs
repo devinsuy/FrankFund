@@ -39,11 +39,20 @@ namespace DataAccessLayer
         {
             string query;
             if (!newlyCreated)
-            {                                                      // Only write to DB a pre-existing SavingsGoal if it changed during runtime
+            {                                                      // Only write to DB a pre-existing Account if it changed during runtime
                 if (changed)
-                {                                                        // SavingsGoal was updated, delete old record before reinsertion
+                {                                                        // Account was updated, delete old record before reinsertion
                     query = $"DELETE FROM {this.tableID} WHERE AccountID = {userAccount.AccountID}";
                     Console.WriteLine("User Account with AccountID " + userAccount.AccountID + " was changed, updating records");
+                    query = $"INSERT INTO {this.tableID} VALUES ("
+                        + userAccount.AccountID + ", '"               // AccountID
+                        + userAccount.AccountUsername.ToString() + "' ,'"   // AccountUsername
+                        + userAccount.EmailAddress.ToString() + "' ,'"      // Email Address
+                        + userAccount.PasswordHash.ToString() + "' ,"       // PasswordHash
+                                                                            // Need to add PasswordSalt
+                        + "null" + ","                                           // FacebookID
+                        + "null" + ")";                                          // GoogleID
+                    Console.WriteLine("Running Insert Query:\n---------------------\n" + query);
                     this.dataHelper.query(query);
                 }
                 else                                                                // SavingsGoal has not changed, nothing to write

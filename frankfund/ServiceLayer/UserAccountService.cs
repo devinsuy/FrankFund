@@ -48,6 +48,46 @@ namespace ServiceLayer
 
         }
 
+        public ActionResult UpdateUserAccount(UserAccount userAccount)
+        {
+
+            // Checking if user account exists
+            var retrievedUser = GetAccountUsingUsername(userAccount.AccountUsername);
+            if (retrievedUser == null) // Checks if user already exists
+            {
+                Console.WriteLine("User Account does not exist.");
+                return new OkObjectResult("UUser Account does not exist");
+            }
+            else
+            {
+                // TODO: Need to add password service and salt/hash and meets requirements
+                // Minimum Requirements
+                // Uppercase letter (A-Z)
+                // Lowercase letter(a-z)
+                // Digit(0 - 9)
+                // Special Character(~`!@#$%^&*()+=_-{}[]\|:;”’?/<>,.)
+
+                // Checking if Email is a valid Email Address
+                if (!EmailService.IsValidEmailAddress(userAccount.EmailAddress.ToLower())) // Checks for valid email address
+                {
+                    return new BadRequestObjectResult("Invalid Email address");
+                }
+
+                // Checking if username already exists
+                var retrievedUser2 = GetAccountUsingUsername(userAccount.AccountUsername);
+                if (retrievedUser2 != null) // Checks if user already exists
+                {
+                    Console.WriteLine("Username already exists");
+                    return new OkObjectResult("User already exists");
+                }
+
+                // If all the checks are passed then writeUserAccount to database
+                // with newlyCreated bool = false and changed bool = true
+                this.UserAccountDataAccess.WriteUserAccount(userAccount, false, true);
+                return new OkObjectResult("Account successfully updated");
+            }
+        }
+
         public ActionResult DisableUserAccount(UserAccount userAccount, bool confirm)
         {
             UserAccount user = GetAccountUsingUsername(userAccount.AccountUsername);

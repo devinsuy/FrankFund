@@ -139,15 +139,21 @@ namespace ServiceLayer
             uaService.CreateUserAccount(testAccount);
             Console.WriteLine("Username: " + uaService.GetAccountUsingID(5).AccountUsername);
 
-            //Console.WriteLine("\n4. Testing CreateUserAccount function - New | Prints out AccountUsername of made account");
-            //UserAccount testAccount2 = new UserAccount(6, "test2", "test2@gmail.com", "password", null);
-            //uaService.CreateUserAccount(testAccount2);
-            //Console.WriteLine("Username: " + uaService.GetAccountUsingID(6).AccountUsername);
-
             Console.WriteLine("\n4. Testing DeleteUserAccount function | Prints out AccountUsername of deleted account");
             UserAccount testAccount2 = new UserAccount(5, "test", "test@gmail.com", "password", null);
             Console.WriteLine("Disable Username: " + uaService.GetAccountUsingID(5).AccountUsername);
             uaService.DisableUserAccount(testAccount2, true);
+
+            Console.WriteLine("\n5. Testing CreateUserAccount function - New | Prints out AccountUsername of made account");
+            UserAccount testAccount3 = new UserAccount(6, "test2", "test2@gmail.com", "password", null);
+            uaService.CreateUserAccount(testAccount3);
+            Console.WriteLine("Username: " + uaService.GetAccountUsingID(6).AccountUsername);
+
+            Console.WriteLine("\n6. Testing UpdateUserAccount function | Prints out new AccountUsername of account");
+            Console.WriteLine("Old Username: " + uaService.GetAccountUsingID(6).AccountUsername);
+            UserAccount testAccount4 = new UserAccount(6, "testing", "test2@gmail.com", "password", null);
+            uaService.UpdateUserAccount(testAccount4);
+            Console.WriteLine("New Username: " + uaService.GetAccountUsingID(6).AccountUsername);
         }
         
         static Transaction testAddTransaction()
@@ -178,23 +184,23 @@ namespace ServiceLayer
 
         static void Main(string[] args){
             // ---------------------------------------------- GCP Auth -------------------------------------------------------------------------
-            authenticateGCP();
+            //authenticateGCP();
 
 
             //----------------------------------------------- Test: SG Create By End Date, Write------------------------------------------------
-            SavingsGoal sampleOne = testSGCreateByDate();
+            //SavingsGoal sampleOne = testSGCreateByDate();
 
 
             // ---------------------------------------------- Test: SG Create By Contribution Amount, Write ------------------------------------
-            SavingsGoal sampleTwo = testSGCreateByContrAmt();
+            //SavingsGoal sampleTwo = testSGCreateByContrAmt();
 
 
             // ---------------------------------------------- Test: Display String Serialization -----------------------------------------------
-            testSGShowSerialize(sampleOne);
+            //testSGShowSerialize(sampleOne);
 
 
             // ---------------------------------------------- Test: Display JSON Representation ------------------------------------------------
-            testSGShowJSON(sampleTwo);
+            //testSGShowJSON(sampleTwo);
 
 
             // ---------------------------------------------- Sample Test of SG Read, Modify, Rewrite ------------------------------------------
@@ -206,7 +212,7 @@ namespace ServiceLayer
 
 
             // ---------------------------------------------- Test: Transaction Create ---------------------------------------------------------
-            Transaction sampleTrans1 = testAddTransaction();
+            //Transaction sampleTrans1 = testAddTransaction();
         }
 
     }
