@@ -31,7 +31,7 @@ namespace REST.Controllers
             {
                 return BadRequest();
             }
-            return api.serveJson(uas.getJSON(uas.GetAccountUsingID(accID)));
+            return api.serveJson(uas.getJSON(uas.getUsingID(accID)));
         }
     }
 }

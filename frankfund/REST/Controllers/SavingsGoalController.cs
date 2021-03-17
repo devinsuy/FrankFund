@@ -30,7 +30,7 @@ namespace REST.Controllers
             if(SGID < 1) {
                 return BadRequest();
             }
-            return api.serveJson(sgs.getJSON(sgs.GetSavingsGoalUsingID(SGID)));
+            return api.serveJson(sgs.getJSON(sgs.getUsingID(SGID)));
         }
     }
 }

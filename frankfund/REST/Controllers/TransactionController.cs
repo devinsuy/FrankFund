@@ -31,7 +31,7 @@ namespace REST.Controllers
             {
                 return BadRequest();
             }
-            return api.serveJson(ts.getJSON(ts.GetTransactionUsingID(TID)));
+            return api.serveJson(ts.getJSON(ts.getUsingID(TID)));
         }
     }
 }
