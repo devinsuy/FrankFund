@@ -7,6 +7,7 @@ namespace DataAccessLayer
     {
         private readonly DataHelper dataHelper;
         private readonly string tableID;
+
         public ReceiptDataAccess()
         {
             this.dataHelper = new DataHelper();
@@ -22,51 +23,24 @@ namespace DataAccessLayer
         // TODO: Use DataHelper.query() to WRITE a newly created string serialized object into BigQuery
         public void write(string[] serializedObj)
         {
-            _ = $"INSERT INTO {this.tableID} VALUES ("
-                + serializedObj[0] + "," //receipt ID (RID)
-                + serializedObj[1] + "," //transaction ID (TID)
-                + $"\"{serializedObj[2]}\"," //imageURL
-                + $"\"{serializedObj[3]}\"," //purchaseDate 
-                + $"\"{serializedObj[4]}\")"; //Notes 
+
 
         }
-        /* public void write(string[] serializedObj, bool newlyCreated, bool changed)
-        {
-            string query;
 
-            if (!newlyCreated)
-            {
-                if (changed)
-                {
-                    query = $"DELETE FROM {this.tableID} WHERE RID={serializedObj[0]}";
-                    Console.WriteLine("Receipt with RID " + serializedObj[0] + "was changed, updating records");
-                    this.dataHelper.query(query);
-                }
-                else
-                    return;
-            }
-
-            query = $"INSERT INTO {this.tableID} VALUES ("
-                + serializedObj[0] + "," //receipt ID (RID)
-                + serializedObj[1] + "," //transaction ID (TID)
-                + $"\"{serializedObj[2]}\"," //imageURL
-                + $"\"{serializedObj[3]}\"," //purchaseDate 
-                + $"\"receipt[4]\")"; //Notes 
-
-        }
-        */
 
         // TODO: Use DataHelper.query() to DELETE an object from BigQuery given its PK identifier
-        public void delete(long accID)
+        //write a tester function! 
+        public void delete(long receiptID)
         {
-
+            string query = $"DELETE from {this.tableID} WHERE RID = {receiptID}";
         }
 
         /* TODO: Use DataHelper.query() to REWRITE an existing object that changed at runtime
            This method should call delete(long ID) followed by write(string[] serializedObj) */
-        public void update(string[] serializedAcc)
+        public void update(string[] serializedReceipt)
         {
-
+            delete(serializedReceipt[0]); //delete the receipt based on the receiptID
+            write(serializedReceipt);
         }
 
         public long getNextAvailID()
