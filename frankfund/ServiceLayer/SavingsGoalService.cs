@@ -5,7 +5,7 @@ using DataAccessLayer.Models;
 
 namespace ServiceLayer
 {
-    public class SavingsGoalService
+    public class SavingsGoalService: Service<SavingsGoal>
     {
         private readonly SavingsGoalDataAccess SavingsGoalDataAccess;
         public SavingsGoalService()
@@ -34,10 +34,10 @@ namespace ServiceLayer
             Params: The SGID of the Savings Goal to retrieve
             Returns: A reinstantiated Savings Goal matching the SGID or null if non existant
         */
-        public SavingsGoal GetSavingsGoalUsingID(long SGID)
+        public SavingsGoal getUsingID(long SGID)
         {
             SavingsGoal sGoal = null;
-            foreach(BigQueryRow row in this.SavingsGoalDataAccess.GetSavingsGoalUsingID(SGID)){
+            foreach(BigQueryRow row in this.SavingsGoalDataAccess.getUsingID(SGID)){
                 sGoal = new SavingsGoal (
                     (long)row["SGID"], (string)row["Name"], 
                     this.SavingsGoalDataAccess.castBQNumeric(row["GoalAmt"]), 
@@ -53,7 +53,7 @@ namespace ServiceLayer
         Serialize a SavingsGoal object into a String array
             Returns: A string array with each element in order of its column attribute (see SavingsGoal DB schema)
         */
-        public string[] serializeSavingsGoal(SavingsGoal s){
+        public string[] serialize(SavingsGoal s){
             return new string[] {
                 s.SGID.ToString(),
                 s.name,
@@ -76,7 +76,7 @@ namespace ServiceLayer
             {
                 return "{}";
             }
-            string[] serialized = serializeSavingsGoal(s);
+            string[] serialized = serialize(s);
             string jsonStr = "{"
                 + $"\"SGID\":{serialized[0]},"
                 + $"\"Name\":\"" + serialized[1] + "\","
@@ -95,15 +95,23 @@ namespace ServiceLayer
         Serialize a savings goal object and write it to the DB
             Params: s - Savings Goal runtime object
         */
-        public void writeSavingsGoal(SavingsGoal s){
-            this.SavingsGoalDataAccess.writeSavingsGoal(this.serializeSavingsGoal(s), s.newlyCreated, s.changed);
+        public void write(SavingsGoal s){
+            this.SavingsGoalDataAccess.writeSavingsGoal(this.serialize(s), s.newlyCreated, s.changed);
         }
+
+
+        // TODO
+        public void delete(long SGID)
+        {
+
+        }
+
 
         /* Wrapper method, query DB for next available SGID
             Returns: Next available SGID (1 + the maximum SGID currently in the DB)
         */
-        public long getNextAvailSGID(){
-            return SavingsGoalDataAccess.getNextAvailSGID();
+        public long getNextAvailID(){
+            return SavingsGoalDataAccess.getNextAvailID();
         }
 
     }

@@ -5,7 +5,7 @@ using DataAccessLayer.Models;
 
 namespace ServiceLayer
 {
-    public class TransactionService
+    public class TransactionService: Service<Transaction>
     {
         private readonly TransactionDataAccess TransactionDataAccess;
 
@@ -18,11 +18,11 @@ namespace ServiceLayer
             Params: The SGID of the Savings Goal to retrieve
             Returns: A reinstantiated Savings Goal matching the SGID or null if non existant
         */
-        public Transaction GetTransactionUsingID(long TID)
+        public Transaction getUsingID(long TID)
         {
             long SGID = -1;                     // Nullable attribute
             Transaction transaction = null;
-            foreach (BigQueryRow row in this.TransactionDataAccess.GetTransactionUsingID(TID))
+            foreach (BigQueryRow row in this.TransactionDataAccess.getUsingID(TID))
             {
                 if(row["SGID"] != null)
                 {
@@ -40,11 +40,17 @@ namespace ServiceLayer
             return transaction;
         }
 
+        // TODO
+        public void delete(long TID)
+        {
+
+        }
+
         /*
         Serialize a Transaction object into a String array
             Returns: A string array with each element in order of its column attribute (see Transaction DB schema)
         */
-        public string[] serializeTransaction(Transaction t)
+        public string[] serialize(Transaction t)
         {
             return new string[] {
                 t.getTID().ToString(),
@@ -70,7 +76,7 @@ namespace ServiceLayer
             {
                 return "{}";
             }
-            string[] serialized = serializeTransaction(t);
+            string[] serialized = serialize(t);
             string jsonStr = "{"
                 + $"\"TID\":{serialized[0]},"
                 + $"\"AccountID\":{serialized[1]},"
@@ -89,17 +95,19 @@ namespace ServiceLayer
         Serialize a Transaction object and write it to the DB
             Params: t - Transaction runtime object
         */
-        public void AddTransaction(Transaction t)
+        public void write(Transaction t)
         {
-            TransactionDataAccess.writeTransaction(this.serializeTransaction(t), t.newlyCreated, t.changed);
+            TransactionDataAccess.writeTransaction(this.serialize(t), t.newlyCreated, t.changed);
         }
 
         /* Wrapper method, query DB for next available TID
             Returns: Next available TID (1 + the maximum TID currently in the DB)
         */
-        public long getNextAvailTID()
+        public long getNextAvailID()
         {
             return TransactionDataAccess.getNextAvailID();
         }
+
+
     }
 }

@@ -3,7 +3,7 @@ using Google.Cloud.BigQuery.V2;
 
 namespace DataAccessLayer
 {
-    public class SavingsGoalDataAccess
+    public class SavingsGoalDataAccess: DataAccess
     {
         private readonly DataHelper dataHelper;
         private readonly string tableID;
@@ -14,7 +14,7 @@ namespace DataAccessLayer
             this.tableID = this.dataHelper.getQualifiedTableName("SavingsGoals");
         }
         
-        public BigQueryResults GetSavingsGoalUsingID(long ID)
+        public BigQueryResults getUsingID(long ID)
         {
             string query = $"SELECT * FROM {this.tableID} WHERE SGID = {ID}";        
             return this.dataHelper.query(query, parameters: null);
@@ -23,10 +23,15 @@ namespace DataAccessLayer
         /* Write a SavingsGoal to DB
             Params: String array of serialized newly created SavingsGoal object 
         */
-        public void writeSavingsGoal(string[] savingsGoal, bool newlyCreated, bool changed){
+
+        // TODO: Deprecated, please implement write(string[]) and update(string[])
+        public void writeSavingsGoal(string[] savingsGoal, bool newlyCreated, bool changed)
+        {
             string query;
-            if(!newlyCreated){                                                      // Only write to DB a pre-existing SavingsGoal if it changed during runtime
-                if(changed){                                                        // SavingsGoal was updated, delete old record before reinsertion
+            if (!newlyCreated)
+            {                                                      // Only write to DB a pre-existing SavingsGoal if it changed during runtime
+                if (changed)
+                {                                                        // SavingsGoal was updated, delete old record before reinsertion
                     query = $"DELETE FROM {this.tableID} WHERE SGID = {savingsGoal[0]}";
                     Console.WriteLine("SavingsGoal with SGID " + savingsGoal[0] + " was changed, updating records");
                     this.dataHelper.query(query);
@@ -47,8 +52,26 @@ namespace DataAccessLayer
             this.dataHelper.query(query);
         }
 
+        // TODO
+        public void write(string[] serializedGoal)
+        {
+
+        }
+
+        // TODO
+        public void delete(long SGID)
+        {
+
+        }
+
+        // TODO
+        public void update(string[] serializedGoal)
+        {
+
+        }
+
         // Query the DB and get the next available SGID
-        public long getNextAvailSGID(){
+        public long getNextAvailID(){
             return this.dataHelper.getNextAvailID(this.tableID);
         }
 

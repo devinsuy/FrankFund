@@ -6,7 +6,7 @@ using DataAccessLayer.Models;
 
 namespace DataAccessLayer
 {
-    public class UserAccountDataAccess
+    public class UserAccountDataAccess: DataAccess
     {
         private readonly DataHelper dataHelper;
         private readonly string tableID;
@@ -16,7 +16,7 @@ namespace DataAccessLayer
             this.tableID = dataHelper.getQualifiedTableName("Accounts");
         }
 
-        public BigQueryResults GetUserAccountUsingID(long ID)
+        public BigQueryResults getUsingID(long ID)
         {
             string query = $"SELECT * FROM {this.tableID} WHERE AccountID = {ID}";
             // Print out query to Sprint 2 testing purposes. To be deleted in future
@@ -35,7 +35,9 @@ namespace DataAccessLayer
         /* Write a SavingsGoal to DB
             Params: String array of serialized newly created SavingsGoal object 
         */
-        public void WriteUserAccount(UserAccount userAccount, bool newlyCreated, bool changed)
+
+        // TODO: Deprecated, please implement write(string[]) and update(string[])
+        public void writeUserAccount(UserAccount userAccount, bool newlyCreated, bool changed)
         {
             string query;
             if (!newlyCreated)
@@ -70,6 +72,24 @@ namespace DataAccessLayer
                 Console.WriteLine("Running Insert Query:\n---------------------\n" + query);
                 this.dataHelper.query(query);
             }
+        }
+
+        // TODO
+        public void write(string[] serializedAcc)
+        {
+
+        }
+
+        // TODO
+        public void update(string[] serializedAcc)
+        {
+
+        }
+
+        // TODO
+        public void delete(long accID)
+        {
+
         }
 
         public void DisableUserAccount(UserAccount userAccount)

@@ -6,7 +6,7 @@ using DataAccessLayer.Models;
 
 namespace DataAccessLayer
 {
-    public class TransactionDataAccess
+    public class TransactionDataAccess: DataAccess
     {
         private readonly DataHelper dataHelper;
         private readonly string tableID;
@@ -17,7 +17,7 @@ namespace DataAccessLayer
             this.tableID = this.dataHelper.getQualifiedTableName("Transactions");
         }
 
-        public BigQueryResults GetTransactionUsingID(long ID)
+        public BigQueryResults getUsingID(long ID)
         {
             string query = $"SELECT * from {this.tableID} WHERE TID = {ID}";
             return this.dataHelper.query(query, parameters: null);
@@ -25,6 +25,7 @@ namespace DataAccessLayer
 
         /* Write a Transaction to DB Params: String array of serialized newly created Transaction object */
 
+        // TODO: Deprecated, please implement write(string[]) and update(string[])
         public void writeTransaction(string[] transaction, bool newlyCreated, bool changed)
         {
             string query;
@@ -51,6 +52,24 @@ namespace DataAccessLayer
                 + $"\"{transaction[8]}\")";                    // Transaction Category
             Console.WriteLine("Running Insert Query:\n---------------------\n" + query);
             this.dataHelper.query(query);
+        }
+
+        // TODO
+        public void write(string[] serializedTransaction)
+        {
+
+        }
+
+        // TODO
+        public void update(string[] serializedTransaction)
+        {
+
+        }
+
+        // TODO
+        public void delete(long TID)
+        {
+
         }
 
         public long getNextAvailID()

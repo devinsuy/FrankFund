@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ServiceLayer
 {
-    public class UserAccountService
+    public class UserAccountService: Service<UserAccount>
     {
         private readonly UserAccountDataAccess UserAccountDataAccess;
         public UserAccountService()
@@ -41,7 +41,7 @@ namespace ServiceLayer
 
 
             // If all the checks are passed then writeUserAccount to database
-            this.UserAccountDataAccess.WriteUserAccount(userAccount, true, false);
+            this.UserAccountDataAccess.writeUserAccount(userAccount, true, false);
 
             return new OkObjectResult("Account successfully created");
 
@@ -53,7 +53,7 @@ namespace ServiceLayer
         {
 
             // Checking if user account exists
-            UserAccount retrievedUser = GetAccountUsingID(userAccount.AccountID);
+            UserAccount retrievedUser = getUsingID(userAccount.AccountID);
             if (retrievedUser == null) // Checks if user already exists
             {
                 Console.WriteLine("User Account does not exist.");
@@ -84,7 +84,7 @@ namespace ServiceLayer
 
                 // If all the checks are passed then writeUserAccount to database
                 // with newlyCreated bool = false and changed bool = true
-                this.UserAccountDataAccess.WriteUserAccount(userAccount, false, true);
+                this.UserAccountDataAccess.writeUserAccount(userAccount, false, true);
                 return new OkObjectResult("Account successfully updated");
             }
         }
@@ -122,10 +122,10 @@ namespace ServiceLayer
             return user;
         }
 
-        public UserAccount GetAccountUsingID(long ID)
+        public UserAccount getUsingID(long ID)
         {
             UserAccount user = null;
-            foreach (BigQueryRow row in this.UserAccountDataAccess.GetUserAccountUsingID(ID))
+            foreach (BigQueryRow row in this.UserAccountDataAccess.getUsingID(ID))
             {
                 user = new UserAccount(
                     (long)row["AccountID"], (string)row["AccountUsername"],
@@ -136,11 +136,24 @@ namespace ServiceLayer
             return user;
         }
 
+
+        // TODO
+        public void delete(long accID)
+        {
+
+        }
+
+        // TODO
+        public void write(UserAccount acc)
+        {
+
+        }
+
         /*
         Serialize a UserAccount object into a String array
             Returns: A string array with each element in order of its column attribute (see UserAccount DB schema)
         */
-        public string[] serializeUserAccount(UserAccount acc)
+        public string[] serialize(UserAccount acc)
         {
             return new string[] {
                 acc.AccountID.ToString(),
@@ -161,7 +174,7 @@ namespace ServiceLayer
             {
                 return "{}";
             }
-            string[] serialized = serializeUserAccount(s);
+            string[] serialized = serialize(s);
             string jsonStr = "{"
                 + $"\"AccountID\":{serialized[0]},"
                 + $"\"AccountUsername\":\"" + serialized[1] + "\","
