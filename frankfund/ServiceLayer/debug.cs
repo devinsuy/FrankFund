@@ -21,7 +21,7 @@ namespace ServiceLayer
             //string pathToCreds = "/Users/015909177/Desktop/Github Repos/FrankFund/Credentials/AuthKenny.json";
 
             //Rachel's Credentials 
-            string pathToCreds = "C:/Data/Spring 2021/CECS 491B/Senior Project/Credentials/AuthRachel.json";
+            //string pathToCreds = "C:/Data/Spring 2021/CECS 491B/Senior Project/Credentials/AuthRachel.json";
 
             System.Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", pathToCreds);
         }
@@ -186,6 +186,29 @@ namespace ServiceLayer
             return sampleTransaction;
         }
 
+        static Receipt testAddReceipt()
+        {
+            Console.WriteLine("\n-------------------- Test: Creating A New Receipt, Write -------------------------");
+            // Query DB for the next avail ID
+            ReceiptService rs = new ReceiptService();
+            long RID = rs.getNextAvailID();
+            Console.WriteLine("Next available TID that can be assigned: " + RID + "\n");
+
+            //Create a new Receipt 
+            long tempTransactionID = 1;
+            long tempReceiptID = 10;
+            string tempStringURL = "hellothisisatest.png";
+
+            Receipt sampleReceipt = new Receipt(tempReceiptID, tempTransactionID, tempStringURL, new DateTime(2021, 03, 16, 0, 0, 0), "short note");
+
+            //Print summary of Receipt that was just created
+            Console.WriteLine("Receipt Summary: \n-----------------------");
+            Console.WriteLine();
+            rs.write(sampleReceipt);
+
+            return sampleReceipt;
+        }
+
 
 
         static void Main(string[] args){
@@ -219,6 +242,9 @@ namespace ServiceLayer
 
             // ---------------------------------------------- Test: Transaction Create ---------------------------------------------------------
             Transaction sampleTrans1 = testAddTransaction();
+
+            // ---------------------------------------------- Test: Receipt Create ---------------------------------------------------------
+            testAddReceipt();
         }
 
     }
