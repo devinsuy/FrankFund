@@ -4,7 +4,7 @@ using Google.Cloud.BigQuery.V2;
 namespace DataAccessLayer
 
 {
-    public interface DataAccess<T>
+    public interface DataAccess
     {
 
         // ---------------------------------------- Utility Methods ----------------------------------------
@@ -31,7 +31,7 @@ namespace DataAccessLayer
 
         /* Use DataHelper.query() to REWRITE an existing object that changed at runtime
            This method should call delete(long ID) followed by write(string[] serializedObj) */
-        public void rewrite(string[] serializedObj);
+        public void update(string[] serializedObj);
 
 
 
