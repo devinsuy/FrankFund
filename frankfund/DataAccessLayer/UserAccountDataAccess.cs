@@ -16,11 +16,11 @@ namespace DataAccessLayer
             this.tableID = dataHelper.getQualifiedTableName("Accounts");
         }
 
-        public BigQueryResults GetUserAccountUsingID(int ID)
+        public BigQueryResults GetUserAccountUsingID(long ID)
         {
             string query = $"SELECT * FROM {this.tableID} WHERE AccountID = {ID}";
             // Print out query to Sprint 2 testing purposes. To be deleted in future
-            Console.WriteLine("Query performed: " + query);
+            //Console.WriteLine("Query performed: " + query);
             return this.dataHelper.query(query, parameters: null);
         }
 
@@ -28,7 +28,7 @@ namespace DataAccessLayer
         {
             string query = $"SELECT * FROM {this.tableID} WHERE AccountUsername = '{username}'";
             // Print out query to Sprint 2 testing purposes. To be deleted in future
-            Console.WriteLine("Query performed: " + query);
+            //Console.WriteLine("Query performed: " + query);
             return this.dataHelper.query(query, parameters: null);
         }
 
@@ -58,16 +58,18 @@ namespace DataAccessLayer
                 else                                                                // SavingsGoal has not changed, nothing to write
                     return;
             }
-            query = $"INSERT INTO {this.tableID} VALUES ("
-                + getNextAvailID().ToString() + ", '"               // AccountID
-                + userAccount.AccountUsername.ToString() + "' ,'"   // AccountUsername
-                + userAccount.EmailAddress.ToString() + "' ,'"      // Email Address
-                + userAccount.PasswordHash.ToString() + "' ,"       // PasswordHash
-                                                                    // Need to add PasswordSalt
-                + "null" + ","                                           // FacebookID
-                + "null" + ")";                                          // GoogleID
-            Console.WriteLine("Running Insert Query:\n---------------------\n" + query);
-            this.dataHelper.query(query);
+            else {
+                query = $"INSERT INTO {this.tableID} VALUES ("
+                    + getNextAvailID().ToString() + ", '"               // AccountID
+                    + userAccount.AccountUsername.ToString() + "' ,'"   // AccountUsername
+                    + userAccount.EmailAddress.ToString() + "' ,'"      // Email Address
+                    + userAccount.PasswordHash.ToString() + "' ,"       // PasswordHash
+                                                                        // Need to add PasswordSalt
+                    + "null" + ","                                           // FacebookID
+                    + "null" + ")";                                          // GoogleID
+                Console.WriteLine("Running Insert Query:\n---------------------\n" + query);
+                this.dataHelper.query(query);
+            }
         }
 
         public void DisableUserAccount(UserAccount userAccount)

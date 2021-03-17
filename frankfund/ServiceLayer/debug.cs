@@ -140,20 +140,23 @@ namespace ServiceLayer
             Console.WriteLine("Username: " + uaService.GetAccountUsingID(5).AccountUsername);
 
             Console.WriteLine("\n4. Testing DeleteUserAccount function | Prints out AccountUsername of deleted account");
-            UserAccount testAccount2 = new UserAccount(5, "test", "test@gmail.com", "password", null);
             Console.WriteLine("Disable Username: " + uaService.GetAccountUsingID(5).AccountUsername);
-            uaService.DisableUserAccount(testAccount2, true);
+            uaService.DisableUserAccount(testAccount, true);
 
             Console.WriteLine("\n5. Testing CreateUserAccount function - New | Prints out AccountUsername of made account");
-            UserAccount testAccount3 = new UserAccount(6, "test2", "test2@gmail.com", "password", null);
-            uaService.CreateUserAccount(testAccount3);
-            Console.WriteLine("Username: " + uaService.GetAccountUsingID(6).AccountUsername);
+            UserAccount testAccount2 = new UserAccount("test2", "test2@gmail.com", "password", null);
+            uaService.CreateUserAccount(testAccount2);
+            Console.WriteLine("Username: " + uaService.GetAccountUsingUsername("test2").AccountUsername);
 
             Console.WriteLine("\n6. Testing UpdateUserAccount function | Prints out new AccountUsername of account");
-            Console.WriteLine("Old Username: " + uaService.GetAccountUsingID(6).AccountUsername);
-            UserAccount testAccount4 = new UserAccount(6, "testing", "test2@gmail.com", "password", null);
-            uaService.UpdateUserAccount(testAccount4);
-            Console.WriteLine("New Username: " + uaService.GetAccountUsingID(6).AccountUsername);
+            Console.WriteLine("Old Username: " + uaService.GetAccountUsingUsername("test2").AccountUsername);
+            UserAccount testAccount3 = new UserAccount(5, "testing", "test2@gmail.com", "password", null);
+            uaService.UpdateUserAccount(testAccount3);
+            Console.WriteLine("New Username: " + uaService.GetAccountUsingUsername("testing").AccountUsername);
+
+            Console.WriteLine("\n7. Testing DeleteUserAccount function | Prints out AccountUsername of deleted account");
+            Console.WriteLine("Disable Username: " + uaService.GetAccountUsingUsername("testing").AccountUsername);
+            uaService.DisableUserAccount(testAccount3, true);
         }
         
         static Transaction testAddTransaction()
@@ -184,27 +187,27 @@ namespace ServiceLayer
 
         static void Main(string[] args){
             // ---------------------------------------------- GCP Auth -------------------------------------------------------------------------
-            //authenticateGCP();
+            authenticateGCP();
 
 
             //----------------------------------------------- Test: SG Create By End Date, Write------------------------------------------------
-            //SavingsGoal sampleOne = testSGCreateByDate();
+            SavingsGoal sampleOne = testSGCreateByDate();
 
 
             // ---------------------------------------------- Test: SG Create By Contribution Amount, Write ------------------------------------
-            //SavingsGoal sampleTwo = testSGCreateByContrAmt();
+            SavingsGoal sampleTwo = testSGCreateByContrAmt();
 
 
             // ---------------------------------------------- Test: Display String Serialization -----------------------------------------------
-            //testSGShowSerialize(sampleOne);
+            testSGShowSerialize(sampleOne);
 
 
             // ---------------------------------------------- Test: Display JSON Representation ------------------------------------------------
-            //testSGShowJSON(sampleTwo);
+            testSGShowJSON(sampleTwo);
 
 
             // ---------------------------------------------- Sample Test of SG Read, Modify, Rewrite ------------------------------------------
-            //testSGReadModifyRewrite(SGID: 1);
+            testSGReadModifyRewrite(SGID: 1);
 
 
             // ---------------------------------------------- Test: Creating User Account ------------------------------------------------------
@@ -212,7 +215,7 @@ namespace ServiceLayer
 
 
             // ---------------------------------------------- Test: Transaction Create ---------------------------------------------------------
-            //Transaction sampleTrans1 = testAddTransaction();
+            Transaction sampleTrans1 = testAddTransaction();
         }
 
     }

@@ -48,15 +48,16 @@ namespace ServiceLayer
 
         }
 
+        // userAccount needs to include the account ID
         public ActionResult UpdateUserAccount(UserAccount userAccount)
         {
 
             // Checking if user account exists
-            var retrievedUser = GetAccountUsingUsername(userAccount.AccountUsername);
+            UserAccount retrievedUser = GetAccountUsingID(userAccount.AccountID);
             if (retrievedUser == null) // Checks if user already exists
             {
                 Console.WriteLine("User Account does not exist.");
-                return new OkObjectResult("UUser Account does not exist");
+                return new OkObjectResult("User Account does not exist");
             }
             else
             {
@@ -88,6 +89,7 @@ namespace ServiceLayer
             }
         }
 
+        // userAccount needs to include the account ID
         public ActionResult DisableUserAccount(UserAccount userAccount, bool confirm)
         {
             UserAccount user = GetAccountUsingUsername(userAccount.AccountUsername);
@@ -120,7 +122,7 @@ namespace ServiceLayer
             return user;
         }
 
-        public UserAccount GetAccountUsingID(int ID)
+        public UserAccount GetAccountUsingID(long ID)
         {
             UserAccount user = null;
             foreach (BigQueryRow row in this.UserAccountDataAccess.GetUserAccountUsingID(ID))
