@@ -90,18 +90,27 @@ namespace ServiceLayer
             //Console.WriteLine($"\nSavingsGoal JSON Representation:\n--------------------------------\n{jsonStr}\n");
             return jsonStr;
         }
-        
+
         /*
         Serialize a savings goal object and write it to the DB
             Params: s - Savings Goal runtime object
         */
+        // TODO: Use DataHelper.query() to WRITE a newly created string serialized object into BigQuery
+
         public void write(SavingsGoal s){
             this.SavingsGoalDataAccess.writeSavingsGoal(this.serialize(s), s.newlyCreated, s.changed);
         }
 
 
-        // TODO
+        // TODO: Use DataHelper.query() to DELETE an object from BigQuery given its PK identifier
         public void delete(long SGID)
+        {
+
+        }
+
+        /* TODO: Use DataHelper.query() to REWRITE an existing object that changed at runtime
+           This method should call delete(long ID) followed by write(string[] serializedObj) */
+        public void update(SavingsGoal s)
         {
 
         }
