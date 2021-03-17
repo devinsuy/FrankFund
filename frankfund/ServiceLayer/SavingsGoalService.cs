@@ -92,27 +92,29 @@ namespace ServiceLayer
         }
 
         /*
-        Serialize a savings goal object and write it to the DB
+        Serialize a NEW Savings Goal object and write it to BigQuery for the first time
             Params: s - Savings Goal runtime object
         */
-        // TODO: Use DataHelper.query() to WRITE a newly created string serialized object into BigQuery
-
         public void write(SavingsGoal s){
-            this.SavingsGoalDataAccess.writeSavingsGoal(this.serialize(s), s.newlyCreated, s.changed);
+            string[] serializedGoal = serialize(s);
+            SavingsGoalDataAccess.write(serializedGoal);
         }
 
 
-        // TODO: Use DataHelper.query() to DELETE an object from BigQuery given its PK identifier
+        // Delete a SavingsGoal with the given PK identifier
         public void delete(long SGID)
         {
-
+            SavingsGoalDataAccess.delete(SGID);
         }
 
-        /* TODO: Use DataHelper.query() to REWRITE an existing object that changed at runtime
-           This method should call delete(long ID) followed by write(string[] serializedObj) */
+        // Update an EXISTING SavingsGoal only if it changed during runtime
         public void update(SavingsGoal s)
         {
-
+            if (s.changed)
+            {
+                string[] serializedGoal = serialize(s);
+                SavingsGoalDataAccess.update(serializedGoal);
+            }
         }
 
 

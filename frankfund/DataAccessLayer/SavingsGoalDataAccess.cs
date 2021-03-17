@@ -20,54 +20,39 @@ namespace DataAccessLayer
             return this.dataHelper.query(query, parameters: null);
         }
 
-        /* Write a SavingsGoal to DB
-            Params: String array of serialized newly created SavingsGoal object 
-        */
 
-        // TODO: Deprecated, please implement write(string[]) and update(string[])
-        public void writeSavingsGoal(string[] savingsGoal, bool newlyCreated, bool changed)
+        // Write a savings goal to BigQuery
+        public void write(string[] serializedGoal)
         {
-            string query;
-            if (!newlyCreated)
-            {                                                      // Only write to DB a pre-existing SavingsGoal if it changed during runtime
-                if (changed)
-                {                                                        // SavingsGoal was updated, delete old record before reinsertion
-                    query = $"DELETE FROM {this.tableID} WHERE SGID = {savingsGoal[0]}";
-                    Console.WriteLine("SavingsGoal with SGID " + savingsGoal[0] + " was changed, updating records");
-                    this.dataHelper.query(query);
-                }
-                else                                                                // SavingsGoal has not changed, nothing to write
-                    return;
-            }
-            query = $"INSERT INTO {this.tableID} VALUES ("
-                + savingsGoal[0] + ","                                              // SGID
-                + $"\"{savingsGoal[1]}\","                                          // Name
-                + savingsGoal[2] + ","                                              // GoalAmt
-                + savingsGoal[3] + ","                                              // ContrAmt
-                + $"\"{savingsGoal[4]}\","                                          // Period
-                + savingsGoal[5] + ","                                              // NumPeriods
-                + $"\"{savingsGoal[6]}\","                                          // StartDate
-                + $"\"{savingsGoal[7]}\")";                                         // EndDate
+            string query = $"INSERT INTO {this.tableID} VALUES ("
+                + serializedGoal[0] + ","                                              // SGID
+                + $"\"{serializedGoal[1]}\","                                          // Name
+                + serializedGoal[2] + ","                                              // GoalAmt
+                + serializedGoal[3] + ","                                              // ContrAmt
+                + $"\"{serializedGoal[4]}\","                                          // Period
+                + serializedGoal[5] + ","                                              // NumPeriods
+                + $"\"{serializedGoal[6]}\","                                          // StartDate
+                + $"\"{serializedGoal[7]}\")";                                         // EndDate
             Console.WriteLine("Running Insert Query:\n---------------------\n" + query);
+            this.dataHelper.query(query);
+
+        }
+
+        // Delete an existing record of a savings goal with the given PK identifier
+        public void delete(long SGID)
+        {
+            string query = $"DELETE FROM {this.tableID} WHERE SGID = {SGID}";
             this.dataHelper.query(query);
         }
 
-        // TODO
-        public void write(string[] serializedGoal)
-        {
-
-        }
-
-        // TODO
-        public void delete(long SGID)
-        {
-
-        }
-
-        // TODO
+        // Write a Savings Goals changes to BigQuery
         public void update(string[] serializedGoal)
         {
+            // Delete the existing record of the savings goal
+            delete(long.Parse(serializedGoal[0]));
 
+            // Insert the new version of the savings goal
+            write(serializedGoal);
         }
 
         // Query the DB and get the next available SGID
