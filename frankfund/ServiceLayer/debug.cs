@@ -15,10 +15,13 @@ namespace ServiceLayer
             //string pathToCreds = "/Users/devin/Documents/GitHub/FrankFund/Credentials/AuthDevin.json";
 
             // Autumn's Credentials
-            string pathToCreds = "/Users/steve/OneDrive/Documents/GitHub/FrankFund/Credentials/AuthAutumn.json";
+            //string pathToCreds = "/Users/steve/OneDrive/Documents/GitHub/FrankFund/Credentials/AuthAutumn.json";
 
             // Kenneth's Credentials
             //string pathToCreds = "/Users/015909177/Desktop/Github Repos/FrankFund/Credentials/AuthKenny.json";
+
+            //Rachel's Credentials 
+            string pathToCreds = "C:/Data/Spring 2021/CECS 491B/Senior Project/Credentials/AuthRachel.json";
 
             System.Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", pathToCreds);
         }
@@ -29,7 +32,7 @@ namespace ServiceLayer
 
             // Query DB for the next avail ID
             SavingsGoalService sgService = new SavingsGoalService();
-            long SGID = sgService.getNextAvailSGID();
+            long SGID = sgService.getNextAvailID();
             Console.WriteLine("Next available SGID that can be assigned: " + SGID + "\n");
 
             // Create a new Savings Goal for the amount of $150 ending on December 20th, dynamically calculate payments
@@ -41,7 +44,7 @@ namespace ServiceLayer
             Console.WriteLine(sampleGoal);
 
             // Write SavingsGoal object to DB
-            sgService.writeSavingsGoal(sampleGoal);
+            sgService.write(sampleGoal);
 
             return sampleGoal;
         }
@@ -52,7 +55,7 @@ namespace ServiceLayer
 
             // Query DB for the next avail ID
             SavingsGoalService sgService = new SavingsGoalService();
-            long SGID = sgService.getNextAvailSGID();
+            long SGID = sgService.getNextAvailID();
             Console.WriteLine("Next available SGID that can be assigned: " + SGID + "\n");
 
             // Create a new Savings Goal for the amount of $300 dynamically calculate end date
@@ -64,7 +67,7 @@ namespace ServiceLayer
             Console.WriteLine(sampleGoal);
 
             // Write SavingsGoal object to DB
-            sgService.writeSavingsGoal(sampleGoal);
+            sgService.write(sampleGoal);
 
             return sampleGoal;
         }
@@ -75,7 +78,7 @@ namespace ServiceLayer
 
             // Serialize the runtime object to String[]
             SavingsGoalService sgService = new SavingsGoalService();
-            string[] serialized = sgService.serializeSavingsGoal(sg);
+            string[] serialized = sgService.serialize(sg);
             Console.WriteLine("\nSavingsGoal Serialized:\n-----------------------\n");
 
             // Print the serialized SavingsGoal
@@ -100,7 +103,7 @@ namespace ServiceLayer
 
             // Reinstantiate a SavingsGoal from DB records
             SavingsGoalService sgService = new SavingsGoalService();
-            SavingsGoal existingGoal = sgService.GetSavingsGoalUsingID(SGID);
+            SavingsGoal existingGoal = sgService.getUsingID(SGID);
 
             // Print summary of goal that was just reinstantiated
             Console.WriteLine("Savings Goal Summary:\n---------------------");
@@ -117,7 +120,7 @@ namespace ServiceLayer
             Console.WriteLine(existingGoal + "\n");
 
             // Rewrite the modified goal to DB
-            sgService.writeSavingsGoal(existingGoal);
+            sgService.write(existingGoal);
         }
 
 
@@ -131,16 +134,16 @@ namespace ServiceLayer
             Console.WriteLine("Username: " + existingAccount);
 
             Console.WriteLine("\n2. Testing GetAccountUsingID function | Prints out AccountUsername found");
-            String existingAccount2 = uaService.GetAccountUsingID(2).AccountUsername;
+            String existingAccount2 = uaService.getUsingID(2).AccountUsername;
             Console.WriteLine("Username: " + existingAccount2);
 
             Console.WriteLine("\n3. Testing CreateUserAccount function | Prints out AccountUsername of made account");
             UserAccount testAccount = new UserAccount(5, "test", "test@gmail.com", "password", null);
             uaService.CreateUserAccount(testAccount);
-            Console.WriteLine("Username: " + uaService.GetAccountUsingID(5).AccountUsername);
+            Console.WriteLine("Username: " + uaService.getUsingID(5).AccountUsername);
 
             Console.WriteLine("\n4. Testing DeleteUserAccount function | Prints out AccountUsername of deleted account");
-            Console.WriteLine("Disable Username: " + uaService.GetAccountUsingID(5).AccountUsername);
+            Console.WriteLine("Disable Username: " + uaService.getUsingID(5).AccountUsername);
             uaService.DisableUserAccount(testAccount, true);
 
             Console.WriteLine("\n5. Testing CreateUserAccount function - New | Prints out AccountUsername of made account");
@@ -164,7 +167,7 @@ namespace ServiceLayer
             Console.WriteLine("\n-------------------- Test: Creating A New Transaction, Write -------------------------");
             // Query DB for the next avail ID
             TransactionService ts = new TransactionService();
-            long TID = ts.getNextAvailTID();
+            long TID = ts.getNextAvailID();
             Console.WriteLine("Next available TID that can be assigned: " + TID + "\n");
 
             // Create a new Transaction
