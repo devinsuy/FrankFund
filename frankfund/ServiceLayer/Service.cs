@@ -23,11 +23,16 @@ namespace ServiceLayer
         public T getUsingID(long ID);
 
 
-        /* Use DataAccess Layer to write or rewrite a object into BigQuery
-               (method should have a way of checking whether the class object changed during runtime
-               to avoid redundant writing. Use a changed boolean to implement this)
-           Should not call DataAccess write() if did not change */
+        // Use DataAccess Layer to write a NEWLY CREATED object into BigQuery
         public void write(T obj);
+
+
+        
+        /* Write a modified object's changed to BigQuery via DataAccess Layer 
+           (method should have a way of checking whether the class object changed during runtime
+           to avoid redundant writing. Use a changed boolean to implement this)
+        Should not call DataAccess update() if did not change */
+        public void update(T obj);
 
 
         // Use DataAccess Layer to delete a object from BigQuery given its primary key identifier

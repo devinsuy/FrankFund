@@ -74,20 +74,22 @@ namespace DataAccessLayer
             }
         }
 
-        // TODO
+        // TODO: Use DataHelper.query() to WRITE a newly created string serialized object into BigQuery
         public void write(string[] serializedAcc)
         {
 
         }
 
-        // TODO
-        public void update(string[] serializedAcc)
+
+        // TODO: Use DataHelper.query() to DELETE an object from BigQuery given its PK identifier
+        public void delete(long accID)
         {
 
         }
 
-        // TODO
-        public void delete(long accID)
+        /* TODO: Use DataHelper.query() to REWRITE an existing object that changed at runtime
+           This method should call delete(long ID) followed by write(string[] serializedObj) */
+        public void update(string[] serializedAcc)
         {
 
         }

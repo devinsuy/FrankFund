@@ -137,14 +137,24 @@ namespace ServiceLayer
         }
 
 
-        // TODO
+        // TODO: Use DataAccess Layer to delete via PK Identifier
         public void delete(long accID)
         {
 
         }
 
-        // TODO
+        // TODO: Use DataAccess Layer to write a NEWLY CREATED object into BigQuery
         public void write(UserAccount acc)
+        {
+
+        }
+
+        /* TODO:
+           Write a modified object's changed to BigQuery via DataAccess Layer 
+               (method should have a way of checking whether the class object changed during runtime
+               to avoid redundant writing. Use a changed boolean to implement this)
+           Should not call DataAccess update() if did not change */
+        public void update(UserAccount acc)
         {
 
         }

@@ -40,11 +40,6 @@ namespace ServiceLayer
             return transaction;
         }
 
-        // TODO
-        public void delete(long TID)
-        {
-
-        }
 
         /*
         Serialize a Transaction object into a String array
@@ -91,14 +86,36 @@ namespace ServiceLayer
             return jsonStr;
         }
 
-        /*
-        Serialize a Transaction object and write it to the DB
-            Params: t - Transaction runtime object
-        */
-        public void write(Transaction t)
+
+        // TODO: Deprecated, please implement write(Transaction) and update(Transaction)
+        public void AddTransaction(Transaction t)
         {
             TransactionDataAccess.writeTransaction(this.serialize(t), t.newlyCreated, t.changed);
         }
+
+
+        // TODO: Use DataAccess Layer to delete via PK Identifier
+        public void delete(long TID)
+        {
+
+        }
+
+        // TODO: Use DataAccess Layer to write a NEWLY CREATED object into BigQuery
+        public void write(Transaction t)
+        {
+
+        }
+
+        /* TODO:
+           Write a modified object's changed to BigQuery via DataAccess Layer 
+               (method should have a way of checking whether the class object changed during runtime
+               to avoid redundant writing. Use a changed boolean to implement this)
+           Should not call DataAccess update() if did not change */
+        public void update(Transaction t)
+        {
+
+        }
+
 
         /* Wrapper method, query DB for next available TID
             Returns: Next available TID (1 + the maximum TID currently in the DB)
