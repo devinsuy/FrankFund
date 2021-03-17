@@ -32,7 +32,7 @@ namespace DataAccessLayer.Models
         //Getter methods
         public long getTID()
         {
-            return TID;
+            return Transaction.getTID();
         }
 
         public long getReceiptID()
@@ -47,7 +47,7 @@ namespace DataAccessLayer.Models
 
         public DateTime getPurchaseDate()
         {
-            return PurchaseDate;
+            return Transaction.getDateTransactionMade();
         }
 
         public string getNotes()
