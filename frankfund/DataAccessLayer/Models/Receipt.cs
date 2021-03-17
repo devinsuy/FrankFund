@@ -77,5 +77,16 @@ namespace DataAccessLayer.Models
             changed = true;
             //This still needs to be figured out in the controller?? 
         }
+
+        //Override ToString()
+        public override string ToString()
+        {
+            return "Receipt with RID #" + getReceiptID()
+                + $"\n Transaction ID: \"{getTID()}\""
+                + $"\n Image URL: \"{getImageURL()}\""
+                + $"\n Purchase made on: \" {getPurchaseDate().ToString("yyyy-MM-dd")}"
+                + $"\n Notes: \" {getNotes()}";
+        }
     }
 }
+
