@@ -12,7 +12,7 @@ namespace ServiceLayer
         static void authenticateGCP()
         {
             // Devin's Credentials
-            //string pathToCreds = "/Users/devin/Documents/GitHub/FrankFund/Credentials/AuthDevin.json";
+            string pathToCreds = "/Users/devin/Documents/GitHub/FrankFund/Credentials/AuthDevin.json";
 
             // Autumn's Credentials
             //string pathToCreds = "/Users/steve/OneDrive/Documents/GitHub/FrankFund/Credentials/AuthAutumn.json";
@@ -26,6 +26,7 @@ namespace ServiceLayer
             System.Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", pathToCreds);
         }
 
+        // --------------------------------------------------- Begin Savings Goal Testing ---------------------------------------------------
         static SavingsGoal testSGCreateByDate()
         {
             Console.WriteLine("\n-------------------- Test: Creating A New Savings Goal By End Date, Write --------------------");
@@ -124,6 +125,8 @@ namespace ServiceLayer
         }
 
 
+        // --------------------------------------------------- Begin User Account Testing ---------------------------------------------------
+
         static void testAccCreate()
         {
             UserAccountService uaService = new UserAccountService();
@@ -161,7 +164,10 @@ namespace ServiceLayer
             Console.WriteLine("Disable Username: " + uaService.GetAccountUsingUsername("testing").AccountUsername);
             uaService.DisableUserAccount(testAccount3, true);
         }
-        
+
+
+        // --------------------------------------------------- Begin Transaction Testing ---------------------------------------------------
+
         static Transaction testAddTransaction()
         {
             Console.WriteLine("\n-------------------- Test: Creating A New Transaction, Write -------------------------");
@@ -181,10 +187,33 @@ namespace ServiceLayer
             Console.WriteLine(sampleTransaction);
 
             // Write SavingsGoal object to DB
-            ts.AddTransaction(sampleTransaction);
+            ts.write(sampleTransaction);
 
             return sampleTransaction;
         }
+
+        static Transaction testReinstantiateTransaction(long TID)
+        {
+            TransactionService ts = new TransactionService();
+            return ts.getUsingID(TID);
+        }
+
+        static void testModifyRewriteTransaction(long TID)
+        {
+            TransactionService ts = new TransactionService();
+            Transaction t = ts.getUsingID(TID);
+            t.setAmount(t.getAmount() * 2);
+            ts.update(t);
+        }
+
+        static void testDeleteTransaction(long TID)
+        {
+            TransactionService ts = new TransactionService();
+            ts.delete(TID);
+        }
+
+
+        // --------------------------------------------------- Begin Receipt Testing ---------------------------------------------------
 
         static Receipt testAddReceipt()
         {
@@ -192,22 +221,61 @@ namespace ServiceLayer
             // Query DB for the next avail ID
             ReceiptService rs = new ReceiptService();
             long RID = rs.getNextAvailID();
-            Console.WriteLine("Next available TID that can be assigned: " + RID + "\n");
+            Console.WriteLine("Next available RID that can be assigned: " + RID + "\n");
 
             //Create a new Receipt 
             long tempTransactionID = 1;
-            long tempReceiptID = 10;
             string tempStringURL = "hellothisisatest.png";
 
-            Receipt sampleReceipt = new Receipt(tempReceiptID, tempTransactionID, tempStringURL, new DateTime(2021, 03, 16, 0, 0, 0), "short note");
+            Receipt sampleReceipt = new Receipt(RID, tempTransactionID, tempStringURL, new DateTime(2021, 03, 16, 0, 0, 0), "short note", newlyCreated: true);
 
             //Print summary of Receipt that was just created
             Console.WriteLine("Receipt Summary: \n-----------------------");
-            Console.WriteLine();
+            Console.WriteLine(sampleReceipt);
             rs.write(sampleReceipt);
 
             return sampleReceipt;
         }
+
+        static void testSerializeReceipt(Receipt r)
+        {
+            ReceiptService rs = new ReceiptService();
+            Console.WriteLine();
+            foreach(string s in rs.serialize(r)) {
+                Console.WriteLine(s);
+            }
+        }
+
+        static void testReceiptJSON(Receipt r)
+        {
+            ReceiptService rs = new ReceiptService();
+            Console.WriteLine("\n" + rs.getJSON(r));       
+        }
+
+        static Receipt testReinstantiateReceipt(long RID)
+        {
+            ReceiptService rs = new ReceiptService();
+            Receipt r = rs.getUsingID(10);
+            return r;
+        }
+
+        static void testModifyRewriteReceipt(long RID) {
+            ReceiptService rs = new ReceiptService();
+            Receipt r = rs.getUsingID(10);
+            Console.WriteLine(r);
+            r.setNote("short note 3");
+            Console.WriteLine("\nAfter change: \n" + r);
+            rs.update(r);
+        }
+
+        static void testDeleteReceipt(long RID)
+        {
+            ReceiptService rs = new ReceiptService();
+            rs.delete(RID);
+        }
+
+
+        // --------------------------------------------------- End Testing ---------------------------------------------------
 
 
 
@@ -217,34 +285,44 @@ namespace ServiceLayer
 
 
             //----------------------------------------------- Test: SG Create By End Date, Write------------------------------------------------
-            SavingsGoal sampleOne = testSGCreateByDate();
+            //SavingsGoal sampleOne = testSGCreateByDate();
 
 
             // ---------------------------------------------- Test: SG Create By Contribution Amount, Write ------------------------------------
-            SavingsGoal sampleTwo = testSGCreateByContrAmt();
+            //SavingsGoal sampleTwo = testSGCreateByContrAmt();
 
 
             // ---------------------------------------------- Test: Display String Serialization -----------------------------------------------
-            testSGShowSerialize(sampleOne);
+            //testSGShowSerialize(sampleOne);
 
 
             // ---------------------------------------------- Test: Display JSON Representation ------------------------------------------------
-            testSGShowJSON(sampleTwo);
+            //testSGShowJSON(sampleTwo);
 
 
             // ---------------------------------------------- Sample Test of SG Read, Modify, Rewrite ------------------------------------------
-            testSGReadModifyRewrite(SGID: 1);
+            //testSGReadModifyRewrite(SGID: 1);
 
 
             // ---------------------------------------------- Test: Creating User Account ------------------------------------------------------
-            testAccCreate();
+            //testAccCreate();
 
 
             // ---------------------------------------------- Test: Transaction Create ---------------------------------------------------------
-            Transaction sampleTrans1 = testAddTransaction();
+            //Transaction sampleTrans1 = testAddTransaction();
+            //Console.WriteLine(testReinstantiateTransaction(TID: 10));
+            //testModifyRewriteTransaction(TID: 25);
+            testDeleteTransaction(TID: 42);
+
+
 
             // ---------------------------------------------- Test: Receipt Create ---------------------------------------------------------
-            testAddReceipt();
+            //Receipt r = testAddReceipt();
+            //testSerializeReceipt(r);
+            //testReceiptJSON(r);
+            //Console.WriteLine(testReinstantiateReceipt(RID: 10));
+            //testModifyRewriteReceipt(RID: 10);
+            //testDeleteReceipt(RID: 11);
         }
 
     }

@@ -33,7 +33,7 @@ namespace DataAccessLayer
                 + serializedGoal[5] + ","                                              // NumPeriods
                 + $"\"{serializedGoal[6]}\","                                          // StartDate
                 + $"\"{serializedGoal[7]}\")";                                         // EndDate
-            Console.WriteLine("Running Insert Query:\n---------------------\n" + query);
+            //Console.WriteLine("Running Insert Query:\n---------------------\n" + query);
             this.dataHelper.query(query);
 
         }

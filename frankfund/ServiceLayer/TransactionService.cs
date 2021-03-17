@@ -101,7 +101,7 @@ namespace ServiceLayer
         }
 
 
-        // Serialize and update and EXISTING Transaction in BigQuery only if it CHANGED during runtime
+        // Serialize and update an EXISTING Transaction in BigQuery only if it CHANGED during runtime
         public void update(Transaction t)
         {
             if (t.changed)

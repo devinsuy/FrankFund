@@ -20,26 +20,35 @@ namespace DataAccessLayer
             return this.dataHelper.query(query, parameters: null);
         }
 
-        // TODO: Use DataHelper.query() to WRITE a newly created string serialized object into BigQuery
-        public void write(string[] serializedObj)
+        // Write a serialized receipt to BigQuery
+        public void write(string[] serializedReceipt)
         {
-
-
+            string query = $"INSERT INTO {this.tableID} VALUES ("
+                + serializedReceipt[0] + ","                                              // RID
+                + serializedReceipt[1] + ","                                              // TID
+                + $"\"{serializedReceipt[2]}\","                                          // ImgURL
+                + $"\"{serializedReceipt[3]}\","                                          // PurchaseDate
+                + $"\"{serializedReceipt[4]}\")";                                         // Notes
+            Console.WriteLine("Running Insert Query:\n---------------------\n" + query);
+            this.dataHelper.query(query);
         }
 
 
-        // TODO: Use DataHelper.query() to DELETE an object from BigQuery given its PK identifier
-        //write a tester function! 
+        // Delete a receipt with the given PK identifier
         public void delete(long receiptID)
         {
             string query = $"DELETE from {this.tableID} WHERE RID = {receiptID}";
+            this.dataHelper.query(query);
         }
 
-        /* TODO: Use DataHelper.query() to REWRITE an existing object that changed at runtime
-           This method should call delete(long ID) followed by write(string[] serializedObj) */
+
+        // Write Receipts changes to BigQuery
         public void update(string[] serializedReceipt)
         {
-            delete(serializedReceipt[0]); //delete the receipt based on the receiptID
+            // Delete the existing record of the Receipt
+            delete(long.Parse(serializedReceipt[0]));
+
+            // Inser the new version of the Receipt
             write(serializedReceipt);
         }
 

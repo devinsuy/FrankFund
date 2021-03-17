@@ -14,71 +14,54 @@ namespace ServiceLayer
             this.dataAccess = new ReceiptDataAccess();
         }
 
+        // Delete an existing Receipt
         public void delete(long accID)
         {
-
+            dataAccess.delete(accID);
         }
 
-        // TODO: Use DataAccess Layer to write a NEWLY CREATED object into BigQuery
-        public void write(Receipt acc)
+        // Write a NEWLY created receipt into BigQuery
+        public void write(Receipt r)
         {
-           
-           /* string query;
-
-            if (!newlyCreated)
-            {
-                if (changed)
-                {
-                    query = $"DELETE FROM {this.tableID} WHERE RID={serializedObj[0]}";
-                    Console.WriteLine("Receipt with RID " + serializedObj[0] + "was changed, updating records");
-                    this.dataHelper.query(query);
-                }
-                else
-                    return;
-            }
-
-            query = $"INSERT INTO {this.tableID} VALUES ("
-                + serializedObj[0] + "," //receipt ID (RID)
-                + serializedObj[1] + "," //transaction ID (TID)
-                + $"\"{serializedObj[2]}\"," //imageURL
-                + $"\"{serializedObj[3]}\"," //purchaseDate 
-                + $"\"receipt[4]\")"; //Notes */
+            string[] serializedReceipt = serialize(r);
+            dataAccess.write(serializedReceipt);
         }
 
-        // TODO: Query DB to reinstantate and return a receipt object with the given receipt id
-        public Receipt getUsingID(long ID)
+        // Retrieve and return Receipt object from BigQuery with the given PK identifer
+        public Receipt getUsingID(long RID)
         {
             string notes = ""; //nullable attribute
             Receipt receipt = null;
-            foreach (BigQueryRow row in this.ReceiptDataAccess.getUsingID(RID))
+            foreach (BigQueryRow row in this.dataAccess.getUsingID(RID))
             {
-                if(row["RID"] != null)
+                if(row["Notes"] != null)
                 {
-                    RID = (long)row["RID"];
+                    notes = (string)row["Notes"];
                 }
                 receipt = new Receipt(
-                    (long)row["RID"], long(row)["TID"],
+                    (long)row["RID"], (long)row["TID"],
                     (string)row["ImgURL"],
                     (DateTime)row["PurchaseDate"],
-                    notes
-                    );
+                    notes,
+                    newlyCreated: false
+                );
             }
             return receipt;
         }
 
-        /* TODO:
-           Write a modified object's changed to BigQuery via DataAccess Layer 
-               (method should have a way of checking whether the class object changed during runtime
-               to avoid redundant writing. Use a changed boolean to implement this)
-           Should not call DataAccess update() if did not change */
+        // Serialize and update an EXISTING Rceipt in BigQuery only if it CHANGED during runtime
         public void update(Receipt r)
         {
-
+            if (r.changed)
+            {
+                string[] serializedReceipt = serialize(r);
+                this.dataAccess.update(serializedReceipt);
+            }
         }
 
         /*
-        TODO: Convert a Receipt object into JSON format
-            Params: A UserAccount object to convert
+        Convert a Receipt object into JSON format
+            Params: A Receipt object to convert
             Returns: The JSON string representation of the object
         */
         public string getJSON(Receipt r)
@@ -90,16 +73,16 @@ namespace ServiceLayer
             
             string[] serialized = serialize(r);
             string jsonString = "{"
-                + $"\"RID\":{serialized[0]}," //receipt ID
-                + $"\"TID\":{serialized[1]}," //transaction ID (TID)
-                + $"\"imgURL\":{serialized[2]}\"," //imageURL
-                + $"\"purchaseDate\":{serialized[3]}\"," //purchaseDate 
-                + $"\"Notes\":{serialized[4]}\")" + "}"; //Notes
+                + $"\"RID\":{serialized[0]},"                       // receipt ID
+                + $"\"TID\":{serialized[1]},"                       // transaction ID (TID)
+                + $"\"ImgURL\":\"" + serialized[2] + "\","          // ImgURL
+                + $"\"PurchaseDate\":\"" + serialized[3] + "\","    // Purchase Date
+                + $"\"Notes\":\"" + serialized[4] + "\"}";          // Notes
             return jsonString;
         }
 
         /*
-        TODO: Serialize a Receipt object into a String array
+        Serialize a Receipt object into a String array
             Returns: A string array with each element in order of its column attribute (see Receipts DB schema)
         */
         public string[] serialize(Receipt r)
@@ -109,11 +92,12 @@ namespace ServiceLayer
                 r.getReceiptID().ToString(),
                 r.getTID().ToString(),
                 r.getImageURL(),
-                r.getPurchaseDate().ToString(),
+                r.getPurchaseDate().ToString("yyyy-MM-dd"),
                 r.getNotes()
             };
         }
 
+        // Get the next available Receipt ID
         public long getNextAvailID()
         {
             return dataAccess.getNextAvailID();

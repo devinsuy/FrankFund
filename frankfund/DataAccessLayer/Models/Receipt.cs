@@ -18,21 +18,20 @@ namespace DataAccessLayer.Models
         public bool newlyCreated;
 
         //Constructor 
-        public Receipt(long TID, long RID, string ImgURL, DateTime PurchaseDate, string Notes)
+        public Receipt(long RID, long TID, string ImgURL, DateTime PurchaseDate, string Notes, bool newlyCreated)
         {
-            this.TID = TID;
             this.RID = RID;
+            this.TID = TID;
             this.ImgURL = ImgURL;
             this.PurchaseDate = PurchaseDate;
             this.Notes = Notes;
-
-            newlyCreated = true;
+            this.newlyCreated = newlyCreated;
         }
 
         //Getter methods
         public long getTID()
         {
-            return Transaction.getTID();
+            return TID;
         }
 
         public long getReceiptID()
@@ -47,7 +46,7 @@ namespace DataAccessLayer.Models
 
         public DateTime getPurchaseDate()
         {
-            return Transaction.getDateTransactionMade();
+            return PurchaseDate;
         }
 
         public string getNotes()
@@ -84,8 +83,8 @@ namespace DataAccessLayer.Models
             return "Receipt with RID #" + getReceiptID()
                 + $"\n Transaction ID: \"{getTID()}\""
                 + $"\n Image URL: \"{getImageURL()}\""
-                + $"\n Purchase made on: \" {getPurchaseDate().ToString("yyyy-MM-dd")}"
-                + $"\n Notes: \" {getNotes()}";
+                + $"\n Purchase made on: \" {getPurchaseDate().ToString("yyyy-MM-dd")}\""
+                + $"\n Notes: \" {getNotes()}\"";
         }
     }
 }
