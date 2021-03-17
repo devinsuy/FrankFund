@@ -87,33 +87,28 @@ namespace ServiceLayer
         }
 
 
-        // TODO: Deprecated, please implement write(Transaction) and update(Transaction)
-        public void AddTransaction(Transaction t)
-        {
-            TransactionDataAccess.writeTransaction(this.serialize(t), t.newlyCreated, t.changed);
-        }
-
-
-        // TODO: Use DataAccess Layer to delete via PK Identifier
+        // Delete a transaction with the given PK Identifier
         public void delete(long TID)
         {
-
+            this.TransactionDataAccess.delete(TID);
         }
 
-        // TODO: Use DataAccess Layer to write a NEWLY CREATED object into BigQuery
+        // Serialize a NEWLY created Transaction runtime object and write it to BigQuery for the first time
         public void write(Transaction t)
         {
-
+            string[] serializedTransaction = serialize(t);
+            this.TransactionDataAccess.write(serializedTransaction);
         }
 
-        /* TODO:
-           Write a modified object's changed to BigQuery via DataAccess Layer 
-               (method should have a way of checking whether the class object changed during runtime
-               to avoid redundant writing. Use a changed boolean to implement this)
-           Should not call DataAccess update() if did not change */
+
+        // Serialize and update and EXISTING Transaction in BigQuery only if it CHANGED during runtime
         public void update(Transaction t)
         {
-
+            if (t.changed)
+            {
+                string[] serializedTransaction = serialize(t);
+                this.TransactionDataAccess.update(serializedTransaction);
+            }
         }
 
 
@@ -124,7 +119,5 @@ namespace ServiceLayer
         {
             return TransactionDataAccess.getNextAvailID();
         }
-
-
     }
 }

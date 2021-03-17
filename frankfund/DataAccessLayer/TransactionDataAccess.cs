@@ -23,54 +23,39 @@ namespace DataAccessLayer
             return this.dataHelper.query(query, parameters: null);
         }
 
-        /* Write a Transaction to DB Params: String array of serialized newly created Transaction object */
-
-        // TODO: Deprecated, please implement write(string[]) and update(string[])
-        public void writeTransaction(string[] transaction, bool newlyCreated, bool changed)
+        // Write a transaction into BigQuery
+        public void write(string[] serializedTransaction)
         {
-            string query;
-            if (!newlyCreated)
-            {
-                if (changed)
-                {
-                    query = $"DELETE FROM {this.tableID} WHERE TID = {transaction[0]}";
-                    Console.WriteLine("Transaction with TID " + transaction[0] + " was changed, updating records");
-                    this.dataHelper.query(query);
-                }
-                else
-                    return;
-            }
-            query = $"INSERT INTO {this.tableID} VALUES ("
-                + transaction[0] + ","                                            // TransactionID
-                + transaction[1] + ","                                  // AccountID
-                + transaction[2] + ","                                  //SGID
-                + $"\"{transaction[3]}\","                            // Transaction Name
-                + transaction[4] + ","                                     // Amount of transaction
-                + $"\"{transaction[5]}\","                        // DateTime Transaction was made
-                + $"\"{transaction[6]}\","                                  // DateTime Transaction entered
-                + transaction[7] + ","                        // Expense or Income
-                + $"\"{transaction[8]}\")";                    // Transaction Category
-            Console.WriteLine("Running Insert Query:\n---------------------\n" + query);
+            string query = $"INSERT INTO {this.tableID} VALUES ("
+                + serializedTransaction[0] + ","                        // TransactionID
+                + serializedTransaction[1] + ","                        // AccountID
+                + serializedTransaction[2] + ","                        // SGID
+                + $"\"{serializedTransaction[3]}\","                    // Transaction Name
+                + serializedTransaction[4] + ","                        // Amount of transaction
+                + $"\"{serializedTransaction[5]}\","                    // DateTime Transaction was made
+                + $"\"{serializedTransaction[6]}\","                    // DateTime Transaction entered
+                + serializedTransaction[7] + ","                        // Expense or Income
+                + $"\"{serializedTransaction[8]}\")";                   // Transaction Category
+            //Console.WriteLine("Running Insert Query:\n---------------------\n" + query);
             this.dataHelper.query(query);
         }
 
-        // TODO: Use DataHelper.query() to WRITE a newly created string serialized object into BigQuery
-        public void write(string[] serializedTransaction)
-        {
-
-        }
-
-        // TODO: Use DataHelper.query() to DELETE an object from BigQuery given its PK identifier
+        // Delete an existing transaction with the given PK identifier
         public void delete(long TID)
         {
-
+            string query = $"DELETE FROM {this.tableID} WHERE TID = {TID}";
+            //Console.WriteLine("Transaction with TID " + TID + " was changed, updating records");
+            this.dataHelper.query(query);
         }
 
-        /* TODO: Use DataHelper.query() to REWRITE an existing object that changed at runtime
-           This method should call delete(long ID) followed by write(string[] serializedObj) */
+        // Write an existing Transaction that changed during runtime
         public void update(string[] serializedTransaction)
         {
+            // Delete the existing records for this transaction
+            delete(long.Parse(serializedTransaction[0]));
 
+            // Write the updated records
+            write(serializedTransaction);
         }
 
         public long getNextAvailID()
