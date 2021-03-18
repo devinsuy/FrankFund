@@ -16,102 +16,105 @@ namespace ServiceLayer
             this.UserAccountDataAccess = new UserAccountDataAccess();
         }
 
-        public ActionResult CreateUserAccount(UserAccount userAccount)
-        {
-            // Checking if Email is a valid Email Address
-            if (!EmailService.IsValidEmailAddress(userAccount.EmailAddress.ToLower())) // Checks for valid email address
-            {
-                return new BadRequestObjectResult("Invalid Email address");
-            }
+        // --------------------------- DEPRECATED 3/17 ----------------------------
+        //public ActionResult CreateUserAccount(UserAccount userAccount)
+        //{
+        //    // Checking if Email is a valid Email Address
+        //    if (!EmailService.IsValidEmailAddress(userAccount.EmailAddress.ToLower())) // Checks for valid email address
+        //    {
+        //        return new BadRequestObjectResult("Invalid Email address");
+        //    }
 
-            // Checking if username already exists
-            var retrievedUser = GetAccountUsingUsername(userAccount.AccountUsername);
-            if (retrievedUser != null) // Checks if user already exists
-            {
-                Console.WriteLine("Username already exists.");
-                return new OkObjectResult("User already exists");
-            }
+        //    // Checking if username already exists
+        //    var retrievedUser = GetAccountUsingUsername(userAccount.AccountUsername);
+        //    if (retrievedUser != null) // Checks if user already exists
+        //    {
+        //        Console.WriteLine("Username already exists.");
+        //        return new OkObjectResult("User already exists");
+        //    }
 
-            // TODO: Need to add password service and salt/hash and meets requirements
-            // Minimum Requirements
-            // Uppercase letter (A-Z)
-            // Lowercase letter(a-z)
-            // Digit(0 - 9)
-            // Special Character(~`!@#$%^&*()+=_-{}[]\|:;”’?/<>,.)
+        //    // TODO: Need to add password service and salt/hash and meets requirements
+        //    // Minimum Requirements
+        //    // Uppercase letter (A-Z)
+        //    // Lowercase letter(a-z)
+        //    // Digit(0 - 9)
+        //    // Special Character(~`!@#$%^&*()+=_-{}[]\|:;”’?/<>,.)
 
+        //    // If all the checks are passed then writeUserAccount to database
+        //    this.UserAccountDataAccess.write(serialize(userAccount));
 
-            // If all the checks are passed then writeUserAccount to database
-            this.UserAccountDataAccess.writeUserAccount(userAccount, true, false);
+        //    return new OkObjectResult("Account successfully created");
 
-            return new OkObjectResult("Account successfully created");
-
-
-        }
-
-        // userAccount needs to include the account ID
-        public ActionResult UpdateUserAccount(UserAccount userAccount)
-        {
-
-            // Checking if user account exists
-            UserAccount retrievedUser = getUsingID(userAccount.AccountID);
-            if (retrievedUser == null) // Checks if user already exists
-            {
-                Console.WriteLine("User Account does not exist.");
-                return new OkObjectResult("User Account does not exist");
-            }
-            else
-            {
-                // TODO: Need to add password service and salt/hash and meets requirements
-                // Minimum Requirements
-                // Uppercase letter (A-Z)
-                // Lowercase letter(a-z)
-                // Digit(0 - 9)
-                // Special Character(~`!@#$%^&*()+=_-{}[]\|:;”’?/<>,.)
-
-                // Checking if Email is a valid Email Address
-                if (!EmailService.IsValidEmailAddress(userAccount.EmailAddress.ToLower())) // Checks for valid email address
-                {
-                    return new BadRequestObjectResult("Invalid Email address");
-                }
-
-                // Checking if username already exists
-                var retrievedUser2 = GetAccountUsingUsername(userAccount.AccountUsername);
-                if (retrievedUser2 != null) // Checks if user already exists
-                {
-                    Console.WriteLine("Username already exists");
-                    return new OkObjectResult("User already exists");
-                }
-
-                // If all the checks are passed then writeUserAccount to database
-                // with newlyCreated bool = false and changed bool = true
-                this.UserAccountDataAccess.writeUserAccount(userAccount, false, true);
-                return new OkObjectResult("Account successfully updated");
-            }
-        }
+        //}
 
         // userAccount needs to include the account ID
-        public ActionResult DisableUserAccount(UserAccount userAccount, bool confirm)
-        {
-            UserAccount user = GetAccountUsingUsername(userAccount.AccountUsername);
+        //public ActionResult UpdateUserAccount(UserAccount userAccount)
+        //{
 
-            // Need to add password validation as a input and password service
+        //    // Checking if user account exists
+        //    UserAccount retrievedUser = getUsingID(userAccount.AccountID);
+        //    if (retrievedUser == null) // Checks if user already exists
+        //    {
+        //        Console.WriteLine("User Account does not exist.");
+        //        return new OkObjectResult("User Account does not exist");
+        //    }
+        //    else
+        //    {
+        //        // TODO: Need to add password service and salt/hash and meets requirements
+        //        // Minimum Requirements
+        //        // Uppercase letter (A-Z)
+        //        // Lowercase letter(a-z)
+        //        // Digit(0 - 9)
+        //        // Special Character(~`!@#$%^&*()+=_-{}[]\|:;”’?/<>,.)
 
-            // User Confirmation to Delete
-            if (confirm == true)
-            {
-                this.UserAccountDataAccess.DisableUserAccount(userAccount);
-                 return new OkObjectResult("User successfully deleted");
-            }
-            else
-            {
-                return new StatusCodeResult(500);
-            }
-        }
+        //        // Checking if Email is a valid Email Address
+        //        if (!EmailService.IsValidEmailAddress(userAccount.EmailAddress.ToLower())) // Checks for valid email address
+        //        {
+        //            return new BadRequestObjectResult("Invalid Email address");
+        //        }
 
-        public UserAccount GetAccountUsingUsername(string username)
+        //        // Checking if username already exists
+        //        var retrievedUser2 = GetAccountUsingUsername(userAccount.AccountUsername);
+        //        if (retrievedUser2 != null) // Checks if user already exists
+        //        {
+        //            Console.WriteLine("Username already exists");
+        //            return new OkObjectResult("User already exists");
+        //        }
+
+        //        // If all the checks are passed then writeUserAccount to database
+        //        // with newlyCreated bool = false and changed bool = true
+        //        this.UserAccountDataAccess.writeUserAccount(userAccount, false, true);
+        //        return new OkObjectResult("Account successfully updated");
+        //    }
+        //}
+
+        // userAccount needs to include the account ID
+        //public ActionResult DisableUserAccount(UserAccount userAccount, bool confirm)
+        //{
+        //    UserAccount user = GetAccountUsingUsername(userAccount.AccountUsername);
+
+        //    // Need to add password validation as a input and password service
+
+        //    // User Confirmation to Delete
+        //    if (confirm == true)
+        //    {
+        //        this.UserAccountDataAccess.delete(userAccount.AccountID);
+        //         return new OkObjectResult("User successfully deleted");
+        //    }
+        //    else
+        //    {
+        //        return new StatusCodeResult(500);
+        //    }
+        //}
+
+        // --------------------------- DEPRECATED ----------------------------
+
+        // Uses DataAccess Layer to get UserAccount via username
+        // @username : string username for user account
+        public UserAccount getUsingUsername(string username)
         {
             UserAccount user = null;
-            foreach (BigQueryRow row in this.UserAccountDataAccess.GetUserAccountUsingUsername(username))
+            foreach (BigQueryRow row in this.UserAccountDataAccess.getUsingUsername(username))
             {
                 user = new UserAccount(
                     (long)row["AccountID"], (string)row["AccountUsername"],
@@ -122,6 +125,8 @@ namespace ServiceLayer
             return user;
         }
 
+        // Uses DataAccess Layer to get UserAccount via PK Identifier
+        // @ID : long PK Identifier for Account
         public UserAccount getUsingID(long ID)
         {
             UserAccount user = null;
@@ -137,16 +142,43 @@ namespace ServiceLayer
         }
 
 
-        // TODO: Use DataAccess Layer to delete via PK Identifier
+        // Uses DataAccess Layer to delete via PK Identifier
+        // @accID : PK Identifier for Account
         public void delete(long accID)
         {
-
+            this.UserAccountDataAccess.delete(accID);
         }
 
-        // TODO: Use DataAccess Layer to write a NEWLY CREATED object into BigQuery
-        public void write(UserAccount acc)
+        // Use DataAccess Layer to write a NEWLY CREATED object into BigQuery
+        // @userAccount : UserAccount object for inserted user account
+        public void write(UserAccount userAccount)
         {
+            // Checking if Email is a valid Email Address
+            if (!EmailService.IsValidEmailAddress(userAccount.EmailAddress.ToLower())) // Checks for valid email address
+            {
+                //return new BadRequestObjectResult("Invalid Email address");
+            }
 
+            // Checking if username already exists
+            var retrievedUser = getUsingUsername(userAccount.AccountUsername);
+            if (retrievedUser != null) // Checks if user already exists
+            {
+                Console.WriteLine("Username already exists.");
+                //return new OkObjectResult("User already exists");
+            }
+
+            // TODO: Need to add password service and salt/hash and meets requirements
+            // Minimum Requirements
+            // Uppercase letter (A-Z)
+            // Lowercase letter(a-z)
+            // Digit(0 - 9)
+            // Special Character(~`!@#$%^&*()+=_-{}[]\|:;”’?/<>,.)
+
+
+            // If all the checks are passed then writeUserAccount to database
+            this.UserAccountDataAccess.write(serialize(userAccount));
+
+            //return new OkObjectResult("Account successfully created");
         }
 
         /* TODO:
@@ -154,9 +186,43 @@ namespace ServiceLayer
                (method should have a way of checking whether the class object changed during runtime
                to avoid redundant writing. Use a changed boolean to implement this)
            Should not call DataAccess update() if did not change */
-        public void update(UserAccount acc)
+        public void update(UserAccount userAccount)
         {
+            // Checking if user account exists
+            UserAccount retrievedUser = getUsingID(userAccount.AccountID);
+            if (retrievedUser == null) // Checks if user already exists
+            {
+                Console.WriteLine("User Account does not exist.");
+                //return new OkObjectResult("User Account does not exist");
+            }
+            else
+            {
+                // TODO: Need to add password service and salt/hash and meets requirements
+                // Minimum Requirements
+                // Uppercase letter (A-Z)
+                // Lowercase letter(a-z)
+                // Digit(0 - 9)
+                // Special Character(~`!@#$%^&*()+=_-{}[]\|:;”’?/<>,.)
 
+                // Checking if Email is a valid Email Address
+                if (!EmailService.IsValidEmailAddress(userAccount.EmailAddress.ToLower())) // Checks for valid email address
+                {
+                    //return new BadRequestObjectResult("Invalid Email address");
+                }
+
+                // Checking if username already exists
+                var retrievedUser2 = getUsingUsername(userAccount.AccountUsername);
+                if (retrievedUser2 != null) // Checks if user already exists
+                {
+                    Console.WriteLine("Username already exists");
+                    //return new OkObjectResult("User already exists");
+                }
+
+                // If all the checks are passed then writeUserAccount to database
+                // with newlyCreated bool = false and changed bool = true
+                this.UserAccountDataAccess.update(serialize(userAccount));
+                //return new OkObjectResult("Account successfully updated");
+            }
         }
 
         /*

@@ -133,7 +133,7 @@ namespace ServiceLayer
 
             Console.WriteLine("\n-------------------- Test: Getting and Creating a new User Account --------------------");
             Console.WriteLine("\n1. Testing GetAccountUsingUsername function | Prints out AccountUsername found");
-            String existingAccount = uaService.GetAccountUsingUsername("AutumnNguyen").AccountUsername;
+            String existingAccount = uaService.getUsingUsername("AutumnNguyen").AccountUsername;
             Console.WriteLine("Username: " + existingAccount);
 
             Console.WriteLine("\n2. Testing GetAccountUsingID function | Prints out AccountUsername found");
@@ -142,27 +142,27 @@ namespace ServiceLayer
 
             Console.WriteLine("\n3. Testing CreateUserAccount function | Prints out AccountUsername of made account");
             UserAccount testAccount = new UserAccount(5, "test", "test@gmail.com", "password", null);
-            uaService.CreateUserAccount(testAccount);
+            uaService.write(testAccount);
             Console.WriteLine("Username: " + uaService.getUsingID(5).AccountUsername);
 
             Console.WriteLine("\n4. Testing DeleteUserAccount function | Prints out AccountUsername of deleted account");
             Console.WriteLine("Disable Username: " + uaService.getUsingID(5).AccountUsername);
-            uaService.DisableUserAccount(testAccount, true);
+            uaService.delete(5);
 
             Console.WriteLine("\n5. Testing CreateUserAccount function - New | Prints out AccountUsername of made account");
             UserAccount testAccount2 = new UserAccount("test2", "test2@gmail.com", "password", null);
-            uaService.CreateUserAccount(testAccount2);
-            Console.WriteLine("Username: " + uaService.GetAccountUsingUsername("test2").AccountUsername);
+            uaService.write(testAccount2);
+            Console.WriteLine("Username: " + uaService.getUsingUsername("test2").AccountUsername);
 
             Console.WriteLine("\n6. Testing UpdateUserAccount function | Prints out new AccountUsername of account");
-            Console.WriteLine("Old Username: " + uaService.GetAccountUsingUsername("test2").AccountUsername);
+            Console.WriteLine("Old Username: " + uaService.getUsingUsername("test2").AccountUsername);
             UserAccount testAccount3 = new UserAccount(5, "testing", "test2@gmail.com", "password", null);
-            uaService.UpdateUserAccount(testAccount3);
-            Console.WriteLine("New Username: " + uaService.GetAccountUsingUsername("testing").AccountUsername);
+            uaService.update(testAccount3);
+            Console.WriteLine("New Username: " + uaService.getUsingUsername("testing").AccountUsername);
 
             Console.WriteLine("\n7. Testing DeleteUserAccount function | Prints out AccountUsername of deleted account");
-            Console.WriteLine("Disable Username: " + uaService.GetAccountUsingUsername("testing").AccountUsername);
-            uaService.DisableUserAccount(testAccount3, true);
+            Console.WriteLine("Disable Username: " + uaService.getUsingUsername("testing").AccountUsername);
+            uaService.delete(5);
         }
 
 
