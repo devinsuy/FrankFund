@@ -33,6 +33,7 @@ namespace ServiceLayer
                     (string)row["TransactionName"],
                     this.TransactionDataAccess.castBQNumeric(row["Amount"]),
                     (DateTime)row["DateTransactionMade"],
+                    (DateTime)row["DateTransactionEntered"],
                     (bool)row["IsExpense"],
                     (string)row["TransactionCategory"]
                 );

@@ -35,5 +35,18 @@ namespace REST.Controllers
                 return new OkObjectResult(json);
             }
         }
+
+        // Validate a request body, each key should be a valid attribute of the object
+        public bool validAttributes(HashSet<string> objAttributes, HashSet<string> reqAttributes)
+        {
+            foreach(string attr in reqAttributes)
+            {
+                if (!objAttributes.Contains(attr))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 }
