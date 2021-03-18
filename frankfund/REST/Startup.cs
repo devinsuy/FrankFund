@@ -19,7 +19,7 @@ namespace REST
         static void authenticateGCP()
         {
             // Devin's Credentials
-            //string pathToCreds = "/Users/devin/Documents/GitHub/FrankFund/Credentials/AuthDevin.json";
+            string pathToCreds = "/Users/devin/Documents/GitHub/FrankFund/Credentials/AuthDevin.json";
 
             // Autumn's Credentials
             //string pathToCreds = "/Users/steve/OneDrive/Documents/GitHub/FrankFund/Credentials/AuthAutumn.json";
@@ -28,7 +28,7 @@ namespace REST
             //string pathToCreds = "/Users/015909177/Desktop/Github Repos/FrankFund/Credentials/AuthKenny.json";
 
             //Rachel's Credentials 
-            string pathToCreds = "C:/Data/Spring 2021/CECS 491B/Senior Project/Credentials/AuthRachel.json";
+            //string pathToCreds = "C:/Data/Spring 2021/CECS 491B/Senior Project/Credentials/AuthRachel.json";
 
             System.Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", pathToCreds);
         }
@@ -36,7 +36,6 @@ namespace REST
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            //authenticateGCP();
         }
 
         public IConfiguration Configuration { get; }
@@ -51,6 +50,7 @@ namespace REST
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                authenticateGCP();
             }
             // Serve landing page for non API routing
             DefaultFilesOptions options = new DefaultFilesOptions();

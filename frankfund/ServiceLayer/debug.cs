@@ -310,7 +310,9 @@ namespace ServiceLayer
 
             // ---------------------------------------------- Test: Transaction Create ---------------------------------------------------------
             //Transaction sampleTrans1 = testAddTransaction();
-            //Console.WriteLine(testReinstantiateTransaction(TID: 10));
+            Transaction t = testReinstantiateTransaction(TID: 41);
+            TransactionService ts = new TransactionService();
+            Console.WriteLine(ts.getJSON(t));
             //testModifyRewriteTransaction(TID: 25);
             //testDeleteTransaction(TID: 42);
 

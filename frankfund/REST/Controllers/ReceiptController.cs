@@ -24,7 +24,7 @@ namespace REST.Controllers
 
         [Route("api/RID={RID}&apikey={apikey}")]
         [HttpGet]
-        public IActionResult GetRSByID(int RID, string apikey)
+        public IActionResult GetByID(int RID, string apikey)
         {
             if (!api.validAPIKey(apikey))
             {
@@ -38,5 +38,6 @@ namespace REST.Controllers
 
             return api.serveJson(rs.getJSON(rs.getUsingID(RID)));
         }
+
     }
 }

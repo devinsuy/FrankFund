@@ -11,7 +11,7 @@ namespace DataAccessLayer.Models
         //Account ID
         private readonly long accountID;
         //Savings Goal ID
-        private readonly long SGID;
+        private long SGID;
         //Name of Transaction
         private string transactionName;
         //Amount of Transaction
@@ -39,12 +39,27 @@ namespace DataAccessLayer.Models
             this.dateTransactionMade = dateTransactionMade;
             this.isExpense = isExpense;
             this.transactionCategory = transactionCategory;
+
             //Assign the current time using the DateTime library method Now.
             dateTransactionEntered = DateTime.Now;
-
             newlyCreated = true;
         }
 
+        // Constructor for reinstantiation
+        public Transaction(long TID, long accountID, long SGID, string transactionName, decimal amount, DateTime dateTransactionMade, DateTime dateTransactionEntered, bool isExpense, string transactionCategory)
+        {
+            this.TID = TID;
+            this.accountID = accountID;
+            this.SGID = SGID;
+            this.transactionName = transactionName;
+            this.amount = amount;
+            this.dateTransactionMade = dateTransactionMade;
+            this.isExpense = isExpense;
+            this.transactionCategory = transactionCategory;
+
+            this.dateTransactionEntered = dateTransactionEntered;
+            this.newlyCreated = false;
+        }
         //Getter Methods
         public long getTID()
         {
@@ -111,6 +126,12 @@ namespace DataAccessLayer.Models
             changed = true;
         }
 
+        public void setDateTransactionEntered(DateTime dateTransactionEntered)
+        {
+            this.dateTransactionEntered = dateTransactionEntered;
+            changed = true;
+        }
+
         public void setIsExpense(bool isExpense)
         {
             this.isExpense = isExpense;
@@ -120,6 +141,12 @@ namespace DataAccessLayer.Models
         public void setTransactionCategory(string transactionCategory)
         {
             this.transactionCategory = transactionCategory;
+            changed = true;
+        }
+
+        public void setSGID(long SGID)
+        {
+            this.SGID = SGID;
             changed = true;
         }
 
