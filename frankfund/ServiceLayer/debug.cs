@@ -312,8 +312,7 @@ namespace ServiceLayer
             //Transaction sampleTrans1 = testAddTransaction();
             //Console.WriteLine(testReinstantiateTransaction(TID: 10));
             //testModifyRewriteTransaction(TID: 25);
-            testDeleteTransaction(TID: 42);
-
+            //testDeleteTransaction(TID: 42);
 
 
             // ---------------------------------------------- Test: Receipt Create ---------------------------------------------------------
