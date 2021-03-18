@@ -12,10 +12,10 @@ namespace ServiceLayer
         static void authenticateGCP()
         {
             // Devin's Credentials
-            string pathToCreds = "/Users/devin/Documents/GitHub/FrankFund/Credentials/AuthDevin.json";
+            //string pathToCreds = "/Users/devin/Documents/GitHub/FrankFund/Credentials/AuthDevin.json";
 
             // Autumn's Credentials
-            //string pathToCreds = "/Users/steve/OneDrive/Documents/GitHub/FrankFund/Credentials/AuthAutumn.json";
+            string pathToCreds = "/Users/steve/OneDrive/Documents/GitHub/FrankFund/Credentials/AuthAutumn.json";
 
             // Kenneth's Credentials
             //string pathToCreds = "/Users/015909177/Desktop/Github Repos/FrankFund/Credentials/AuthKenny.json";
@@ -132,37 +132,37 @@ namespace ServiceLayer
             UserAccountService uaService = new UserAccountService();
 
             Console.WriteLine("\n-------------------- Test: Getting and Creating a new User Account --------------------");
-            Console.WriteLine("\n1. Testing GetAccountUsingUsername function | Prints out AccountUsername found");
-            String existingAccount = uaService.getUsingUsername("AutumnNguyen").AccountUsername;
-            Console.WriteLine("Username: " + existingAccount);
+            //Console.WriteLine("\n1. Testing GetAccountUsingUsername function | Prints out AccountUsername found");
+            //String existingAccount = uaService.getUsingUsername("AutumnNguyen").AccountUsername;
+            //Console.WriteLine("Username: " + existingAccount);
 
-            Console.WriteLine("\n2. Testing GetAccountUsingID function | Prints out AccountUsername found");
-            String existingAccount2 = uaService.getUsingID(2).AccountUsername;
-            Console.WriteLine("Username: " + existingAccount2);
+            //Console.WriteLine("\n2. Testing GetAccountUsingID function | Prints out AccountUsername found");
+            //String existingAccount2 = uaService.getUsingID(2).AccountUsername;
+            //Console.WriteLine("Username: " + existingAccount2);
 
             Console.WriteLine("\n3. Testing CreateUserAccount function | Prints out AccountUsername of made account");
-            UserAccount testAccount = new UserAccount(5, "test", "test@gmail.com", "password", null);
+            UserAccount testAccount = new UserAccount(5, "test", "test@gmail.com", "Password1", null);
             uaService.write(testAccount);
-            Console.WriteLine("Username: " + uaService.getUsingID(5).AccountUsername);
+            //Console.WriteLine("Username: " + uaService.getUsingID(5).AccountUsername);
 
-            Console.WriteLine("\n4. Testing DeleteUserAccount function | Prints out AccountUsername of deleted account");
-            Console.WriteLine("Disable Username: " + uaService.getUsingID(5).AccountUsername);
-            uaService.delete(5);
+            //Console.WriteLine("\n4. Testing DeleteUserAccount function | Prints out AccountUsername of deleted account");
+            //Console.WriteLine("Disable Username: " + uaService.getUsingID(5).AccountUsername);
+            //uaService.delete(5);
 
-            Console.WriteLine("\n5. Testing CreateUserAccount function - New | Prints out AccountUsername of made account");
-            UserAccount testAccount2 = new UserAccount("test2", "test2@gmail.com", "password", null);
-            uaService.write(testAccount2);
-            Console.WriteLine("Username: " + uaService.getUsingUsername("test2").AccountUsername);
+            //Console.WriteLine("\n5. Testing CreateUserAccount function - New | Prints out AccountUsername of made account");
+            //UserAccount testAccount2 = new UserAccount("test2", "test2@gmail.com", "password", null);
+            //uaService.write(testAccount2);
+            //Console.WriteLine("Username: " + uaService.getUsingUsername("test2").AccountUsername);
 
-            Console.WriteLine("\n6. Testing UpdateUserAccount function | Prints out new AccountUsername of account");
-            Console.WriteLine("Old Username: " + uaService.getUsingUsername("test2").AccountUsername);
-            UserAccount testAccount3 = new UserAccount(5, "testing", "test2@gmail.com", "password", null);
-            uaService.update(testAccount3);
-            Console.WriteLine("New Username: " + uaService.getUsingUsername("testing").AccountUsername);
+            //Console.WriteLine("\n6. Testing UpdateUserAccount function | Prints out new AccountUsername of account");
+            //Console.WriteLine("Old Username: " + uaService.getUsingUsername("test2").AccountUsername);
+            //UserAccount testAccount3 = new UserAccount(5, "testing", "test2@gmail.com", "password", null);
+            //uaService.update(testAccount3);
+            //Console.WriteLine("New Username: " + uaService.getUsingUsername("testing").AccountUsername);
 
-            Console.WriteLine("\n7. Testing DeleteUserAccount function | Prints out AccountUsername of deleted account");
-            Console.WriteLine("Disable Username: " + uaService.getUsingUsername("testing").AccountUsername);
-            uaService.delete(5);
+            //Console.WriteLine("\n7. Testing DeleteUserAccount function | Prints out AccountUsername of deleted account");
+            //Console.WriteLine("Disable Username: " + uaService.getUsingUsername("testing").AccountUsername);
+            //uaService.delete(5);
         }
 
 
@@ -305,14 +305,14 @@ namespace ServiceLayer
 
 
             // ---------------------------------------------- Test: Creating User Account ------------------------------------------------------
-            //testAccCreate();
+            testAccCreate();
 
 
             // ---------------------------------------------- Test: Transaction Create ---------------------------------------------------------
             //Transaction sampleTrans1 = testAddTransaction();
-            Transaction t = testReinstantiateTransaction(TID: 41);
-            TransactionService ts = new TransactionService();
-            Console.WriteLine(ts.getJSON(t));
+            //Transaction t = testReinstantiateTransaction(TID: 41);
+            //TransactionService ts = new TransactionService();
+            //Console.WriteLine(ts.getJSON(t));
             //testModifyRewriteTransaction(TID: 25);
             //testDeleteTransaction(TID: 42);
 

@@ -11,9 +11,11 @@ namespace ServiceLayer
     public class UserAccountService: Service<UserAccount>
     {
         private readonly UserAccountDataAccess UserAccountDataAccess;
+        private PasswordService PasswordService;
         public UserAccountService()
         {
             this.UserAccountDataAccess = new UserAccountDataAccess();
+            this.PasswordService = new PasswordService();
         }
 
         // --------------------------- DEPRECATED 3/17 ----------------------------
@@ -164,15 +166,18 @@ namespace ServiceLayer
             if (retrievedUser != null) // Checks if user already exists
             {
                 Console.WriteLine("Username already exists.");
+                return;
                 //return new OkObjectResult("User already exists");
             }
 
-            // TODO: Need to add password service and salt/hash and meets requirements
-            // Minimum Requirements
-            // Uppercase letter (A-Z)
-            // Lowercase letter(a-z)
-            // Digit(0 - 9)
-            // Special Character(~`!@#$%^&*()+=_-{}[]\|:;”’?/<>,.)
+            // TODO: Need to add password service and salt/hash
+
+            // Checks for Password Minimum Requirements
+            if(PasswordService.CheckMinReqPassword(userAccount.PasswordHash) == false)
+            {
+                Console.WriteLine("Password does not meet minimum requirements.");
+                return;
+            }
 
 
             // If all the checks are passed then writeUserAccount to database
@@ -193,21 +198,25 @@ namespace ServiceLayer
             if (retrievedUser == null) // Checks if user already exists
             {
                 Console.WriteLine("User Account does not exist.");
+                return;
                 //return new OkObjectResult("User Account does not exist");
             }
             else
             {
-                // TODO: Need to add password service and salt/hash and meets requirements
-                // Minimum Requirements
-                // Uppercase letter (A-Z)
-                // Lowercase letter(a-z)
-                // Digit(0 - 9)
-                // Special Character(~`!@#$%^&*()+=_-{}[]\|:;”’?/<>,.)
+                // TODO: Need to add password service and salt/hash
+
+                // Checks for Password Minimum Requirements
+                if (PasswordService.CheckMinReqPassword(userAccount.PasswordHash) == false)
+                {
+                    Console.WriteLine("Password does not meet minimum requirements.");
+                    return;
+                }
 
                 // Checking if Email is a valid Email Address
                 if (!EmailService.IsValidEmailAddress(userAccount.EmailAddress.ToLower())) // Checks for valid email address
                 {
                     //return new BadRequestObjectResult("Invalid Email address");
+                    return;
                 }
 
                 // Checking if username already exists
@@ -215,12 +224,14 @@ namespace ServiceLayer
                 if (retrievedUser2 != null) // Checks if user already exists
                 {
                     Console.WriteLine("Username already exists");
+                    return;
                     //return new OkObjectResult("User already exists");
                 }
 
                 // If all the checks are passed then writeUserAccount to database
                 // with newlyCreated bool = false and changed bool = true
                 this.UserAccountDataAccess.update(serialize(userAccount));
+                return;
                 //return new OkObjectResult("Account successfully updated");
             }
         }
