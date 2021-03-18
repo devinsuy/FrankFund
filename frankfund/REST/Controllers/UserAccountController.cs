@@ -21,7 +21,7 @@ namespace REST.Controllers
 
         [Route("api/accID={accID}&apikey={apiKey}")]
         [HttpGet]
-        public IActionResult GetSGByID(int accID, string apiKey)
+        public IActionResult GetByID(int accID, string apiKey)
         {
             if (!api.validAPIKey(apiKey))
             {
