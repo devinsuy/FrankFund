@@ -5,14 +5,17 @@ REST data endpoints using standard HTTP Requests for **GET/POST/DELETE/PUT** met
 
 
 ### Jump To API Documentation
-[Savings Goals](###savingsgoals)
-[User Accounts](###useraccounts)
-[Transactions](###transactions)
-[Receipts](###receipts)
+[Savings Goals](#savingsgoals)
+
+[User Accounts](#useraccounts)
+
+[Transactions](#transactions)
+
+[Receipts](#receipts)
 
 ---
 
-## Authentication
+# Authentication
 HTTP requests must be in the form:
 
 ```https://frankfund.appspot.com/api/...&apikey={apikey}```
@@ -27,7 +30,7 @@ Your corresponding apikey is labeled **"private_key_id"** in your Auth.json file
 
 ---
 
-## Error Codes
+# Error Codes
 Improperly authenticated requests will return a **HTTP 401 Unauthorized**.
 
 Improperly formated requests or improper data will return a **HTTP 400 Bad Request**.
@@ -40,9 +43,7 @@ PATCH requests to update an object that does not exist will return a **HTTP 404 
 
 ---
 
-## Active Endpoints
-
-### SavingsGoals
+# SavingsGoals
 
 ```[GET] https://frankfund.appspot.com/api/SGID={SGID}&apikey={apikey})```
 
@@ -52,8 +53,15 @@ Returns JSON data of the SavingsGoal with the given SGID
 
 ---
 
-### UserAccounts
+```[GET] https://frankfund.appspot.com/api/accID={accID}&apikey={apikey})```
 
+Returns JSON data of the UserAccount with the given AccountID
+
+**Example Request:** ```HTTP GET https://frankfund.appspot.com/api/accID=1&apikey=f2f1178729cb2e1c9188ed847066743c4e843a21```
+
+---
+
+# UserAccounts
 
 ```[GET] https://frankfund.appspot.com/api/accID={accID}&apikey={apikey})```
 
@@ -63,7 +71,7 @@ Returns JSON data of the UserAccount with the given AccountID
 
 ---
 
-### Transactions
+# Transactions
 ```[GET] https://frankfund.appspot.com/api/TID={TID}&apikey={apikey})```
 
 Returns JSON data of the Transaction with the given TransactionID
@@ -141,7 +149,7 @@ Otherwise if a Transaction with the given TID **already exists** request will up
 
 ---
 
-### Receipts
+# Receipts
 
 ```[GET] https://frankfund.appspot.com/api/TID={TID}&apikey={apikey})```
 
