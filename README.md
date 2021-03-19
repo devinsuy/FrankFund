@@ -5,10 +5,10 @@ REST data endpoints using standard HTTP Requests for **GET/POST/DELETE/PUT** met
 
 
 ### Jump To API Documentation
-[Savings Goals](###SavingsGoals)
-[User Accounts](###UserAccounts)
-[Transactions](###Transactions)
-[Receipts](###Receipts)
+[Savings Goals](###savingsgoals)
+[User Accounts](###useraccounts)
+[Transactions](###transactions)
+[Receipts](###receipts)
 
 ---
 
