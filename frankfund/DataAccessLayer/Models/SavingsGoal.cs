@@ -116,6 +116,10 @@ namespace DataAccessLayer.Models
         // ---------------------------------------- SavingsGoal Setters ----------------------------------------
 
         public void updateName(string newName){
+            if (newName.Equals(name))
+            {
+                return;
+            }
             this.changed = true;
             this.name = newName;
         }
@@ -126,6 +130,10 @@ namespace DataAccessLayer.Models
                         False: Keep number of periods and end date fixed, but increase payment amount per period.
         */
         public void updateGoalAmt(decimal newGoalAmt, bool extendEndDate){
+            if(newGoalAmt == this.goalAmt)
+            {
+                return;
+            }
             this.changed = true;
             this.goalAmt = newGoalAmt;       
 
@@ -141,6 +149,10 @@ namespace DataAccessLayer.Models
 
         // Updating contribution amount will require the number of periods and end date to recalculate
         public void updateContrAmt(decimal newContrAmt){
+            if(newContrAmt == this.contrAmt)
+            {
+                return;
+            }
             this.changed = true;
             this.contrAmt = newContrAmt;
             this.numPeriods = this.calcPeriodsWithAmt();
@@ -149,6 +161,10 @@ namespace DataAccessLayer.Models
 
         // Updating end date will require the number of periods and contribution per period to recalculate
         public void updateEndDate(DateTime newEndDate){
+            if(newEndDate.Equals(this.endDate))
+            {
+                return;
+            }
             this.changed = true;
             this.endDate = newEndDate;
             this.numPeriods = this.calcPeriodsWithDate();
@@ -157,6 +173,10 @@ namespace DataAccessLayer.Models
 
         // Updating period will require end date to recalculate
         public void updatePeriod(contrPeriod newPeriod){
+            if(newPeriod.Equals(this.period))
+            {
+                return;
+            }
             this.changed = true;
             this.period = newPeriod;
             this.endDate = this.calcEndDate();
@@ -164,6 +184,10 @@ namespace DataAccessLayer.Models
 
         // Update contrAmt and change to a new contrPeriod, require both numPeriods and endDate to recalculate
         public void updateContrAmtAndPeriod(decimal newContrAmt, contrPeriod newPeriod){
+            if(newContrAmt == this.contrAmt && newPeriod.Equals(this.period))
+            {
+                return;
+            }
             this.changed = true;
             this.contrAmt = newContrAmt;
             this.period = newPeriod;

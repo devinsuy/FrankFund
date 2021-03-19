@@ -60,18 +60,30 @@ namespace DataAccessLayer.Models
         //https://docs.microsoft.com/en-us/dotnet/api/system.datetime?view=net-5.0#parsing-01 
         public void setPurchaseDate(DateTime shoppingDate)
         {
+            if(shoppingDate.Equals(this.PurchaseDate))
+            {
+                return;
+            }
             this.PurchaseDate = shoppingDate;
             changed = true;
         }
 
         public void setNote(string noteToWrite)
         {
+            if(noteToWrite.Equals(this.Notes))
+            {
+                return;
+            }
             this.Notes = noteToWrite;
             changed = true;
         }
 
         public void setImageLink(string imageToURL)
         {
+            if (imageToURL.Equals(this.ImgURL))
+            {
+                return;
+            }
             this.ImgURL = imageToURL;
             changed = true;
             //This still needs to be figured out in the controller?? 

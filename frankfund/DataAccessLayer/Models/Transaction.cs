@@ -110,42 +110,70 @@ namespace DataAccessLayer.Models
 
         public void setTransactionName(string transactionName)
         {
+            if (transactionName.Equals(this.transactionName))
+            {
+                return;
+            }
             this.transactionName = transactionName;
             changed = true;
         }
 
         public void setAmount(decimal amount)
         {
+            if(amount == this.amount)
+            {
+                return;
+            }
             this.amount = amount;
             changed = true;
         }
 
         public void setDateTransactionMade(DateTime dateTransactionMade)
         {
+            if (dateTransactionMade.Equals(this.dateTransactionMade))
+            {
+                return;
+            }
             this.dateTransactionMade = dateTransactionMade;
             changed = true;
         }
 
         public void setDateTransactionEntered(DateTime dateTransactionEntered)
         {
+            if (dateTransactionEntered.Equals(this.dateTransactionEntered))
+            {
+                return;
+            }
             this.dateTransactionEntered = dateTransactionEntered;
             changed = true;
         }
 
         public void setIsExpense(bool isExpense)
         {
+            if(isExpense == this.isExpense)
+            {
+                return;
+            }
             this.isExpense = isExpense;
             changed = true;
         }
 
         public void setTransactionCategory(string transactionCategory)
         {
+            if (transactionCategory.Equals(this.transactionCategory))
+            {
+                return;
+            }
             this.transactionCategory = transactionCategory;
             changed = true;
         }
 
         public void setSGID(long SGID)
         {
+            if(SGID == this.SGID)
+            {
+                return;
+            }
             this.SGID = SGID;
             changed = true;
         }
