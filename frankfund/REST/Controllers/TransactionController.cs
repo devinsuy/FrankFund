@@ -105,17 +105,25 @@ namespace REST.Controllers
             }
 
             // Create the transaction with the given TID using the POST payload
-            var req = Request.Form;
-            t = new Transaction(
-                    TID: TID,
-                    accountID: long.Parse(req["AccountID"]),
-                    SGID: long.Parse(req["SGID"]),
-                    transactionName: req["TransactionName"],
-                    amount: decimal.Parse(req["Amount"]),
-                    dateTransactionMade: DateTime.Parse(req["DateTransactionMade"]),
-                    isExpense: System.Convert.ToBoolean(req["IsExpense"]),
-                    transactionCategory: req["TransactionCategory"]
-                );
+            try
+            {
+                var req = Request.Form;
+                t = new Transaction(
+                        TID: TID,
+                        accountID: long.Parse(req["AccountID"]),
+                        SGID: long.Parse(req["SGID"]),
+                        transactionName: req["TransactionName"],
+                        amount: decimal.Parse(req["Amount"]),
+                        dateTransactionMade: DateTime.Parse(req["DateTransactionMade"]),
+                        isExpense: System.Convert.ToBoolean(req["IsExpense"]),
+                        transactionCategory: req["TransactionCategory"]
+                    );
+
+            }
+            catch
+            {
+                return BadRequest();
+            }
 
             // Write the new transaction
             ts.write(t);

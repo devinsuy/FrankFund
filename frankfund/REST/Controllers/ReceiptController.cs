@@ -96,15 +96,23 @@ namespace REST.Controllers
             }
 
             // Create the Receipt with the given RID using the POST payload
-            var req = Request.Form;
-            r = new Receipt(
-                    RID: RID,
-                    TID: long.Parse(req["TID"]),
-                    ImgURL: req["ImgURL"],
-                    PurchaseDate: DateTime.Parse(req["PurchaseDate"]),
-                    Notes: req["Notes"],
-                    newlyCreated: true
-                );
+            try
+            {
+                var req = Request.Form;
+                r = new Receipt(
+                        RID: RID,
+                        TID: long.Parse(req["TID"]),
+                        ImgURL: req["ImgURL"],
+                        PurchaseDate: DateTime.Parse(req["PurchaseDate"]),
+                        Notes: req["Notes"],
+                        newlyCreated: true
+                    );
+            }
+            catch
+            {
+                return BadRequest();
+            }
+
 
             // Write the new Receipt
             rs.write(r);
