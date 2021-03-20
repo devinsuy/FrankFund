@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using DataAccessLayer.Models;
 using ServiceLayer;
 using System;
+using System.Text.Json;
+using Newtonsoft.Json;
 
 
 namespace REST.Controllers
@@ -79,7 +81,7 @@ namespace REST.Controllers
         // Returns Http 409 Conflict if already exists
         [Route("api/TID={TID}&apikey={apiKey}")]
         [HttpPost]
-        public IActionResult CreateByID(int TID, string apiKey)
+        public IActionResult CreateByID(int TID, string apiKey, [FromBody] JsonElement reqBody)
         {
             if (!api.validAPIKey(apiKey))
             {
@@ -91,7 +93,9 @@ namespace REST.Controllers
             }
 
             // Validate that the POST request contains all necessary attributes to create a NEW transaction and nothing more
-            HashSet<string> reqAttributes = new HashSet<string>(Request.Form.Keys);
+            Dictionary<string, object> req = JsonConvert.DeserializeObject<Dictionary<string, object>>(Convert.ToString(reqBody));
+            HashSet<string> reqAttributes = new HashSet<string>(req.Keys);
+
             if (!reqAttributes.SetEquals(createAttr))
             {
                 return BadRequest();
@@ -107,21 +111,21 @@ namespace REST.Controllers
             // Create the transaction with the given TID using the POST payload
             try
             {
-                var req = Request.Form;
                 t = new Transaction(
                         TID: TID,
-                        accountID: long.Parse(req["AccountID"]),
-                        SGID: long.Parse(req["SGID"]),
-                        transactionName: req["TransactionName"],
-                        amount: decimal.Parse(req["Amount"]),
-                        dateTransactionMade: DateTime.Parse(req["DateTransactionMade"]),
+                        accountID: Convert.ToInt64(req["AccountID"]),
+                        SGID: Convert.ToInt64(req["SGID"]),
+                        transactionName: Convert.ToString(req["TransactionName"]),
+                        amount: Convert.ToDecimal(req["Amount"]),
+                        dateTransactionMade: Convert.ToDateTime(req["DateTransactionMade"]),
                         isExpense: System.Convert.ToBoolean(req["IsExpense"]),
-                        transactionCategory: req["TransactionCategory"]
+                        transactionCategory: Convert.ToString(req["TransactionCategory"])
                     );
 
             }
-            catch
+            catch (Exception e)
             {
+                Console.WriteLine(e.ToString());
                 return BadRequest();
             }
 
@@ -134,7 +138,7 @@ namespace REST.Controllers
         // Update an existing transaction or create if not exists
         [Route("api/TID={TID}&apikey={apiKey}")]
         [HttpPut]
-        public IActionResult UpdateAllByID(int TID, string apiKey)
+        public IActionResult UpdateAllByID(int TID, string apiKey, [FromBody] JsonElement reqBody)
         {
             if (!api.validAPIKey(apiKey))
             {
@@ -145,8 +149,8 @@ namespace REST.Controllers
                 return BadRequest();
             }
 
-            var req = Request.Form;
-            HashSet<string> reqAttributes = new HashSet<string>(Request.Form.Keys);
+            Dictionary<string, object> req = JsonConvert.DeserializeObject<Dictionary<string, object>>(Convert.ToString(reqBody));
+            HashSet<string> reqAttributes = new HashSet<string>(req.Keys);
             Transaction t = ts.getUsingID(TID);
 
             // Create the transaction with the given TID if it doesn't exist
@@ -161,18 +165,19 @@ namespace REST.Controllers
                 {
                     t = new Transaction(
                             TID: TID,
-                            accountID: long.Parse(req["AccountID"]),
-                            SGID: long.Parse(req["SGID"]),
-                            transactionName: req["TransactionName"],
-                            amount: decimal.Parse(req["Amount"]),
-                            dateTransactionMade: DateTime.Parse(req["DateTransactionMade"]),
-                            isExpense: System.Convert.ToBoolean(req["IsExpense"]),
-                            transactionCategory: req["TransactionCategory"]
+                            accountID: Convert.ToInt64(req["AccountID"]),
+                            SGID: Convert.ToInt64(req["SGID"]),
+                            transactionName: Convert.ToString(req["TransactionName"]),
+                            amount: Convert.ToDecimal(req["Amount"]),
+                            dateTransactionMade: Convert.ToDateTime(req["DateTransactionMade"]),
+                            isExpense: Convert.ToBoolean(req["IsExpense"]),
+                            transactionCategory: Convert.ToString(req["TransactionCategory"])
                         );
                 }
                 // Formatting or improper data typing raised exception, bad request
-                catch
+                catch (Exception e)
                 {
+                    Console.WriteLine(e.ToString());
                     return BadRequest();
                 }
 
@@ -192,17 +197,18 @@ namespace REST.Controllers
                 // TID and AccountID are never modifiable
                 try
                 {
-                    t.setSGID(long.Parse(req["SGID"]));
-                    t.setTransactionName(req["TransactionName"]);
-                    t.setAmount(decimal.Parse(req["Amount"]));
-                    t.setDateTransactionMade(DateTime.Parse(req["DateTransactionMade"]));
-                    t.setDateTransactionEntered(DateTime.Parse(req["DateTransactionEntered"]));
-                    t.setIsExpense(bool.Parse(req["IsExpense"]));
-                    t.setTransactionCategory(req["TransactionCategory"]);
+                    t.setSGID(Convert.ToInt64(req["SGID"]));
+                    t.setTransactionName(Convert.ToString(req["TransactionName"]));
+                    t.setAmount(Convert.ToDecimal(req["Amount"]));
+                    t.setDateTransactionMade(Convert.ToDateTime(req["DateTransactionMade"]));
+                    t.setDateTransactionEntered(Convert.ToDateTime(req["DateTransactionEntered"]));
+                    t.setIsExpense(Convert.ToBoolean(req["IsExpense"]));
+                    t.setTransactionCategory(Convert.ToString(req["TransactionCategory"]));
                 }
                 // Formatting or improper data typing raised exception, bad request
-                catch
+                catch (Exception e)
                 {
+                    Console.WriteLine(e.ToString());
                     return BadRequest();
                 }
 
@@ -218,7 +224,7 @@ namespace REST.Controllers
         // returns Http 404 Not found if doesn't exist
         [Route("api/TID={TID}&apikey={apiKey}")]
         [HttpPatch]
-        public IActionResult UpdateByID(int TID, string apiKey)
+        public IActionResult UpdateByID(int TID, string apiKey,[FromBody] JsonElement reqBody)
         {
             if (!api.validAPIKey(apiKey))
             {
@@ -231,13 +237,12 @@ namespace REST.Controllers
 
             // Validate the attributes of the PATCH request, each attribute specified
             // in the request must be an attribute of a Transaction
-            HashSet<string> reqAttributes = new HashSet<string>(Request.Form.Keys);
+            Dictionary<string, object> req = JsonConvert.DeserializeObject<Dictionary<string, object>>(Convert.ToString(reqBody));
+            HashSet<string> reqAttributes = new HashSet<string>(req.Keys);
             if (!api.validAttributes(updateAttr, reqAttributes))
             {
                 return BadRequest();
             }
-
-            var req = Request.Form;
             Transaction t = ts.getUsingID(TID);
 
             // Http POST cannot update a transaction that does not exist
@@ -255,33 +260,34 @@ namespace REST.Controllers
             {
                 if (reqAttributes.Contains("SGID"))
                 {
-                    t.setSGID(long.Parse(req["SGID"]));
+                    t.setSGID(Convert.ToInt64(req["SGID"]));
                 }
                 if (reqAttributes.Contains("TransactionName"))
                 {
-                    t.setTransactionName(req["TransactionName"]);
+                    t.setTransactionName(Convert.ToString(req["TransactionName"]));
                 }
                 if (reqAttributes.Contains("Amount"))
                 {
-                    t.setAmount(decimal.Parse(req["Amount"]));
+                    t.setAmount(Convert.ToDecimal(req["Amount"]));
                 }
                 if (reqAttributes.Contains("DateTransactionMade")) {
-                    t.setDateTransactionMade(DateTime.Parse(req["DateTransactionMade"]));
+                    t.setDateTransactionMade(Convert.ToDateTime(req["DateTransactionMade"]));
                 }
                 if (reqAttributes.Contains("DateTransactionEntered")){
-                    t.setDateTransactionEntered(DateTime.Parse(req["DateTransactionEntered"]));
+                    t.setDateTransactionEntered(Convert.ToDateTime(req["DateTransactionEntered"]));
                 }
                 if (reqAttributes.Contains("IsExpense"))
                 {
-                    t.setIsExpense(bool.Parse(req["IsExpense"]));
+                    t.setIsExpense(Convert.ToBoolean(req["IsExpense"]));
                 }
                 if (reqAttributes.Contains("TransactionCategory"))
                 {
-                    t.setTransactionCategory(req["TransactionCategory"]);
+                    t.setTransactionCategory(Convert.ToString(req["TransactionCategory"]));
                 }
             }
             // Formatting or improper data typing raised exception, bad request
-            catch {
+            catch(Exception e){
+                Console.WriteLine(e.ToString());
                 return BadRequest();
             }
 
