@@ -1,9 +1,9 @@
 using System;
-using Google.Cloud.BigQuery.V2;
-using Google.Cloud.Storage.V1;
 using System.IO;
 using ServiceLayer;
 using DataAccessLayer.Models;
+using System.Collections.Generic;
+
 
 namespace ServiceLayer
 {
@@ -12,10 +12,10 @@ namespace ServiceLayer
         static void authenticateGCP()
         {
             // Devin's Credentials
-            //string pathToCreds = "/Users/devin/Documents/GitHub/FrankFund/Credentials/AuthDevin.json";
+            string pathToCreds = "/Users/devin/Documents/GitHub/FrankFund/Credentials/AuthDevin.json";
 
             // Autumn's Credentials
-            string pathToCreds = "/Users/steve/OneDrive/Documents/GitHub/FrankFund/Credentials/AuthAutumn.json";
+            //string pathToCreds = "/Users/steve/OneDrive/Documents/GitHub/FrankFund/Credentials/AuthAutumn.json";
 
             // Kenneth's Credentials
             //string pathToCreds = "/Users/015909177/Desktop/Github Repos/FrankFund/Credentials/AuthKenny.json";
@@ -95,7 +95,7 @@ namespace ServiceLayer
 
             // Print the JSON representation of the goal we created
             SavingsGoalService sgService = new SavingsGoalService();
-            sgService.getJSON(sg);
+            Console.WriteLine(sgService.getJSON(sg));
         }
 
         static void testSGReadModifyRewrite(long SGID)
@@ -275,6 +275,53 @@ namespace ServiceLayer
         }
 
 
+
+        // --------------------------------------------------- Begin Data Analytics Testing ---------------------------------------------------
+        static void testSpendingPerCategory(long accID)
+        {
+            AnalyticsService a = new AnalyticsService();
+            
+            Dictionary<string, decimal> spendingPerCategory = a.getSpendingPerCategory(accID);
+
+            // Print the spending per category
+            Console.WriteLine("For user #" + accID);
+            Console.WriteLine("\nSpending Per Category\n---------------------\n");
+            foreach(string category in spendingPerCategory.Keys)
+            {
+                Console.WriteLine("   " + category + " : $" + spendingPerCategory[category]);
+            }
+        }
+
+        static void testGetTotalSpending(long accID)
+        {
+            AnalyticsService a = new AnalyticsService();
+            decimal totalSpending = a.getTotalSpending(accID);
+
+            // Print the total spending
+            Console.WriteLine("For user #" + accID);
+            Console.WriteLine("   Total spending: $" + totalSpending);
+        }
+
+        static void testCategoryBreakdown(long accID)
+        {
+            AnalyticsService a = new AnalyticsService();
+            Dictionary<string, Tuple<decimal, decimal>> breakdown = a.getCategoryBreakdown(accID);
+
+            Console.WriteLine("For user #" + accID);
+            Console.WriteLine("\nCategory Breakdown\n---------------\n");
+            foreach(string category in breakdown.Keys)
+            {
+                Tuple<decimal, decimal> categoryVals = breakdown[category];
+                Console.WriteLine("   " + category + ":");
+                Console.WriteLine("      Category Total: $" + categoryVals.Item1);
+                Console.WriteLine("      % of All Spending: " + categoryVals.Item2);
+            }
+        }
+
+
+
+
+
         // --------------------------------------------------- End Testing ---------------------------------------------------
 
 
@@ -305,7 +352,7 @@ namespace ServiceLayer
 
 
             // ---------------------------------------------- Test: Creating User Account ------------------------------------------------------
-            testAccCreate();
+            //testAccCreate();
 
 
             // ---------------------------------------------- Test: Transaction Create ---------------------------------------------------------
@@ -324,6 +371,13 @@ namespace ServiceLayer
             //Console.WriteLine(testReinstantiateReceipt(RID: 10));
             //testModifyRewriteReceipt(RID: 10);
             //testDeleteReceipt(RID: 11);
+
+
+
+            // ---------------------------------------------- Test: Data Analytics ---------------------------------------------------------
+            //testSpendingPerCategory(accID: 1);
+            //testGetTotalSpending(accID: 1);
+            //testCategoryBreakdown(accID: 1);
         }
 
     }
