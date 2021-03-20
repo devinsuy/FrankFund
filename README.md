@@ -141,7 +141,7 @@ PATCH request with the above JSON request body will update the EndDate attribute
 PATCH request with the above JSON request body will update the GoalAmt without affecting payment amount by modifying the SavingsGoal's EndDate and NumPeriods.
 ```json
 {
-    "ContrAmt": 425,
+    	"ContrAmt": 425,
 	"Period": "BiWeekly",
 }
 ```
