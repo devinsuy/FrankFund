@@ -14,7 +14,7 @@ namespace DataAccessLayer.Models
     public class SavingsGoal
     {
         public readonly long SGID;
-        public string name; 
+        public string name;
         public decimal goalAmt;
         public decimal contrAmt;
         public contrPeriod period;
@@ -29,7 +29,7 @@ namespace DataAccessLayer.Models
         }
 
         public long calcPeriodsWithAmt() {
-            return (long) Math.Ceiling(goalAmt / contrAmt);
+            return (long)Math.Ceiling(goalAmt / contrAmt);
         }
 
         public decimal calcContrAmt() {
@@ -42,25 +42,25 @@ namespace DataAccessLayer.Models
             return endDate;
         }
 
-        public string formatPeriodStr(){
-            if(period == contrPeriod.Daily){
+        public string formatPeriodStr() {
+            if (period == contrPeriod.Daily) {
                 return "for " + numPeriods + " days";
             }
-            else if(period == contrPeriod.Weekly){
+            else if (period == contrPeriod.Weekly) {
                 return "for " + numPeriods + " weeks";
             }
-            else if(period == contrPeriod.BiWeekly){
+            else if (period == contrPeriod.BiWeekly) {
                 return "every other week for " + numPeriods + " periods";
             }
-            else if(period == contrPeriod.Monthly){
+            else if (period == contrPeriod.Monthly) {
                 return "for " + numPeriods + " months";
             }
-            else{
+            else {
                 return "every other month for " + numPeriods + " periods";
             }
         }
 
-        public override string ToString(){
+        public override string ToString() {
             return $"\"{name}\" Savings Goal With SGID #" + SGID
                 + $"\n   For the amount of ${goalAmt}"
                 + $"\n   Began on {startDate.ToString("yyyy-MM-dd")} and ends on {endDate.ToString("yyyy-MM-dd")}"
@@ -115,7 +115,7 @@ namespace DataAccessLayer.Models
 
         // ---------------------------------------- SavingsGoal Setters ----------------------------------------
 
-        public void updateName(string newName){
+        public void updateName(string newName) {
             if (newName.Equals(name))
             {
                 return;
@@ -129,27 +129,27 @@ namespace DataAccessLayer.Models
                         True: Keep payments fixed per period, but increase the number of periods and end date.
                         False: Keep number of periods and end date fixed, but increase payment amount per period.
         */
-        public void updateGoalAmt(decimal newGoalAmt, bool extendEndDate){
-            if(newGoalAmt == this.goalAmt)
+        public void updateGoalAmt(decimal newGoalAmt, bool extendEndDate) {
+            if (newGoalAmt == this.goalAmt)
             {
                 return;
             }
             this.changed = true;
-            this.goalAmt = newGoalAmt;       
+            this.goalAmt = newGoalAmt;
 
             // Reflect the updated goal amount in either a new end date and # periods or increase the contrAmt
-            if(extendEndDate){
+            if (extendEndDate) {
                 this.numPeriods = this.calcPeriodsWithAmt();
                 this.endDate = this.calcEndDate();
             }
-            else{
+            else {
                 this.contrAmt = this.calcContrAmt();
             }
         }
 
         // Updating contribution amount will require the number of periods and end date to recalculate
-        public void updateContrAmt(decimal newContrAmt){
-            if(newContrAmt == this.contrAmt)
+        public void updateContrAmt(decimal newContrAmt) {
+            if (newContrAmt == this.contrAmt)
             {
                 return;
             }
@@ -160,8 +160,8 @@ namespace DataAccessLayer.Models
         }
 
         // Updating end date will require the number of periods and contribution per period to recalculate
-        public void updateEndDate(DateTime newEndDate){
-            if(newEndDate.Equals(this.endDate))
+        public void updateEndDate(DateTime newEndDate) {
+            if (newEndDate.Equals(this.endDate))
             {
                 return;
             }
@@ -172,8 +172,8 @@ namespace DataAccessLayer.Models
         }
 
         // Updating period will require end date to recalculate
-        public void updatePeriod(contrPeriod newPeriod){
-            if(newPeriod.Equals(this.period))
+        public void updatePeriod(contrPeriod newPeriod) {
+            if (newPeriod.Equals(this.period))
             {
                 return;
             }
@@ -183,8 +183,8 @@ namespace DataAccessLayer.Models
         }
 
         // Update contrAmt and change to a new contrPeriod, require both numPeriods and endDate to recalculate
-        public void updateContrAmtAndPeriod(decimal newContrAmt, contrPeriod newPeriod){
-            if(newContrAmt == this.contrAmt && newPeriod.Equals(this.period))
+        public void updateContrAmtAndPeriod(decimal newContrAmt, contrPeriod newPeriod) {
+            if (newContrAmt == this.contrAmt && newPeriod.Equals(this.period))
             {
                 return;
             }
@@ -194,5 +194,6 @@ namespace DataAccessLayer.Models
             this.numPeriods = this.calcPeriodsWithAmt();
             this.endDate = this.calcEndDate();
         }
+
     }
 }
