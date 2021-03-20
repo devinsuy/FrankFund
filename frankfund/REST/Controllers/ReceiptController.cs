@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using DataAccessLayer.Models;
 using ServiceLayer;
 using System;
-
+using System.Text.Json;
+using Newtonsoft.Json;
 
 namespace REST.Controllers
 {
@@ -70,7 +71,7 @@ namespace REST.Controllers
         // Returns Http 409 Conflict if already exists
         [Route("api/RID={RID}&apikey={apiKey}")]
         [HttpPost]
-        public IActionResult CreateByID(int RID, string apiKey)
+        public IActionResult CreateByID(int RID, string apiKey, [FromBody] JsonElement reqBody)
         {
             if (!api.validAPIKey(apiKey))
             {
@@ -82,7 +83,8 @@ namespace REST.Controllers
             }
 
             // Validate that the POST request contains all necessary attributes to create a NEW Receipt and nothing more
-            HashSet<string> reqAttributes = new HashSet<string>(Request.Form.Keys);
+            Dictionary<string, object> req = JsonConvert.DeserializeObject<Dictionary<string, object>>(Convert.ToString(reqBody));
+            HashSet<string> reqAttributes = new HashSet<string>(req.Keys);
             if (!reqAttributes.SetEquals(attributes))
             {
                 return BadRequest();
@@ -98,18 +100,18 @@ namespace REST.Controllers
             // Create the Receipt with the given RID using the POST payload
             try
             {
-                var req = Request.Form;
                 r = new Receipt(
                         RID: RID,
-                        TID: long.Parse(req["TID"]),
-                        ImgURL: req["ImgURL"],
-                        PurchaseDate: DateTime.Parse(req["PurchaseDate"]),
-                        Notes: req["Notes"],
+                        TID: Convert.ToInt64(req["TID"]),
+                        ImgURL: Convert.ToString(req["ImgURL"]),
+                        PurchaseDate: Convert.ToDateTime(req["PurchaseDate"]),
+                        Notes: Convert.ToString(req["Notes"]),
                         newlyCreated: true
                     );
             }
-            catch
+            catch (Exception e)
             {
+                Console.WriteLine(e.ToString());
                 return BadRequest();
             }
 
@@ -123,7 +125,7 @@ namespace REST.Controllers
         // Update an existing Receipt or create if not exists
         [Route("api/RID={RID}&apikey={apiKey}")]
         [HttpPut]
-        public IActionResult UpdateAllByID(int RID, string apiKey)
+        public IActionResult UpdateAllByID(int RID, string apiKey, [FromBody] JsonElement reqBody)
         {
             if (!api.validAPIKey(apiKey))
             {
@@ -134,8 +136,8 @@ namespace REST.Controllers
                 return BadRequest();
             }
 
-            var req = Request.Form;
-            HashSet<string> reqAttributes = new HashSet<string>(Request.Form.Keys);
+            Dictionary<string, object> req = JsonConvert.DeserializeObject<Dictionary<string, object>>(Convert.ToString(reqBody));
+            HashSet<string> reqAttributes = new HashSet<string>(req.Keys);
             Receipt r = rs.getUsingID(RID);
 
             // Create the Receipt with the given RID if it doesn't exist
@@ -150,16 +152,17 @@ namespace REST.Controllers
                 {
                     r = new Receipt(
                             RID: RID,
-                            TID: long.Parse(req["TID"]),
-                            ImgURL: req["ImgURL"],
-                            PurchaseDate: DateTime.Parse(req["PurchaseDate"]),
-                            Notes: req["Notes"],
+                            TID: Convert.ToInt64(req["TID"]),
+                            ImgURL: Convert.ToString(req["ImgURL"]),
+                            PurchaseDate: Convert.ToDateTime(req["PurchaseDate"]),
+                            Notes: Convert.ToString(req["Notes"]),
                             newlyCreated: true
                         );
                 }
                 // Formatting or improper data typing raised exception, bad request
-                catch
+                catch (Exception e)
                 {
+                    Console.WriteLine(e.ToString());
                     return BadRequest();
                 }
 
@@ -179,13 +182,14 @@ namespace REST.Controllers
                 // TID is never modifiable
                 try
                 {
-                    r.setImageLink(req["ImgURL"]);
-                    r.setPurchaseDate(DateTime.Parse(req["PurchaseDate"]));
-                    r.setNote(req["Notes"]);
+                    r.setImageLink(Convert.ToString(req["ImgURL"]));
+                    r.setPurchaseDate(Convert.ToDateTime(req["PurchaseDate"]));
+                    r.setNote(Convert.ToString(req["Notes"]));
                 }
                 // Formatting or improper data typing raised exception, bad request
-                catch
+                catch (Exception e)
                 {
+                    Console.WriteLine(e.ToString());
                     return BadRequest();
                 }
 
@@ -201,7 +205,7 @@ namespace REST.Controllers
         // returns Http 404 Not found if doesn't exist
         [Route("api/RID={RID}&apikey={apiKey}")]
         [HttpPatch]
-        public IActionResult UpdateByID(int RID, string apiKey)
+        public IActionResult UpdateByID(int RID, string apiKey, [FromBody] JsonElement reqBody)
         {
             if (!api.validAPIKey(apiKey))
             {
@@ -214,13 +218,13 @@ namespace REST.Controllers
 
             // Validate the attributes of the PATCH request, each attribute specified
             // in the request must be an attribute of a Receipt
-            HashSet<string> reqAttributes = new HashSet<string>(Request.Form.Keys);
+            Dictionary<string, object> req = JsonConvert.DeserializeObject<Dictionary<string, object>>(Convert.ToString(reqBody));
+            HashSet<string> reqAttributes = new HashSet<string>(req.Keys);
             if (!api.validAttributes(attributes, reqAttributes))
             {
                 return BadRequest();
             }
 
-            var req = Request.Form;
             Receipt r = rs.getUsingID(RID);
 
             // Http POST cannot update a Receipt that does not exist
@@ -229,8 +233,8 @@ namespace REST.Controllers
                 return NotFound();
             }
 
-            // Otherwise fufill the POST request and update the corresponding Receipt
-            // Http POST may only specify a few attributes to update or provide all of them
+            // Otherwise fufill the PATCH request and update the corresponding Receipt
+            // Http PATCH may only specify a few attributes to update or provide all of them
             // TID is not an updatable attribute
 
             // Update the Receipt with the specified POST attributes
@@ -238,20 +242,21 @@ namespace REST.Controllers
             {
                 if (reqAttributes.Contains("ImgURL"))
                 {
-                    r.setImageLink(req["ImgURL"]);
+                    r.setImageLink(Convert.ToString(req["ImgURL"]));
                 }
                 if (reqAttributes.Contains("PurchaseDate"))
                 {
-                    r.setPurchaseDate(DateTime.Parse(req["PurchaseDate"]));
+                    r.setPurchaseDate(Convert.ToDateTime(req["PurchaseDate"]));
                 }
                 if (reqAttributes.Contains("Notes"))
                 {
-                    r.setNote(req["Notes"]);
+                    r.setNote(Convert.ToString(req["Notes"]));
                 }
             }
             // Formatting or improper data typing raised exception, bad request
-            catch
+            catch (Exception e)
             {
+                Console.WriteLine(e.ToString());
                 return BadRequest();
             }
 
