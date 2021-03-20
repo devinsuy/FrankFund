@@ -21,6 +21,7 @@ namespace DataAccessLayer
             };
         }
 
+        // Return spending per category for a given user
         public BigQueryResults getSpendingPerCategory(long accID)
         {
             string query = "SELECT a.accountID, t.TransactionCategory, SUM(t.amount) AS CategoryTotal"
@@ -42,6 +43,19 @@ namespace DataAccessLayer
         public decimal castBQNumeric(object val)
         {
             return this.dataHelper.castBQNumeric(val);
+        }
+
+
+        // Returns spending across ALL categories for a given user
+        public BigQueryResults getTotalSpending(long accID)
+        {
+            string query = "SELECT SUM(t.amount) AS TotalExpenses"
+                + " FROM FrankFund.Transactions t"
+                + " INNER JOIN FrankFund.Accounts a"
+                + " ON t.AccountID = a.AccountID"
+                + $" WHERE a.accountID = {accID}";
+
+            return this.dataHelper.query(query, parameters: null);
         }
     }
 }
