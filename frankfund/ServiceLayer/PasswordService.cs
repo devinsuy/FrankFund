@@ -8,14 +8,17 @@ using Google.Cloud.BigQuery.V2;
 using DataAccessLayer.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.RegularExpressions;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 
 namespace ServiceLayer
 {
     public class PasswordService
     {
+        // Checks for Password Minimum Requirements
+        //  @password : string password
         public bool CheckMinReqPassword(string password)
         {
-            // PAssword Minimum Requirements
             // Length of 8 characters
             // Uppercase letter (A-Z)
             // Lowercase letter(a-z)
@@ -68,6 +71,27 @@ namespace ServiceLayer
                 meetsRequirement = true;
             }
             return meetsRequirement;
+        }
+
+        // Generates salt for password
+        public byte[] GenerateSalt()
+        {
+            byte[] salt;
+            new RNGCryptoServiceProvider().GetBytes(salt = new byte[16]);
+            return salt;
+        }
+
+        // Hashes password
+        public string HashPassword(string password, byte[] salt)
+        {
+            var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 10000);
+            byte[] hash = pbkdf2.GetBytes(20);
+            byte[] hashBytes = new byte[36];
+            Array.Copy(salt, 0, hashBytes, 0, 16);
+            Array.Copy(hash, 0, hashBytes, 16, 20);
+
+            string passwordHash = Convert.ToBase64String(hashBytes);
+            return passwordHash;
         }
     }
 }
