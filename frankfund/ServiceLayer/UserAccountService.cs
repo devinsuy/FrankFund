@@ -179,6 +179,12 @@ namespace ServiceLayer
                 return;
             }
 
+            // Salts and hashes password for security concerns when storing to the database
+            byte[] passwordSalt = PasswordService.GenerateSalt();
+            string passwordHashed = PasswordService.HashPassword(userAccount.PasswordHash, passwordSalt);
+
+            userAccount.PasswordSalt = passwordSalt;
+            userAccount.PasswordHash = passwordHashed;
 
             // If all the checks are passed then writeUserAccount to database
             this.UserAccountDataAccess.write(serialize(userAccount));
@@ -228,6 +234,13 @@ namespace ServiceLayer
                     //return new OkObjectResult("User already exists");
                 }
 
+                // Salts and hashes password for security concerns when storing to the database
+                byte[] passwordSalt = PasswordService.GenerateSalt();
+                string passwordHashed = PasswordService.HashPassword(userAccount.PasswordHash, passwordSalt);
+
+                userAccount.PasswordSalt = passwordSalt;
+                userAccount.PasswordHash = passwordHashed;
+
                 // If all the checks are passed then writeUserAccount to database
                 // with newlyCreated bool = false and changed bool = true
                 this.UserAccountDataAccess.update(serialize(userAccount));
@@ -246,7 +259,8 @@ namespace ServiceLayer
                 acc.AccountID.ToString(),
                 acc.AccountUsername,
                 acc.EmailAddress,
-                acc.PasswordHash
+                acc.PasswordHash,
+                Encoding.Default.GetString(acc.PasswordSalt)
             };
         }
 
@@ -266,7 +280,8 @@ namespace ServiceLayer
                 + $"\"AccountID\":{serialized[0]},"
                 + $"\"AccountUsername\":\"" + serialized[1] + "\","
                 + $"\"EmailAddress\":\"" + serialized[2] + "\","
-                + $"\"Password\":\"" + serialized[3] + "\""
+                + $"\"PasswordHash\":\"" + serialized[3] + "\","
+                + $"\"PasswordSalt\":\"" + serialized[4] + "\""
             + "}";
 
             return jsonStr;

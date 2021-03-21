@@ -23,7 +23,7 @@ namespace DataAccessLayer.Models
             this.AccountUsername = username;
             this.EmailAddress = email;
             this.PasswordHash = pass;
-            // need to add PasswordSalt
+            this.PasswordSalt = passSalt;
             //this.FacebookID = fb;
             //this.GoogleID = google;
         }
@@ -33,7 +33,7 @@ namespace DataAccessLayer.Models
             this.AccountUsername = username;
             this.EmailAddress = email;
             this.PasswordHash = pass;
-            // need to add PasswordSalt
+            this.PasswordSalt = passSalt;
             //this.FacebookID = fb;
             //this.GoogleID = google;
         }
