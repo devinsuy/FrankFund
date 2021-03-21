@@ -93,5 +93,19 @@ namespace ServiceLayer
             string passwordHash = Convert.ToBase64String(hashBytes);
             return passwordHash;
         }
+
+        public bool checkHash(string pass, UserAccount userAccount)
+        {
+            byte[] passwordSalt = userAccount.PasswordSalt;
+            string inputtedPasswordHash = HashPassword(pass, passwordSalt);
+            if(inputtedPasswordHash == userAccount.PasswordHash)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

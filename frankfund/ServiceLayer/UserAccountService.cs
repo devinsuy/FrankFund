@@ -260,7 +260,7 @@ namespace ServiceLayer
                 acc.AccountUsername,
                 acc.EmailAddress,
                 acc.PasswordHash,
-                Encoding.Default.GetString(acc.PasswordSalt)
+                Convert.ToBase64String(acc.PasswordSalt)
             };
         }
 

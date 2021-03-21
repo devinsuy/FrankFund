@@ -130,6 +130,7 @@ namespace ServiceLayer
         static void testAccCreate()
         {
             UserAccountService uaService = new UserAccountService();
+            PasswordService passService = new PasswordService();
 
             Console.WriteLine("\n-------------------- Test: Getting and Creating a new User Account --------------------");
             //Console.WriteLine("\n1. Testing GetAccountUsingUsername function | Prints out AccountUsername found");
@@ -143,6 +144,8 @@ namespace ServiceLayer
             Console.WriteLine("\n3. Testing CreateUserAccount function | Prints out AccountUsername of made account");
             UserAccount testAccount = new UserAccount(5, "test", "test@gmail.com", "Password1", null);
             uaService.write(testAccount);
+            Console.WriteLine(passService.checkHash("Password1", testAccount));
+
             //Console.WriteLine("Username: " + uaService.getUsingID(5).AccountUsername);
 
             //Console.WriteLine("\n4. Testing DeleteUserAccount function | Prints out AccountUsername of deleted account");

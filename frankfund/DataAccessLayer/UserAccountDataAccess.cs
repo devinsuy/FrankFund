@@ -37,15 +37,14 @@ namespace DataAccessLayer
         public void write(string[] serializedAcc)
         {
             string query;
-            // ****** !! NEED TO REARRANGE ORDER PASSWORDHASH -> PASSWORDSALT ONCE BIGQUERY TABLE IS ALTERED !! ******
             query = $"INSERT INTO {this.tableID} VALUES ("
                 + getNextAvailID().ToString() + ","               // AccountID
                 + $"\"{serializedAcc[1]}\","                        // AccountUsername
                 + $"\"{serializedAcc[2]}\","                        // Email Address
                 + $"\"{serializedAcc[3]}\","                        // PasswordHash
+                + $"\"{serializedAcc[4]}\","                         // PasswordSalt
                 + "null" + ","                                           // FacebookID
-                + "null" + ","                                          // GoogleID
-                + $"\"{serializedAcc[4]}\")";                         // PasswordSalt
+                + "null" + ")";                                         // GoogleID
             Console.WriteLine("Running Insert Query:\n---------------------\n" + query);
             this.dataHelper.query(query);
         }
