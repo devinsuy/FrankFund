@@ -35,7 +35,8 @@ namespace ServiceLayer
                     (DateTime)row["DateTransactionMade"],
                     (DateTime)row["DateTransactionEntered"],
                     (bool)row["IsExpense"],
-                    (string)row["TransactionCategory"]
+                    //(transactionCategory)row["TransactionCategory"]
+                    this.TransactionDataAccess.ParseEnum<transactionCategory>((string)row["TransactionCategory"])
                 );
             }
             return transaction;
