@@ -72,5 +72,9 @@ namespace DataAccessLayer
         {
             return this.dataHelper.castBQNumeric(val);
         }
+        public T ParseEnum<T>(string value)
+        {
+            return this.dataHelper.ParseEnum<T>(value);
+        }
     }
 }

@@ -62,6 +62,9 @@ namespace DataAccessLayer
         public decimal castBQNumeric(object val){
             return castBQNumeric((BigQueryNumeric) val);
         }
-
+        public T ParseEnum<T>(string value)
+        {
+            return (T)Enum.Parse(typeof(T), value, ignoreCase: true);
+        }
     }
 }
