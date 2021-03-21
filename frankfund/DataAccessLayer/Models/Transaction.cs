@@ -4,6 +4,18 @@ using System.Text;
 
 namespace DataAccessLayer.Models
 {
+    public enum transactionCategory{
+        Entertainment,
+        Restaurants,
+        Transportation,
+        HomeAndUtilities,
+        Education,
+        Insurance,
+        Health,
+        Groceries,
+        Deposits,
+        Uncategorized
+    };
     public class Transaction
     {
         //Transaction ID
@@ -21,7 +33,7 @@ namespace DataAccessLayer.Models
         //Is an expense or income
         private bool isExpense;
         //Category of transaction
-        private string transactionCategory;
+        private transactionCategory category;
         //Date transaction was entered
         private DateTime dateTransactionEntered;
 
@@ -29,7 +41,7 @@ namespace DataAccessLayer.Models
         public bool newlyCreated;
 
         //Constructor
-        public Transaction(long TID, long accountID, long SGID, string transactionName, decimal amount, DateTime dateTransactionMade, bool isExpense, string transactionCategory)
+        public Transaction(long TID, long accountID, long SGID, string transactionName, decimal amount, DateTime dateTransactionMade, bool isExpense, transactionCategory category)
         {
             this.TID = TID;
             this.accountID = accountID;
@@ -38,7 +50,7 @@ namespace DataAccessLayer.Models
             this.amount = amount;
             this.dateTransactionMade = dateTransactionMade;
             this.isExpense = isExpense;
-            this.transactionCategory = transactionCategory;
+            this.category = category;
 
             //Assign the current time using the DateTime library method Now.
             dateTransactionEntered = DateTime.Now;
@@ -46,7 +58,7 @@ namespace DataAccessLayer.Models
         }
 
         // Constructor for reinstantiation
-        public Transaction(long TID, long accountID, long SGID, string transactionName, decimal amount, DateTime dateTransactionMade, DateTime dateTransactionEntered, bool isExpense, string transactionCategory)
+        public Transaction(long TID, long accountID, long SGID, string transactionName, decimal amount, DateTime dateTransactionMade, DateTime dateTransactionEntered, bool isExpense, transactionCategory category)
         {
             this.TID = TID;
             this.accountID = accountID;
@@ -55,7 +67,7 @@ namespace DataAccessLayer.Models
             this.amount = amount;
             this.dateTransactionMade = dateTransactionMade;
             this.isExpense = isExpense;
-            this.transactionCategory = transactionCategory;
+            this.category = category;
 
             this.dateTransactionEntered = dateTransactionEntered;
             this.newlyCreated = false;
@@ -96,9 +108,9 @@ namespace DataAccessLayer.Models
             return isExpense;
         }
 
-        public string getTransactionCategory()
+        public transactionCategory getTransactionCategory()
         {
-            return transactionCategory;
+            return category;
         }
 
         public DateTime getDateTransactionEntered()
@@ -158,13 +170,13 @@ namespace DataAccessLayer.Models
             changed = true;
         }
 
-        public void setTransactionCategory(string transactionCategory)
+        public void setTransactionCategory(transactionCategory category)
         {
-            if (transactionCategory.Equals(this.transactionCategory))
+            if (category.Equals(this.category))
             {
                 return;
             }
-            this.transactionCategory = transactionCategory;
+            this.category = category;
             changed = true;
         }
 
