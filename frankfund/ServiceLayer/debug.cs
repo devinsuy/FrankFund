@@ -229,8 +229,8 @@ namespace ServiceLayer
         static void testGetTransactionsFromAccount(long accID)
         {
             List<Transaction> transactions = new List<Transaction>();
-            TransactionUserAccountService tus = new TransactionUserAccountService();
-            transactions = tus.getTransactionsFromAccount(accID);
+            TransactionService ts = new TransactionService();
+            transactions = ts.getTransactionsFromAccount(accID);
             Console.WriteLine("\nDisplaying all transactions for user with account id {0}...", accID);
             foreach (Transaction t in transactions)
             {
@@ -243,13 +243,13 @@ namespace ServiceLayer
         static void testGetTransactionsFromAccountJSON(long accID)
         {
             List<Transaction> transactions = new List<Transaction>();
-            TransactionUserAccountService tus = new TransactionUserAccountService();
-            transactions = tus.getTransactionsFromAccount(accID);
+            TransactionService ts = new TransactionService();
+            transactions = ts.getTransactionsFromAccount(accID);
             Console.WriteLine("\nDisplaying all transactions for user with account id {0}...", accID);
             foreach (Transaction t in transactions)
             {
                 Console.WriteLine("-----------------------------------------------------------------------");
-                Console.WriteLine(tus.getJSON(t));
+                Console.WriteLine(ts.getJSON(t));
             }
         }
 
@@ -257,8 +257,8 @@ namespace ServiceLayer
         static void testGetTransactionsFromCategory(long accID, string category)
         {
             List<Transaction> transactions = new List<Transaction>();
-            TransactionUserAccountService tus = new TransactionUserAccountService();
-            transactions = tus.getTransactionsFromCategory(accID, category);
+            TransactionService ts = new TransactionService();
+            transactions = ts.getTransactionsFromCategory(accID, category);
             Console.WriteLine("\nDisplaying all transactions categorized as {0} for user with account id {1}...", accID, category);
             foreach (Transaction t in transactions)
             {
@@ -271,13 +271,13 @@ namespace ServiceLayer
         static void testGetTransactionsFromCategoryJSON(long accID, string category)
         {
             List<Transaction> transactions = new List<Transaction>();
-            TransactionUserAccountService tus = new TransactionUserAccountService();
-            transactions = tus.getTransactionsFromCategory(accID, category);
+            TransactionService ts = new TransactionService();
+            transactions = ts.getTransactionsFromCategory(accID, category);
             Console.WriteLine("\nDisplaying all transactions categorized as {0} for user with account id {1}...", accID, category);
             foreach (Transaction t in transactions)
             {
                 Console.WriteLine("-----------------------------------------------------------------------");
-                Console.WriteLine(tus.getJSON(t));
+                Console.WriteLine(ts.getJSON(t));
             }
 
         }
@@ -432,10 +432,10 @@ namespace ServiceLayer
             //testModifyRewriteTransaction(TID: 25);
             //testDeleteTransaction(TID: 42);
             //testDisplayTransaction(TID: 12);
-            //testGetTransactionsFromAccount(accID: 5);
-            //testGetTransactionsFromAccountJSON(accID: 5);
-            testGetTransactionsFromCategory(accID: 5, "Entertainment");
-            testGetTransactionsFromCategoryJSON(accID: 2, "Entertainment");
+            testGetTransactionsFromAccount(accID: 5);
+            testGetTransactionsFromAccountJSON(accID: 5);
+            //testGetTransactionsFromCategory(accID: 5, "Entertainment");
+            //testGetTransactionsFromCategoryJSON(accID: 2, "Entertainment");
 
 
             // ---------------------------------------------- Test: Receipt Create ---------------------------------------------------------

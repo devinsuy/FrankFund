@@ -58,6 +58,25 @@ namespace DataAccessLayer
             write(serializedTransaction);
         }
 
+        // Returns all transactions with a given user ordered by date entered
+        public BigQueryResults getTransactionsFromAccount(long accID)
+        {
+            string query = "SELECT * FROM FrankFund.Transactions t"
+                + $" WHERE t.accountID = {accID}"
+                + " ORDER BY DateTransactionEntered";
+            return this.dataHelper.query(query, parameters: null);
+        }
+
+        // Returns all transactions from a user account given a category ordered by date entered
+        public BigQueryResults getTransactionsFromCategory(long accID, string category)
+        {
+            string query = "SELECT * FROM FrankFund.Transactions t"
+                + $" WHERE t.accountID = {accID} AND t.transactionCategory = \"{category}\""
+                + " ORDER BY DateTransactionEntered";
+            return this.dataHelper.query(query, parameters: null);
+        }
+
+
         public long getNextAvailID()
         {
             return this.dataHelper.getNextAvailID(this.tableID);

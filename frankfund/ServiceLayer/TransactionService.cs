@@ -2,6 +2,7 @@
 using DataAccessLayer;
 using Google.Cloud.BigQuery.V2;
 using DataAccessLayer.Models;
+using System.Collections.Generic;
 
 namespace ServiceLayer
 {
@@ -120,6 +121,68 @@ namespace ServiceLayer
         public long getNextAvailID()
         {
             return TransactionDataAccess.getNextAvailID();
+        }
+
+        /*
+        Returns all transactions that is associated with the given account ID ordered by date entered
+            Params: The User Account ID 
+            Returns: A list of Transactions associated with the given ID
+         */
+        public List<Transaction> getTransactionsFromAccount(long accID)
+        {
+            List<Transaction> transactionsList = new List<Transaction>();
+
+            foreach (BigQueryRow row in this.TransactionDataAccess.getTransactionsFromAccount(accID))
+            {
+                Transaction transaction = null;
+                long SGID = -1;     // Nullable attr
+                if (row["SGID"] != null)
+                {
+                    SGID = (long)row["SGID"];
+                }
+                transaction = new Transaction(
+                    (long)row["TID"], (long)row["AccountID"], SGID,
+                    (string)row["TransactionName"],
+                    this.TransactionDataAccess.castBQNumeric(row["Amount"]),
+                    (DateTime)row["DateTransactionMade"],
+                    (DateTime)row["DateTransactionEntered"],
+                    (bool)row["IsExpense"],
+                    this.TransactionDataAccess.ParseEnum<transactionCategory>((string)row["TransactionCategory"])
+                );
+                transactionsList.Add(transaction);
+            }
+            return transactionsList;
+        }
+
+        /*
+        Returns all transactions associated with the given user account ID and sorted by the given category.
+            Params: The User Account ID
+                    The category
+            Returns: A list of Transactions associated with user account sorted by category
+        */
+        public List<Transaction> getTransactionsFromCategory(long accID, string category)
+        {
+            List<Transaction> transactionsList = new List<Transaction>();
+            foreach (BigQueryRow row in this.TransactionDataAccess.getTransactionsFromCategory(accID, category))
+            {
+                Transaction transaction = null;
+                long SGID = -1;     // Nullable attr
+                if (row["SGID"] != null)
+                {
+                    SGID = (long)row["SGID"];
+                }
+                transaction = new Transaction(
+                    (long)row["TID"], (long)row["AccountID"], SGID,
+                    (string)row["TransactionName"],
+                    this.TransactionDataAccess.castBQNumeric(row["Amount"]),
+                    (DateTime)row["DateTransactionMade"],
+                    (DateTime)row["DateTransactionEntered"],
+                    (bool)row["IsExpense"],
+                    this.TransactionDataAccess.ParseEnum<transactionCategory>((string)row["TransactionCategory"])
+                );
+                transactionsList.Add(transaction);
+            }
+            return transactionsList;
         }
     }
 }
