@@ -27,7 +27,7 @@ namespace DataAccessLayer
             return this.dataHelper.query(query, parameters: null);
         }
 
-        // Returns 
+        // Returns all transactions from a user account given a category ordered by date entered
         public BigQueryResults getTransactionsFromCategory(long accID, string category)
         {
             string query = "SELECT * FROM FrankFund.Transactions t"
