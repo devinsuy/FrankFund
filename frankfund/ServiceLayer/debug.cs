@@ -181,7 +181,7 @@ namespace ServiceLayer
 
             // Create a new Transaction
             //Temp Account ID
-            long tempAccountID = 1;
+            long tempAccountID = 5;
             long SGID = 2;
             Transaction sampleTransaction = new Transaction(TID, tempAccountID, SGID, "Netflix", (decimal)9.99, new DateTime(2021, 12, 14, 0, 0, 0).Date, true, transactionCategory.Entertainment);
 
@@ -215,7 +215,7 @@ namespace ServiceLayer
             ts.delete(TID);
         }
 
-        static void displayTransaction(long TID)
+        static void testDisplayTransaction(long TID)
         {
             TransactionService ts = new TransactionService();
             Transaction t = ts.getUsingID(TID);
@@ -225,7 +225,17 @@ namespace ServiceLayer
             Console.WriteLine(t);
         }
 
-
+        static void testGetTransactionsFromAccount(long accID)
+        {
+            List<Transaction> transactions = new List<Transaction>();
+            TransactionUserAccountService tus = new TransactionUserAccountService();
+            transactions = tus.getTransactionsFromAccount(accID);
+            Console.WriteLine("Displaying all transactions for user with account id {0}...", accID);
+            foreach (Transaction t in transactions)
+            {
+                Console.WriteLine(t);
+            }
+        }
 
 
         // --------------------------------------------------- Begin Receipt Testing ---------------------------------------------------
@@ -377,7 +387,8 @@ namespace ServiceLayer
             //Console.WriteLine(ts.getJSON(t));
             //testModifyRewriteTransaction(TID: 25);
             //testDeleteTransaction(TID: 42);
-            displayTransaction(TID: 12);
+            //testDisplayTransaction(TID: 12);
+            testGetTransactionsFromAccount(accID: 5);
 
 
             // ---------------------------------------------- Test: Receipt Create ---------------------------------------------------------
