@@ -15,10 +15,10 @@ namespace ServiceLayer
             //string pathToCreds = "/Users/devin/Documents/GitHub/FrankFund/Credentials/AuthDevin.json";
 
             // Autumn's Credentials
-            string pathToCreds = "/Users/steve/OneDrive/Documents/GitHub/FrankFund/Credentials/AuthAutumn.json";
+            //string pathToCreds = "/Users/steve/OneDrive/Documents/GitHub/FrankFund/Credentials/AuthAutumn.json";
 
             // Kenneth's Credentials
-            //string pathToCreds = "/Users/015909177/Desktop/Github Repos/FrankFund/Credentials/AuthKenny.json";
+            string pathToCreds = "/Users/015909177/Desktop/Github Repos/FrankFund/Credentials/AuthKenny.json";
 
             //Rachel's Credentials 
             //string pathToCreds = "C:/Data/Spring 2021/CECS 491B/Senior Project/Credentials/AuthRachel.json";
@@ -215,6 +215,18 @@ namespace ServiceLayer
             ts.delete(TID);
         }
 
+        static void displayTransaction(long TID)
+        {
+            TransactionService ts = new TransactionService();
+            Transaction t = ts.getUsingID(TID);
+            Console.WriteLine("Retrieving Transaction with TID {0} from the database....", TID);
+            Console.WriteLine(ts.getJSON(t));
+            Console.WriteLine("Displaying summary of Transaction with TID {0}....", TID);
+            Console.WriteLine(t);
+        }
+
+
+
 
         // --------------------------------------------------- Begin Receipt Testing ---------------------------------------------------
 
@@ -365,6 +377,7 @@ namespace ServiceLayer
             //Console.WriteLine(ts.getJSON(t));
             //testModifyRewriteTransaction(TID: 25);
             //testDeleteTransaction(TID: 42);
+            displayTransaction(TID: 12);
 
 
             // ---------------------------------------------- Test: Receipt Create ---------------------------------------------------------

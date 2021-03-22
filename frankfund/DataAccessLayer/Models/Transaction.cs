@@ -190,13 +190,18 @@ namespace DataAccessLayer.Models
             changed = true;
         }
 
+        public string isExpenseToString()
+        {
+            return (getIsExpense()) ? "Expense" : "Income";
+        }
+
         //Override ToString()
         public override string ToString()
         {
             return "Transaction with TID #" + getTID()
                 + $"\n \"{getTransactionName()}\""
                 + $"\n Amount: $" + getAmount()
-                + $"\n This transaction is an \"{getIsExpense()}\""
+                + $"\n This transaction is an " + isExpenseToString()
                 + $"\n Categorized as \"{getTransactionCategory()}\""
                 + $"\n Made on {getDateTransactionMade().ToString("yyyy-MM-dd")}"
                 + $"\n This transaction was entered into the system on {getDateTransactionEntered().ToString("yyyy-MM-dd")}";
