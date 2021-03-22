@@ -225,18 +225,62 @@ namespace ServiceLayer
             Console.WriteLine(t);
         }
 
+        // Displaying summary of transactions
         static void testGetTransactionsFromAccount(long accID)
         {
             List<Transaction> transactions = new List<Transaction>();
             TransactionUserAccountService tus = new TransactionUserAccountService();
             transactions = tus.getTransactionsFromAccount(accID);
-            Console.WriteLine("Displaying all transactions for user with account id {0}...", accID);
+            Console.WriteLine("\nDisplaying all transactions for user with account id {0}...", accID);
             foreach (Transaction t in transactions)
             {
+                Console.WriteLine("-----------------------------------------------------------------------");
                 Console.WriteLine(t);
             }
         }
 
+        // Displaying each transactions in JSON format
+        static void testGetTransactionsFromAccountJSON(long accID)
+        {
+            List<Transaction> transactions = new List<Transaction>();
+            TransactionUserAccountService tus = new TransactionUserAccountService();
+            transactions = tus.getTransactionsFromAccount(accID);
+            Console.WriteLine("\nDisplaying all transactions for user with account id {0}...", accID);
+            foreach (Transaction t in transactions)
+            {
+                Console.WriteLine("-----------------------------------------------------------------------");
+                Console.WriteLine(tus.getJSON(t));
+            }
+        }
+
+        //Displays summary of transactions by category
+        static void testGetTransactionsFromCategory(long accID, string category)
+        {
+            List<Transaction> transactions = new List<Transaction>();
+            TransactionUserAccountService tus = new TransactionUserAccountService();
+            transactions = tus.getTransactionsFromCategory(accID, category);
+            Console.WriteLine("\nDisplaying all transactions categorized as {0} for user with account id {1}...", accID, category);
+            foreach (Transaction t in transactions)
+            {
+                Console.WriteLine("-----------------------------------------------------------------------");
+                Console.WriteLine(t);
+            }
+
+        }
+        //Displays transactions by category in JSON format
+        static void testGetTransactionsFromCategoryJSON(long accID, string category)
+        {
+            List<Transaction> transactions = new List<Transaction>();
+            TransactionUserAccountService tus = new TransactionUserAccountService();
+            transactions = tus.getTransactionsFromCategory(accID, category);
+            Console.WriteLine("\nDisplaying all transactions categorized as {0} for user with account id {1}...", accID, category);
+            foreach (Transaction t in transactions)
+            {
+                Console.WriteLine("-----------------------------------------------------------------------");
+                Console.WriteLine(tus.getJSON(t));
+            }
+
+        }
 
         // --------------------------------------------------- Begin Receipt Testing ---------------------------------------------------
 
@@ -388,7 +432,10 @@ namespace ServiceLayer
             //testModifyRewriteTransaction(TID: 25);
             //testDeleteTransaction(TID: 42);
             //testDisplayTransaction(TID: 12);
-            testGetTransactionsFromAccount(accID: 5);
+            //testGetTransactionsFromAccount(accID: 5);
+            //testGetTransactionsFromAccountJSON(accID: 5);
+            testGetTransactionsFromCategory(accID: 5, "Entertainment");
+            testGetTransactionsFromCategoryJSON(accID: 2, "Entertainment");
 
 
             // ---------------------------------------------- Test: Receipt Create ---------------------------------------------------------
