@@ -32,7 +32,7 @@ namespace ServiceLayer
             {
                 user = new UserAccount(
                     (long)row["AccountID"], (string)row["AccountUsername"],
-                    (string)row["EmailAddress"], (string)row["Password"], null // Need to Add Password Salt
+                    (string)row["EmailAddress"], (string)row["PasswordHash"], (byte[])Encoding.ASCII.GetBytes((string)row["PasswordSalt"])
                     //(int)row["FacebookID"], (BigQueryNumeric)row["GoogleID"].ToDecimal(LossOfPrecisionHandling.Truncate)
                 );
             }
@@ -51,8 +51,8 @@ namespace ServiceLayer
             {
                 user = new UserAccount(
                     (long)row["AccountID"], (string)row["AccountUsername"],
-                    (string)row["EmailAddress"], (string)row["Password"], null // Need to Add Password Salt
-                    //(int)row["FacebookID"], (int)row["GoogleID"]
+                    (string)row["EmailAddress"], (string)row["PasswordHash"], Encoding.ASCII.GetBytes((string)row["PasswordSalt"])
+                //(int)row["FacebookID"], (int)row["GoogleID"]
                 );
             }
             return user;
