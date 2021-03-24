@@ -76,6 +76,41 @@ namespace DataAccessLayer
             return this.dataHelper.query(query, parameters: null);
         }
 
+        // Returns all transactions from a user account made in the past n days
+        public BigQueryResults SortTransactionsByDays(long accID, int num)
+        {
+            string query = "SELECT * FROM FrankFund.Transactions t"
+                + $" WHERE t.accountID = {accID} AND DateTransactionMade >= DATE_SUB(CURRENT_DATE(), INTERVAL {num} DAY)"
+                + " ORDER BY DateTransactionMade DESC, DateTransactionEntered DESC";
+            return this.dataHelper.query(query, parameters: null);
+        }
+
+        // Returns all transactions from a user account made in the past n weeks
+        public BigQueryResults SortTransactionsByWeeks(long accID, int num)
+        {
+            string query = "SELECT * FROM FrankFund.Transactions t"
+                + $" WHERE t.accountID = {accID} AND DateTransactionMade >= DATE_SUB(CURRENT_DATE(), INTERVAL {num} WEEK)"
+                + " ORDER BY DateTransactionMade DESC, DateTransactionEntered DESC";
+            return this.dataHelper.query(query, parameters: null);
+        }
+
+        // Returns all transactions from a user account made in the past n weeks
+        public BigQueryResults SortTransactionsByMonths(long accID, int num)
+        {
+            string query = "SELECT * FROM FrankFund.Transactions t"
+                + $" WHERE t.accountID = {accID} AND DateTransactionMade >= DATE_SUB(CURRENT_DATE(), INTERVAL {num} MONTH)"
+                + " ORDER BY DateTransactionMade DESC, DateTransactionEntered DESC";
+            return this.dataHelper.query(query, parameters: null);
+        }
+
+        // Returns all transactions from a user account made in the past n years
+        public BigQueryResults SortTransactionsByYear(long accID, int num)
+        {
+            string query = "SELECT * FROM FrankFund.Transactions t"
+                + $" WHERE t.accountID = {accID} AND DateTransactionMade >= DATE_SUB(CURRENT_DATE(), INTERVAL {num} YEAR)"
+                + " ORDER BY DateTransactionMade DESC, DateTransactionEntered DESC";
+            return this.dataHelper.query(query, parameters: null);
+        }
 
         public long getNextAvailID()
         {

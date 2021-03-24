@@ -282,6 +282,36 @@ namespace ServiceLayer
 
         }
 
+        static void testGetSortedTransactionsByTime(long accID, int num, int choice)
+        {
+            List<Transaction> transactions = new List<Transaction>();
+            TransactionService ts = new TransactionService();
+            transactions = ts.getSortedTransactionsByTime(accID, num, choice);
+            string x;
+            if (choice == 0)
+            {
+                x = "day(s).";
+            }
+            else if (choice == 1)
+            {
+                x = "week(s).";
+            }
+            else if (choice == 2)
+            {
+                x = "month(s).";
+            }
+            else
+            {
+                x = "year(s).";
+            }
+            Console.WriteLine("\nDisplaying all transactions for user with account id {0} in the last {1} {2}", accID, num, x);
+            foreach(Transaction t in transactions)
+            {
+                Console.WriteLine("-----------------------------------------------------------------------");
+                Console.WriteLine(t);
+            }
+        }
+
         // --------------------------------------------------- Begin Receipt Testing ---------------------------------------------------
 
         static Receipt testAddReceipt()
@@ -433,12 +463,17 @@ namespace ServiceLayer
             //testDeleteTransaction(TID: 42);
 
             //Demo 3/25
-            
+
             //testDisplayTransaction(TID: 12);
             //testGetTransactionsFromAccount(accID: 1);
 
             //testGetTransactionsFromCategory(accID: 4, "HomeAndUtilities");
 
+            // sorting past 3 months
+            testGetSortedTransactionsByTime(accID: 4, num: 3, choice: 2);
+
+            // sorting past 1 week
+            testGetSortedTransactionsByTime(accID: 2, num: 1, choice: 1);
 
 
             // ---------------------------------------------- Test: Receipt Create ---------------------------------------------------------

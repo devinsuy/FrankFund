@@ -184,5 +184,109 @@ namespace ServiceLayer
             }
             return transactionsList;
         }
+
+        /*
+        Returns all transactions associated with a user account ID that was made within X amount of time.
+            Params: The User Account ID
+                    The number of days, weeks, months, or years
+                    The choice of sorting; 0 = days, 1 = weeks, 2 = months, 3 = years.
+            Returns: A list of Transactions that are made within X amount of time.
+        */
+        public List<Transaction> getSortedTransactionsByTime(long accID, int num, int choice)
+        {
+            List<Transaction> transactionsList = new List<Transaction>();
+            switch (choice)
+            {
+                //day
+                case 0:
+                    foreach (BigQueryRow row in this.TransactionDataAccess.SortTransactionsByDays(accID, num))
+                    {
+                        Transaction transaction = null;
+                        long SGID = -1;     // Nullable attr
+                        if (row["SGID"] != null)
+                        {
+                            SGID = (long)row["SGID"];
+                        }
+                        transaction = new Transaction(
+                            (long)row["TID"], (long)row["AccountID"], SGID,
+                            (string)row["TransactionName"],
+                            this.TransactionDataAccess.castBQNumeric(row["Amount"]),
+                            (DateTime)row["DateTransactionMade"],
+                            (DateTime)row["DateTransactionEntered"],
+                            (bool)row["IsExpense"],
+                            this.TransactionDataAccess.ParseEnum<transactionCategory>((string)row["TransactionCategory"])
+                        );
+                        transactionsList.Add(transaction);
+                    }
+                    break;
+                //week
+                case 1:
+                    foreach (BigQueryRow row in this.TransactionDataAccess.SortTransactionsByWeeks(accID, num))
+                    {
+                        Transaction transaction = null;
+                        long SGID = -1;     // Nullable attr
+                        if (row["SGID"] != null)
+                        {
+                            SGID = (long)row["SGID"];
+                        }
+                        transaction = new Transaction(
+                            (long)row["TID"], (long)row["AccountID"], SGID,
+                            (string)row["TransactionName"],
+                            this.TransactionDataAccess.castBQNumeric(row["Amount"]),
+                            (DateTime)row["DateTransactionMade"],
+                            (DateTime)row["DateTransactionEntered"],
+                            (bool)row["IsExpense"],
+                            this.TransactionDataAccess.ParseEnum<transactionCategory>((string)row["TransactionCategory"])
+                        );
+                        transactionsList.Add(transaction);
+                    }
+                    break;
+                //month
+                case 2:
+                    foreach (BigQueryRow row in this.TransactionDataAccess.SortTransactionsByMonths(accID, num))
+                    {
+                        Transaction transaction = null;
+                        long SGID = -1;     // Nullable attr
+                        if (row["SGID"] != null)
+                        {
+                            SGID = (long)row["SGID"];
+                        }
+                        transaction = new Transaction(
+                            (long)row["TID"], (long)row["AccountID"], SGID,
+                            (string)row["TransactionName"],
+                            this.TransactionDataAccess.castBQNumeric(row["Amount"]),
+                            (DateTime)row["DateTransactionMade"],
+                            (DateTime)row["DateTransactionEntered"],
+                            (bool)row["IsExpense"],
+                            this.TransactionDataAccess.ParseEnum<transactionCategory>((string)row["TransactionCategory"])
+                        );
+                        transactionsList.Add(transaction);
+                    }
+                    break;
+                //year
+                case 3:
+                    foreach (BigQueryRow row in this.TransactionDataAccess.SortTransactionsByYear(accID, num))
+                    {
+                        Transaction transaction = null;
+                        long SGID = -1;     // Nullable attr
+                        if (row["SGID"] != null)
+                        {
+                            SGID = (long)row["SGID"];
+                        }
+                        transaction = new Transaction(
+                            (long)row["TID"], (long)row["AccountID"], SGID,
+                            (string)row["TransactionName"],
+                            this.TransactionDataAccess.castBQNumeric(row["Amount"]),
+                            (DateTime)row["DateTransactionMade"],
+                            (DateTime)row["DateTransactionEntered"],
+                            (bool)row["IsExpense"],
+                            this.TransactionDataAccess.ParseEnum<transactionCategory>((string)row["TransactionCategory"])
+                        );
+                        transactionsList.Add(transaction);
+                    }
+                    break;
+            }
+            return transactionsList;
+        }
     }
 }
