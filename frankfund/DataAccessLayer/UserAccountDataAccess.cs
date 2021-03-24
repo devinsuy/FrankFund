@@ -53,7 +53,7 @@ namespace DataAccessLayer
         {
             string query = "SELECT * FROM FrankFund.Transactions t"
                             + $" WHERE t.accountID = {ID}"
-                            + " ORDER BY DateTransactionEntered";
+                            + " ORDER BY DateTransactionMade DESC, DateTransactionEntered DESC";
             return this.dataHelper.query(query, parameters: null);
         }
 

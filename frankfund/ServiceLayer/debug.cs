@@ -15,10 +15,10 @@ namespace ServiceLayer
             //string pathToCreds = "/Users/devin/Documents/GitHub/FrankFund/Credentials/AuthDevin.json";
 
             // Autumn's Credentials
-            string pathToCreds = "/Users/steve/OneDrive/Documents/GitHub/FrankFund/Credentials/AuthAutumn.json";
+            //string pathToCreds = "/Users/steve/OneDrive/Documents/GitHub/FrankFund/Credentials/AuthAutumn.json";
 
             // Kenneth's Credentials
-            //string pathToCreds = "/Users/015909177/Desktop/Github Repos/FrankFund/Credentials/AuthKenny.json";
+            string pathToCreds = "/Users/015909177/Desktop/Github Repos/FrankFund/Credentials/AuthKenny.json";
 
             //Rachel's Credentials 
             //string pathToCreds = "C:/Data/Spring 2021/CECS 491B/Senior Project/Credentials/AuthRachel.json";
@@ -181,9 +181,9 @@ namespace ServiceLayer
 
             // Create a new Transaction
             //Temp Account ID
-            long tempAccountID = 5;
-            long SGID = 2;
-            Transaction sampleTransaction = new Transaction(TID, tempAccountID, SGID, "Netflix", (decimal)9.99, new DateTime(2021, 12, 14, 0, 0, 0).Date, true, transactionCategory.Entertainment);
+            long tempAccountID = 2;
+            long SGID = 1;
+            Transaction sampleTransaction = new Transaction(TID, tempAccountID, SGID, "Surgery", (decimal)5120.14, new DateTime(2020, 10, 07, 0, 0, 0).Date, true, transactionCategory.Health);
 
             // Print summary of goal that was just created
             Console.WriteLine("Transaction Summary:\n---------------------");
@@ -421,7 +421,7 @@ namespace ServiceLayer
 
 
             // ---------------------------------------------- Test: Creating User Account ------------------------------------------------------
-            testAccCreate();
+            //testAccCreate();
 
 
             // ---------------------------------------------- Test: Transaction Create ---------------------------------------------------------
@@ -431,11 +431,14 @@ namespace ServiceLayer
             //Console.WriteLine(ts.getJSON(t));
             //testModifyRewriteTransaction(TID: 25);
             //testDeleteTransaction(TID: 42);
+
+            //Demo 3/25
+            
             //testDisplayTransaction(TID: 12);
-            //testGetTransactionsFromAccount(accID: 5);
-            //testGetTransactionsFromAccountJSON(accID: 5);
-            //testGetTransactionsFromCategory(accID: 5, "Entertainment");
-            //testGetTransactionsFromCategoryJSON(accID: 2, "Entertainment");
+            //testGetTransactionsFromAccount(accID: 1);
+
+            //testGetTransactionsFromCategory(accID: 4, "HomeAndUtilities");
+
 
 
             // ---------------------------------------------- Test: Receipt Create ---------------------------------------------------------

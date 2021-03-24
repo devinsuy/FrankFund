@@ -14,6 +14,7 @@ namespace DataAccessLayer.Models
         Health,
         Groceries,
         Deposits,
+        Shopping,
         Uncategorized
     };
     public class Transaction
