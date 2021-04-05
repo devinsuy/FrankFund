@@ -43,7 +43,6 @@ namespace ServiceLayer
             return transaction;
         }
 
-
         /*
         Serialize a Transaction object into a String array
             Returns: A string array with each element in order of its column attribute (see Transaction DB schema)
@@ -287,6 +286,37 @@ namespace ServiceLayer
                     break;
             }
             return transactionsList;
+        }
+
+        /* Cast a category string to transactionCategory enum
+            Params: The category string to cast
+            Returns: The corresponding enum transactionCategory
+        */
+        public transactionCategory castCategory(string c)
+        {
+            if (c.Equals("Entertainment"))
+                return transactionCategory.Entertainment;
+            else if (c.Equals("Restaurants"))
+                return transactionCategory.Restaurants;
+            else if (c.Equals("Transportation"))
+                return transactionCategory.Transportation;
+            else if (c.Equals("HomeAndUtilities"))
+                return transactionCategory.HomeAndUtilities;
+            else if (c.Equals("Education"))
+                return transactionCategory.Education;
+            else if (c.Equals("Insurance"))
+                return transactionCategory.Insurance;
+            else if (c.Equals("Health"))
+                return transactionCategory.Health;
+            else if (c.Equals("Groceries"))
+                return transactionCategory.Groceries;
+            else if (c.Equals("Deposits"))
+                return transactionCategory.Deposits;
+            else if (c.Equals("Shopping"))
+                return transactionCategory.Shopping;
+            else
+                return transactionCategory.Uncategorized;
+
         }
     }
 }
