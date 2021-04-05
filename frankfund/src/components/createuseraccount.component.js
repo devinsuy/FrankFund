@@ -3,9 +3,55 @@
 import React, { Component } from "react";
 
 export default class CreateUserAccount extends Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state = { username: null, email: null, password: null };
+    }
+
+    //onChange(e) {
+    //    this.setState({
+    //        [e.target.name]: e.target.value
+    //    });
+    //}
+
+    //onSubmit(e) {
+    //    e.preventDefault();
+
+    //    fetch('/api/account/create', {
+    //        method: 'POST',
+    //        headers: {
+    //            'Accept': 'application/json',
+    //            'Content-Type': 'application/json'
+    //        },
+    //        body: JSON.stringify({ description: this.state.description })
+    //    });
+
+    //    this.setState({ description: '' });
+    //}
+
+    onSubmit(e) {
+        e.preventDefault();
+        // Simple POST request with a JSON body using fetch
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ title: 'React POST Request Example' })
+        };
+        fetch('api/account/create', requestOptions)
+            .then(response => response.json())
+            .then(data => this.setState({ username: data.username, email: data.email, password: data.password }));
+    }
+
+
     render() {
         return (
-            <form>
+            <form
+                id="create-user-account"
+                action='api/account/create'
+                method= 'post'
+                onSubmit={this.onSubmit}>
                 <h3>Create New User Account</h3>
 
                 <div className="form-group">

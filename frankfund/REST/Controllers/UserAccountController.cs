@@ -26,7 +26,7 @@ namespace REST.Controllers
             uas = new UserAccountService();
             attributes = new HashSet<string>()
             {
-                "AccountID", "AccountUsername", "EmailAddress", "Password"
+                "AccountUsername", "EmailAddress", "Password"
             };
 
             // TODO: Pending design for registration using social services
@@ -72,11 +72,12 @@ namespace REST.Controllers
         // Create a new account with the given accID.
         // Returns Http 409 Conflict if already exists
         // TODO: Account registration logic may be more complex, byte salt to be updated
-        [Route("api/accID={accID}&apikey={apiKey}")]
+        // Old Route: [Route("api/accID={accID}&apikey={apiKey}")]
+        [Route("api/account/create")]
         [HttpPost]
         public IActionResult CreateByID(int accID, string apiKey, [FromBody] JsonElement reqBody)
         {
-            return new NotFoundResult();
+            //return new NotFoundResult();
             if (!api.validAPIKey(apiKey))
             {
                 return new UnauthorizedResult();
