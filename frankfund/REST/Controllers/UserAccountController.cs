@@ -105,10 +105,11 @@ namespace REST.Controllers
             try
             {
                 acc = new UserAccount(
-                        AccountID: accID,
+                        // Removed AccountID out of UserAccount creation because new account ID is assigned in UserAccountService 
+                        //AccountID: accID,
                         username: Convert.ToString(req["AccountUsername"]),
                         email: Convert.ToString(req["EmailAddress"]),
-                        pass: Convert.ToString(req["Password"])
+                        pass: Convert.ToString(req["PasswordHash"])
                     //passSalt: null                      // TODO: Fix
                     // Removed byte[] passSalt from constructor because it gets generated in UserAccountService
                     );
@@ -163,8 +164,9 @@ namespace REST.Controllers
                             AccountID: accID,
                             username: Convert.ToString(req["AccountUsername"]),
                             email: Convert.ToString(req["EmailAddress"]),
-                            pass: Convert.ToString(req["Password"]),
-                            passSalt: null                      // TODO: Fix 
+                            pass: Convert.ToString(req["PasswordHash"])
+                            //passSalt: null                      // TODO: Fix
+                            // Removed byte[] passSalt from constructor because it gets generated in UserAccountService
                         );
                 }
                 // Formatting or improper data typing raised exception, bad request
