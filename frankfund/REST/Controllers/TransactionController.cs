@@ -119,7 +119,7 @@ namespace REST.Controllers
                         amount: Convert.ToDecimal(req["Amount"]),
                         dateTransactionMade: Convert.ToDateTime(req["DateTransactionMade"]),
                         isExpense: System.Convert.ToBoolean(req["IsExpense"]),
-                        transactionCategory: Convert.ToString(req["TransactionCategory"])
+                        category: ts.castCategory(Convert.ToString(req["TransactionCategory"]))
                     );
 
             }
@@ -171,7 +171,7 @@ namespace REST.Controllers
                             amount: Convert.ToDecimal(req["Amount"]),
                             dateTransactionMade: Convert.ToDateTime(req["DateTransactionMade"]),
                             isExpense: Convert.ToBoolean(req["IsExpense"]),
-                            transactionCategory: Convert.ToString(req["TransactionCategory"])
+                            category: ts.castCategory(Convert.ToString(req["TransactionCategory"]))
                         );
                 }
                 // Formatting or improper data typing raised exception, bad request
@@ -203,7 +203,7 @@ namespace REST.Controllers
                     t.setDateTransactionMade(Convert.ToDateTime(req["DateTransactionMade"]));
                     t.setDateTransactionEntered(Convert.ToDateTime(req["DateTransactionEntered"]));
                     t.setIsExpense(Convert.ToBoolean(req["IsExpense"]));
-                    t.setTransactionCategory(Convert.ToString(req["TransactionCategory"]));
+                    t.setTransactionCategory(ts.castCategory(Convert.ToString(req["TransactionCategory"])));
                 }
                 // Formatting or improper data typing raised exception, bad request
                 catch (Exception e)
@@ -282,7 +282,7 @@ namespace REST.Controllers
                 }
                 if (reqAttributes.Contains("TransactionCategory"))
                 {
-                    t.setTransactionCategory(Convert.ToString(req["TransactionCategory"]));
+                    t.setTransactionCategory(ts.castCategory(Convert.ToString(req["TransactionCategory"])));
                 }
             }
             // Formatting or improper data typing raised exception, bad request
