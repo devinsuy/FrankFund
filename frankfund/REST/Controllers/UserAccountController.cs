@@ -108,8 +108,9 @@ namespace REST.Controllers
                         AccountID: accID,
                         username: Convert.ToString(req["AccountUsername"]),
                         email: Convert.ToString(req["EmailAddress"]),
-                        pass: Convert.ToString(req["Password"]),
-                        passSalt: null                      // TODO: Fix 
+                        pass: Convert.ToString(req["Password"])
+                    //passSalt: null                      // TODO: Fix
+                    // Removed byte[] passSalt from constructor because it gets generated in UserAccountService
                     );
             }
             catch (Exception e)

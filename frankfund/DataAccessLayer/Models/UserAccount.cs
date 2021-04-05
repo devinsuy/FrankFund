@@ -17,23 +17,23 @@ namespace DataAccessLayer.Models
         //public int GoogleID;
 
         // ---------------------------------------- UserAccount Constructors  ----------------------------------------
-        public UserAccount(long AccountID, string username, string email, string pass, byte[] passSalt)
+        public UserAccount(long AccountID, string username, string email, string pass)
         {
             this.AccountID = AccountID;
             this.AccountUsername = username;
             this.EmailAddress = email;
-            this.PasswordHash = pass;
-            this.PasswordSalt = passSalt;
+            this.PasswordHash = pass; // Removed byte[] passSalt from constructor because it gets generated in UserAccountService
+            //this.PasswordSalt = passSalt;
             //this.FacebookID = fb;
             //this.GoogleID = google;
         }
 
-        public UserAccount(string username, string email, string pass, byte[] passSalt)
+        public UserAccount(string username, string email, string pass)
         {
             this.AccountUsername = username;
             this.EmailAddress = email;
             this.PasswordHash = pass;
-            this.PasswordSalt = passSalt;
+            //this.PasswordSalt = passSalt;
             //this.FacebookID = fb;
             //this.GoogleID = google;
         }

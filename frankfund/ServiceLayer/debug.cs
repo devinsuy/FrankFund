@@ -142,7 +142,7 @@ namespace ServiceLayer
             //Console.WriteLine("Username: " + existingAccount2);
 
             Console.WriteLine("\n3. Testing Password Minimum Requirements function");
-            UserAccount testAccount = new UserAccount("test", "test@gmail.com", "Password1", null);
+            UserAccount testAccount = new UserAccount("test", "test@gmail.com", "Password1");
             uaService.write(testAccount);
             //Console.WriteLine(passService.checkHash("Password1", testAccount));
 
@@ -159,7 +159,7 @@ namespace ServiceLayer
 
             Console.WriteLine("\n6. Testing UpdateUserAccount function | Prints out new AccountUsername of account");
             Console.WriteLine("Old Username: " + uaService.getUsingUsername("test").AccountUsername);
-            UserAccount testAccount3 = new UserAccount(5, "testing", "testing@gmail.com", "Password1", null);
+            UserAccount testAccount3 = new UserAccount(5, "testing", "testing@gmail.com", "Password1");
             uaService.update(testAccount3);
             Console.WriteLine("New Username: " + uaService.getUsingUsername("testing").AccountUsername);
 
