@@ -4,7 +4,9 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
+// Imported React Components
 import CreateUserAccount from "./components/createuseraccount.component";
+import SettingsUserAccount from "./components/settingsuseraccount.component";
 
 function App() {
     return (<Router>
@@ -40,6 +42,9 @@ function App() {
               <li className="nav-item">
                 <Link className="nav-link" to={"/create-user-account"}>Sign up</Link>
               </li>
+              <li className="nav-item">
+                <Link className="nav-link" to={"/settings-user-account"}>Settings</Link>
+              </li>
             </ul>
           </div>
         </div>
@@ -50,6 +55,7 @@ function App() {
           <Switch>
             <Route exact path='/' component={CreateUserAccount} />
             <Route path="/create-user-account" component={CreateUserAccount} />
+            <Route path="/settings-user-account" component={SettingsUserAccount} />
           </Switch>
         </div>
       </div>
