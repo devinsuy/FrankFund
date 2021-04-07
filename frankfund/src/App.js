@@ -43,7 +43,7 @@ function App() {
                 <Link className="nav-link" to={"/create-user-account"}>Sign up</Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to={"/settings-user-account"}>Settings</Link>
+                <Link className="nav-link" to={"/account-settings"}>Settings</Link>
               </li>
             </ul>
           </div>
@@ -55,7 +55,7 @@ function App() {
           <Switch>
             <Route exact path='/' component={CreateUserAccount} />
             <Route path="/create-user-account" component={CreateUserAccount} />
-            <Route path="/settings-user-account" component={SettingsUserAccount} />
+            <Route path="/account-settings" component={SettingsUserAccount} />
           </Switch>
         </div>
       </div>
