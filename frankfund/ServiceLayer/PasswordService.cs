@@ -94,11 +94,26 @@ namespace ServiceLayer
             return passwordHash;
         }
 
+        // Checks if passwordHash and salt matches
         public bool checkHash(string pass, UserAccount userAccount)
         {
             byte[] passwordSalt = userAccount.PasswordSalt;
             string inputtedPasswordHash = HashPassword(pass, passwordSalt);
             if(inputtedPasswordHash == userAccount.PasswordHash)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        // Validates Password, return true if it matches
+        public bool ValidatePassword(string passwordToCheck, byte[] passwordSalt, string passwordHash)
+        {
+            var hashedPasswordToCheck = HashPassword(passwordToCheck, passwordSalt);
+            if (passwordHash.Equals(hashedPasswordToCheck))
             {
                 return true;
             }
