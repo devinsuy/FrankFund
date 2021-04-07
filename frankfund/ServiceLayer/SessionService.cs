@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using DataAccessLayer.Models;
 using System.Text.Json;
+using DataAccessLayer;
 
 namespace ServiceLayer
 {
@@ -13,11 +14,28 @@ namespace ServiceLayer
     {
         private readonly PasswordService PasswordService;
         private readonly UserAccountService UserAccountService;
+        private readonly SessionDataAccess SessionDataAccess;
 
         public SessionService()
         {
             this.PasswordService = new PasswordService();
             this.UserAccountService = new UserAccountService();
+        }
+
+        /*
+        Serialize a Session object into a String array
+            Params: A  Session object to serialize
+            Returns: A string array with each element in order of its column attribute (see Session DB schema)
+        */
+        public string[] serialize(Session sess)
+        {
+            return new string[] {
+                sess.SessionID.ToString(),
+                sess.JWTToken,
+                sess.UserName,
+                sess.DateIssued.ToString(),
+                sess.DateExpired.ToString()
+            };
         }
 
         public ActionResult Login(string username, string password)
@@ -44,12 +62,13 @@ namespace ServiceLayer
             }
 
             // Create Session
-            //string jwtToken = JWTService.CreateToken(); // TODO: Look into JWTToken
+            //string jwtToken = JWTService.CreateToken(); // TODO: Need to look into and add JWTToken
             string jwtToken = "";
             Session session = new Session(user.AccountUsername, jwtToken);
 
             // Need to make Sessions table in DB in order to add
             // Need to make SessionDataAccess to write to DB
+            this.SessionDataAccess.write(serialize(session));
 
             // Return JWT Token on success , TODO: Return JWT Token on success
             var jsonString = JsonSerializer.Serialize(session);
