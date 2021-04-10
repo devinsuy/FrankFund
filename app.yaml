@@ -1,0 +1,12 @@
+runtime: custom
+api_version: 1
+env: flex
+automatic_scaling:
+  min_num_instances: 1
+  max_num_instances: 4
+  
+# - url: /
+#   static_files: temp_landing/landing.html
+#   upload: temp_landing/landing.html
+# - url: /
+#   static_dir: temp_landing
