@@ -264,5 +264,19 @@ namespace REST.Controllers
             uas.update(acc);
             return new OkResult();
         }
+
+        [Route("api/accID={accID}/SavingsGoals/&apikey={apiKey}")]
+        [HttpGet]
+        public IActionResult getGoals(int accID, string apiKey)
+        {
+            if (!api.validAPIKey(apiKey))
+            {
+                return new UnauthorizedResult();
+            }
+            if (accID < 1)
+            {
+                return BadRequest();
+            }
+            return api.serveJson(uas.getJSON(uas.getUsingID(accID)));
+        }
     }
-}

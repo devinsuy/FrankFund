@@ -19,6 +19,7 @@ namespace ServiceLayer
             this.UserAccountDataAccess = new UserAccountDataAccess();
             this.PasswordService = new PasswordService();
             this.TransactionService = new TransactionService();
+            this.SGService = new SavingsGoalService();
         }
 
         /*
@@ -70,10 +71,12 @@ namespace ServiceLayer
             return TransactionService.getTransactionsFromAccount(accID);
         }
 
-        public List<SavingsGoal> getSavingsGoalsFromAccount(long accID)
+        // Return the JSON representation of the list of SavingsGoals associated with the given account
+        public string getSavingsGoalsFromAccount(long accID)
         {
-            return SGService.getSavingsGoalsFromAccount(accID);
+            return SGService.getJSON(SGService.getSavingsGoalsFromAccount(accID));
         }
+
 
         /*
         Uses DataAccess Layer to delete via PK Identifier

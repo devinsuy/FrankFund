@@ -133,7 +133,18 @@ namespace ServiceLayer
             {
                 Console.WriteLine(goal);
             }
+        }
 
+        static void testJSONGoalsList(long accID)
+        {
+            Console.WriteLine("\n\n-------------------- Test: JSONify a List of Savings Goals--------------------");
+            //SavingsGoalService sgService = new SavingsGoalService();
+            //List<SavingsGoal> goals = sgService.getSavingsGoalsFromAccount(accID);
+            //string json = sgService.getJSON(goals);
+            //Console.WriteLine(json);
+
+            UserAccountService uac = new UserAccountService();
+            Console.WriteLine(uac.getSavingsGoalsFromAccount(accID));
         }
 
 
@@ -463,6 +474,7 @@ namespace ServiceLayer
 
             // ---------------------------------------------- Test: Retrieve All SG From Account ------------------------------------------
             //testGetAllSGFromAcc(accID: 2);
+            //testJSONGoalsList(accID: 2);
 
 
             // ---------------------------------------------- Test: Creating User Account ------------------------------------------------------

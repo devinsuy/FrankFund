@@ -113,6 +113,28 @@ namespace ServiceLayer
             return jsonStr;
         }
 
+        public string getJSON(List<SavingsGoal> goals)
+        {
+            if(goals == null || goals.Count == 0)
+            {
+                return "{}";
+            }
+            string jsonStr = "{\"Goals\":[";
+            for(int i = 0; i < goals.Count; i++)
+            {
+                if(i == goals.Count - 1)
+                {
+                    jsonStr += getJSON(goals[i]);
+                }
+                else
+                {
+                    jsonStr += (getJSON(goals[i]) + ", ");
+                }
+            }
+
+            return jsonStr + "]}";
+        }
+
         /*
         Serialize a NEW Savings Goal object and write it to BigQuery for the first time
             Params: s - Savings Goal runtime object
