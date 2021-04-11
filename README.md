@@ -71,6 +71,7 @@ Returns **HTTP 409 Conflict** if a SavingsGoal already exists with the given SGI
 ```json
 {
 	"Name": "Tuition",
+	"AccountID": 2,
 	"GoalAmt": 3425,
 	"Period": "Weekly",
 	"EndDate": "2021-06-04"
@@ -82,6 +83,7 @@ Create a **SavingsGoal by date**, system will dynamically calculate { ContrAmt, 
 ```json
 {
 	"Name": "Tuition",
+	"AccountID": 2,
 	"GoalAmt": 3425,
 	"Period": "Weekly",
 	"ContrAmt": 325,
