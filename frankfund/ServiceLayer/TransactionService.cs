@@ -144,13 +144,7 @@ namespace ServiceLayer
 
             foreach (BigQueryRow row in this.TransactionDataAccess.getTransactionsFromAccount(accID))
             {
-                Transaction transaction = null;
-                long SGID = -1;     // Nullable attr
-                if (row["SGID"] != null)
-                {
-                    SGID = (long)row["SGID"];
-                }
-                transaction = reinstantiate(row);
+                Transaction transaction = reinstantiate(row);
                 transactionsList.Add(transaction);
             }
             return transactionsList;
@@ -167,13 +161,7 @@ namespace ServiceLayer
             List<Transaction> transactionsList = new List<Transaction>();
             foreach (BigQueryRow row in this.TransactionDataAccess.getTransactionsFromCategory(accID, category))
             {
-                Transaction transaction = null;
-                long SGID = -1;     // Nullable attr
-                if (row["SGID"] != null)
-                {
-                    SGID = (long)row["SGID"];
-                }
-                transaction = reinstantiate(row);
+                Transaction transaction = reinstantiate(row);
                 transactionsList.Add(transaction);
             }
             return transactionsList;
@@ -195,13 +183,7 @@ namespace ServiceLayer
                 case 0:
                     foreach (BigQueryRow row in this.TransactionDataAccess.SortTransactionsByDays(accID, num))
                     {
-                        Transaction transaction = null;
-                        long SGID = -1;     // Nullable attr
-                        if (row["SGID"] != null)
-                        {
-                            SGID = (long)row["SGID"];
-                        }
-                        transaction = reinstantiate(row);
+                        Transaction transaction = reinstantiate(row);
                         transactionsList.Add(transaction);
                     }
                     break;
@@ -209,13 +191,7 @@ namespace ServiceLayer
                 case 1:
                     foreach (BigQueryRow row in this.TransactionDataAccess.SortTransactionsByWeeks(accID, num))
                     {
-                        Transaction transaction = null;
-                        long SGID = -1;     // Nullable attr
-                        if (row["SGID"] != null)
-                        {
-                            SGID = (long)row["SGID"];
-                        }
-                        transaction = reinstantiate(row);
+                        Transaction transaction = reinstantiate(row);
                         transactionsList.Add(transaction);
                     }
                     break;
@@ -223,13 +199,7 @@ namespace ServiceLayer
                 case 2:
                     foreach (BigQueryRow row in this.TransactionDataAccess.SortTransactionsByMonths(accID, num))
                     {
-                        Transaction transaction = null;
-                        long SGID = -1;     // Nullable attr
-                        if (row["SGID"] != null)
-                        {
-                            SGID = (long)row["SGID"];
-                        }
-                        transaction = reinstantiate(row);
+                        Transaction transaction = reinstantiate(row);
                         transactionsList.Add(transaction);
                     }
                     break;
@@ -237,13 +207,7 @@ namespace ServiceLayer
                 case 3:
                     foreach (BigQueryRow row in this.TransactionDataAccess.SortTransactionsByYear(accID, num))
                     {
-                        Transaction transaction = null;
-                        long SGID = -1;     // Nullable attr
-                        if (row["SGID"] != null)
-                        {
-                            SGID = (long)row["SGID"];
-                        }
-                        transaction = reinstantiate(row);
+                        Transaction transaction = reinstantiate(row);
                         transactionsList.Add(transaction);
                     }
                     break;
