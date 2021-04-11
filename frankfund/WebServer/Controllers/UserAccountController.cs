@@ -166,8 +166,8 @@ namespace REST.Controllers
                             username: Convert.ToString(req["AccountUsername"]),
                             email: Convert.ToString(req["EmailAddress"]),
                             pass: Convert.ToString(req["PasswordHash"])
-                            //passSalt: null                      // TODO: Fix
-                            // Removed byte[] passSalt from constructor because it gets generated in UserAccountService
+                        //passSalt: null                      // TODO: Fix
+                        // Removed byte[] passSalt from constructor because it gets generated in UserAccountService
                         );
                 }
                 // Formatting or improper data typing raised exception, bad request
@@ -264,8 +264,9 @@ namespace REST.Controllers
             uas.update(acc);
             return new OkResult();
         }
-
-        [Route("api/accID={accID}/SavingsGoals/&apikey={apiKey}")]
+            
+        // Serve all SavingsGoals associated with a given Account
+        [Route("api/accID={accID}/SavingsGoals&apikey={apiKey}")]
         [HttpGet]
         public IActionResult getGoals(int accID, string apiKey)
         {
@@ -277,6 +278,7 @@ namespace REST.Controllers
             {
                 return BadRequest();
             }
-            return api.serveJson(uas.getJSON(uas.getUsingID(accID)));
+            return api.serveJson(uas.getSavingsGoalsFromAccount(accID));
         }
     }
+}
