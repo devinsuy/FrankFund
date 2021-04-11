@@ -11,13 +11,14 @@ namespace ServiceLayer
     public class UserAccountService: Service<UserAccount>
     {
         private readonly UserAccountDataAccess UserAccountDataAccess;
-        private readonly TransactionDataAccess TransactionDataAccess;
+        private readonly TransactionService TransactionService;
+        private readonly SavingsGoalService SGService;
         private PasswordService PasswordService;
         public UserAccountService()
         {
             this.UserAccountDataAccess = new UserAccountDataAccess();
             this.PasswordService = new PasswordService();
-            this.TransactionDataAccess = new TransactionDataAccess();
+            this.TransactionService = new TransactionService();
         }
 
         /*
@@ -66,28 +67,12 @@ namespace ServiceLayer
          */
         public List<Transaction> getTransactionsFromAccount(long accID)
         {
-            List<Transaction> transactionsList = new List<Transaction>();
+            return TransactionService.getTransactionsFromAccount(accID);
+        }
 
-            foreach (BigQueryRow row in this.TransactionDataAccess.getTransactionsFromAccount(accID))
-            {
-                Transaction transaction = null;
-                long SGID = -1;     // Nullable attr
-                if (row["SGID"] != null)
-                {
-                    SGID = (long)row["SGID"];
-                }
-                transaction = new Transaction(
-                    (long)row["TID"], (long)row["AccountID"], SGID,
-                    (string)row["TransactionName"],
-                    this.TransactionDataAccess.castBQNumeric(row["Amount"]),
-                    (DateTime)row["DateTransactionMade"],
-                    (DateTime)row["DateTransactionEntered"],
-                    (bool)row["IsExpense"],
-                    this.TransactionDataAccess.ParseEnum<transactionCategory>((string)row["TransactionCategory"])
-                );
-                transactionsList.Add(transaction);
-            }
-            return transactionsList;
+        public List<SavingsGoal> getSavingsGoalsFromAccount(long accID)
+        {
+            return SGService.getSavingsGoalsFromAccount(accID);
         }
 
         /*

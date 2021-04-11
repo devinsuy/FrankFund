@@ -18,15 +18,19 @@ namespace DataAccessLayer
         
         public BigQueryResults getUsingID(long ID)
         {
-            string query = $"SELECT * FROM {this.tableID} WHERE SGID = {ID}";        
+            string query = $"SELECT * FROM {this.tableID} WHERE SGID = {ID};";        
             return this.dataHelper.query(query, parameters: null);
         }
 
         // Return all SavingsGoals associated with an account id
         public BigQueryResults getSavingsGoalsFromAccount(long accID)
         {
-            string query = $"SELECT * FROM {this.tableID} WHERE ";
-            return null;
+            string query = "SELECT s.SGID, s.AccountID, s.Name, s.GoalAmt, s.ContrAmt, s.Period, s.NumPeriods, s.StartDate, s.EndDate"
+            + $" FROM {this.tableID} s"
+            + $" INNER JOIN {this.accTable} a"
+            + " ON s.AccountID = a.AccountID"
+            + $" WHERE s.AccountID = {accID};";
+            return this.dataHelper.query(query, parameters: null);
         }
 
         // Write a savings goal to BigQuery
@@ -50,7 +54,7 @@ namespace DataAccessLayer
         // Delete an existing record of a savings goal with the given PK identifier
         public void delete(long SGID)
         {
-            string query = $"DELETE FROM {this.tableID} WHERE SGID = {SGID}";
+            string query = $"DELETE FROM {this.tableID} WHERE SGID = {SGID};";
             this.dataHelper.query(query);
         }
 

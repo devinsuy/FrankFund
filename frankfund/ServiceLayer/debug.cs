@@ -100,7 +100,7 @@ namespace ServiceLayer
 
         static void testSGReadModifyRewrite(long SGID)
         {
-            Console.WriteLine("\n\n-------------------- Test: Recreate, Modify, Rewrite Existing SavingsGoal--------------------");
+            Console.WriteLine("\n\n-------------------- Test: Recreate, Modify, Rewrite Existing SavingsGoal --------------------");
 
             // Reinstantiate a SavingsGoal from DB records
             SavingsGoalService sgService = new SavingsGoalService();
@@ -122,6 +122,18 @@ namespace ServiceLayer
 
             // Rewrite the modified goal to DB
             sgService.update(existingGoal);
+        }
+
+        static void testGetAllSGFromAcc(long accID)
+        {
+            Console.WriteLine("\n\n-------------------- Test: Retrieve All Savings Goals From Account --------------------");
+            SavingsGoalService sgService = new SavingsGoalService();
+            List<SavingsGoal> goals = sgService.getSavingsGoalsFromAccount(accID);
+            foreach(SavingsGoal goal in goals)
+            {
+                Console.WriteLine(goal);
+            }
+
         }
 
 
@@ -446,8 +458,11 @@ namespace ServiceLayer
             //testSGShowJSON(sampleTwo);
 
 
-            // ---------------------------------------------- Sample Test of SG Read, Modify, Rewrite ------------------------------------------
+            // ---------------------------------------------- Test: SG Read, Modify, Rewrite ------------------------------------------
             //testSGReadModifyRewrite(SGID: 3);
+
+            // ---------------------------------------------- Test: Retrieve All SG From Account ------------------------------------------
+            //testGetAllSGFromAcc(accID: 2);
 
 
             // ---------------------------------------------- Test: Creating User Account ------------------------------------------------------
