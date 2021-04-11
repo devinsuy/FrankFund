@@ -15,6 +15,26 @@ namespace ServiceLayer
             this.TransactionDataAccess = new TransactionDataAccess();
         }
 
+        public Transaction reinstantiate(BigQueryRow row)
+        {
+            long SGID = -1;                     // Nullable attribute
+            if (row["SGID"] != null)
+            {
+                SGID = (long)row["SGID"];
+            }
+
+            return new Transaction(
+                (long)row["TID"], (long)row["AccountID"], SGID,
+                (string)row["TransactionName"],
+                this.TransactionDataAccess.castBQNumeric(row["Amount"]),
+                (DateTime)row["DateTransactionMade"],
+                (DateTime)row["DateTransactionEntered"],
+                (bool)row["IsExpense"],
+                //(transactionCategory)row["TransactionCategory"]
+                this.TransactionDataAccess.ParseEnum<transactionCategory>((string)row["TransactionCategory"])
+            );
+        }
+
         /* Retrieve a SavingsGoal from db with a given SGID
             Params: The SGID of the Savings Goal to retrieve
             Returns: A reinstantiated Savings Goal matching the SGID or null if non existant
@@ -29,16 +49,7 @@ namespace ServiceLayer
                 {
                     SGID = (long)row["SGID"];
                 }
-                transaction = new Transaction(
-                    (long)row["TID"], (long)row["AccountID"], SGID,
-                    (string)row["TransactionName"],
-                    this.TransactionDataAccess.castBQNumeric(row["Amount"]),
-                    (DateTime)row["DateTransactionMade"],
-                    (DateTime)row["DateTransactionEntered"],
-                    (bool)row["IsExpense"],
-                    //(transactionCategory)row["TransactionCategory"]
-                    this.TransactionDataAccess.ParseEnum<transactionCategory>((string)row["TransactionCategory"])
-                );
+                transaction = reinstantiate(row);
             }
             return transaction;
         }
@@ -139,15 +150,7 @@ namespace ServiceLayer
                 {
                     SGID = (long)row["SGID"];
                 }
-                transaction = new Transaction(
-                    (long)row["TID"], (long)row["AccountID"], SGID,
-                    (string)row["TransactionName"],
-                    this.TransactionDataAccess.castBQNumeric(row["Amount"]),
-                    (DateTime)row["DateTransactionMade"],
-                    (DateTime)row["DateTransactionEntered"],
-                    (bool)row["IsExpense"],
-                    this.TransactionDataAccess.ParseEnum<transactionCategory>((string)row["TransactionCategory"])
-                );
+                transaction = reinstantiate(row);
                 transactionsList.Add(transaction);
             }
             return transactionsList;
@@ -170,15 +173,7 @@ namespace ServiceLayer
                 {
                     SGID = (long)row["SGID"];
                 }
-                transaction = new Transaction(
-                    (long)row["TID"], (long)row["AccountID"], SGID,
-                    (string)row["TransactionName"],
-                    this.TransactionDataAccess.castBQNumeric(row["Amount"]),
-                    (DateTime)row["DateTransactionMade"],
-                    (DateTime)row["DateTransactionEntered"],
-                    (bool)row["IsExpense"],
-                    this.TransactionDataAccess.ParseEnum<transactionCategory>((string)row["TransactionCategory"])
-                );
+                transaction = reinstantiate(row);
                 transactionsList.Add(transaction);
             }
             return transactionsList;
@@ -206,15 +201,7 @@ namespace ServiceLayer
                         {
                             SGID = (long)row["SGID"];
                         }
-                        transaction = new Transaction(
-                            (long)row["TID"], (long)row["AccountID"], SGID,
-                            (string)row["TransactionName"],
-                            this.TransactionDataAccess.castBQNumeric(row["Amount"]),
-                            (DateTime)row["DateTransactionMade"],
-                            (DateTime)row["DateTransactionEntered"],
-                            (bool)row["IsExpense"],
-                            this.TransactionDataAccess.ParseEnum<transactionCategory>((string)row["TransactionCategory"])
-                        );
+                        transaction = reinstantiate(row);
                         transactionsList.Add(transaction);
                     }
                     break;
@@ -228,15 +215,7 @@ namespace ServiceLayer
                         {
                             SGID = (long)row["SGID"];
                         }
-                        transaction = new Transaction(
-                            (long)row["TID"], (long)row["AccountID"], SGID,
-                            (string)row["TransactionName"],
-                            this.TransactionDataAccess.castBQNumeric(row["Amount"]),
-                            (DateTime)row["DateTransactionMade"],
-                            (DateTime)row["DateTransactionEntered"],
-                            (bool)row["IsExpense"],
-                            this.TransactionDataAccess.ParseEnum<transactionCategory>((string)row["TransactionCategory"])
-                        );
+                        transaction = reinstantiate(row);
                         transactionsList.Add(transaction);
                     }
                     break;
@@ -250,15 +229,7 @@ namespace ServiceLayer
                         {
                             SGID = (long)row["SGID"];
                         }
-                        transaction = new Transaction(
-                            (long)row["TID"], (long)row["AccountID"], SGID,
-                            (string)row["TransactionName"],
-                            this.TransactionDataAccess.castBQNumeric(row["Amount"]),
-                            (DateTime)row["DateTransactionMade"],
-                            (DateTime)row["DateTransactionEntered"],
-                            (bool)row["IsExpense"],
-                            this.TransactionDataAccess.ParseEnum<transactionCategory>((string)row["TransactionCategory"])
-                        );
+                        transaction = reinstantiate(row);
                         transactionsList.Add(transaction);
                     }
                     break;
@@ -272,15 +243,7 @@ namespace ServiceLayer
                         {
                             SGID = (long)row["SGID"];
                         }
-                        transaction = new Transaction(
-                            (long)row["TID"], (long)row["AccountID"], SGID,
-                            (string)row["TransactionName"],
-                            this.TransactionDataAccess.castBQNumeric(row["Amount"]),
-                            (DateTime)row["DateTransactionMade"],
-                            (DateTime)row["DateTransactionEntered"],
-                            (bool)row["IsExpense"],
-                            this.TransactionDataAccess.ParseEnum<transactionCategory>((string)row["TransactionCategory"])
-                        );
+                        transaction = reinstantiate(row);
                         transactionsList.Add(transaction);
                     }
                     break;
