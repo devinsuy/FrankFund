@@ -14,16 +14,13 @@ COPY . .
 
 # Install dependencies. 
 # https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-restore?tabs=netcore2x
-RUN dotnet restore "frankfund/REST/REST.csproj"
+RUN dotnet restore "frankfund/WebServer/WebServer.csproj"
 
 # Compile, then pack the compiled app and dependencies into a deployable unit.
 # https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-publish?tabs=netcore21
-RUN dotnet publish "frankfund/REST/REST.csproj" -c Release -o /app/publish
+RUN dotnet publish "frankfund/WebServer/WebServer.csproj" -c Release -o /app/publish
 
 # Pull down an image from Docker Hub that includes only the ASP.NET core runtime:
-# https://hub.docker.com/_/microsoft-dotnet-core-aspnet/
-# We don't need the SDK anymore, so this will produce a lighter-weight image
-# that can still run the app.
 FROM gcr.io/google-appengine/aspnetcore:3.1
 
 # Expose port 80 to your local machine so you can access the app.
@@ -34,4 +31,4 @@ ENV ASPNETCORE_URLS=http://*:8080
 COPY --from=build /app/publish .
 
 # To run the app, run `dotnet sample-app.dll`, which we just copied over.
-ENTRYPOINT ["dotnet", "REST.dll"]
+ENTRYPOINT ["dotnet", "WebServer.dll"]
