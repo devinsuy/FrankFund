@@ -38,7 +38,7 @@ namespace REST.Controllers
 
         [Route("api/accID={accID}&apikey={apiKey}")]
         [HttpGet]
-        public IActionResult GetByID(int accID, string apiKey)
+        public IActionResult GetByID(long accID, string apiKey)
         {
             if (!api.validAPIKey(apiKey))
             {
@@ -54,7 +54,7 @@ namespace REST.Controllers
         // Delete an account, no effect if an account with the given accID doesn't exist
         [Route("api/accID={accID}&apikey={apiKey}")]
         [HttpDelete]
-        public IActionResult DeleteByID(int accID, string apiKey)
+        public IActionResult DeleteByID(long accID, string apiKey)
         {
             if (!api.validAPIKey(apiKey))
             {
@@ -75,7 +75,7 @@ namespace REST.Controllers
         // Old Route: [Route("api/accID={accID}&apikey={apiKey}")]
         [Route("api/account/create")]
         [HttpPost]
-        public IActionResult CreateByID(int accID, string apiKey, [FromBody] JsonElement reqBody)
+        public IActionResult CreateByID(long accID, string apiKey, [FromBody] JsonElement reqBody)
         {
             //return new NotFoundResult();
             if (!api.validAPIKey(apiKey))
@@ -131,7 +131,7 @@ namespace REST.Controllers
         // Update an existing Account or create if not exists
         [Route("api/accID={accID}&apikey={apiKey}")]
         [HttpPut]
-        public IActionResult UpdateAllByID(int accID, string apiKey, [FromBody] JsonElement reqBody)
+        public IActionResult UpdateAllByID(long accID, string apiKey, [FromBody] JsonElement reqBody)
         {
             // TODO: Endpoint not fully implemented
             return new NotFoundResult();
@@ -211,7 +211,7 @@ namespace REST.Controllers
         // returns Http 404 Not found if doesn't exist
         [Route("api/accID={accID}&apikey={apiKey}")]
         [HttpPatch]
-        public IActionResult UpdateByID(int accID, string apiKey, [FromBody] JsonElement reqBody)
+        public IActionResult UpdateByID(long accID, string apiKey, [FromBody] JsonElement reqBody)
         {
             // TODO: Endpoint not fully implemented
             return new NotFoundResult();
@@ -268,7 +268,7 @@ namespace REST.Controllers
         // Serve all SavingsGoals associated with a given Account
         [Route("api/accID={accID}/SavingsGoals&apikey={apiKey}")]
         [HttpGet]
-        public IActionResult getGoals(int accID, string apiKey)
+        public IActionResult getGoals(long accID, string apiKey)
         {
             if (!api.validAPIKey(apiKey))
             {
