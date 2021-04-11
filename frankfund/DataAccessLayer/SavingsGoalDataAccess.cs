@@ -7,11 +7,13 @@ namespace DataAccessLayer
     {
         private readonly DataHelper dataHelper;
         private readonly string tableID;
+        private readonly string accTable;
         
         public SavingsGoalDataAccess()
         {
             this.dataHelper = new DataHelper();
             this.tableID = this.dataHelper.getQualifiedTableName("SavingsGoals");
+            this.accTable = this.dataHelper.getQualifiedTableName("Accounts");
         }
         
         public BigQueryResults getUsingID(long ID)
@@ -20,19 +22,26 @@ namespace DataAccessLayer
             return this.dataHelper.query(query, parameters: null);
         }
 
+        // Return all SavingsGoals associated with an account id
+        public BigQueryResults getSavingsGoalsFromAccount(long accID)
+        {
+            string query = $"SELECT * FROM {this.tableID} WHERE ";
+            return null;
+        }
 
         // Write a savings goal to BigQuery
         public void write(string[] serializedGoal)
         {
             string query = $"INSERT INTO {this.tableID} VALUES ("
                 + serializedGoal[0] + ","                                              // SGID
-                + $"\"{serializedGoal[1]}\","                                          // Name
-                + serializedGoal[2] + ","                                              // GoalAmt
-                + serializedGoal[3] + ","                                              // ContrAmt
-                + $"\"{serializedGoal[4]}\","                                          // Period
-                + serializedGoal[5] + ","                                              // NumPeriods
-                + $"\"{serializedGoal[6]}\","                                          // StartDate
-                + $"\"{serializedGoal[7]}\")";                                         // EndDate
+                + serializedGoal[1] + ","                                              // AccountID
+                + $"\"{serializedGoal[2]}\","                                          // Name
+                + serializedGoal[3] + ","                                              // GoalAmt
+                + serializedGoal[4] + ","                                              // ContrAmt
+                + $"\"{serializedGoal[5]}\","                                          // Period
+                + serializedGoal[6] + ","                                              // NumPeriods
+                + $"\"{serializedGoal[7]}\","                                          // StartDate
+                + $"\"{serializedGoal[8]}\")";                                         // EndDate
             //Console.WriteLine("Running Insert Query:\n---------------------\n" + query);
             this.dataHelper.query(query);
 

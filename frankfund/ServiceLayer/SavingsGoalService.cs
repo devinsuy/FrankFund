@@ -2,6 +2,7 @@
 using DataAccessLayer;
 using Google.Cloud.BigQuery.V2;
 using DataAccessLayer.Models;
+using System.Collections.Generic;
 
 namespace ServiceLayer
 {
@@ -30,6 +31,18 @@ namespace ServiceLayer
                 return contrPeriod.BiMonthly;
         }
 
+        // Reinstantiates and returns a SavingsGoal from BQ records
+        public SavingsGoal reinstantiate(BigQueryRow row)
+        {
+            return new SavingsGoal(
+                    (long)row["SGID"], (long)row["AccountID"], (string)row["Name"],
+                    this.SavingsGoalDataAccess.castBQNumeric(row["GoalAmt"]),
+                    this.SavingsGoalDataAccess.castBQNumeric(row["ContrAmt"]),
+                    this.castPeriod((string)row["Period"]), (long)row["NumPeriods"],
+                    (DateTime)row["StartDate"], (DateTime)row["EndDate"]
+            );
+        }
+
         /* Retrieve a SavingsGoal from db with a given SGID
             Params: The SGID of the Savings Goal to retrieve
             Returns: A reinstantiated Savings Goal matching the SGID or null if non existant
@@ -38,16 +51,23 @@ namespace ServiceLayer
         {
             SavingsGoal sGoal = null;
             foreach(BigQueryRow row in this.SavingsGoalDataAccess.getUsingID(SGID)){
-                sGoal = new SavingsGoal (
-                    (long)row["SGID"], (string)row["Name"], 
-                    this.SavingsGoalDataAccess.castBQNumeric(row["GoalAmt"]), 
-                    this.SavingsGoalDataAccess.castBQNumeric(row["ContrAmt"]), 
-                    this.castPeriod((string)row["Period"]), (long)row["NumPeriods"], 
-                    (DateTime)row["StartDate"], (DateTime)row["EndDate"]
-                );
+                sGoal = this.reinstantiate(row);
             }
             return sGoal;
         }
+
+
+        // Retrieve all Savings Goals associated with an account
+        public List<SavingsGoal> getSavingsGoalsFromAccount(long accID)
+        {
+            List <SavingsGoal> goals = new List<SavingsGoal>();
+            foreach (BigQueryRow row in SavingsGoalDataAccess.getSavingsGoalsFromAccount(accID))
+            {
+                goals.Add(this.reinstantiate(row));
+            }
+            return goals;
+        }
+
 
         /*
         Serialize a SavingsGoal object into a String array
@@ -56,6 +76,7 @@ namespace ServiceLayer
         public string[] serialize(SavingsGoal s){
             return new string[] {
                 s.SGID.ToString(),
+                s.accID.ToString(),
                 s.name,
                 s.goalAmt.ToString(),
                 s.contrAmt.ToString(),
@@ -79,13 +100,14 @@ namespace ServiceLayer
             string[] serialized = serialize(s);
             string jsonStr = "{"
                 + $"\"SGID\":{serialized[0]},"
-                + $"\"Name\":\"" + serialized[1] + "\","
-                + $"\"GoalAmt\":{serialized[2]},"
-                + $"\"ContrAmt\":{serialized[3]},"
-                + $"\"Period\":\"" + serialized[4] + "\","
-                + $"\"NumPeriods\":{serialized[5]},"
-                + $"\"StartDate\":\"" + serialized[6] + "\","
-                + $"\"EndDate\":\"" + serialized[7] + "\""
+                + $"\"AccountID\":{serialized[1]},"
+                + $"\"Name\":\"" + serialized[2] + "\","
+                + $"\"GoalAmt\":{serialized[3]},"
+                + $"\"ContrAmt\":{serialized[4]},"
+                + $"\"Period\":\"" + serialized[5] + "\","
+                + $"\"NumPeriods\":{serialized[6]},"
+                + $"\"StartDate\":\"" + serialized[7] + "\","
+                + $"\"EndDate\":\"" + serialized[8] + "\""
             + "}";
             //Console.WriteLine($"\nSavingsGoal JSON Representation:\n--------------------------------\n{jsonStr}\n");
             return jsonStr;

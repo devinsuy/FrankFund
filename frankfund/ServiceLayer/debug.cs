@@ -12,13 +12,13 @@ namespace ServiceLayer
         static void authenticateGCP()
         {
             // Devin's Credentials
-            //string pathToCreds = "/Users/devin/GitHub/FrankFund/Credentials/AuthDevin.json";
+            string pathToCreds = "/Users/devin/GitHub/FrankFund/Credentials/AuthDevin.json";
 
             // Autumn's Credentials
             //string pathToCreds = "/Users/steve/OneDrive/Documents/GitHub/FrankFund/Credentials/AuthAutumn.json";
 
             // Kenneth's Credentials
-            string pathToCreds = "/Users/015909177/Desktop/Github Repos/FrankFund/Credentials/AuthKenny.json";
+            //string pathToCreds = "/Users/015909177/Desktop/Github Repos/FrankFund/Credentials/AuthKenny.json";
 
             //Rachel's Credentials 
             //string pathToCreds = "C:/Data/Spring 2021/CECS 491B/Senior Project/Credentials/AuthRachel.json";
@@ -38,7 +38,7 @@ namespace ServiceLayer
 
             // Create a new Savings Goal for the amount of $150 ending on December 20th, dynamically calculate payments
             DateTime endDate = new DateTime(2021, 12, 20, 0, 0, 0).Date;
-            SavingsGoal sampleGoal = new SavingsGoal(SGID, "Christmas Gift", (decimal)150.00, contrPeriod.Monthly, endDate);
+            SavingsGoal sampleGoal = new SavingsGoal(SGID, 2, "Christmas Gift", (decimal)150.00, contrPeriod.Monthly, endDate);
 
             // Print summary of goal that was just created
             Console.WriteLine("Savings Goal Summary:\n---------------------");
@@ -61,7 +61,7 @@ namespace ServiceLayer
 
             // Create a new Savings Goal for the amount of $300 dynamically calculate end date
             DateTime endDate = new DateTime(2021, 12, 20, 0, 0, 0).Date;
-            SavingsGoal sampleGoal = new SavingsGoal(SGID, "Tuition", (decimal)3425.00, contrPeriod.Weekly, (decimal)325.00);
+            SavingsGoal sampleGoal = new SavingsGoal(SGID, 2, "Tuition", (decimal)3425.00, contrPeriod.Weekly, (decimal)325.00);
 
             // Print summary of goal that was just created
             Console.WriteLine("Savings Goal Summary:\n---------------------");
@@ -121,7 +121,7 @@ namespace ServiceLayer
             Console.WriteLine(existingGoal + "\n");
 
             // Rewrite the modified goal to DB
-            sgService.write(existingGoal);
+            sgService.update(existingGoal);
         }
 
 
@@ -447,7 +447,7 @@ namespace ServiceLayer
 
 
             // ---------------------------------------------- Sample Test of SG Read, Modify, Rewrite ------------------------------------------
-            //testSGReadModifyRewrite(SGID: 1);
+            //testSGReadModifyRewrite(SGID: 3);
 
 
             // ---------------------------------------------- Test: Creating User Account ------------------------------------------------------
@@ -483,7 +483,7 @@ namespace ServiceLayer
             //testGetSortedTransactionsByTime(accID: 4, num: 3, choice: 2);
 
             // sorting past 1 week from today
-            testGetSortedTransactionsByTime(accID: 2, num: 1, choice: 1);
+            //testGetSortedTransactionsByTime(accID: 2, num: 1, choice: 1);
 
 
             // ---------------------------------------------- Test: Receipt Create ---------------------------------------------------------

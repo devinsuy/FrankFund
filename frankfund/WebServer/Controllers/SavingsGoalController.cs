@@ -52,13 +52,13 @@ namespace REST.Controllers
             // Required attributes to create a NEW SavingsGoal by contribution
             createContrAttrs = new HashSet<string>()
             {
-                "Name", "GoalAmt", "Period", "ContrAmt"
+                "Name", "AccountID", "GoalAmt", "Period", "ContrAmt"
             };
 
             // Required attributes to create a NEW SavingsGoal by end date
             createDateAttrs = new HashSet<string>()
             {
-                "Name", "GoalAmt", "Period", "EndDate"
+                "Name", "AccountID", "GoalAmt", "Period", "EndDate"
             };
         }
 
@@ -135,17 +135,19 @@ namespace REST.Controllers
                 {
                     s = new SavingsGoal(
                         SGID: SGID,
+                        accID: Convert.ToInt64(req["AccountID"]),
                         Convert.ToString(req["Name"]),
                         goalAmt: Convert.ToDecimal(req["GoalAmt"]),
                         period: sgs.castPeriod(Convert.ToString(req["Period"])),
                         endDate: Convert.ToDateTime(req["EndDate"])
-                    );
+                    ); ;
                 }
                 // Create a SavingsGoal by a specified contribution amount
                 else
                 {
                     s = new SavingsGoal(
                         SGID: SGID,
+                        accID: Convert.ToInt64(req["AccountID"]),
                         Convert.ToString(req["Name"]),
                         goalAmt: Convert.ToDecimal(req["GoalAmt"]),
                         period: sgs.castPeriod(Convert.ToString(req["Period"])),
