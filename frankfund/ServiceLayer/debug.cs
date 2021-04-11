@@ -12,7 +12,7 @@ namespace ServiceLayer
         static void authenticateGCP()
         {
             // Devin's Credentials
-            //string pathToCreds = "/Users/devin/Documents/GitHub/FrankFund/Credentials/AuthDevin.json";
+            //string pathToCreds = "/Users/devin/GitHub/FrankFund/Credentials/AuthDevin.json";
 
             // Autumn's Credentials
             //string pathToCreds = "/Users/steve/OneDrive/Documents/GitHub/FrankFund/Credentials/AuthAutumn.json";

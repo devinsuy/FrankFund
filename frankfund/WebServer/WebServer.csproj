@@ -1,0 +1,165 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <PreserveCompilationContext>false</PreserveCompilationContext>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\DataAccessLayer\DataAccessLayer.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+      <ReferenceSourceTarget>ProjectReference</ReferenceSourceTarget>
+    </ProjectReference>
+    <ProjectReference Include="..\ServiceLayer\ServiceLayer.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+      <ReferenceSourceTarget>ProjectReference</ReferenceSourceTarget>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices" Version="3.1.14" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.14" />
+    <PackageReference Include="JavaScriptEngineSwitcher.V8" Version="3.11.2" />
+    <PackageReference Include="JavaScriptEngineSwitcher.Extensions.MsDependencyInjection" Version="3.3.0" />
+    <PackageReference Include="React.AspNet" Version="5.2.11" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Controllers\LandingController.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\static\css\main.2d9f592e.chunk.css" />
+    <Content Remove="wwwroot\static\css\2.150d169a.chunk.css.map" />
+    <Content Remove="wwwroot\static\js\runtime-main.c462ca69.js.map" />
+    <Content Remove="wwwroot\static\js\2.381a26f5.chunk.js.LICENSE.txt" />
+    <Content Remove="wwwroot\static\js\main.af7db589.chunk.js" />
+    <Content Remove="wwwroot\static\js\3.a773437c.chunk.js.map" />
+    <Content Remove="wwwroot\static\js\main.af7db589.chunk.js.map" />
+    <Content Remove="wwwroot\static\js\3.a773437c.chunk.js" />
+    <Content Remove="wwwroot\static\js\2.381a26f5.chunk.js.map" />
+    <Content Remove="wwwroot\static\js\runtime-main.c462ca69.js" />
+    <Content Remove="wwwroot\static\js\2.381a26f5.chunk.js" />
+    <Content Remove="wwwroot\static\media\logo.6ce24c58.svg" />
+    <Content Remove="wwwroot\robots.txt" />
+    <Content Remove="wwwroot\logo192.png" />
+    <Content Remove="build\asset-manifest.json" />
+    <Content Remove="build\manifest.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="wwwroot\**">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\**">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\**">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\**">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\**">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\**">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\**">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\**">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\**">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\**">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\**">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\**">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\**">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\**">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\**">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\**">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\**">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ClientApp\asset-manifest.json">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ClientApp\manifest.json">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Update="wwwroot\manifest.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Credentials\" />
+    <Folder Include="ClientApp\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="build\favicon.ico" />
+    <None Remove="build\logo512.png" />
+    <None Remove="build\index.html" />
+    <None Remove="build\logo192.png" />
+    <None Remove="build\robots.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClientApp\favicon.ico" />
+    <None Include="ClientApp\logo192.png" />
+    <None Include="ClientApp\index.html" />
+    <None Include="ClientApp\logo512.png" />
+    <None Include="ClientApp\robots.txt" />
+    <None Include="ClientApp\static\css\main.2d9f592e.chunk.css.map" />
+    <None Include="ClientApp\static\css\main.2d9f592e.chunk.css" />
+    <None Include="ClientApp\static\css\2.150d169a.chunk.css" />
+    <None Include="ClientApp\static\css\2.150d169a.chunk.css.map" />
+    <None Include="ClientApp\static\js\3.a773437c.chunk.js.map" />
+    <None Include="ClientApp\static\js\runtime-main.c462ca69.js.map" />
+    <None Include="ClientApp\static\js\main.af7db589.chunk.js" />
+    <None Include="ClientApp\static\js\main.af7db589.chunk.js.map" />
+    <None Include="ClientApp\static\media\logo.6ce24c58.svg" />
+    <None Include="ClientApp\static\js\2.381a26f5.chunk.js.LICENSE.txt" />
+    <None Include="ClientApp\static\js\2.381a26f5.chunk.js.map" />
+    <None Include="ClientApp\static\js\2.381a26f5.chunk.js" />
+    <None Include="ClientApp\static\js\3.a773437c.chunk.js" />
+    <None Include="ClientApp\static\js\runtime-main.c462ca69.js" />
+  </ItemGroup>
+</Project>

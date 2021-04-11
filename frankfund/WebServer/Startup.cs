@@ -11,6 +11,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Http;
+using JavaScriptEngineSwitcher.V8;
+using JavaScriptEngineSwitcher.Extensions.MsDependencyInjection;
+using React.AspNet;
+
 
 namespace REST
 {
@@ -19,7 +24,7 @@ namespace REST
         static void authenticateGCP()
         {
             // Devin's Credentials
-            string pathToCreds = "/Users/devin/Documents/GitHub/FrankFund/Credentials/AuthDevin.json";
+            string pathToCreds = "/Users/devin/GitHub/FrankFund/Credentials/AuthDevin.json";
 
             // Autumn's Credentials
             // string pathToCreds = "/Users/steve/OneDrive/Documents/GitHub/FrankFund/Credentials/AuthAutumn.json";
@@ -42,7 +47,17 @@ namespace REST
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            //services.AddHttpsRedirection(options =>
+            //{
+            //    options.HttpsPort = 443;
+            //});
+
+            // Serve React files
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "ClientApp/build";
+            });
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -57,9 +72,27 @@ namespace REST
             options.DefaultFileNames.Clear();
             options.DefaultFileNames.Add("index.html");
             app.UseDefaultFiles(options);
-            app.UseStaticFiles();
 
-            app.UseHttpsRedirection();
+
+
+            app.UseStaticFiles();
+            app.UseSpaStaticFiles();
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "ClientApp";
+                //if (env.IsDevelopment())
+                //{
+                //    spa.Use
+                //    spa.UseReactDevelopmentServer(npmScript: "start");
+                //}
+            });
+
+
+
+
+
+            //app.UseHsts();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 
