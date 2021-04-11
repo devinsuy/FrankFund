@@ -64,7 +64,7 @@ namespace REST.Controllers
 
         [Route("api/SGID={SGID}&apikey={apiKey}")]
         [HttpGet]
-        public IActionResult GetSGByID(int SGID, string apiKey)
+        public IActionResult GetSGByID(long SGID, string apiKey)
         {
             if (!api.validAPIKey(apiKey))
             {
@@ -80,7 +80,7 @@ namespace REST.Controllers
         // Delete a SavingsGoal, no effect if a SavingsGoal with the given SGID doesn't exist
         [Route("api/SGID={SGID}&apikey={apiKey}")]
         [HttpDelete]
-        public IActionResult DeleteByID(int SGID, string apiKey)
+        public IActionResult DeleteByID(long SGID, string apiKey)
         {
             if (!api.validAPIKey(apiKey))
             {
@@ -99,7 +99,7 @@ namespace REST.Controllers
         // Returns Http 409 Conflict if already exists
         [Route("api/SGID={SGID}&apikey={apiKey}")]
         [HttpPost]
-        public IActionResult CreateByID(int SGID, string apiKey, [FromBody] JsonElement reqBody)
+        public IActionResult CreateByID(long SGID, string apiKey, [FromBody] JsonElement reqBody)
         {
             if (!api.validAPIKey(apiKey))
             {
@@ -170,7 +170,7 @@ namespace REST.Controllers
         // TODO: SavingsGoal API does not support HTTP PUT operation
         [Route("api/SGID={SGID}&apikey={apiKey}")]
         [HttpPut]
-        public IActionResult UpdateAllByID(int SGID, string apiKey, [FromBody] JsonElement reqBody)
+        public IActionResult UpdateAllByID(long SGID, string apiKey, [FromBody] JsonElement reqBody)
         {
             return new NotFoundResult();
 
@@ -251,7 +251,7 @@ namespace REST.Controllers
         //      Updating ContrAmt AND Period simultaneously
         [Route("api/SGID={SGID}&apikey={apiKey}")]
         [HttpPatch]
-        public IActionResult UpdateByID(int SGID, string apiKey, [FromBody] JsonElement reqBody)
+        public IActionResult UpdateByID(long SGID, string apiKey, [FromBody] JsonElement reqBody)
         {
             if (!api.validAPIKey(apiKey))
             {

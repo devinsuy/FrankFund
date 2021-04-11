@@ -33,7 +33,7 @@ namespace REST.Controllers
         // returns Http 204 NoContent if doesn't exist
         [Route("api/RID={RID}&apikey={apikey}")]
         [HttpGet]
-        public IActionResult GetByID(int RID, string apikey)
+        public IActionResult GetByID(long RID, string apikey)
         {
             if (!api.validAPIKey(apikey))
             {
@@ -52,7 +52,7 @@ namespace REST.Controllers
         // Delete a Receipt, no effect if a receipt with the given RID doesn't exist
         [Route("api/RID={RID}&apikey={apiKey}")]
         [HttpDelete]
-        public IActionResult DeleteByID(int RID, string apiKey)
+        public IActionResult DeleteByID(long RID, string apiKey)
         {
             if (!api.validAPIKey(apiKey))
             {
@@ -71,7 +71,7 @@ namespace REST.Controllers
         // Returns Http 409 Conflict if already exists
         [Route("api/RID={RID}&apikey={apiKey}")]
         [HttpPost]
-        public IActionResult CreateByID(int RID, string apiKey, [FromBody] JsonElement reqBody)
+        public IActionResult CreateByID(long RID, string apiKey, [FromBody] JsonElement reqBody)
         {
             if (!api.validAPIKey(apiKey))
             {
@@ -125,7 +125,7 @@ namespace REST.Controllers
         // Update an existing Receipt or create if not exists
         [Route("api/RID={RID}&apikey={apiKey}")]
         [HttpPut]
-        public IActionResult UpdateAllByID(int RID, string apiKey, [FromBody] JsonElement reqBody)
+        public IActionResult UpdateAllByID(long RID, string apiKey, [FromBody] JsonElement reqBody)
         {
             if (!api.validAPIKey(apiKey))
             {
@@ -205,7 +205,7 @@ namespace REST.Controllers
         // returns Http 404 Not found if doesn't exist
         [Route("api/RID={RID}&apikey={apiKey}")]
         [HttpPatch]
-        public IActionResult UpdateByID(int RID, string apiKey, [FromBody] JsonElement reqBody)
+        public IActionResult UpdateByID(long RID, string apiKey, [FromBody] JsonElement reqBody)
         {
             if (!api.validAPIKey(apiKey))
             {
