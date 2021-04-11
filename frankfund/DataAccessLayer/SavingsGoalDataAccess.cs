@@ -29,7 +29,8 @@ namespace DataAccessLayer
             + $" FROM {this.tableID} s"
             + $" INNER JOIN {this.accTable} a"
             + " ON s.AccountID = a.AccountID"
-            + $" WHERE s.AccountID = {accID};";
+            + $" WHERE s.AccountID = {accID}"
+            + " ORDER BY s.EndDate ASC;";
             return this.dataHelper.query(query, parameters: null);
         }
 
