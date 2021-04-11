@@ -7,7 +7,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 // Imported React Components
 import CreateUserAccount from "./components/createuseraccount.component";
 import SettingsUserAccount from "./components/settingsuseraccount.component";
-import TableComponent from "./components/table.components";
+// import TableComponent from "./components/table.components";
 
 function App() {
     return (<Router>
@@ -57,7 +57,7 @@ function App() {
             <Route exact path='/' component={CreateUserAccount} />
             <Route path="/create-user-account" component={CreateUserAccount} />
             <Route path="/account-settings" component={SettingsUserAccount} />
-            <Route path="/example" component={TableComponent}/>
+            {/* <Route path="/example" component={TableComponent}/> */}
           </Switch>
         </div>
       </div>
