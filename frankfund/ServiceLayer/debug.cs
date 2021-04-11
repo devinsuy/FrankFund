@@ -459,20 +459,30 @@ namespace ServiceLayer
             //Transaction t = testReinstantiateTransaction(TID: 41);
             //TransactionService ts = new TransactionService();
             //Console.WriteLine(ts.getJSON(t));
-            //testModifyRewriteTransaction(TID: 25);
-            //testDeleteTransaction(TID: 42);
+
 
             //Demo 3/25
+            // FRAN-18 As a user, I want to be able to edit my existing transactions, so that I can correct or update any incorrect information.
+            //testModifyRewriteTransaction(TID: 1);
 
+            // FRAN-19 As a user, I want to be able to delete transactions, so that no longer wanted transactions are accurately represented in the log.
+            //testDeleteTransaction(TID: 20);
+
+            // FRAN-79 As a developer, I want to implement code to display a summary of the Transaction when printed into the console.
             //testDisplayTransaction(TID: 12);
+
+            // FRAN-2 As a developer, I want to be able to display all the transactions associated with a given user.
             //testGetTransactionsFromAccount(accID: 1);
 
+            //FRAN-76 As a developer, I want to write the queries to be able to sort a users transactions by any given TransactionCategory.
             //testGetTransactionsFromCategory(accID: 4, "HomeAndUtilities");
 
-            // sorting past 3 months
-            testGetSortedTransactionsByTime(accID: 4, num: 3, choice: 2);
 
-            // sorting past 1 week
+            // FRAN-7 As a developer, I want to be able to create a DB view of a user's transactions across any of the given time periods: { 1 day, 3 days, 1 week, 2 weeks, 1 month, 3 months, 6 months, 1 year, All time }
+            // sorting past 3 months from today
+            //testGetSortedTransactionsByTime(accID: 4, num: 3, choice: 2);
+
+            // sorting past 1 week from today
             testGetSortedTransactionsByTime(accID: 2, num: 1, choice: 1);
 
 
