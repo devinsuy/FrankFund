@@ -135,7 +135,7 @@ namespace REST.Controllers
         public IActionResult UpdateAllByID(long accID, string apiKey, [FromBody] JsonElement reqBody)
         {
             // TODO: Endpoint not fully implemented
-            return new NotFoundResult();
+           // return new NotFoundResult();
 
 
             if (!api.validAPIKey(apiKey))
@@ -189,9 +189,14 @@ namespace REST.Controllers
                 try
                 {
                     // TODO: Set account methods
-
-
-
+                    acc = new UserAccount(
+                            AccountID: accID,
+                            username: Convert.ToString(req["AccountUsername"]),
+                            email: Convert.ToString(req["EmailAddress"]),
+                            pass: Convert.ToString(req["PasswordHash"])
+                        //passSalt: null                      // TODO: Fix
+                        // Removed byte[] passSalt from constructor because it gets generated in UserAccountService
+                        );
                 }
                 // Formatting or improper data typing raised exception, bad request
                 catch (Exception e)
