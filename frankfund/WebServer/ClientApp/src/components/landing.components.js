@@ -2,21 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 // reactstrap components
-// reactstrap components
-import {
-    Button,
-    Card,
-    CardHeader,
-    CardBody,
-    FormGroup,
-    Form,
-    Input,
-    InputGroupAddon,
-    InputGroupText,
-    InputGroup,
-    Row,
-    Col,
-} from "reactstrap";
 
 export default class LandingComponent extends React.Component {
     render() {
@@ -42,7 +27,7 @@ export default class LandingComponent extends React.Component {
                                         <li>Creating goals for saving your money</li>
                                         <li>Sending notifications for upcoming subscription charges</li>
                                     </h7><br />
-                                    <button type="button" class="btn btn-outline-success">Sign Up</button>
+                                    <a href="/create-user-account" class="btn btn-outline-success" role="button">Sign Up</a>
                                 </div>
 
                             </div>
