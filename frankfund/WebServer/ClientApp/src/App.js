@@ -7,7 +7,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 // Imported React Components
 import CreateUserAccount from "./components/createuseraccount.component";
 import SettingsUserAccount from "./components/settingsuseraccount.component";
-// import TableComponent from "./components/table.components";
+import LandingComponent from "./components/landing.components";
 
 function App() {
     return (<Router>
@@ -37,7 +37,7 @@ function App() {
           3. Connect to backend */}
       <nav className="navbar navbar-expand-lg navbar-light fixed-top">
         <div className="container">
-          <Link className="navbar-brand" to={"/create-user-account"}>FrankFund</Link>
+          <Link className="navbar-brand" to={"/"}>FrankFund</Link>
           <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
             <ul className="navbar-nav ml-auto">
               <li className="nav-item">
@@ -54,7 +54,7 @@ function App() {
       <div className="outer">
         <div className="inner">
           <Switch>
-            <Route exact path='/' component={CreateUserAccount} />
+            <Route exact path='/' component={LandingComponent} />
             <Route path="/create-user-account" component={CreateUserAccount} />
             <Route path="/account-settings" component={SettingsUserAccount} />
             {/* <Route path="/example" component={TableComponent}/> */}

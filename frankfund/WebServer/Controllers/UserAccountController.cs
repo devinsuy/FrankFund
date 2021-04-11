@@ -73,19 +73,20 @@ namespace REST.Controllers
         // Returns Http 409 Conflict if already exists
         // TODO: Account registration logic may be more complex, byte salt to be updated
         // Old Route: [Route("api/accID={accID}&apikey={apiKey}")]
+        // Old parameter: int accID, string apiKey,
         [Route("api/account/create")]
         [HttpPost]
-        public IActionResult CreateByID(int accID, string apiKey, [FromBody] JsonElement reqBody)
+        public IActionResult CreateByID([FromBody] JsonElement reqBody)
         {
             //return new NotFoundResult();
-            if (!api.validAPIKey(apiKey))
-            {
-                return new UnauthorizedResult();
-            }
-            if (accID < 1)
-            {
-                return BadRequest();
-            }
+            //if (!api.validAPIKey(apiKey))
+            //{
+            //    return new UnauthorizedResult();
+            //}
+            //if (accID < 1)
+            //{
+            //    return BadRequest();
+            //}
 
             // Validate that the POST request contains all necessary attributes to create a NEW Account and nothing more
             Dictionary<string, object> req = JsonConvert.DeserializeObject<Dictionary<string, object>>(Convert.ToString(reqBody));
@@ -96,7 +97,7 @@ namespace REST.Controllers
             }
 
             // POST should be used only to create a new Account, not allowed if Account with given accID already exists
-            UserAccount acc = uas.getUsingID(accID);
+            UserAccount acc = uas.getUsingUsername(Convert.ToString(req["AccountUsername"]));
             if (acc != null)
             {
                 return Conflict();
