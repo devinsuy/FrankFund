@@ -59,17 +59,17 @@ export default class CreateUserAccount extends Component {
 
                 <div className="form-group">
                     <label>Username</label>
-                    <input type="AccountUsername" className="form-control" placeholder="Username" />
+                    <input type="text" name="AccountUsername" className="form-control" placeholder="Username" />
                 </div>
 
                 <div className="form-group">
                     <label>Email</label>
-                    <input type="EmailAddress" className="form-control" placeholder="Enter email" />
+                    <input type="email" name="EmailAddress" className="form-control" placeholder="Enter email" />
                 </div>
 
                 <div className="form-group">
                     <label>Password</label>
-                    <input type="Password" className="form-control" placeholder="Enter password" />
+                    <input type="password" name="Password" className="form-control" placeholder="Enter password" />
                 </div>
 
                 <button type="submit" className="btn btn-dark btn-lg btn-block">Register</button>
