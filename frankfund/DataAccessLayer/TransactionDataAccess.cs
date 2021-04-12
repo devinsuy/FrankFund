@@ -10,11 +10,13 @@ namespace DataAccessLayer
     {
         private readonly DataHelper dataHelper;
         private readonly string tableID;
+        private readonly string accTable;
 
         public TransactionDataAccess()
         {
             this.dataHelper = new DataHelper();
             this.tableID = this.dataHelper.getQualifiedTableName("Transactions");
+            this.accTable = this.dataHelper.getQualifiedTableName("Accounts");
         }
 
         public BigQueryResults getUsingID(long ID)
@@ -64,6 +66,19 @@ namespace DataAccessLayer
             string query = "SELECT * FROM FrankFund.Transactions t"
                 + $" WHERE t.accountID = {accID}"
                 + " ORDER BY DateTransactionMade DESC, DateTransactionEntered DESC";
+            return this.dataHelper.query(query, parameters: null);
+        }
+        // Returns all transactions with a given user ordered by date entered
+        public BigQueryResults getTransactionsFromAccount(string username)
+        {
+            string query = "SELECT t.TID, t.AccountID, t.SGID, t.TransactionName, t.Amount, t.DateTransactionMade"
+                + ", t.DateTransactionEntered, t.IsExpense, t.TransactionCategory"
+                + $" FROM {this.tableID} t"
+                + $" INNER JOIN {this.accTable} a"
+                + " ON t.AccountID = a.AccountID"
+                + $" WHERE a.AccountUsername = '{username}'"
+                + " ORDER BY DateTransactionMade DESC, DateTransactionEntered DESC";
+            Console.WriteLine(query);
             return this.dataHelper.query(query, parameters: null);
         }
 

@@ -99,6 +99,28 @@ namespace ServiceLayer
             return jsonStr;
         }
 
+        public string getJSON(List<Transaction> transactions)
+        {
+            if (transactions == null || transactions.Count == 0)
+            {
+                return "{}";
+            }
+            string jsonStr = "{\"Transactions\":[";
+            for (int i = 0; i < transactions.Count; i++)
+            {
+                if (i == transactions.Count - 1)
+                {
+                    jsonStr += getJSON(transactions[i]);
+                }
+                else
+                {
+                    jsonStr += (getJSON(transactions[i]) + ", ");
+                }
+            }
+
+            return jsonStr + "]}";
+        }
+
 
         // Delete a transaction with the given PK Identifier
         public void delete(long TID)
@@ -149,6 +171,18 @@ namespace ServiceLayer
             }
             return transactionsList;
         }
+        public List<Transaction> getTransactionsFromAccount(string username)
+        {
+            List<Transaction> transactionsList = new List<Transaction>();
+
+            foreach (BigQueryRow row in this.TransactionDataAccess.getTransactionsFromAccount(username))
+            {
+                Transaction transaction = reinstantiate(row);
+                transactionsList.Add(transaction);
+            }
+            return transactionsList;
+        }
+
 
         /*
         Returns all transactions associated with the given user account ID and sorted by the given category.

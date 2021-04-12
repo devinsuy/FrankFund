@@ -263,6 +263,31 @@ namespace REST.Controllers
 
         // ------------------------------ Account Transaction Endpoints ------------------------------
 
+        // Serve all Transactions associated with a given AccountID
+        [Route("api/account/accID={accID}/Transactions&apikey={apiKey}")]
+        [HttpGet]
+        public IActionResult getTransactions(long accID, string apiKey)
+        {
+            if (!api.validAPIKey(apiKey))
+            {
+                return new UnauthorizedResult();
+            }
+            return api.serveJson(uas.getTransactionsFromAccount(accID));
+        }
+
+        // Serve all Transactions associated with a given username
+        [Route("api/account/user={user}/Transactions&apikey={apiKey}")]
+        [HttpGet]
+        public IActionResult getTransactions(string user, string apiKey)
+        {
+            if (!api.validAPIKey(apiKey))
+            {
+                return new UnauthorizedResult();
+            }
+            return api.serveJson(uas.getTransactionsFromAccount(user));
+        }
+
+
 
     }
 }

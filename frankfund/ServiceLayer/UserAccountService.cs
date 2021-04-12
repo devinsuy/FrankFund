@@ -71,15 +71,16 @@ namespace ServiceLayer
             return user;
         }
 
-        /*
-        Returns all transactions that is associated with the given account ID ordered by date entered
-        Copied from Kenny's TransactionService
-            Params: The User Account ID 
-            Returns: A list of Transactions associated with the given ID
-         */
-        public List<Transaction> getTransactionsFromAccount(long accID)
+
+        // Return the JSON representation of the list of Transactions associated with the given AccountID
+        public string getTransactionsFromAccount(long accID)
         {
-            return TransactionService.getTransactionsFromAccount(accID);
+            return TransactionService.getJSON(TransactionService.getTransactionsFromAccount(accID));
+        }
+        // Return the JSON representation of the list of Transactions associated with the given AccounUserName
+        public string getTransactionsFromAccount(string username)
+        {
+            return TransactionService.getJSON(TransactionService.getTransactionsFromAccount(username));
         }
 
         // Return the JSON representation of the list of SavingsGoals associated with the given AccountID
