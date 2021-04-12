@@ -102,14 +102,19 @@ namespace ServiceLayer
         /*
         Use DataAccess Layer to write a NEWLY CREATED object into BigQuery
             Params: userAccount - UserAccount object for inserted user account
-            Returns: void
+            Returns: int -
+                0 : Account Creation Success
+                1 : Invalid or taken email
+                2 : Username taken
+                3 : Password too weak
          */
-        public void write(UserAccount userAccount)
+        public int write(UserAccount userAccount)
         {
+            bool emailTaken = getUsingEmail(userAccount.EmailAddress) != null;
             // Checking if Email is a valid Email Address
-            if (!EmailService.IsValidEmailAddress(userAccount.EmailAddress.ToLower())) // Checks for valid email address
+            if (!EmailService.IsValidEmailAddress(userAccount.EmailAddress.ToLower()) || emailTaken) // Checks for valid email address
             {
-                //return new BadRequestObjectResult("Invalid Email address");
+                return 1;
             }
 
             // Checking if username already exists
@@ -117,15 +122,14 @@ namespace ServiceLayer
             if (retrievedUser != null) // Checks if user already exists
             {
                 Console.WriteLine("Username already exists.");
-                return;
-                //return new OkObjectResult("User already exists");
+                return 2;
             }
 
             // Checks for Password Minimum Requirements
             if(PasswordService.CheckMinReqPassword(userAccount.PasswordHash) == false)
             {
                 Console.WriteLine("Password does not meet minimum requirements.");
-                return;
+                return 3;
             }
 
             // Salts and hashes password for security concerns when storing to the database
@@ -137,8 +141,7 @@ namespace ServiceLayer
 
             // If all the checks are passed then writeUserAccount to database
             this.UserAccountDataAccess.write(serialize(userAccount));
-
-            //return new OkObjectResult("Account successfully created");
+            return 0;
         }
 
         /* TODO:

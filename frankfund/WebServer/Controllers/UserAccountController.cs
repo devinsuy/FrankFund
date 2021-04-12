@@ -51,7 +51,7 @@ namespace REST.Controllers
             return api.serveJson(uas.getJSON(uas.getUsingID(accID)));
         }
 
-        // Delete an account, no effect if an account with the given accID doesn't exist
+        // Delete an account by id, no effect if an account with the given accID doesn't exist
         [Route("api/accID={accID}&apikey={apiKey}")]
         [HttpDelete]
         public IActionResult DeleteByID(long accID, string apiKey)
@@ -68,41 +68,25 @@ namespace REST.Controllers
             return new OkResult();
         }
 
-
-        // Create a new account with the given accID.
-        // Returns Http 409 Conflict if already exists
-        // TODO: Account registration logic may be more complex, byte salt to be updated
-        // Old Route: [Route("api/accID={accID}&apikey={apiKey}")]
-        // Old parameter: int accID, string apiKey,
-        [Route("api/account/create")]
+        // Create a new account with the next available accID
+        [Route("api/account/create&apikey={apiKey}")]
         [HttpPost]
-        public IActionResult CreateByID(long accID, string apiKey, [FromBody] JsonElement reqBody)
+        public IActionResult Create(string apiKey, [FromBody] JsonElement reqBody)
         {
-            //return new NotFoundResult();
-            //if (!api.validAPIKey(apiKey))
-            //{
-            //    return new UnauthorizedResult();
-            //}
-            //if (accID < 1)
-            //{
-            //    return BadRequest();
-            //}
+            if (!api.validAPIKey(apiKey))
+            {
+                return new UnauthorizedResult();
+            }
 
             // Validate that the POST request contains all necessary attributes to create a NEW Account and nothing more
             Dictionary<string, object> req = JsonConvert.DeserializeObject<Dictionary<string, object>>(Convert.ToString(reqBody));
             HashSet<string> reqAttributes = new HashSet<string>(req.Keys);
             if (!reqAttributes.SetEquals(attributes))
             {
-                return BadRequest();
+                return BadRequest("Request body should contain exactly { AccountUsername, EmailAddress, Password}");
             }
 
-            // POST should be used only to create a new Account, not allowed if Account with given accID already exists
-            UserAccount acc = uas.getUsingUsername(Convert.ToString(req["AccountUsername"]));
-            if (acc != null)
-            {
-                return Conflict();
-            }
-
+            UserAccount acc = null;
             // Create the Account with the given accID using the POST payload
             try
             {
@@ -111,10 +95,10 @@ namespace REST.Controllers
                         //AccountID: accID,
                         username: Convert.ToString(req["AccountUsername"]),
                         email: Convert.ToString(req["EmailAddress"]),
-                        pass: Convert.ToString(req["PasswordHash"])
+                        pass: Convert.ToString(req["Password"])
                     //passSalt: null                      // TODO: Fix
                     // Removed byte[] passSalt from constructor because it gets generated in UserAccountService
-                    );
+                );
             }
             catch (Exception e)
             {
@@ -122,95 +106,104 @@ namespace REST.Controllers
                 return BadRequest();
             }
 
+            // Validate username, email, password strength
+            switch(uas.write(acc))
+            {
+                case 1:
+                    return api.serveErrorMsg("Invalid or already taken email address");
+                case 2:
+                    return api.serveErrorMsg("Username already taken");
+                case 3:
+                    return api.serveErrorMsg("Password too weak");
+                default:
+                    return new OkObjectResult($"Account {acc.AccountUsername} successfully registered");
+            }
 
-            // Write the new Account
-            uas.write(acc);
-            return new OkResult();
         }
 
 
         // Update an existing Account or create if not exists
-        [Route("api/accID={accID}&apikey={apiKey}")]
-        [HttpPut]
-        public IActionResult UpdateAllByID(long accID, string apiKey, [FromBody] JsonElement reqBody)
-        {
-            // TODO: Endpoint not fully implemented
-           // return new NotFoundResult();
+        //[Route("api/accID={accID}&apikey={apiKey}")]
+        //[HttpPut]
+        //public IActionResult UpdateAllByID(long accID, string apiKey, [FromBody] JsonElement reqBody)
+        //{
+        //    // TODO: Endpoint not fully implemented
+        //   // return new NotFoundResult();
 
 
-            if (!api.validAPIKey(apiKey))
-            {
-                return new UnauthorizedResult();
-            }
-            if (accID < 1)
-            {
-                return BadRequest();
-            }
+        //    if (!api.validAPIKey(apiKey))
+        //    {
+        //        return new UnauthorizedResult();
+        //    }
+        //    if (accID < 1)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            Dictionary<string, object> req = JsonConvert.DeserializeObject<Dictionary<string, object>>(Convert.ToString(reqBody));
-            HashSet<string> reqAttributes = new HashSet<string>(req.Keys);
-            UserAccount acc = uas.getUsingID(accID);
+        //    Dictionary<string, object> req = JsonConvert.DeserializeObject<Dictionary<string, object>>(Convert.ToString(reqBody));
+        //    HashSet<string> reqAttributes = new HashSet<string>(req.Keys);
+        //    UserAccount acc = uas.getUsingID(accID);
 
-            // PUT requires request to provide key,value pairs for EVERY Account attribute 
-            if (!reqAttributes.SetEquals(attributes))
-            {
-                return BadRequest();
-            }
+        //    // PUT requires request to provide key,value pairs for EVERY Account attribute 
+        //    if (!reqAttributes.SetEquals(attributes))
+        //    {
+        //        return BadRequest();
+        //    }
 
-            // Create the Account with the given accID if it doesn't exist
-            if (acc == null)
-            {
-                try
-                {
-                    acc = new UserAccount(
-                            AccountID: accID,
-                            username: Convert.ToString(req["AccountUsername"]),
-                            email: Convert.ToString(req["EmailAddress"]),
-                            pass: Convert.ToString(req["PasswordHash"])
-                        //passSalt: null                      // TODO: Fix
-                        // Removed byte[] passSalt from constructor because it gets generated in UserAccountService
-                        );
-                }
-                // Formatting or improper data typing raised exception, bad request
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.ToString());
-                    return BadRequest();
-                }
+        //    // Create the Account with the given accID if it doesn't exist
+        //    if (acc == null)
+        //    {
+        //        try
+        //        {
+        //            acc = new UserAccount(
+        //                    AccountID: accID,
+        //                    username: Convert.ToString(req["AccountUsername"]),
+        //                    email: Convert.ToString(req["EmailAddress"]),
+        //                    pass: Convert.ToString(req["PasswordHash"])
+        //                //passSalt: null                      // TODO: Fix
+        //                // Removed byte[] passSalt from constructor because it gets generated in UserAccountService
+        //                );
+        //        }
+        //        // Formatting or improper data typing raised exception, bad request
+        //        catch (Exception e)
+        //        {
+        //            Console.WriteLine(e.ToString());
+        //            return BadRequest();
+        //        }
 
-                // Write the new Account
-                uas.write(acc);
-            }
+        //        // Write the new Account
+        //        uas.write(acc);
+        //    }
 
-            // Otheriwse fufill the PUT request and update the corresponding Account 
-            else
-            {
-                // accID and AccounaccID are never modifiable
-                try
-                {
-                    // TODO: Set account methods
-                    acc = new UserAccount(
-                            AccountID: accID,
-                            username: Convert.ToString(req["AccountUsername"]),
-                            email: Convert.ToString(req["EmailAddress"]),
-                            pass: Convert.ToString(req["PasswordHash"])
-                        //passSalt: null                      // TODO: Fix
-                        // Removed byte[] passSalt from constructor because it gets generated in UserAccountService
-                        );
-                }
-                // Formatting or improper data typing raised exception, bad request
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.ToString());
-                    return BadRequest();
-                }
+        //    // Otheriwse fufill the PUT request and update the corresponding Account 
+        //    else
+        //    {
+        //        // accID and AccounaccID are never modifiable
+        //        try
+        //        {
+        //            // TODO: Set account methods
+        //            acc = new UserAccount(
+        //                    AccountID: accID,
+        //                    username: Convert.ToString(req["AccountUsername"]),
+        //                    email: Convert.ToString(req["EmailAddress"]),
+        //                    pass: Convert.ToString(req["PasswordHash"])
+        //                //passSalt: null                      // TODO: Fix
+        //                // Removed byte[] passSalt from constructor because it gets generated in UserAccountService
+        //                );
+        //        }
+        //        // Formatting or improper data typing raised exception, bad request
+        //        catch (Exception e)
+        //        {
+        //            Console.WriteLine(e.ToString());
+        //            return BadRequest();
+        //        }
 
-                // Write changes, if any
-                uas.update(acc);
-            }
+        //        // Write changes, if any
+        //        uas.update(acc);
+        //    }
 
-            return new OkResult();
-        }
+        //    return new OkResult();
+        //}
 
 
         // Modify an existing Account without specifying all attributes in payload,
