@@ -22,6 +22,15 @@ namespace ServiceLayer
             this.SGService = new SavingsGoalService();
         }
 
+        public UserAccount reinstantiate(BigQueryRow row)
+        {
+            return new UserAccount(
+                    (long)row["AccountID"], (string)row["AccountUsername"],
+                    (string)row["EmailAddress"], (string)row["PasswordHash"], (byte[])Encoding.ASCII.GetBytes((string)row["PasswordSalt"])
+                //(int)row["FacebookID"], (BigQueryNumeric)row["GoogleID"].ToDecimal(LossOfPrecisionHandling.Truncate)
+            );
+        }
+
         /*
         Uses DataAccess Layer to get UserAccount via username
             Params: username - string username for user account
@@ -32,11 +41,7 @@ namespace ServiceLayer
             UserAccount user = null;
             foreach (BigQueryRow row in this.UserAccountDataAccess.getUsingUsername(username))
             {
-                user = new UserAccount(
-                    (long)row["AccountID"], (string)row["AccountUsername"],
-                    (string)row["EmailAddress"], (string)row["PasswordHash"], (byte[])Encoding.ASCII.GetBytes((string)row["PasswordSalt"])
-                    //(int)row["FacebookID"], (BigQueryNumeric)row["GoogleID"].ToDecimal(LossOfPrecisionHandling.Truncate)
-                );
+                user = reinstantiate(row);
             }
             return user;
         }
@@ -51,11 +56,17 @@ namespace ServiceLayer
             UserAccount user = null;
             foreach (BigQueryRow row in this.UserAccountDataAccess.getUsingID(ID))
             {
-                user = new UserAccount(
-                    (long)row["AccountID"], (string)row["AccountUsername"],
-                    (string)row["EmailAddress"], (string)row["PasswordHash"], Encoding.ASCII.GetBytes((string)row["PasswordSalt"])
-                //(int)row["FacebookID"], (int)row["GoogleID"]
-                );
+                user = reinstantiate(row);
+            }
+            return user;
+        }
+
+        public UserAccount getUsingEmail(string email)
+        {
+            UserAccount user = null;
+            foreach (BigQueryRow row in this.UserAccountDataAccess.getUsingEmail(email))
+            {
+                user = reinstantiate(row);
             }
             return user;
         }

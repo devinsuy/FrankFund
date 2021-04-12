@@ -44,6 +44,12 @@ namespace DataAccessLayer
             return this.dataHelper.query(query, parameters: null);
         }
 
+        public BigQueryResults getUsingEmail(string email)
+        {
+            string query = $"SELECT * FROM {this.tableID} WHERE EmailAddress = '{email}';";
+            return this.dataHelper.query(query, parameters: null);
+        }
+
         /*
         Use DataHelper.query() to GET BigQueryResults for Transactions from a user account
             Params: long ID - PK Identifier for Account
