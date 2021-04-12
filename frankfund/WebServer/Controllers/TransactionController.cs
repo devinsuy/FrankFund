@@ -134,15 +134,22 @@ namespace REST.Controllers
         }
 
         // Create a new transaction with the next available TID
-        //[Route("api/TID&apikey={apiKey}")]
-        //[HttpPost]
-        //public IActionResult Create(string apiKey, [FromBody] JsonElement reqBody)
-        //{
-        //    int nextAvail
-        //    IActionResult res = CreateByID(TID: Convert.ToInt32(ts.getNextAvailID()), apiKey, reqBody);
-        //    if(reqBody )
-        //    return 
-        //}
+        [Route("api/TID&apikey={apiKey}")]
+        [HttpPost]
+        public IActionResult Create(string apiKey, [FromBody] JsonElement reqBody)
+        {
+            long TID = ts.getNextAvailID();
+            IActionResult res = CreateByID(TID, apiKey, reqBody);
+
+            // Request was invalid, failed to create
+            if(!(res is OkResult))
+            {
+                return res;
+            }
+
+            // Otherwise return the TID of the newly created transaction
+            return api.serveJson(api.getSingleAttrJSON("TID", TID.ToString()));
+        }
 
 
         // Update an existing transaction or create if not exists
