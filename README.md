@@ -1,4 +1,5 @@
 
+
 # FrankFund REST API
 
 ## Overview
@@ -52,23 +53,50 @@ followed immediately by your issued developer API key
 
 # SavingsGoals
 
-```[GET] https://frankfund.appspot.com/api/SGID={SGID}&apikey={apikey})```
+```[GET] https://frankfund.appspot.com/api/SavingsGoal/SGID={SGID}&apikey={apikey})```
 
 Serves JSON response of the SavingsGoal data with the given SavingsGoalID.  
 Returns **HTTP 204 No Content** if no SavingsGoal exists with the given SGID.
 
 **Example Request:** 
-```HTTP GET https://frankfund.appspot.com/api/SGID=1&apikey=c55f8d138f6ccfd43612b15c98706943e1f4bea3```
+```HTTP GET https://frankfund.appspot.com/api/SavingsGoal/SGID=1&apikey=c55f8d138f6ccfd43612b15c98706943e1f4bea3```
 
 ---
 
-```[POST] https://frankfund.appspot.com/api/SGID={SGID}&apikey={apikey})```
+```[POST] https://frankfund.appspot.com/api/SavingsGoal&apikey={apikey})```
+
+Creates a new SavingsGoal with the next available SGID and JSON request payload. 
+Request returns **HTTP 200 OK** with the following JSON upon access:
+```json
+{
+	"SGID": (the SGID assigned to the newly created SavingsGoal)
+}
+```
+
+**Example Requests:** 
+```HTTP POST https://frankfund.appspot.com/api/SavingsGoal&apikey=c55f8d138f6ccfd43612b15c98706943e1f4bea3```
+```json
+{
+	"Name": "Tuition",
+	"AccountID": 2,
+	"GoalAmt": 3425,
+	"Period": "Weekly",
+	"EndDate": "2021-06-04"
+}
+```
+
+Create a **SavingsGoal by date**, system will dynamically calculate { ContrAmt, NumPeriods, StartDate, EndDate } parameters.
+
+
+---
+
+```[POST] https://frankfund.appspot.com/api/SavingsGoal/SGID={SGID}&apikey={apikey})```
 
 Creates a new SavingsGoal with the given SavingsGoalID and JSON request payload. 
 Returns **HTTP 409 Conflict** if a SavingsGoal already exists with the given SGID.
 
 **Example Requests:** 
-```HTTP POST https://frankfund.appspot.com/api/SGID=1&apikey=c55f8d138f6ccfd43612b15c98706943e1f4bea3```
+```HTTP POST https://frankfund.appspot.com/api/SavingsGoal/SGID=1&apikey=c55f8d138f6ccfd43612b15c98706943e1f4bea3```
 ```json
 {
 	"Name": "Tuition",
@@ -87,7 +115,7 @@ Create a **SavingsGoal by date**, system will dynamically calculate { ContrAmt, 
 	"AccountID": 2,
 	"GoalAmt": 3425,
 	"Period": "Weekly",
-	"ContrAmt": 325,
+	"ContrAmt": 325
 }
 ```
 
@@ -95,16 +123,16 @@ Create a **SavingsGoal by allotted contribution**, system will dynamically calcu
 
 ---
 
-```[DELETE] https://frankfund.appspot.com/api/SGID={SGID}&apikey={apikey})```
+```[DELETE] https://frankfund.appspot.com/api/SavingsGoal/SGID={SGID}&apikey={apikey})```
 
 Delete the SavingsGoal with the given SGID, has no effect it no SavingsGoal exists with the given SGID.
 
 **Example Request:** 
-```HTTP DELETE https://frankfund.appspot.com/api/SGID=1&apikey=c55f8d138f6ccfd43612b15c98706943e1f4bea3```
+```HTTP DELETE https://frankfund.appspot.com/api/SavingsGoal/SGID=1&apikey=c55f8d138f6ccfd43612b15c98706943e1f4bea3```
 
 ---
 
-```[PATCH] https://frankfund.appspot.com/api/SGID={SGID}&apikey={apikey})```
+```[PATCH] https://frankfund.appspot.com/api/SavingsGoal/SGID={SGID}&apikey={apikey})```
 
 For updating parameters **Name, Period, EndDate**:
 - Updates a **single attribute** of the SavingsGoal with the given SGID and dynamically recalculate the remaining parameters to reflect the change applies. 
@@ -122,7 +150,7 @@ For updating parameter **ContrAmt**:
 Returns **HTTP 404 Not Found** if no SavingsGoal exists with the given SGID.
 
 **Example Requests:** 
-```HTTP PATCH https://frankfund.appspot.com/api/SGID=1&apikey=c55f8d138f6ccfd43612b15c98706943e1f4bea3```
+```HTTP PATCH https://frankfund.appspot.com/api/SavingsGoal/SGID=1&apikey=c55f8d138f6ccfd43612b15c98706943e1f4bea3```
 ```json
 {
 	"Name" : "Tuition"
@@ -237,29 +265,65 @@ Serves JSON response of all the SavingsGoals associated with the UserAccount wit
 Returns **HTTP 204 No Content** if no SavingsGoals exists with the given UserAccount or no UserAccount exists with the given accID.
 
 **Example Request:** 
-```HTTP GET https://frankfund.appspot.com/api/account/accID=Devin/SavingsGoals&apikey=f2f1178729cb2e1c9188ed847066743c4e843a21```
+```HTTP GET https://frankfund.appspot.com/api/account/accID=2/SavingsGoals&apikey=f2f1178729cb2e1c9188ed847066743c4e843a21```
 
 ---
 
+```[GET] https://frankfund.appspot.com/api/account/user={user}/SavingsGoals&apikey={apikey})```
+
+Serves JSON response of all the SavingsGoals associated with the UserAccount with the given Username
+Returns **HTTP 204 No Content** if no SavingsGoals exists with the given UserAccount or no UserAccount exists with the given Username.
+
+**Example Request:** 
+```HTTP GET https://frankfund.appspot.com/api/account/user=Devin/SavingsGoals&apikey=f2f1178729cb2e1c9188ed847066743c4e843a21```
+
+---
+
+```[GET] https://frankfund.appspot.com/api/account/accID={accID}/SavingsGoals&apikey={apikey})```
+
+Serves JSON response of all the Transactions associated with the UserAccount with the given AccountID
+Returns **HTTP 204 No Content** if no Transactions exists with the given UserAccount or no UserAccount exists with the given AccountID.
+
+**Example Request:** 
+```HTTP GET https://frankfund.appspot.com/api/account/accID=2/Transactions&apikey=f2f1178729cb2e1c9188ed847066743c4e843a21```
+
+---
+
+```[GET] https://frankfund.appspot.com/api/account/user={user}/SavingsGoals&apikey={apikey})```
+
+Serves JSON response of all the Transactions associated with the UserAccount with the given Username
+Returns **HTTP 204 No Content** if no Transactions exists with the given UserAccount or no UserAccount exists with the given Username.
+
+**Example Request:** 
+```HTTP GET https://frankfund.appspot.com/api/account/user=Devin/Transactions&apikey=f2f1178729cb2e1c9188ed847066743c4e843a21```
+
+---
+
+
 # Transactions
-```[GET] https://frankfund.appspot.com/api/TID={TID}&apikey={apikey})```
+```[GET] https://frankfund.appspot.com/api/Transaction/TID={TID}&apikey={apikey})```
 
 Serves JSON response of the Transaction data with the given TransactionID.
 Returns **HTTP 204 No Content** if no Transaction exists with the given TID.
 
 **Example Request:**
-```HTTP GET https://frankfund.appspot.com/api/TID=1&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0"```
+```HTTP GET https://frankfund.appspot.com/api/Transaction/TID=1&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0"```
 
 ---
 
-```[POST] https://frankfund.appspot.com/api/TID={TID}&apikey={apikey})```
+```[POST] https://frankfund.appspot.com/api/Transaction&apikey={apikey})```
 
-Create a new Transaction with the specified TransactionID and JSON request payload. Request payload must specify **all attributes except DateTransactionEntered**, otherwise returns **HTTP 400 Bad Request**.
+Create a new Transaction with the next available TID and the JSON request payload. Request payload must specify **all attributes except DateTransactionEntered**, otherwise returns **HTTP 400 Bad Request**.
 
-Returns **HTTP 409 Conflict** if a Transaction already exists with the given TID
+Request returns **HTTP 200 OK** with the following JSON upon access:
+```json
+{
+	"TID": (the TID assigned to the newly created transaction)
+}
+```
 
 **Example Request:**
-```HTTP POST https://frankfund.appspot.com/api/TID=1&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0"```
+```HTTP POST https://frankfund.appspot.com/api/Transaction&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0"```
 ```json
 {
 	"SGID": 2,
@@ -274,21 +338,44 @@ Returns **HTTP 409 Conflict** if a Transaction already exists with the given TID
 
 ---
 
-```[DELETE] https://frankfund.appspot.com/api/TID={TID}&apikey={apikey})```
+
+```[POST] https://frankfund.appspot.com/api/Transaction/TID={TID}&apikey={apikey})```
+
+Create a new Transaction with the specified TransactionID and JSON request payload. Request payload must specify **all attributes except DateTransactionEntered**, otherwise returns **HTTP 400 Bad Request**.
+
+Returns **HTTP 409 Conflict** if a Transaction already exists with the given TID
+
+**Example Request:**
+```HTTP POST https://frankfund.appspot.com/api/Transaction/TID=1&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0"```
+```json
+{
+	"SGID": 2,
+	"AccountID": 1,
+	"TransactionName": "Netflix",
+	"Amount": 9.99,
+	"DateTransactionMade": "2020-12-14",
+	"IsExpense": true,
+	"TransactionCategory": "Entertainment"
+}
+```
+
+---
+
+```[DELETE] https://frankfund.appspot.com/api/Transaction/TID={TID}&apikey={apikey})```
 
 Delete a Transaction with the specified TramsactopmID, has no effect if no Transaction exists with the given TID.
 
 **Example Request:**
-```HTTP DELETE https://frankfund.appspot.com/api/TID=1&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0"```
+```HTTP DELETE https://frankfund.appspot.com/api/Transaction/TID=1&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0"```
 
 ---
 
-```[PUT] https://frankfund.appspot.com/api/TID={TID}&apikey={apikey})```
+```[PUT] https://frankfund.appspot.com/api/Transaction/TID={TID}&apikey={apikey})```
 
 Update or create a new Transaction with the specified TID and data payload.
 
 **Example Request:**
-```HTTP PUT https://frankfund.appspot.com/api/TID=1&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0"```
+```HTTP PUT https://frankfund.appspot.com/api/Transaction/TID=1&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0"```
 ```json
 {
 	"SGID": 2,
@@ -318,13 +405,13 @@ Otherwise if a Transaction with the given TID **already exists** request will up
 
 ---
 
-```[PATCH] https://frankfund.appspot.com/api/TID={TID}&apikey={apikey})```
+```[PATCH] https://frankfund.appspot.com/api/Transaction/TID={TID}&apikey={apikey})```
 
 Update an existing Transaction with the specified TransactionID, data payload **does not need to specify all attributes**. Any number of attributes can be specified simultaneously to update the Transaction.
 Returns **HTTP 404 Not Found** if no Transaction exists with the given TID.
 
 **Example Requests:**
-```HTTP PATCH https://frankfund.appspot.com/api/TID=1&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0"```
+```HTTP PATCH https://frankfund.appspot.com/api/Transaction/TID=1&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0"```
 
 ```json
 {
@@ -345,23 +432,29 @@ PATCH request with this request body will update **both the TransactionName and 
 
 # Receipts
 
-```[GET] https://frankfund.appspot.com/api/RID={RID}&apikey={apikey})```
+```[GET] https://frankfund.appspot.com/api/Receipt/RID={RID}&apikey={apikey})```
 
 Serves JSON response of the Receipt data with the given ReceiptID
 Returns **HTTP 204 No Content** if no Receipt exists with the given RID.
 
 **Example Request:** 
-```HTTP GET https://frankfund.appspot.com/api/RID=1&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0"```
+```HTTP GET https://frankfund.appspot.com/api/Receipt/RID=1&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0"```
 
 ---
 
-```[POST] https://frankfund.appspot.com/api/RID={RID}&apikey={apikey})```
+```[POST] https://frankfund.appspot.com/api/Receipt&apikey={apikey})```
 
-Create a new Receipt with the specified ReceiptID and JSON request payload. Request payload must specify **ALL attributes** to create a new Receipt, returns **HTTP 400 Bad Request** otherwise.
-Returns **HTTP 409 Conflict** if a Receipt already exists with the given RID.
+Create a new Receipt with the next available RID and JSON request payload. Request payload must specify **ALL attributes** to create a new Receipt, returns **HTTP 400 Bad Request** otherwise. 
+
+Request returns **HTTP 200 OK** with the following JSON upon access:
+```json
+{
+	"RID": (the RID assigned to the newly created receipt)
+}
+```
 
 **Example Request:**
-```HTTP POST https://frankfund.appspot.com/api/RID=1&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0"```
+```HTTP POST https://frankfund.appspot.com/api/Receipt&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0"```
 
 ```json
 {
@@ -373,21 +466,42 @@ Returns **HTTP 409 Conflict** if a Receipt already exists with the given RID.
 ```
 ---
 
-```[DELETE] https://frankfund.appspot.com/api/RID={TID}&apikey={apikey})```
+
+---
+
+```[POST] https://frankfund.appspot.com/api/Receipt/RID={RID}&apikey={apikey})```
+
+Create a new Receipt with the specified ReceiptID and JSON request payload. Request payload must specify **ALL attributes** to create a new Receipt, returns **HTTP 400 Bad Request** otherwise.
+Returns **HTTP 409 Conflict** if a Receipt already exists with the given RID.
+
+**Example Request:**
+```HTTP POST https://frankfund.appspot.com/api/Receipt/RID=1&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0"```
+
+```json
+{
+	"TID": 1,
+	"ImgURL": "hellothisisatest.png",
+	"PurchaseDate": "2021-03-16",
+	"Notes": "short note"
+}
+```
+---
+
+```[DELETE] https://frankfund.appspot.com/api/Receipt/RID={TID}&apikey={apikey})```
 
 Delete a Receipt with the specified RID, has no effect if no Receipt exists with the given RID.
 
 **Example Request:**
-```HTTP DELETE https://frankfund.appspot.com/api/RID=1&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0"```
+```HTTP DELETE https://frankfund.appspot.com/api/Receipt/RID=1&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0"```
 
 ---
 
-```[PUT] https://frankfund.appspot.com/api/RID={RID}&apikey={apikey})```
+```[PUT] https://frankfund.appspot.com/api/Receipt/RID={RID}&apikey={apikey})```
 
 Update or create a new Receipt with the specified RID and data payload. Request payload must specify **ALL attributes** to create or update the Receipt.
 
 **Example Request:**
-```HTTP PUT https://frankfund.appspot.com/api/RID=1&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0"```
+```HTTP PUT https://frankfund.appspot.com/api/Receipt/RID=1&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0"```
 
 ```json
 {
@@ -402,12 +516,12 @@ If a Receipt with the given RID **does not exist**, request will create one. Oth
 
 ---
 
-```[PATCH] https://frankfund.appspot.com/api/RID={RID}&apikey={apikey})```
+```[PATCH] https://frankfund.appspot.com/api/Receipt/RID={RID}&apikey={apikey})```
 
 Update an existing Receipt with the specified ReceiptID, request data payload **does not need to specify all attributes**. Any number of attributes can be specified and simultaneously updated for the Receipt.
 
 **Example Requests:**
-```HTTP PATCH https://frankfund.appspot.com/api/RID=1&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0"```
+```HTTP PATCH https://frankfund.appspot.com/api/Receipt/RID=1&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0"```
 
 ```json
 {
