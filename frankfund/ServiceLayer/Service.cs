@@ -24,7 +24,7 @@ namespace ServiceLayer
 
 
         // Use DataAccess Layer to write a NEWLY CREATED object into BigQuery
-        public void write(T obj);
+        //public void write(T obj);
 
 
         
