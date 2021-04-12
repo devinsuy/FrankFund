@@ -83,12 +83,22 @@ export default class CreateUserAccount extends Component {
 
     onSubmit(e) {
         e.preventDefault();
-        let data = $('create-new-account').serializeJSON();
-        console.log(data);
+        const form = document.querySelector("form");
+        let data = new FormData(form);
+        var object = {};
+        data.forEach(function (value, key) {
+            object[key] = value;
+        });
+        var json = JSON.stringify(object);
+        console.log(json);
         axios({
             method: "post",
             url: "/api/account/create&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0",
-            data: JSONdata,
+            data: json,
+            headers: {
+                'accept': 'application/json',
+                'content-type': 'application/json'
+            }
         })
             .then((res) => {
                 console.log(res);
@@ -96,11 +106,17 @@ export default class CreateUserAccount extends Component {
             .catch((err) => {
                 throw err;
             });
+        //axios.post('/api/account/create&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0', json)
+        //    .then(response => {
+        //        console.log(response)
+        //    }).catch(error => {
+        //        console.log(error.response)
+        //    })
     }
 
     render() {
         return (
-            <form id="create-new-account" onSubmit={this.onSubmit}>
+            <form action="" method="post" onSubmit={this.onSubmit}>
                 <h3>Create New User Account</h3>
 
                 <div className="form-group">
