@@ -41,7 +41,7 @@ export default class CreateUserAccount extends Component {
         };
         fetch('api/account/create', requestOptions)
             .then(response => response.json())
-            .then(data => this.setState({ username: data.username, email: data.email, password: data.password }));
+            .then(data => this.setState({ AccountUsername: data.username, EmailAddress: data.email, PasswordHash: data.password }));
     }
 
 
@@ -56,17 +56,17 @@ export default class CreateUserAccount extends Component {
 
                 <div className="form-group">
                     <label>Username</label>
-                    <input type="text" className="form-control" placeholder="Username" />
+                    <input type="AccountUsername" className="form-control" placeholder="Username" />
                 </div>
 
                 <div className="form-group">
                     <label>Email</label>
-                    <input type="email" className="form-control" placeholder="Enter email" />
+                    <input type="EmailAddress" className="form-control" placeholder="Enter email" />
                 </div>
 
                 <div className="form-group">
                     <label>Password</label>
-                    <input type="password" className="form-control" placeholder="Enter password" />
+                    <input type="PasswordHash" className="form-control" placeholder="Enter password" />
                 </div>
 
                 <button type="submit" className="btn btn-dark btn-lg btn-block">Register</button>
