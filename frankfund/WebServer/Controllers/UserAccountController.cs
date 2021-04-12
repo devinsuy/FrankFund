@@ -28,15 +28,12 @@ namespace REST.Controllers
             {
                 "AccountUsername", "EmailAddress", "Password"
             };
-
-            // TODO: Pending design for registration using social services
-            //nullableAttrs = new HashSet<string>()
-            //{
-            //    "FacebookID", "GoogleID"
-            //};
         }
 
-        [Route("api/accID={accID}&apikey={apiKey}")]
+
+        // ------------------------------ Account GET endpoints ------------------------------
+
+        [Route("api/account/accID={accID}&apikey={apiKey}")]
         [HttpGet]
         public IActionResult GetByID(long accID, string apiKey)
         {
@@ -51,8 +48,33 @@ namespace REST.Controllers
             return api.serveJson(uas.getJSON(uas.getUsingID(accID)));
         }
 
+        [Route("api/account/user={user}&apikey={apiKey}")]
+        [HttpGet]
+        public IActionResult GetByUsername(string user, string apiKey)
+        {
+            if (!api.validAPIKey(apiKey))
+            {
+                return new UnauthorizedResult();
+            }
+            return api.serveJson(uas.getJSON(uas.getUsingUsername(user)));
+        }
+
+        [Route("api/account/email={email}&apikey={apiKey}")]
+        [HttpGet]
+        public IActionResult GetByEmail(string email, string apiKey)
+        {
+            if (!api.validAPIKey(apiKey))
+            {
+                return new UnauthorizedResult();
+            }
+            return api.serveJson(uas.getJSON(uas.getUsingEmail(email)));
+        }
+
+
+        // ------------------------------ Account DELETE endpoints ------------------------------
+
         // Delete an account by id, no effect if an account with the given accID doesn't exist
-        [Route("api/accID={accID}&apikey={apiKey}")]
+        [Route("api/account/accID={accID}&apikey={apiKey}")]
         [HttpDelete]
         public IActionResult DeleteByID(long accID, string apiKey)
         {
@@ -67,6 +89,34 @@ namespace REST.Controllers
             uas.delete(accID);
             return new OkResult();
         }
+
+        // Delete an account by username, no effect if an account with the username doesn't exist
+        [Route("api/account/user={user}&apikey={apiKey}")]
+        [HttpDelete]
+        public IActionResult DeleteByUsername(string user, string apiKey)
+        {
+            if (!api.validAPIKey(apiKey))
+            {
+                return new UnauthorizedResult();
+            }
+            uas.deleteUsingUsername(user);
+            return new OkResult();
+        }
+
+        // Delete an account by email, no effect if an account with the email doesn't exist
+        [Route("api/account/email={email}&apikey={apiKey}")]
+        [HttpDelete]
+        public IActionResult DeleteByEmail(string email, string apiKey)
+        {
+            if (!api.validAPIKey(apiKey))
+            {
+                return new UnauthorizedResult();
+            }
+            uas.deleteUsingEmail(email);
+            return new OkResult();
+        }
+
+        // ------------------------------ Account Create endpoint ------------------------------
 
         // Create a new account with the next available accID
         [Route("api/account/create&apikey={apiKey}")]
@@ -121,94 +171,11 @@ namespace REST.Controllers
 
         }
 
-
-        // Update an existing Account or create if not exists
-        //[Route("api/accID={accID}&apikey={apiKey}")]
-        //[HttpPut]
-        //public IActionResult UpdateAllByID(long accID, string apiKey, [FromBody] JsonElement reqBody)
-        //{
-        //    // TODO: Endpoint not fully implemented
-        //   // return new NotFoundResult();
-
-
-        //    if (!api.validAPIKey(apiKey))
-        //    {
-        //        return new UnauthorizedResult();
-        //    }
-        //    if (accID < 1)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    Dictionary<string, object> req = JsonConvert.DeserializeObject<Dictionary<string, object>>(Convert.ToString(reqBody));
-        //    HashSet<string> reqAttributes = new HashSet<string>(req.Keys);
-        //    UserAccount acc = uas.getUsingID(accID);
-
-        //    // PUT requires request to provide key,value pairs for EVERY Account attribute 
-        //    if (!reqAttributes.SetEquals(attributes))
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    // Create the Account with the given accID if it doesn't exist
-        //    if (acc == null)
-        //    {
-        //        try
-        //        {
-        //            acc = new UserAccount(
-        //                    AccountID: accID,
-        //                    username: Convert.ToString(req["AccountUsername"]),
-        //                    email: Convert.ToString(req["EmailAddress"]),
-        //                    pass: Convert.ToString(req["PasswordHash"])
-        //                //passSalt: null                      // TODO: Fix
-        //                // Removed byte[] passSalt from constructor because it gets generated in UserAccountService
-        //                );
-        //        }
-        //        // Formatting or improper data typing raised exception, bad request
-        //        catch (Exception e)
-        //        {
-        //            Console.WriteLine(e.ToString());
-        //            return BadRequest();
-        //        }
-
-        //        // Write the new Account
-        //        uas.write(acc);
-        //    }
-
-        //    // Otheriwse fufill the PUT request and update the corresponding Account 
-        //    else
-        //    {
-        //        // accID and AccounaccID are never modifiable
-        //        try
-        //        {
-        //            // TODO: Set account methods
-        //            acc = new UserAccount(
-        //                    AccountID: accID,
-        //                    username: Convert.ToString(req["AccountUsername"]),
-        //                    email: Convert.ToString(req["EmailAddress"]),
-        //                    pass: Convert.ToString(req["PasswordHash"])
-        //                //passSalt: null                      // TODO: Fix
-        //                // Removed byte[] passSalt from constructor because it gets generated in UserAccountService
-        //                );
-        //        }
-        //        // Formatting or improper data typing raised exception, bad request
-        //        catch (Exception e)
-        //        {
-        //            Console.WriteLine(e.ToString());
-        //            return BadRequest();
-        //        }
-
-        //        // Write changes, if any
-        //        uas.update(acc);
-        //    }
-
-        //    return new OkResult();
-        //}
-
+        // ------------------------------ Account Update Endpoint ------------------------------
 
         // Modify an existing Account without specifying all attributes in payload,
         // returns Http 404 Not found if doesn't exist
-        [Route("api/accID={accID}&apikey={apiKey}")]
+        [Route("api/account/accID={accID}&apikey={apiKey}")]
         [HttpPatch]
         public IActionResult UpdateByID(long accID, string apiKey, [FromBody] JsonElement reqBody)
         {
@@ -263,9 +230,12 @@ namespace REST.Controllers
             uas.update(acc);
             return new OkResult();
         }
-            
-        // Serve all SavingsGoals associated with a given Account
-        [Route("api/accID={accID}/SavingsGoals&apikey={apiKey}")]
+
+
+        // ------------------------------ Account SavingsGoals Endpoints ------------------------------
+
+        // Serve all SavingsGoals associated with a given Account ID
+        [Route("api/account/accID={accID}/SavingsGoals&apikey={apiKey}")]
         [HttpGet]
         public IActionResult getGoals(long accID, string apiKey)
         {
@@ -279,5 +249,21 @@ namespace REST.Controllers
             }
             return api.serveJson(uas.getSavingsGoalsFromAccount(accID));
         }
+
+        //[Route("api/account/user={user}/SavingsGoals&apikey={apiKey}")]
+        //[HttpGet]
+        //public IActionResult getGoals(string user, string apiKey)
+        //{
+        //    if (!api.validAPIKey(apiKey))
+        //    {
+        //        return new UnauthorizedResult();
+        //    }
+        //    return api.serveJson(uas.getSavingsGoalsFromAccount(user));
+        //}
+
+
+        // ------------------------------ Account Transaction Endpoints ------------------------------
+
+
     }
 }

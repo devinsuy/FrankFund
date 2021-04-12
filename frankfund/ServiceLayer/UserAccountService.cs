@@ -99,6 +99,17 @@ namespace ServiceLayer
             this.UserAccountDataAccess.delete(accID);
         }
 
+        public void deleteUsingUsername(string username)
+        {
+            this.UserAccountDataAccess.deleteUsingUsername(username);
+        }
+
+        public void deleteUsingEmail(string email)
+        {
+            this.UserAccountDataAccess.deleteUsingEmail(email);
+        }
+
+
         /*
         Use DataAccess Layer to write a NEWLY CREATED object into BigQuery
             Params: userAccount - UserAccount object for inserted user account
