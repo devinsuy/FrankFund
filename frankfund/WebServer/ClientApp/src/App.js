@@ -8,6 +8,9 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import CreateUserAccount from "./components/createuseraccount.component";
 import SettingsUserAccount from "./components/settingsuseraccount.component";
 import LandingComponent from "./components/landing.components";
+import TransactionLog from "./components/transactionslog.component";
+import TransactionDetail from "./components/transactiondetail.component";
+import CreateTransaction from "./components/createtransaction.component";
 
 function App() {
     return (<Router>
@@ -38,6 +41,13 @@ function App() {
       <nav className="navbar navbar-expand-lg navbar-light fixed-top">
         <div className="container">
           <Link className="navbar-brand" to={"/"}>FrankFund</Link>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item active">
+                <a class="nav-link" href="/transactions-log">Transactions<span class="sr-only">(current)</span></a>
+              </li>
+            </ul>
+          </div>
           <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
             <ul className="navbar-nav ml-auto">
               <li className="nav-item">
@@ -57,6 +67,10 @@ function App() {
             <Route exact path='/' component={LandingComponent} />
             <Route path="/create-user-account" component={CreateUserAccount} />
             <Route path="/account-settings" component={SettingsUserAccount} />
+            <Route path="/transactions-detail" component={TransactionDetail} />
+            <Route path="/transactions-log" component={TransactionLog} />
+            <Route path="/create-transaction" component={CreateTransaction} />
+
             {/* <Route path="/example" component={TableComponent}/> */}
           </Switch>
         </div>
