@@ -43,29 +43,29 @@ namespace REST.Controllers
 
         // Retrieve a transaction with the given TID,
         // returns Http 204 NoContent if doesn't exist
-        [Route("api/TID={TID}&apikey={apiKey}")]
+        [Route("api/transaction/TID={TID}&apikey={apiKey}")]
         [HttpGet]
         public IActionResult GetByID(long TID, string apiKey)
         {
             if (!api.validAPIKey(apiKey))
             {
-                return new UnauthorizedResult();
+                return new UnauthorizedObjectResult("Invalid API key");
             }
             if (TID < 1)
             {
-                return BadRequest();
+                return BadRequest("Invalid TID");
             }
             return api.serveJson(ts.getJSON(ts.getUsingID(TID)));
         }
 
         // Delete a transaction, no effect if a transaction with the given TID doesn't exist
-        [Route("api/TID={TID}&apikey={apiKey}")]
+        [Route("api/transaction/TID={TID}&apikey={apiKey}")]
         [HttpDelete]
         public IActionResult DeleteByID(long TID, string apiKey)
         {
             if (!api.validAPIKey(apiKey))
             {
-                return new UnauthorizedResult();
+                return new UnauthorizedObjectResult("Invalid API key");
             }
             if (TID < 1)
             {
@@ -78,13 +78,13 @@ namespace REST.Controllers
 
         // Create a new transaction with the given TID.
         // Returns Http 409 Conflict if already exists
-        [Route("api/TID={TID}&apikey={apiKey}")]
+        [Route("api/transaction/TID={TID}&apikey={apiKey}")]
         [HttpPost]
         public IActionResult CreateByID(long TID, string apiKey, [FromBody] JsonElement reqBody)
         {
             if (!api.validAPIKey(apiKey))
             {
-                return new UnauthorizedResult();
+                return new UnauthorizedObjectResult("Invalid API key");
             }
             if (TID < 1)
             {
@@ -134,7 +134,7 @@ namespace REST.Controllers
         }
 
         // Create a new transaction with the next available TID
-        [Route("api/TID&apikey={apiKey}")]
+        [Route("api/transaction/TID&apikey={apiKey}")]
         [HttpPost]
         public IActionResult Create(string apiKey, [FromBody] JsonElement reqBody)
         {
@@ -153,13 +153,13 @@ namespace REST.Controllers
 
 
         // Update an existing transaction or create if not exists
-        [Route("api/TID={TID}&apikey={apiKey}")]
+        [Route("api/transaction/TID={TID}&apikey={apiKey}")]
         [HttpPut]
         public IActionResult UpdateAllByID(long TID, string apiKey, [FromBody] JsonElement reqBody)
         {
             if (!api.validAPIKey(apiKey))
             {
-                return new UnauthorizedResult();
+                return new UnauthorizedObjectResult("Invalid API key");
             }
             if (TID < 1)
             {
@@ -239,13 +239,13 @@ namespace REST.Controllers
 
         // Modify an existing transaction without specifying all attributes in payload,
         // returns Http 404 Not found if doesn't exist
-        [Route("api/TID={TID}&apikey={apiKey}")]
+        [Route("api/transaction/TID={TID}&apikey={apiKey}")]
         [HttpPatch]
         public IActionResult UpdateByID(long TID, string apiKey,[FromBody] JsonElement reqBody)
         {
             if (!api.validAPIKey(apiKey))
             {
-                return new UnauthorizedResult();
+                return new UnauthorizedObjectResult("Invalid API key");
             }
             if (TID < 1)
             {
