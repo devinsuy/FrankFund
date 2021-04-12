@@ -1,0 +1,6 @@
+runtime: custom
+api_version: 1
+env: flex
+automatic_scaling:
+  min_num_instances: 1
+  max_num_instances: 4

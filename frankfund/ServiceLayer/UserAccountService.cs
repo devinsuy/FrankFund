@@ -11,13 +11,24 @@ namespace ServiceLayer
     public class UserAccountService: Service<UserAccount>
     {
         private readonly UserAccountDataAccess UserAccountDataAccess;
-        private readonly TransactionDataAccess TransactionDataAccess;
+        private readonly TransactionService TransactionService;
+        private readonly SavingsGoalService SGService;
         private PasswordService PasswordService;
         public UserAccountService()
         {
             this.UserAccountDataAccess = new UserAccountDataAccess();
             this.PasswordService = new PasswordService();
-            this.TransactionDataAccess = new TransactionDataAccess();
+            this.TransactionService = new TransactionService();
+            this.SGService = new SavingsGoalService();
+        }
+
+        public UserAccount reinstantiate(BigQueryRow row)
+        {
+            return new UserAccount(
+                    (long)row["AccountID"], (string)row["AccountUsername"],
+                    (string)row["EmailAddress"], (string)row["PasswordHash"], (byte[])Encoding.ASCII.GetBytes((string)row["PasswordSalt"])
+                //(int)row["FacebookID"], (BigQueryNumeric)row["GoogleID"].ToDecimal(LossOfPrecisionHandling.Truncate)
+            );
         }
 
         /*
@@ -30,11 +41,7 @@ namespace ServiceLayer
             UserAccount user = null;
             foreach (BigQueryRow row in this.UserAccountDataAccess.getUsingUsername(username))
             {
-                user = new UserAccount(
-                    (long)row["AccountID"], (string)row["AccountUsername"],
-                    (string)row["EmailAddress"], (string)row["PasswordHash"], (byte[])Encoding.ASCII.GetBytes((string)row["PasswordSalt"])
-                    //(int)row["FacebookID"], (BigQueryNumeric)row["GoogleID"].ToDecimal(LossOfPrecisionHandling.Truncate)
-                );
+                user = reinstantiate(row);
             }
             return user;
         }
@@ -49,11 +56,17 @@ namespace ServiceLayer
             UserAccount user = null;
             foreach (BigQueryRow row in this.UserAccountDataAccess.getUsingID(ID))
             {
-                user = new UserAccount(
-                    (long)row["AccountID"], (string)row["AccountUsername"],
-                    (string)row["EmailAddress"], (string)row["PasswordHash"], Encoding.ASCII.GetBytes((string)row["PasswordSalt"])
-                //(int)row["FacebookID"], (int)row["GoogleID"]
-                );
+                user = reinstantiate(row);
+            }
+            return user;
+        }
+
+        public UserAccount getUsingEmail(string email)
+        {
+            UserAccount user = null;
+            foreach (BigQueryRow row in this.UserAccountDataAccess.getUsingEmail(email))
+            {
+                user = reinstantiate(row);
             }
             return user;
         }
@@ -66,29 +79,22 @@ namespace ServiceLayer
          */
         public List<Transaction> getTransactionsFromAccount(long accID)
         {
-            List<Transaction> transactionsList = new List<Transaction>();
-
-            foreach (BigQueryRow row in this.TransactionDataAccess.getTransactionsFromAccount(accID))
-            {
-                Transaction transaction = null;
-                long SGID = -1;     // Nullable attr
-                if (row["SGID"] != null)
-                {
-                    SGID = (long)row["SGID"];
-                }
-                transaction = new Transaction(
-                    (long)row["TID"], (long)row["AccountID"], SGID,
-                    (string)row["TransactionName"],
-                    this.TransactionDataAccess.castBQNumeric(row["Amount"]),
-                    (DateTime)row["DateTransactionMade"],
-                    (DateTime)row["DateTransactionEntered"],
-                    (bool)row["IsExpense"],
-                    this.TransactionDataAccess.ParseEnum<transactionCategory>((string)row["TransactionCategory"])
-                );
-                transactionsList.Add(transaction);
-            }
-            return transactionsList;
+            return TransactionService.getTransactionsFromAccount(accID);
         }
+
+        // Return the JSON representation of the list of SavingsGoals associated with the given AccountID
+        public string getSavingsGoalsFromAccount(long accID)
+        {
+            return SGService.getJSON(SGService.getSavingsGoalsFromAccount(accID));
+        }
+
+        // Return the JSON representation of the list of SavingsGoals associated with the given AccountUserName
+        public string getSavingsGoalsFromAccount(string username)
+        {
+            return SGService.getJSON(SGService.getSavingsGoalsFromAccount(username));
+        }
+
+
 
         /*
         Uses DataAccess Layer to delete via PK Identifier
@@ -100,17 +106,33 @@ namespace ServiceLayer
             this.UserAccountDataAccess.delete(accID);
         }
 
+        public void deleteUsingUsername(string username)
+        {
+            this.UserAccountDataAccess.deleteUsingUsername(username);
+        }
+
+        public void deleteUsingEmail(string email)
+        {
+            this.UserAccountDataAccess.deleteUsingEmail(email);
+        }
+
+
         /*
         Use DataAccess Layer to write a NEWLY CREATED object into BigQuery
             Params: userAccount - UserAccount object for inserted user account
-            Returns: void
+            Returns: int -
+                0 : Account Creation Success
+                1 : Invalid or taken email
+                2 : Username taken
+                3 : Password too weak
          */
-        public void write(UserAccount userAccount)
+        public int write(UserAccount userAccount)
         {
+            bool emailTaken = getUsingEmail(userAccount.EmailAddress) != null;
             // Checking if Email is a valid Email Address
-            if (!EmailService.IsValidEmailAddress(userAccount.EmailAddress.ToLower())) // Checks for valid email address
+            if (!EmailService.IsValidEmailAddress(userAccount.EmailAddress.ToLower()) || emailTaken) // Checks for valid email address
             {
-                //return new BadRequestObjectResult("Invalid Email address");
+                return 1;
             }
 
             // Checking if username already exists
@@ -118,15 +140,14 @@ namespace ServiceLayer
             if (retrievedUser != null) // Checks if user already exists
             {
                 Console.WriteLine("Username already exists.");
-                return;
-                //return new OkObjectResult("User already exists");
+                return 2;
             }
 
             // Checks for Password Minimum Requirements
             if(PasswordService.CheckMinReqPassword(userAccount.PasswordHash) == false)
             {
                 Console.WriteLine("Password does not meet minimum requirements.");
-                return;
+                return 3;
             }
 
             // Salts and hashes password for security concerns when storing to the database
@@ -138,8 +159,7 @@ namespace ServiceLayer
 
             // If all the checks are passed then writeUserAccount to database
             this.UserAccountDataAccess.write(serialize(userAccount));
-
-            //return new OkObjectResult("Account successfully created");
+            return 0;
         }
 
         /* TODO:

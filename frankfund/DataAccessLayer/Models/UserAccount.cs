@@ -39,6 +39,7 @@ namespace DataAccessLayer.Models
         }
         public UserAccount(long AccountID, string username, string email, string pass, byte[] passSalt)
         {
+            this.AccountID = AccountID;
             this.AccountUsername = username;
             this.EmailAddress = email;
             this.PasswordHash = pass;

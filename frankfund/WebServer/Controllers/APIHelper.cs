@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 
 
 namespace REST.Controllers
@@ -32,8 +33,19 @@ namespace REST.Controllers
             }
             else
             {
-                return new OkObjectResult(json);
+                json.Replace("\\", "");
+                return Content(json, "application/json");
             }
+        }
+
+        public IActionResult serveErrorMsg(string msg)
+        {
+            return Conflict(new { message = msg });
+        }
+
+        public string getSingleAttrJSON(string key, string val)
+        {
+            return "{\"" + key + "\":" + val + "}";
         }
 
         // Validate a request body, each key should be a valid attribute of the object

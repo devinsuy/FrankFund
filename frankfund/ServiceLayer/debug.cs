@@ -12,13 +12,13 @@ namespace ServiceLayer
         static void authenticateGCP()
         {
             // Devin's Credentials
-            //string pathToCreds = "/Users/devin/Documents/GitHub/FrankFund/Credentials/AuthDevin.json";
+            string pathToCreds = "/Users/devin/GitHub/FrankFund/Credentials/AuthDevin.json";
 
             // Autumn's Credentials
             //string pathToCreds = "/Users/steve/OneDrive/Documents/GitHub/FrankFund/Credentials/AuthAutumn.json";
 
             // Kenneth's Credentials
-            string pathToCreds = "/Users/015909177/Desktop/Github Repos/FrankFund/Credentials/AuthKenny.json";
+            //string pathToCreds = "/Users/015909177/Desktop/Github Repos/FrankFund/Credentials/AuthKenny.json";
 
             //Rachel's Credentials 
             //string pathToCreds = "C:/Data/Spring 2021/CECS 491B/Senior Project/Credentials/AuthRachel.json";
@@ -38,7 +38,7 @@ namespace ServiceLayer
 
             // Create a new Savings Goal for the amount of $150 ending on December 20th, dynamically calculate payments
             DateTime endDate = new DateTime(2021, 12, 20, 0, 0, 0).Date;
-            SavingsGoal sampleGoal = new SavingsGoal(SGID, "Christmas Gift", (decimal)150.00, contrPeriod.Monthly, endDate);
+            SavingsGoal sampleGoal = new SavingsGoal(SGID, 2, "Christmas Gift", (decimal)150.00, contrPeriod.Monthly, endDate);
 
             // Print summary of goal that was just created
             Console.WriteLine("Savings Goal Summary:\n---------------------");
@@ -61,7 +61,7 @@ namespace ServiceLayer
 
             // Create a new Savings Goal for the amount of $300 dynamically calculate end date
             DateTime endDate = new DateTime(2021, 12, 20, 0, 0, 0).Date;
-            SavingsGoal sampleGoal = new SavingsGoal(SGID, "Tuition", (decimal)3425.00, contrPeriod.Weekly, (decimal)325.00);
+            SavingsGoal sampleGoal = new SavingsGoal(SGID, 2, "Tuition", (decimal)3425.00, contrPeriod.Weekly, (decimal)325.00);
 
             // Print summary of goal that was just created
             Console.WriteLine("Savings Goal Summary:\n---------------------");
@@ -100,7 +100,7 @@ namespace ServiceLayer
 
         static void testSGReadModifyRewrite(long SGID)
         {
-            Console.WriteLine("\n\n-------------------- Test: Recreate, Modify, Rewrite Existing SavingsGoal--------------------");
+            Console.WriteLine("\n\n-------------------- Test: Recreate, Modify, Rewrite Existing SavingsGoal --------------------");
 
             // Reinstantiate a SavingsGoal from DB records
             SavingsGoalService sgService = new SavingsGoalService();
@@ -121,7 +121,30 @@ namespace ServiceLayer
             Console.WriteLine(existingGoal + "\n");
 
             // Rewrite the modified goal to DB
-            sgService.write(existingGoal);
+            sgService.update(existingGoal);
+        }
+
+        static void testGetAllSGFromAcc(long accID)
+        {
+            Console.WriteLine("\n\n-------------------- Test: Retrieve All Savings Goals From Account --------------------");
+            SavingsGoalService sgService = new SavingsGoalService();
+            List<SavingsGoal> goals = sgService.getSavingsGoalsFromAccount(accID);
+            foreach(SavingsGoal goal in goals)
+            {
+                Console.WriteLine(goal);
+            }
+        }
+
+        static void testJSONGoalsList(long accID)
+        {
+            Console.WriteLine("\n\n-------------------- Test: JSONify a List of Savings Goals--------------------");
+            //SavingsGoalService sgService = new SavingsGoalService();
+            //List<SavingsGoal> goals = sgService.getSavingsGoalsFromAccount(accID);
+            //string json = sgService.getJSON(goals);
+            //Console.WriteLine(json);
+
+            UserAccountService uac = new UserAccountService();
+            Console.WriteLine(uac.getSavingsGoalsFromAccount(accID));
         }
 
 
@@ -446,8 +469,12 @@ namespace ServiceLayer
             //testSGShowJSON(sampleTwo);
 
 
-            // ---------------------------------------------- Sample Test of SG Read, Modify, Rewrite ------------------------------------------
-            //testSGReadModifyRewrite(SGID: 1);
+            // ---------------------------------------------- Test: SG Read, Modify, Rewrite ------------------------------------------
+            //testSGReadModifyRewrite(SGID: 3);
+
+            // ---------------------------------------------- Test: Retrieve All SG From Account ------------------------------------------
+            //testGetAllSGFromAcc(accID: 2);
+            //testJSONGoalsList(accID: 2);
 
 
             // ---------------------------------------------- Test: Creating User Account ------------------------------------------------------
@@ -459,21 +486,31 @@ namespace ServiceLayer
             //Transaction t = testReinstantiateTransaction(TID: 41);
             //TransactionService ts = new TransactionService();
             //Console.WriteLine(ts.getJSON(t));
-            //testModifyRewriteTransaction(TID: 25);
-            //testDeleteTransaction(TID: 42);
+
 
             //Demo 3/25
+            // FRAN-18 As a user, I want to be able to edit my existing transactions, so that I can correct or update any incorrect information.
+            //testModifyRewriteTransaction(TID: 1);
 
+            // FRAN-19 As a user, I want to be able to delete transactions, so that no longer wanted transactions are accurately represented in the log.
+            //testDeleteTransaction(TID: 20);
+
+            // FRAN-79 As a developer, I want to implement code to display a summary of the Transaction when printed into the console.
             //testDisplayTransaction(TID: 12);
+
+            // FRAN-2 As a developer, I want to be able to display all the transactions associated with a given user.
             //testGetTransactionsFromAccount(accID: 1);
 
+            //FRAN-76 As a developer, I want to write the queries to be able to sort a users transactions by any given TransactionCategory.
             //testGetTransactionsFromCategory(accID: 4, "HomeAndUtilities");
 
-            // sorting past 3 months
-            testGetSortedTransactionsByTime(accID: 4, num: 3, choice: 2);
 
-            // sorting past 1 week
-            testGetSortedTransactionsByTime(accID: 2, num: 1, choice: 1);
+            // FRAN-7 As a developer, I want to be able to create a DB view of a user's transactions across any of the given time periods: { 1 day, 3 days, 1 week, 2 weeks, 1 month, 3 months, 6 months, 1 year, All time }
+            // sorting past 3 months from today
+            //testGetSortedTransactionsByTime(accID: 4, num: 3, choice: 2);
+
+            // sorting past 1 week from today
+            //testGetSortedTransactionsByTime(accID: 2, num: 1, choice: 1);
 
 
             // ---------------------------------------------- Test: Receipt Create ---------------------------------------------------------

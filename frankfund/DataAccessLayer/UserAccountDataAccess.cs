@@ -44,6 +44,12 @@ namespace DataAccessLayer
             return this.dataHelper.query(query, parameters: null);
         }
 
+        public BigQueryResults getUsingEmail(string email)
+        {
+            string query = $"SELECT * FROM {this.tableID} WHERE EmailAddress = '{email}';";
+            return this.dataHelper.query(query, parameters: null);
+        }
+
         /*
         Use DataHelper.query() to GET BigQueryResults for Transactions from a user account
             Params: long ID - PK Identifier for Account
@@ -77,6 +83,9 @@ namespace DataAccessLayer
             this.dataHelper.query(query);
         }
 
+
+        //TODO: Add cascading deletes, when a user is deleted, all their transactions/goals/receipts/subscripts should be deleted
+        //TODO: End every single query with ; to prevent SQL Injection Attacks
         /*
         Use DataHelper.query() to DELETE an object from BigQuery given its PK identifier
             Params: accID : long PK Identifier for Account
@@ -87,6 +96,18 @@ namespace DataAccessLayer
             string query;
             query = $"DELETE FROM {this.tableID} WHERE AccountID = {accID}";
             Console.WriteLine("Running Delete Query:\n---------------------\n" + query);
+            this.dataHelper.query(query);
+        }
+
+        public void deleteUsingUsername(string username)
+        {
+            string query = $"DELETE FROM {this.tableID} WHERE AccountUsername = '{username}';";
+            this.dataHelper.query(query);
+        }
+
+        public void deleteUsingEmail(string email)
+        {
+            string query = $"DELETE FROM {this.tableID} WHERE EmailAddress = '{email}';";
             this.dataHelper.query(query);
         }
 

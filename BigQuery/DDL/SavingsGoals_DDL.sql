@@ -1,5 +1,6 @@
 CREATE TABLE FrankFund.SavingsGoals (
     SGID            INT64         NOT NULL,
+    AccountID       INT64         NOT NULL,
     Name            STRING        NOT NULL,
     GoalAmt         DECIMAL       NOT NULL,
     ContrAmt        DECIMAL       NOT NULL,

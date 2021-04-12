@@ -14,6 +14,7 @@ namespace DataAccessLayer.Models
     public class SavingsGoal
     {
         public readonly long SGID;
+        public readonly long accID;
         public string name;
         public decimal goalAmt;
         public decimal contrAmt;
@@ -70,9 +71,10 @@ namespace DataAccessLayer.Models
         // ---------------------------------------- SavingsGoal Constructors -----------------------------------
 
         // Constructor: create SavingsGoal by endDate
-        public SavingsGoal(long SGID, string name, decimal goalAmt, contrPeriod period, DateTime endDate)
+        public SavingsGoal(long SGID, long accID, string name, decimal goalAmt, contrPeriod period, DateTime endDate)
         {
             this.SGID = SGID;
+            this.accID = accID;
             this.name = name;
             this.goalAmt = goalAmt;
             this.period = period;
@@ -85,9 +87,10 @@ namespace DataAccessLayer.Models
         }
 
         // Constructor: create SavingsGoal by specified contribution
-        public SavingsGoal(long SGID, string name, decimal goalAmt, contrPeriod period, decimal contrAmt)
+        public SavingsGoal(long SGID, long accID, string name, decimal goalAmt, contrPeriod period, decimal contrAmt)
         {
             this.SGID = SGID;
+            this.accID = accID;
             this.name = name;
             this.goalAmt = goalAmt;
             this.period = period;
@@ -100,9 +103,10 @@ namespace DataAccessLayer.Models
         }
 
         // Constructor: reinstantiate a pre-existing SavingsGoal from database records
-        public SavingsGoal(long SGID, string name, decimal goalAmt, decimal contrAmt, contrPeriod period, long numPeriods, DateTime startDate, DateTime endDate)
+        public SavingsGoal(long SGID, long accID, string name, decimal goalAmt, decimal contrAmt, contrPeriod period, long numPeriods, DateTime startDate, DateTime endDate)
         {
             this.SGID = SGID;
+            this.accID = accID;
             this.name = name;
             this.goalAmt = goalAmt;
             this.contrAmt = contrAmt;

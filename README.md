@@ -1,3 +1,4 @@
+
 # FrankFund REST API
 
 ## Overview
@@ -71,6 +72,7 @@ Returns **HTTP 409 Conflict** if a SavingsGoal already exists with the given SGI
 ```json
 {
 	"Name": "Tuition",
+	"AccountID": 2,
 	"GoalAmt": 3425,
 	"Period": "Weekly",
 	"EndDate": "2021-06-04"
@@ -82,6 +84,7 @@ Create a **SavingsGoal by date**, system will dynamically calculate { ContrAmt, 
 ```json
 {
 	"Name": "Tuition",
+	"AccountID": 2,
 	"GoalAmt": 3425,
 	"Period": "Weekly",
 	"ContrAmt": 325,
@@ -150,23 +153,91 @@ PATCH request with the above JSON request body will update the ContrAmt per BiWe
 ---
 
 # UserAccounts
+```[POST] https://frankfund.appspot.com/api/account/create&apikey={apikey})```
 
-```[GET] https://frankfund.appspot.com/api/accID={accID}&apikey={apikey})```
+Create a new UserAccount with the specified JSON request payload. Request payload must specify the attributes: **{ AccountUsername, EmailAddress, Password }**, otherwise returns **HTTP 400 Bad Request**. AccountID is automatically assigned as the next available ID.
+
+Returns **HTTP 409 Conflict** if:
+- Account already exists with the given Username
+- Email address is invalid/malformed, or an account already exists with the given Email
+- Password fails to meet security requirements
+
+**Example Request:**
+```HTTP POST https://frankfund.appspot.com/api/account/create&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0"```
+```json
+{
+	"AccountUsername" : "testUname",
+	"EmailAddress" : "testEmail2@gmail.com",
+	"Password" : "tesp@ssw0rd2"
+}
+```
+---
+
+
+```[GET] https://frankfund.appspot.com/api/account/accID={accID}&apikey={apikey})```
 
 Serves JSON response of the UserAccount data with the given AccountID
 Returns **HTTP 204 No Content** if no UserAccount exists with the given accID.
 
 **Example Request:** 
-```HTTP GET https://frankfund.appspot.com/api/accID=1&apikey=f2f1178729cb2e1c9188ed847066743c4e843a21```
+```HTTP GET https://frankfund.appspot.com/api/account/accID=1&apikey=f2f1178729cb2e1c9188ed847066743c4e843a21```
 
 ---
 
-```[DELETE] https://frankfund.appspot.com/api/accID={accID}&apikey={apikey})```
+```[GET] https://frankfund.appspot.com/api/account/user={user}&apikey={apikey})```
+
+Serves JSON response of the UserAccount data with the given Username
+Returns **HTTP 204 No Content** if no UserAccount exists with the given Username.
+
+**Example Request:** 
+```HTTP GET https://frankfund.appspot.com/api/account/user=Devin&apikey=f2f1178729cb2e1c9188ed847066743c4e843a21```
+
+---
+
+```[GET] https://frankfund.appspot.com/api/account/email={email}&apikey={apikey})```
+
+Serves JSON response of the UserAccount data with the given EmailAddress
+Returns **HTTP 204 No Content** if no UserAccount exists with the given EmailAddress.
+
+**Example Request:** 
+```HTTP GET https://frankfund.appspot.com/api/account/email=DevinSuy@gmail.com&apikey=f2f1178729cb2e1c9188ed847066743c4e843a21```
+
+---
+
+```[DELETE] https://frankfund.appspot.com/api/account/accID={accID}&apikey={apikey})```
 
 Delete the UserAccount with the given AccountID, has no effect if no account exists with the given accID.
 
 **Example Request:** 
-```HTTP DELETE https://frankfund.appspot.com/api/accID=1&apikey=f2f1178729cb2e1c9188ed847066743c4e843a21```
+```HTTP DELETE https://frankfund.appspot.com/api/account/accID=1&apikey=f2f1178729cb2e1c9188ed847066743c4e843a21```
+
+---
+
+```[DELETE] https://frankfund.appspot.com/api/account/user={user}&apikey={apikey})```
+
+Delete the UserAccount with the given Username, has no effect if no account exists with the given Username.
+
+**Example Request:** 
+```HTTP DELETE https://frankfund.appspot.com/api/account/user=Devin&apikey=f2f1178729cb2e1c9188ed847066743c4e843a21```
+
+---
+
+```[DELETE] https://frankfund.appspot.com/api/account/email={email}&apikey={apikey})```
+
+Delete the UserAccount with the given Email, has no effect if no account exists with the given Email.
+
+**Example Request:** 
+```HTTP DELETE https://frankfund.appspot.com/api/account/email=DevinSuy@gmail.com&apikey=f2f1178729cb2e1c9188ed847066743c4e843a21```
+
+---
+
+```[GET] https://frankfund.appspot.com/api/account/accID={accID}/SavingsGoals&apikey={apikey})```
+
+Serves JSON response of all the SavingsGoals associated with the UserAccount with the given accID
+Returns **HTTP 204 No Content** if no SavingsGoals exists with the given UserAccount or no UserAccount exists with the given accID.
+
+**Example Request:** 
+```HTTP GET https://frankfund.appspot.com/api/account/accID=Devin/SavingsGoals&apikey=f2f1178729cb2e1c9188ed847066743c4e843a21```
 
 ---
 

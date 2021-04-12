@@ -7,32 +7,59 @@ namespace DataAccessLayer
     {
         private readonly DataHelper dataHelper;
         private readonly string tableID;
+        private readonly string accTable;
         
         public SavingsGoalDataAccess()
         {
             this.dataHelper = new DataHelper();
             this.tableID = this.dataHelper.getQualifiedTableName("SavingsGoals");
+            this.accTable = this.dataHelper.getQualifiedTableName("Accounts");
         }
         
         public BigQueryResults getUsingID(long ID)
         {
-            string query = $"SELECT * FROM {this.tableID} WHERE SGID = {ID}";        
+            string query = $"SELECT * FROM {this.tableID} WHERE SGID = {ID};";        
             return this.dataHelper.query(query, parameters: null);
         }
 
+        // Return all SavingsGoals associated with an account id
+        public BigQueryResults getSavingsGoalsFromAccount(long accID)
+        {
+            string query = "SELECT s.SGID, s.AccountID, s.Name, s.GoalAmt, s.ContrAmt, s.Period, s.NumPeriods, s.StartDate, s.EndDate"
+            + $" FROM {this.tableID} s"
+            + $" INNER JOIN {this.accTable} a"
+            + " ON s.AccountID = a.AccountID"
+            + $" WHERE s.AccountID = {accID}"
+            + " ORDER BY s.EndDate ASC;";
+            return this.dataHelper.query(query, parameters: null);
+        }
+
+        // Return all SavingsGoals associated with a username
+        public BigQueryResults getSavingsGoalsFromAccount(string username)
+        {
+            string query = "SELECT s.SGID, s.AccountID, s.Name, s.GoalAmt, s.ContrAmt, s.Period, s.NumPeriods, s.StartDate, s.EndDate"
+            + $" FROM {this.tableID} s"
+            + $" INNER JOIN {this.accTable} a"
+            + " ON s.AccountID = a.AccountID"
+            + $" WHERE a.AccountUsername = '{username}'"
+            + " ORDER BY s.EndDate ASC;";
+            Console.WriteLine(query);
+            return this.dataHelper.query(query, parameters: null);
+        }
 
         // Write a savings goal to BigQuery
         public void write(string[] serializedGoal)
         {
             string query = $"INSERT INTO {this.tableID} VALUES ("
                 + serializedGoal[0] + ","                                              // SGID
-                + $"\"{serializedGoal[1]}\","                                          // Name
-                + serializedGoal[2] + ","                                              // GoalAmt
-                + serializedGoal[3] + ","                                              // ContrAmt
-                + $"\"{serializedGoal[4]}\","                                          // Period
-                + serializedGoal[5] + ","                                              // NumPeriods
-                + $"\"{serializedGoal[6]}\","                                          // StartDate
-                + $"\"{serializedGoal[7]}\")";                                         // EndDate
+                + serializedGoal[1] + ","                                              // AccountID
+                + $"\"{serializedGoal[2]}\","                                          // Name
+                + serializedGoal[3] + ","                                              // GoalAmt
+                + serializedGoal[4] + ","                                              // ContrAmt
+                + $"\"{serializedGoal[5]}\","                                          // Period
+                + serializedGoal[6] + ","                                              // NumPeriods
+                + $"\"{serializedGoal[7]}\","                                          // StartDate
+                + $"\"{serializedGoal[8]}\")";                                         // EndDate
             //Console.WriteLine("Running Insert Query:\n---------------------\n" + query);
             this.dataHelper.query(query);
 
@@ -41,7 +68,7 @@ namespace DataAccessLayer
         // Delete an existing record of a savings goal with the given PK identifier
         public void delete(long SGID)
         {
-            string query = $"DELETE FROM {this.tableID} WHERE SGID = {SGID}";
+            string query = $"DELETE FROM {this.tableID} WHERE SGID = {SGID};";
             this.dataHelper.query(query);
         }
 

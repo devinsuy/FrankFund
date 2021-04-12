@@ -15,6 +15,26 @@ namespace ServiceLayer
             this.TransactionDataAccess = new TransactionDataAccess();
         }
 
+        public Transaction reinstantiate(BigQueryRow row)
+        {
+            long SGID = -1;                     // Nullable attribute
+            if (row["SGID"] != null)
+            {
+                SGID = (long)row["SGID"];
+            }
+
+            return new Transaction(
+                (long)row["TID"], (long)row["AccountID"], SGID,
+                (string)row["TransactionName"],
+                this.TransactionDataAccess.castBQNumeric(row["Amount"]),
+                (DateTime)row["DateTransactionMade"],
+                (DateTime)row["DateTransactionEntered"],
+                (bool)row["IsExpense"],
+                //(transactionCategory)row["TransactionCategory"]
+                this.TransactionDataAccess.ParseEnum<transactionCategory>((string)row["TransactionCategory"])
+            );
+        }
+
         /* Retrieve a SavingsGoal from db with a given SGID
             Params: The SGID of the Savings Goal to retrieve
             Returns: A reinstantiated Savings Goal matching the SGID or null if non existant
@@ -29,16 +49,7 @@ namespace ServiceLayer
                 {
                     SGID = (long)row["SGID"];
                 }
-                transaction = new Transaction(
-                    (long)row["TID"], (long)row["AccountID"], SGID,
-                    (string)row["TransactionName"],
-                    this.TransactionDataAccess.castBQNumeric(row["Amount"]),
-                    (DateTime)row["DateTransactionMade"],
-                    (DateTime)row["DateTransactionEntered"],
-                    (bool)row["IsExpense"],
-                    //(transactionCategory)row["TransactionCategory"]
-                    this.TransactionDataAccess.ParseEnum<transactionCategory>((string)row["TransactionCategory"])
-                );
+                transaction = reinstantiate(row);
             }
             return transaction;
         }
@@ -133,21 +144,7 @@ namespace ServiceLayer
 
             foreach (BigQueryRow row in this.TransactionDataAccess.getTransactionsFromAccount(accID))
             {
-                Transaction transaction = null;
-                long SGID = -1;     // Nullable attr
-                if (row["SGID"] != null)
-                {
-                    SGID = (long)row["SGID"];
-                }
-                transaction = new Transaction(
-                    (long)row["TID"], (long)row["AccountID"], SGID,
-                    (string)row["TransactionName"],
-                    this.TransactionDataAccess.castBQNumeric(row["Amount"]),
-                    (DateTime)row["DateTransactionMade"],
-                    (DateTime)row["DateTransactionEntered"],
-                    (bool)row["IsExpense"],
-                    this.TransactionDataAccess.ParseEnum<transactionCategory>((string)row["TransactionCategory"])
-                );
+                Transaction transaction = reinstantiate(row);
                 transactionsList.Add(transaction);
             }
             return transactionsList;
@@ -164,21 +161,7 @@ namespace ServiceLayer
             List<Transaction> transactionsList = new List<Transaction>();
             foreach (BigQueryRow row in this.TransactionDataAccess.getTransactionsFromCategory(accID, category))
             {
-                Transaction transaction = null;
-                long SGID = -1;     // Nullable attr
-                if (row["SGID"] != null)
-                {
-                    SGID = (long)row["SGID"];
-                }
-                transaction = new Transaction(
-                    (long)row["TID"], (long)row["AccountID"], SGID,
-                    (string)row["TransactionName"],
-                    this.TransactionDataAccess.castBQNumeric(row["Amount"]),
-                    (DateTime)row["DateTransactionMade"],
-                    (DateTime)row["DateTransactionEntered"],
-                    (bool)row["IsExpense"],
-                    this.TransactionDataAccess.ParseEnum<transactionCategory>((string)row["TransactionCategory"])
-                );
+                Transaction transaction = reinstantiate(row);
                 transactionsList.Add(transaction);
             }
             return transactionsList;
@@ -200,21 +183,7 @@ namespace ServiceLayer
                 case 0:
                     foreach (BigQueryRow row in this.TransactionDataAccess.SortTransactionsByDays(accID, num))
                     {
-                        Transaction transaction = null;
-                        long SGID = -1;     // Nullable attr
-                        if (row["SGID"] != null)
-                        {
-                            SGID = (long)row["SGID"];
-                        }
-                        transaction = new Transaction(
-                            (long)row["TID"], (long)row["AccountID"], SGID,
-                            (string)row["TransactionName"],
-                            this.TransactionDataAccess.castBQNumeric(row["Amount"]),
-                            (DateTime)row["DateTransactionMade"],
-                            (DateTime)row["DateTransactionEntered"],
-                            (bool)row["IsExpense"],
-                            this.TransactionDataAccess.ParseEnum<transactionCategory>((string)row["TransactionCategory"])
-                        );
+                        Transaction transaction = reinstantiate(row);
                         transactionsList.Add(transaction);
                     }
                     break;
@@ -222,21 +191,7 @@ namespace ServiceLayer
                 case 1:
                     foreach (BigQueryRow row in this.TransactionDataAccess.SortTransactionsByWeeks(accID, num))
                     {
-                        Transaction transaction = null;
-                        long SGID = -1;     // Nullable attr
-                        if (row["SGID"] != null)
-                        {
-                            SGID = (long)row["SGID"];
-                        }
-                        transaction = new Transaction(
-                            (long)row["TID"], (long)row["AccountID"], SGID,
-                            (string)row["TransactionName"],
-                            this.TransactionDataAccess.castBQNumeric(row["Amount"]),
-                            (DateTime)row["DateTransactionMade"],
-                            (DateTime)row["DateTransactionEntered"],
-                            (bool)row["IsExpense"],
-                            this.TransactionDataAccess.ParseEnum<transactionCategory>((string)row["TransactionCategory"])
-                        );
+                        Transaction transaction = reinstantiate(row);
                         transactionsList.Add(transaction);
                     }
                     break;
@@ -244,21 +199,7 @@ namespace ServiceLayer
                 case 2:
                     foreach (BigQueryRow row in this.TransactionDataAccess.SortTransactionsByMonths(accID, num))
                     {
-                        Transaction transaction = null;
-                        long SGID = -1;     // Nullable attr
-                        if (row["SGID"] != null)
-                        {
-                            SGID = (long)row["SGID"];
-                        }
-                        transaction = new Transaction(
-                            (long)row["TID"], (long)row["AccountID"], SGID,
-                            (string)row["TransactionName"],
-                            this.TransactionDataAccess.castBQNumeric(row["Amount"]),
-                            (DateTime)row["DateTransactionMade"],
-                            (DateTime)row["DateTransactionEntered"],
-                            (bool)row["IsExpense"],
-                            this.TransactionDataAccess.ParseEnum<transactionCategory>((string)row["TransactionCategory"])
-                        );
+                        Transaction transaction = reinstantiate(row);
                         transactionsList.Add(transaction);
                     }
                     break;
@@ -266,21 +207,7 @@ namespace ServiceLayer
                 case 3:
                     foreach (BigQueryRow row in this.TransactionDataAccess.SortTransactionsByYear(accID, num))
                     {
-                        Transaction transaction = null;
-                        long SGID = -1;     // Nullable attr
-                        if (row["SGID"] != null)
-                        {
-                            SGID = (long)row["SGID"];
-                        }
-                        transaction = new Transaction(
-                            (long)row["TID"], (long)row["AccountID"], SGID,
-                            (string)row["TransactionName"],
-                            this.TransactionDataAccess.castBQNumeric(row["Amount"]),
-                            (DateTime)row["DateTransactionMade"],
-                            (DateTime)row["DateTransactionEntered"],
-                            (bool)row["IsExpense"],
-                            this.TransactionDataAccess.ParseEnum<transactionCategory>((string)row["TransactionCategory"])
-                        );
+                        Transaction transaction = reinstantiate(row);
                         transactionsList.Add(transaction);
                     }
                     break;

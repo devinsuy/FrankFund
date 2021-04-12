@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceLayer", "ServiceLaye
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessLayer", "DataAccessLayer\DataAccessLayer.csproj", "{0113F788-4026-4589-94F0-E63DE227670E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "REST", "REST\REST.csproj", "{DD6DC602-FB5D-456F-81C5-B3F38444A4F3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebServer", "WebServer\WebServer.csproj", "{17BA35B9-84DD-447A-8A43-3C9C8AB17C91}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{0113F788-4026-4589-94F0-E63DE227670E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0113F788-4026-4589-94F0-E63DE227670E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0113F788-4026-4589-94F0-E63DE227670E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DD6DC602-FB5D-456F-81C5-B3F38444A4F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DD6DC602-FB5D-456F-81C5-B3F38444A4F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DD6DC602-FB5D-456F-81C5-B3F38444A4F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DD6DC602-FB5D-456F-81C5-B3F38444A4F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17BA35B9-84DD-447A-8A43-3C9C8AB17C91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17BA35B9-84DD-447A-8A43-3C9C8AB17C91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17BA35B9-84DD-447A-8A43-3C9C8AB17C91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17BA35B9-84DD-447A-8A43-3C9C8AB17C91}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
