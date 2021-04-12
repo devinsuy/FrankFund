@@ -38,6 +38,11 @@ namespace REST.Controllers
             }
         }
 
+        public IActionResult serveErrorMsg(string msg)
+        {
+            return Conflict(new { message = msg });
+        }
+
         public string getSingleAttrJSON(string key, string val)
         {
             return "{\"" + key + "\":" + val + "}";
