@@ -162,6 +162,15 @@ Returns **HTTP 409 Conflict** if:
 - Email address is invalid/malformed, or an account already exists with the given Email
 - Password fails to meet security requirements
 
+**Example Request:**
+```HTTP POST https://frankfund.appspot.com/api/account/create&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0"```
+```json
+{
+	"AccountUsername" : "testUname",
+	"EmailAddress" : "testEmail2@gmail.com",
+	"Password" : "tesp@ssw0rd2"
+}
+```
 ---
 
 
