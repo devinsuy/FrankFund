@@ -34,6 +34,19 @@ namespace DataAccessLayer
             return this.dataHelper.query(query, parameters: null);
         }
 
+        // Return all SavingsGoals associated with a username
+        public BigQueryResults getSavingsGoalsFromAccount(string username)
+        {
+            string query = "SELECT s.SGID, s.AccountID, s.Name, s.GoalAmt, s.ContrAmt, s.Period, s.NumPeriods, s.StartDate, s.EndDate"
+            + $" FROM {this.tableID} s"
+            + $" INNER JOIN {this.accTable} a"
+            + " ON s.AccountID = a.AccountID"
+            + $" WHERE a.AccountUsername = '{username}'"
+            + " ORDER BY s.EndDate ASC;";
+            Console.WriteLine(query);
+            return this.dataHelper.query(query, parameters: null);
+        }
+
         // Write a savings goal to BigQuery
         public void write(string[] serializedGoal)
         {

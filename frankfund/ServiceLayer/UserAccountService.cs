@@ -82,11 +82,18 @@ namespace ServiceLayer
             return TransactionService.getTransactionsFromAccount(accID);
         }
 
-        // Return the JSON representation of the list of SavingsGoals associated with the given account
+        // Return the JSON representation of the list of SavingsGoals associated with the given AccountID
         public string getSavingsGoalsFromAccount(long accID)
         {
             return SGService.getJSON(SGService.getSavingsGoalsFromAccount(accID));
         }
+
+        // Return the JSON representation of the list of SavingsGoals associated with the given AccountUserName
+        public string getSavingsGoalsFromAccount(string username)
+        {
+            return SGService.getJSON(SGService.getSavingsGoalsFromAccount(username));
+        }
+
 
 
         /*

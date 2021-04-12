@@ -68,6 +68,19 @@ namespace ServiceLayer
             return goals;
         }
 
+        // Retrieve all Savings Goals associated with an account
+        public List<SavingsGoal> getSavingsGoalsFromAccount(string username)
+        {
+            List<SavingsGoal> goals = new List<SavingsGoal>();
+            foreach (BigQueryRow row in SavingsGoalDataAccess.getSavingsGoalsFromAccount(username))
+            {
+                goals.Add(this.reinstantiate(row));
+            }
+            return goals;
+        }
+
+
+
 
         /*
         Serialize a SavingsGoal object into a String array

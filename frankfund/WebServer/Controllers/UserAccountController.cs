@@ -250,17 +250,16 @@ namespace REST.Controllers
             return api.serveJson(uas.getSavingsGoalsFromAccount(accID));
         }
 
-        //[Route("api/account/user={user}/SavingsGoals&apikey={apiKey}")]
-        //[HttpGet]
-        //public IActionResult getGoals(string user, string apiKey)
-        //{
-        //    if (!api.validAPIKey(apiKey))
-        //    {
-        //        return new UnauthorizedResult();
-        //    }
-        //    return api.serveJson(uas.getSavingsGoalsFromAccount(user));
-        //}
-
+        [Route("api/account/user={user}/SavingsGoals&apikey={apiKey}")]
+        [HttpGet]
+        public IActionResult getGoals(string user, string apiKey)
+        {
+            if (!api.validAPIKey(apiKey))
+            {
+                return new UnauthorizedResult();
+            }
+            return api.serveJson(uas.getSavingsGoalsFromAccount(user));
+        }
 
         // ------------------------------ Account Transaction Endpoints ------------------------------
 
