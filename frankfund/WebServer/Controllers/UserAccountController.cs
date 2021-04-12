@@ -39,7 +39,7 @@ namespace REST.Controllers
         {
             if (!api.validAPIKey(apiKey))
             {
-                return new UnauthorizedResult();
+                return new UnauthorizedObjectResult("Invalid API key");
             }
             if (accID < 1)
             {
@@ -54,7 +54,7 @@ namespace REST.Controllers
         {
             if (!api.validAPIKey(apiKey))
             {
-                return new UnauthorizedResult();
+                return new UnauthorizedObjectResult("Invalid API key");
             }
             return api.serveJson(uas.getJSON(uas.getUsingUsername(user)));
         }
@@ -65,7 +65,7 @@ namespace REST.Controllers
         {
             if (!api.validAPIKey(apiKey))
             {
-                return new UnauthorizedResult();
+                return new UnauthorizedObjectResult("Invalid API key");
             }
             return api.serveJson(uas.getJSON(uas.getUsingEmail(email)));
         }
@@ -80,7 +80,7 @@ namespace REST.Controllers
         {
             if (!api.validAPIKey(apiKey))
             {
-                return new UnauthorizedResult();
+                return new UnauthorizedObjectResult("Invalid API key");
             }
             if (accID < 1)
             {
@@ -97,7 +97,7 @@ namespace REST.Controllers
         {
             if (!api.validAPIKey(apiKey))
             {
-                return new UnauthorizedResult();
+                return new UnauthorizedObjectResult("Invalid API key");
             }
             uas.deleteUsingUsername(user);
             return new OkResult();
@@ -110,7 +110,7 @@ namespace REST.Controllers
         {
             if (!api.validAPIKey(apiKey))
             {
-                return new UnauthorizedResult();
+                return new UnauthorizedObjectResult("Invalid API key");
             }
             uas.deleteUsingEmail(email);
             return new OkResult();
@@ -125,7 +125,7 @@ namespace REST.Controllers
         {
             if (!api.validAPIKey(apiKey))
             {
-                return new UnauthorizedResult();
+                return new UnauthorizedObjectResult("Invalid API key");
             }
 
             // Validate that the POST request contains all necessary attributes to create a NEW Account and nothing more
@@ -185,7 +185,7 @@ namespace REST.Controllers
 
             if (!api.validAPIKey(apiKey))
             {
-                return new UnauthorizedResult();
+                return new UnauthorizedObjectResult("Invalid API key");
             }
             if (accID < 1)
             {
@@ -241,7 +241,7 @@ namespace REST.Controllers
         {
             if (!api.validAPIKey(apiKey))
             {
-                return new UnauthorizedResult();
+                return new UnauthorizedObjectResult("Invalid API key");
             }
             if (accID < 1)
             {
@@ -256,7 +256,7 @@ namespace REST.Controllers
         {
             if (!api.validAPIKey(apiKey))
             {
-                return new UnauthorizedResult();
+                return new UnauthorizedObjectResult("Invalid API key");
             }
             return api.serveJson(uas.getSavingsGoalsFromAccount(user));
         }
@@ -270,7 +270,7 @@ namespace REST.Controllers
         {
             if (!api.validAPIKey(apiKey))
             {
-                return new UnauthorizedResult();
+                return new UnauthorizedObjectResult("Invalid API key");
             }
             return api.serveJson(uas.getTransactionsFromAccount(accID));
         }
@@ -282,7 +282,7 @@ namespace REST.Controllers
         {
             if (!api.validAPIKey(apiKey))
             {
-                return new UnauthorizedResult();
+                return new UnauthorizedObjectResult("Invalid API key");
             }
             return api.serveJson(uas.getTransactionsFromAccount(user));
         }

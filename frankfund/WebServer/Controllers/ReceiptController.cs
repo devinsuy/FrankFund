@@ -31,13 +31,13 @@ namespace REST.Controllers
 
         // Retreive a receipt with the given RID
         // returns Http 204 NoContent if doesn't exist
-        [Route("api/RID={RID}&apikey={apikey}")]
+        [Route("api/Receipt/RID={RID}&apikey={apikey}")]
         [HttpGet]
         public IActionResult GetByID(long RID, string apikey)
         {
             if (!api.validAPIKey(apikey))
             {
-                return new UnauthorizedResult();
+                return new UnauthorizedObjectResult("Invalid API key");
             }
 
             if(RID < 1)
@@ -50,13 +50,13 @@ namespace REST.Controllers
 
 
         // Delete a Receipt, no effect if a receipt with the given RID doesn't exist
-        [Route("api/RID={RID}&apikey={apiKey}")]
+        [Route("api/Receipt/RID={RID}&apikey={apiKey}")]
         [HttpDelete]
         public IActionResult DeleteByID(long RID, string apiKey)
         {
             if (!api.validAPIKey(apiKey))
             {
-                return new UnauthorizedResult();
+                return new UnauthorizedObjectResult("Invalid API key");
             }
             if (RID < 1)
             {
@@ -69,13 +69,13 @@ namespace REST.Controllers
 
         // Create a new Receipt with the given RID and request data.
         // Returns Http 409 Conflict if already exists
-        [Route("api/RID={RID}&apikey={apiKey}")]
+        [Route("api/Receipt/RID={RID}&apikey={apiKey}")]
         [HttpPost]
         public IActionResult CreateByID(long RID, string apiKey, [FromBody] JsonElement reqBody)
         {
             if (!api.validAPIKey(apiKey))
             {
-                return new UnauthorizedResult();
+                return new UnauthorizedObjectResult("Invalid API key");
             }
             if (RID < 1)
             {
@@ -121,15 +121,32 @@ namespace REST.Controllers
             return new OkResult();
         }
 
+        // Create a new Receipt with the next available RID
+        [Route("api/Receipt&apikey={apiKey}")]
+        [HttpPost]
+        public IActionResult Create(string apiKey, [FromBody] JsonElement reqBody)
+        {
+            long RID = rs.getNextAvailID();
+            IActionResult res = CreateByID(RID, apiKey, reqBody);
+            // Request was invalid, failed to create
+            if (!(res is OkResult))
+            {
+                return res;
+            }
+
+            // Otherwise return the TID of the newly created transaction
+            return api.serveJson(api.getSingleAttrJSON("RID", RID.ToString()));
+        }
+   
 
         // Update an existing Receipt or create if not exists
-        [Route("api/RID={RID}&apikey={apiKey}")]
+        [Route("api/Receipt/RID={RID}&apikey={apiKey}")]
         [HttpPut]
         public IActionResult UpdateAllByID(long RID, string apiKey, [FromBody] JsonElement reqBody)
         {
             if (!api.validAPIKey(apiKey))
             {
-                return new UnauthorizedResult();
+                return new UnauthorizedObjectResult("Invalid API key");
             }
             if (RID < 1)
             {
@@ -203,13 +220,13 @@ namespace REST.Controllers
 
         // Modify an existing Receipt without specifying all attributes in payload,
         // returns Http 404 Not found if doesn't exist
-        [Route("api/RID={RID}&apikey={apiKey}")]
+        [Route("api/Receipt/RID={RID}&apikey={apiKey}")]
         [HttpPatch]
         public IActionResult UpdateByID(long RID, string apiKey, [FromBody] JsonElement reqBody)
         {
             if (!api.validAPIKey(apiKey))
             {
-                return new UnauthorizedResult();
+                return new UnauthorizedObjectResult("Invalid API key");
             }
             if (RID < 1)
             {
