@@ -193,7 +193,7 @@ Returns **HTTP 409 Conflict** if:
 - Password fails to meet security requirements
 
 **Example Request:**
-```HTTP POST https://frankfund.appspot.com/api/account/create&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0"```
+```HTTP POST https://frankfund.appspot.com/api/account/create&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0```
 ```json
 {
 	"AccountUsername" : "testUname",
@@ -309,7 +309,7 @@ Serves JSON response of the Transaction data with the given TransactionID.
 Returns **HTTP 204 No Content** if no Transaction exists with the given TID.
 
 **Example Request:**
-```HTTP GET https://frankfund.appspot.com/api/Transaction/TID=1&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0"```
+```HTTP GET https://frankfund.appspot.com/api/Transaction/TID=1&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0```
 
 ---
 
@@ -325,7 +325,7 @@ Request returns **HTTP 200 OK** with a JSON similar to the one below, mapping TI
 ```
 
 **Example Request:**
-```HTTP POST https://frankfund.appspot.com/api/Transaction&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0"```
+```HTTP POST https://frankfund.appspot.com/api/Transaction&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0```
 ```json
 {
 	"SGID": 2,
@@ -348,7 +348,7 @@ Create a new Transaction with the specified TransactionID and JSON request paylo
 Returns **HTTP 409 Conflict** if a Transaction already exists with the given TID
 
 **Example Request:**
-```HTTP POST https://frankfund.appspot.com/api/Transaction/TID=1&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0"```
+```HTTP POST https://frankfund.appspot.com/api/Transaction/TID=1&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0```
 ```json
 {
 	"SGID": 2,
@@ -368,7 +368,7 @@ Returns **HTTP 409 Conflict** if a Transaction already exists with the given TID
 Delete a Transaction with the specified TramsactopmID, has no effect if no Transaction exists with the given TID.
 
 **Example Request:**
-```HTTP DELETE https://frankfund.appspot.com/api/Transaction/TID=1&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0"```
+```HTTP DELETE https://frankfund.appspot.com/api/Transaction/TID=1&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0```
 
 ---
 
@@ -377,7 +377,7 @@ Delete a Transaction with the specified TramsactopmID, has no effect if no Trans
 Update or create a new Transaction with the specified TID and data payload.
 
 **Example Request:**
-```HTTP PUT https://frankfund.appspot.com/api/Transaction/TID=1&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0"```
+```HTTP PUT https://frankfund.appspot.com/api/Transaction/TID=1&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0```
 ```json
 {
 	"SGID": 2,
@@ -413,7 +413,7 @@ Update an existing Transaction with the specified TransactionID, data payload **
 Returns **HTTP 404 Not Found** if no Transaction exists with the given TID.
 
 **Example Requests:**
-```HTTP PATCH https://frankfund.appspot.com/api/Transaction/TID=1&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0"```
+```HTTP PATCH https://frankfund.appspot.com/api/Transaction/TID=1&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0```
 
 ```json
 {
@@ -440,7 +440,7 @@ Serves JSON response of the Receipt data with the given ReceiptID
 Returns **HTTP 204 No Content** if no Receipt exists with the given RID.
 
 **Example Request:** 
-```HTTP GET https://frankfund.appspot.com/api/Receipt/RID=1&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0"```
+```HTTP GET https://frankfund.appspot.com/api/Receipt/RID=1&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0```
 
 ---
 
@@ -456,7 +456,7 @@ Request returns **HTTP 200 OK** with a JSON similar to the one below, mapping RI
 ```
 
 **Example Request:**
-```HTTP POST https://frankfund.appspot.com/api/Receipt&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0"```
+```HTTP POST https://frankfund.appspot.com/api/Receipt&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0```
 
 ```json
 {
@@ -477,7 +477,7 @@ Create a new Receipt with the specified ReceiptID and JSON request payload. Requ
 Returns **HTTP 409 Conflict** if a Receipt already exists with the given RID.
 
 **Example Request:**
-```HTTP POST https://frankfund.appspot.com/api/Receipt/RID=1&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0"```
+```HTTP POST https://frankfund.appspot.com/api/Receipt/RID=1&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0```
 
 ```json
 {
@@ -494,7 +494,7 @@ Returns **HTTP 409 Conflict** if a Receipt already exists with the given RID.
 Delete a Receipt with the specified RID, has no effect if no Receipt exists with the given RID.
 
 **Example Request:**
-```HTTP DELETE https://frankfund.appspot.com/api/Receipt/RID=1&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0"```
+```HTTP DELETE https://frankfund.appspot.com/api/Receipt/RID=1&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0```
 
 ---
 
@@ -503,7 +503,7 @@ Delete a Receipt with the specified RID, has no effect if no Receipt exists with
 Update or create a new Receipt with the specified RID and data payload. Request payload must specify **ALL attributes** to create or update the Receipt.
 
 **Example Request:**
-```HTTP PUT https://frankfund.appspot.com/api/Receipt/RID=1&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0"```
+```HTTP PUT https://frankfund.appspot.com/api/Receipt/RID=1&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0```
 
 ```json
 {
@@ -523,7 +523,7 @@ If a Receipt with the given RID **does not exist**, request will create one. Oth
 Update an existing Receipt with the specified ReceiptID, request data payload **does not need to specify all attributes**. Any number of attributes can be specified and simultaneously updated for the Receipt.
 
 **Example Requests:**
-```HTTP PATCH https://frankfund.appspot.com/api/Receipt/RID=1&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0"```
+```HTTP PATCH https://frankfund.appspot.com/api/Receipt/RID=1&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0```
 
 ```json
 {
