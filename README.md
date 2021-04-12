@@ -66,10 +66,10 @@ Returns **HTTP 204 No Content** if no SavingsGoal exists with the given SGID.
 ```[POST] https://frankfund.appspot.com/api/SavingsGoal&apikey={apikey})```
 
 Creates a new SavingsGoal with the next available SGID and JSON request payload. 
-Request returns **HTTP 200 OK** with the following JSON upon access:
+Request returns **HTTP 200 OK** with the following JSON upon success:
 ```json
 {
-	"SGID": (the SGID assigned to the newly created SavingsGoal)
+	"SGID": the SGID assigned to the newly created SavingsGoal
 }
 ```
 
@@ -315,10 +315,10 @@ Returns **HTTP 204 No Content** if no Transaction exists with the given TID.
 
 Create a new Transaction with the next available TID and the JSON request payload. Request payload must specify **all attributes except DateTransactionEntered**, otherwise returns **HTTP 400 Bad Request**.
 
-Request returns **HTTP 200 OK** with the following JSON upon access:
+Request returns **HTTP 200 OK** with the following JSON upon success:
 ```json
 {
-	"TID": (the TID assigned to the newly created transaction)
+	"TID": the TID assigned to the newly created transaction
 }
 ```
 
@@ -446,10 +446,10 @@ Returns **HTTP 204 No Content** if no Receipt exists with the given RID.
 
 Create a new Receipt with the next available RID and JSON request payload. Request payload must specify **ALL attributes** to create a new Receipt, returns **HTTP 400 Bad Request** otherwise. 
 
-Request returns **HTTP 200 OK** with the following JSON upon access:
+Request returns **HTTP 200 OK** with the following JSON upon success:
 ```json
 {
-	"RID": (the RID assigned to the newly created receipt)
+	"RID": the RID assigned to the newly created receipt
 }
 ```
 
