@@ -216,8 +216,9 @@ namespace REST.Controllers
             try
             {
                 // TODO: UserAccount setters
-
-
+                acc.AccountUsername = Convert.ToString(req["AccountUsername"]);
+                acc.EmailAddress = Convert.ToString(req["EmailAddress"]);
+                acc.PasswordHash = Convert.ToString(req["Password"]);
             }
             // Formatting or improper data typing raised exception, bad request
             catch (Exception e)
