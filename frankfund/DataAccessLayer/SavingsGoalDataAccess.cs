@@ -43,7 +43,7 @@ namespace DataAccessLayer
             + " ON s.AccountID = a.AccountID"
             + $" WHERE a.AccountUsername = '{username}'"
             + " ORDER BY s.EndDate ASC;";
-            Console.WriteLine(query);
+            //Console.WriteLine(query);
             return this.dataHelper.query(query, parameters: null);
         }
 
