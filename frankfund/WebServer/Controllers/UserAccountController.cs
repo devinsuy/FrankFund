@@ -179,10 +179,6 @@ namespace REST.Controllers
         [HttpPatch]
         public IActionResult UpdateByID(long accID, string apiKey, [FromBody] JsonElement reqBody)
         {
-            // TODO: Endpoint not fully implemented
-            return new NotFoundResult();
-
-
             if (!api.validAPIKey(apiKey))
             {
                 return new UnauthorizedObjectResult("Invalid API key");
