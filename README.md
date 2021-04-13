@@ -301,6 +301,31 @@ Returns **HTTP 204 No Content** if no Transactions exists with the given UserAcc
 
 ---
 
+```[PATCH] https://frankfund.appspot.com/api/account/accID={accID}&apikey={apikey})```
+
+Update an existing User Account with the specified AccountID, data payload **does not need to specify all attributes**. Any number of attributes can be specified simultaneously to update the User Account.
+Returns **HTTP 404 Not Found** if no User Account exists with the given accID.
+
+**Example Requests:**
+```https://frankfund.appspot.com/api/account/accID=5&apikey=f2f1178729cb2e1c9188ed847066743c4e843a21```
+
+```json
+{
+    "AccountUsername": "testing",
+    "EmailAddress": "testing@gmail.com",
+    "Password": "Password2"
+}
+```
+PATCH request with this request body will update all attributes of the existing User Account.
+
+```json
+{
+	"TransactionName": "Hulu",
+	"Amount": "5.99"
+}
+```
+PATCH request with this request body will update **both the TransactionName and Amount attributes** of the existing Transaction.
+
 
 # Transactions
 ```[GET] https://frankfund.appspot.com/api/Transaction/TID={TID}&apikey={apikey})```
