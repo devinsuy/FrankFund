@@ -45,24 +45,32 @@ class SavingsGoalsLog extends Component{
         return (
             <div className="container">
                 <h1 class="display-4 font-weight-bold white-text pt-5 mb-2">Savings Goals</h1>
-                <b>Hi {this.state.user}</b>
-                <table className="table">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Goal Amount</th>
-                            <th>Contribution Amount</th>
-                            <th>Period</th>
-                            <th>Number of Periods</th>
-                            <th>Start Date</th>
-                            <th>End Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {this.state.dataFetched ? <Goals goals={this.state.goals} /> : <> </>}
-                        {this.state.dataFetched = false}
-                    </tbody>
-                </table>
+                
+                { // Pause loading if data has not been fetched yet
+                !this.state.dataFetched ? <> </> : 
+
+                // Otherwise return loaded data
+                <>
+                    <b>Hi {this.state.user}</b>
+                    <table className="table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Goal Amount</th>
+                                <th>Contribution Amount</th>
+                                <th>Period</th>
+                                <th>Number of Periods</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {<Goals goals={this.state.goals} />}
+                            {this.state.dataFetched = false}
+                        </tbody>
+                    </table>
+                </>
+                }  
             </div>
         );
     }
