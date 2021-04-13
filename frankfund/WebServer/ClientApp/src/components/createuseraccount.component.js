@@ -2,7 +2,6 @@
 
 import React, { Component } from "react";
 import axios from 'axios';
-import $ from 'jquery'; 
 
 export default class CreateUserAccount extends Component {
 
@@ -34,16 +33,22 @@ export default class CreateUserAccount extends Component {
     //        });
     //}
 
+    // Function that occurs when the submit button is pressed in the user account creation form
     onSubmit(e) {
         e.preventDefault();
+        // Gets data from the form
         const form = document.querySelector("form");
         let data = new FormData(form);
+
+        // Converts form data into JSON
         var object = {};
         data.forEach(function (value, key) {
             object[key] = value;
         });
         var json = JSON.stringify(object);
         console.log(json);
+
+        // Calls axios function to post the JSON data for POST request at API endpoint
         axios({
             method: "post",
             url: "/api/account/create&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0",
@@ -55,10 +60,13 @@ export default class CreateUserAccount extends Component {
         })
             .then((res) => {
                 console.log(res);
+                swal("Success!", "Account has successfully been created!", "success");
             })
             .catch((err) => {
                 throw err;
+                swal("Error!", "An error has occured.", "error");
             });
+
     }
 
     render() {
@@ -68,17 +76,17 @@ export default class CreateUserAccount extends Component {
 
                 <div className="form-group">
                     <label>Username</label>
-                    <input type="text" name="AccountUsername" className="form-control" placeholder="Username" />
+                    <input type="text" name="AccountUsername" className="form-control" placeholder="Username" required/>
                 </div>
 
                 <div className="form-group">
                     <label>Email</label>
-                    <input type="email" name="EmailAddress" className="form-control" placeholder="Enter email"/>
+                    <input type="email" name="EmailAddress" className="form-control" placeholder="Enter email" required/>
                 </div>
 
                 <div className="form-group">
                     <label>Password</label>
-                    <input type="password" name="Password" className="form-control" placeholder="Enter password"/>
+                    <input type="password" name="Password" className="form-control" placeholder="Enter password" required/>
                 </div>
 
                 <button type="submit" className="btn btn-dark btn-lg btn-block">Register</button>
