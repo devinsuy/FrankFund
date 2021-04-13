@@ -211,10 +211,18 @@ namespace REST.Controllers
             // Update the Account with the specified POST attributes
             try
             {
-                // TODO: UserAccount setters
-                acc.AccountUsername = Convert.ToString(req["AccountUsername"]);
-                acc.EmailAddress = Convert.ToString(req["EmailAddress"]);
-                acc.PasswordHash = Convert.ToString(req["Password"]);
+                if (reqAttributes.Contains("AccountUsername"))
+                {
+                    acc.AccountUsername = Convert.ToString(req["AccountUsername"]);
+                }
+                if (reqAttributes.Contains("EmailAddress"))
+                {
+                    acc.EmailAddress = Convert.ToString(req["EmailAddress"]);
+                }
+                if (reqAttributes.Contains("Password"))
+                {
+                    acc.PasswordHash = Convert.ToString(req["Password"]);
+                }
             }
             // Formatting or improper data typing raised exception, bad request
             catch (Exception e)
