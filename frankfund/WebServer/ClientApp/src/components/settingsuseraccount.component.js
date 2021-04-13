@@ -2,6 +2,7 @@
 
 import React, { Component } from "react";
 import axios from 'axios';
+import swal from 'sweetalert';
 
 export default class SettingsUserAccount extends Component {
 
@@ -17,7 +18,7 @@ export default class SettingsUserAccount extends Component {
         console.log(json);
         axios({
             method: "patch",
-            url: "/api/account/accID={accID}&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0",
+            url: "/api/account/accID=5&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0",
             data: json,
             headers: {
                 'accept': 'application/json',
@@ -26,9 +27,11 @@ export default class SettingsUserAccount extends Component {
         })
             .then((res) => {
                 console.log(res);
+                swal("Success!", "Account has successfully been updated!", "success");
             })
             .catch((err) => {
                 throw err;
+                swal("Error!", "An error has occured.", "error");
             });
     }
 
@@ -36,7 +39,6 @@ export default class SettingsUserAccount extends Component {
         return (
             <form
                 id="account-settings"
-                //action='api/account/create'
                 method= 'patch'
                 onSubmit={this.onSubmit}>
                 <h3>Account Settings</h3>
