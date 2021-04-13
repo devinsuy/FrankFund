@@ -1,6 +1,7 @@
 
 
 
+
 # FrankFund REST API
 
 ## Overview
@@ -317,6 +318,38 @@ Returns **HTTP 404 Not Found** if no User Account exists with the given accID.
 }
 ```
 PATCH request with this request body will update all attributes of the existing User Account.
+
+```json
+{
+    "AccountUsername": "newUsername"
+}
+```
+PATCH request with this request body will update just the AccountUsername of the existing User Account.
+
+---
+
+```[PATCH] https://frankfund.appspot.com/api/account/user={user}&apikey={apikey})```
+
+Update an existing User Account with the specified AccountID, data payload **does not need to specify all attributes**. Any number of attributes can be specified simultaneously to update the User Account.
+Returns **HTTP 404 Not Found** if no User Account exists with the given accID.
+
+**Example Requests:**
+```https://frankfund.appspot.com/api/account/user=Devin&apikey=f2f1178729cb2e1c9188ed847066743c4e843a21```
+
+
+```json
+{
+    "EmailAddress": "newEmail@gmail.com"
+}
+```
+PATCH request with this request body will update just the EmailAddress of the existing User Account.
+
+```json
+{
+    "Password": "newPassword"
+}
+```
+PATCH request with this request body will update just the Password of the existing User Account.
 
 
 # Transactions
