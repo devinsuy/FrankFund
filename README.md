@@ -318,14 +318,6 @@ Returns **HTTP 404 Not Found** if no User Account exists with the given accID.
 ```
 PATCH request with this request body will update all attributes of the existing User Account.
 
-```json
-{
-	"TransactionName": "Hulu",
-	"Amount": "5.99"
-}
-```
-PATCH request with this request body will update **both the TransactionName and Amount attributes** of the existing Transaction.
-
 
 # Transactions
 ```[GET] https://frankfund.appspot.com/api/Transaction/TID={TID}&apikey={apikey})```
