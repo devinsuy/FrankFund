@@ -1,8 +1,10 @@
 import logo from './logo.svg';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+
+
 
 // Imported React Components
 import CreateUserAccount from "./components/createuseraccount.component";
@@ -11,26 +13,11 @@ import LandingComponent from "./components/landing.components";
 import TransactionLog from "./components/transactionslog.component";
 import TransactionDetail from "./components/transactiondetail.component";
 import CreateTransaction from "./components/createtransaction.component";
+import SavingsGoalsLog from "./components/savinggoals/savingsgoalslog.component";
+
 
 function App() {
     return (<Router>
-    {/* Default code commented out for testing */ }
-    {/*<div className="App">
-      <header className="App-header">
-       
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a> 
-      </header>*/}
 
       <div className="App">
       {/* Landing Page and CreateUserAccount component 
@@ -41,10 +28,14 @@ function App() {
       <nav className="navbar navbar-expand-lg navbar-light fixed-top">
         <div className="container">
           <Link className="navbar-brand" to={"/"}>FrankFund</Link>
-          <div class="collapse navbar-collapse" id="navbarNav">
+          <div class="collapse navbar-collapse" id="navbarNavTransaction">
             <ul class="navbar-nav">
-              <li class="nav-item active">
+              <li class="nav-item">
                 <a class="nav-link" href="/transactions-log">Transactions<span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item">
+                { /* TODO: Button click should add current logged in user to the route /goals/{user} */ }
+                <a class="nav-link" href="/goals/DevinSuy">SavingsGoals</a>     
               </li>
             </ul>
           </div>
@@ -70,8 +61,8 @@ function App() {
             <Route path="/transactions-detail" component={TransactionDetail} />
             <Route path="/transactions-log" component={TransactionLog} />
             <Route path="/create-transaction" component={CreateTransaction} />
-
-            {/* <Route path="/example" component={TableComponent}/> */}
+            { /* Example: frankfund.appspot.com/goals/DevinSuy */ }
+            <Route path="/goals/:user" component={SavingsGoalsLog} />             
           </Switch>
         </div>
       </div>
