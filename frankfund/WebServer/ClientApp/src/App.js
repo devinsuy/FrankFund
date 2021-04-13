@@ -1,10 +1,7 @@
-import logo from './logo.svg';
 import React, { useState, useEffect } from 'react';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-
-
 
 // Imported React Components
 import CreateUserAccount from "./components/createuseraccount.component";
@@ -18,7 +15,6 @@ import SavingsGoalsLog from "./components/savinggoals/savingsgoalslog.component"
 
 function App() {
     return (<Router>
-
       <div className="App">
       {/* Landing Page and CreateUserAccount component 
           1. Set up HTML template code
