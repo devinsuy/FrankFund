@@ -281,7 +281,7 @@ namespace REST.Controllers
 
             // Write changes, if any
             sgs.update(s);
-            return new OkResult();
+            return api.serveJson(sgs.getJSON(s));
         }
     }
 }
