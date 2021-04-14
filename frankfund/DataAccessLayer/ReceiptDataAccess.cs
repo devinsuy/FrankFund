@@ -7,11 +7,13 @@ namespace DataAccessLayer
     {
         private readonly DataHelper dataHelper;
         private readonly string tableID;
+        private readonly string transactionTable;
 
         public ReceiptDataAccess()
         {
             this.dataHelper = new DataHelper();
             this.tableID = this.dataHelper.getQualifiedTableName("Receipts");
+            this.tableID = this.dataHelper.getQualifiedTableName("Transactions");
         }
 
         public BigQueryResults getUsingID(long ID)
@@ -52,6 +54,14 @@ namespace DataAccessLayer
             write(serializedReceipt);
         }
 
+        // Returns all transactions with a given user ordered by date entered
+        public BigQueryResults getTransactionFromRID(long TID, long RID)
+        {
+            string query = "SELECT * FROM FrankFund.Receipt r"
+                + $" WHERE r.TID = {TID}";
+            return this.dataHelper.query(query, parameters: null);
+        }
+
         public long getNextAvailID()
         {
             return this.dataHelper.getNextAvailID(this.tableID);
@@ -66,6 +76,7 @@ namespace DataAccessLayer
         {
             return this.dataHelper.castBQNumeric(val);
         }
+
 
     }
 }

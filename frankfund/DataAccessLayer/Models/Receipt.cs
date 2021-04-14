@@ -28,6 +28,16 @@ namespace DataAccessLayer.Models
             this.newlyCreated = newlyCreated;
         }
 
+        //Constructor with nullable removed
+        public Receipt(long RID, long TID, string ImgURL, DateTime PurchaseDate, bool newlyCreated)
+        {
+            this.RID = RID;
+            this.TID = TID;
+            this.ImgURL = ImgURL;
+            this.PurchaseDate = PurchaseDate;
+            this.newlyCreated = newlyCreated;
+        }
+
         //Getter methods
         public long getTID()
         {

@@ -48,12 +48,24 @@ namespace DataAccessLayer.Models
         }
 
         //Constructor without nullable aspects 
-        public Subscription(long accID, long SID, DateTime purchaseDate, decimal purchaseAmount, SubscriptionFrequency frequency)
+        public Subscription(long accID, long SID, long RID, DateTime purchaseDate, decimal purchaseAmount, SubscriptionFrequency frequency)
         {
             this.accID = accID;
             this.SID = SID;
+            this.RID = RID;
             this.purchaseDate = purchaseDate;
             this.purchaseAmount = purchaseAmount;
+            this.frequency = frequency;
+        }
+
+        //Constructor for Reinstantiation 
+        public Subscription(long SID, long accID, long RID, decimal purchaseAmount, DateTime purchaseDate, string notes, SubscriptionFrequency frequency)
+        {
+            this.SID = SID;
+            this.accID = accID;
+            this.RID = RID;
+            this.purchaseDate = purchaseDate;
+            this.notes = notes;
             this.frequency = frequency;
         }
 
