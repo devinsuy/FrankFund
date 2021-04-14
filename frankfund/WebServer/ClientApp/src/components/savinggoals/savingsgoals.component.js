@@ -95,27 +95,6 @@ const Goal = ({ goal }) => {
         document.getElementById(`EditEndDate${goal.SGID}`).addEventListener("click", function(){
             editEndDate()
         });
-        
-        
-        // Swal({
-        //     title: 'Multiple inputs',
-        //     html:
-        //       '<input id="swal-input1" class="swal2-input">' +
-        //       '<input id="swal-input2" class="swal2-input">',
-        //     preConfirm: function () {
-        //       return new Promise(function (resolve) {
-        //         resolve([
-        //           $('#swal-input1').val(),
-        //           $('#swal-input2').val()
-        //         ])
-        //       })
-        //     },
-        //     onOpen: function () {
-        //       $('#swal-input1').focus()
-        //     }
-        //   }).then(function (result) {
-        //     Swal(JSON.stringify(result))
-        //   }).catch(Swal.noop)
     }
 
     function deleteAlert(){
@@ -132,20 +111,6 @@ const Goal = ({ goal }) => {
         document.getElementsByClassName(`swal2-confirm swal2-styled`)[0].addEventListener("click", function(){
             deleteGoal()
         });
-        
-
-
-        // Swal.fire({
-        //     title: goal.Name,
-        //     icon: 'warning',
-        //     showCloseButton: true,
-        //     html:
-        //         `<p>A savings goal for the amount of <b>$${goal.GoalAmt}</b> `
-        //         + `will require an average <b>${goal.Period}</b> contribution of <b>$${goal.ContrAmt}</b> `
-        //         + `for <b>${goal.NumPeriods}</b> ${noun} </p>`
-        //         + `<p>${goal.Name} savings goal began on <b>${startDate}</b> and will end on <b>${endDate}</b></p>`
-        // })
-
     }
 
     // ------------------------------ Button operations functionality ------------------------------
@@ -255,9 +220,79 @@ const Goal = ({ goal }) => {
     }
 
     function editGoalAmount(){
+        const inputValue = parseFloat(goal.GoalAmt)
+        const inputStep = 0.01
+        
+        Swal.fire({
+          title: goal.Name,
+          showCancelButton: true,
+          showCloseButton: true,
+          html: `<p>Enter a new goal amount for <b>${goal.Name}</b>:</p>` +
+            `<input type="number" value="${inputValue}" step="${inputStep}" class="swal2-input" id="range-value">`,
+          input: 'range',
+          inputValue,
+          inputAttributes: {
+            min: 1,
+            max: parseFloat(goal.GoalAmt) * 5,
+            step: inputStep
+          },
+          didOpen: () => {
+            const inputRange = Swal.getInput()
+            const inputNumber = Swal.getContent().querySelector('#range-value')
+        
+            // remove default output
+            inputRange.nextElementSibling.style.display = 'none'
+            inputRange.style.width = '100%'
+        
+            // sync input[type=number] with input[type=range]
+            inputRange.addEventListener('input', () => {
+              inputNumber.value = inputRange.value
+            })
+        
+            // sync input[type=range] with input[type=number]
+            inputNumber.addEventListener('change', () => {
+              inputRange.value = inputNumber.value
+            })
+          }
+        })
     }
 
     function editContribution(){
+        const inputValue = parseFloat(goal.GoalAmt)
+        const inputStep = 0.01
+        
+        Swal.fire({
+          title: goal.Name,
+          showCancelButton: true,
+          showCloseButton: true,
+          html: `<p>Enter a new contribution amount for <b>${goal.Name}</b>:</p>` +
+            `<input type="number" value="${inputValue}" step="${inputStep}" class="swal2-input" id="range-value">`,
+          input: 'range',
+          inputValue,
+          inputAttributes: {
+            min: 1,
+            max: parseFloat(goal.GoalAmt) * 5,
+            step: inputStep
+          },
+          didOpen: () => {
+            const inputRange = Swal.getInput()
+            const inputNumber = Swal.getContent().querySelector('#range-value')
+        
+            // remove default output
+            inputRange.nextElementSibling.style.display = 'none'
+            inputRange.style.width = '100%'
+        
+            // sync input[type=number] with input[type=range]
+            inputRange.addEventListener('input', () => {
+              inputNumber.value = inputRange.value
+            })
+        
+            // sync input[type=range] with input[type=number]
+            inputNumber.addEventListener('change', () => {
+              inputRange.value = inputNumber.value
+            })
+          }
+        })
     }
 
     async function editPeriod(){
@@ -350,9 +385,6 @@ const Goal = ({ goal }) => {
                 }
             }
         }
-
-
-
     }
 
     async function editEndDate(){
