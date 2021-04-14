@@ -11,6 +11,8 @@ import TransactionLog from "./components/transactionslog.component";
 import TransactionDetail from "./components/transactiondetail.component";
 import CreateTransaction from "./components/createtransaction.component";
 import SavingsGoalsLog from "./components/savinggoals/savingsgoalslog.component";
+import ModifyTransaction from './components/updatetransaction.component';
+import DeleteTransaction from './components/deletetransaction.component';
 
 
 function App() {
@@ -57,6 +59,8 @@ function App() {
             <Route path="/transactions-detail" component={TransactionDetail} />
             <Route path="/transactions-log" component={TransactionLog} />
             <Route path="/create-transaction" component={CreateTransaction} />
+            <Route path="/modify-transaction" component={ModifyTransaction} />
+            <Route path="/delete-transaction" component={DeleteTransaction} />
             { /* Example: frankfund.appspot.com/goals/DevinSuy */ }
             <Route path="/goals/:user" component={SavingsGoalsLog} />             
           </Switch>
