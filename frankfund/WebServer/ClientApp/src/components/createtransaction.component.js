@@ -29,18 +29,20 @@ export default class CreateTransaction extends Component {
                 <div className="form-group">
                     <label>Transaction Type</label><br></br>
                     <select>
-                        <option value="expense">Expense</option>
-                        <option value="income">Income</option>
+                        <option>Past Day</option>
+                        <option>Past Week</option>
+                        <option>Past Month</option>
+                        <option>Past 3 Months</option>
+                        <option>Past 6 Months</option>
+                        <option>Past Year</option>
                     </select>
                 </div>
 
                 <div className="form-group">
-                    <label>Transaction Type</label><br></br>
-                    <input type="date" id="start" name="trip-start" />
+                    <label>Date transaction was made</label><br></br>
+                    <input type="date"/>
+                        
                 </div>
-
-                
-
                 <button type="submit" className="btn btn-dark btn-lg btn-block">Add</button>
                 <a href="\transactions-log"><button className="btn btn-dark btn-sm btn-block">Return</button></a>
             </form>
