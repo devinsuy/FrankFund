@@ -6,9 +6,9 @@ using System.Collections.Generic;
 
 namespace ServiceLayer
 {
-	public class SubscriptionService: ServiceLayer<Subscription>
+	public class SubscriptionService: Service<Subscription>
     {
-        private readonly SubscriptionService SubscriptionDataAccess;
+        private readonly SubscriptionDataAccess SubscriptionDataAccess;
 
         public SubscriptionService()
         {
@@ -20,15 +20,19 @@ namespace ServiceLayer
             long RID = -1;                     // Nullable attribute (receipt ID)
             if (row["RID"] != null)
             {
-                SGID = (long)row["RID"];
+                RID = (long)row["RID"];
             }
             return new Subscription(
-                (long)row["SID", (long)row["AccountID"], RID,
-                this.SubscriptionDataAccess.castBQNumeric(row["Amount"],
+                (long)row["SID"], (long)row["AccountID"], RID,
+                this.SubscriptionDataAccess.castBQNumeric(row["Amount"]),
                 (DateTime)row["PurchaseDate"],
                 (string)row["Notes"],
-                this.SubscriptionDataAccess.ParseEnum<SubscriptionFrequency>(string)row["RenewFrequency"])
-                ); 
+                this.SubscriptionDataAccess.ParseEnum<SubscriptionFrequency>((string)row["RenewFrequency"]));
+        }
+
+        private object ParseEnum<T>(string v)
+        {
+            throw new NotImplementedException();
         }
 
         /* Retrieve a Subscription from db with a given SID
@@ -37,13 +41,13 @@ namespace ServiceLayer
         */
         public Subscription getUsingID(long SID)
         {
-            long SID = -1;                     // Nullable attribute
+            long RID = -1;                     // Nullable attribute
             Subscription subscription = null;
             foreach (BigQueryRow row in this.SubscriptionDataAccess.getUsingID(SID))
             {
-                if (row["SID"] != null)
+                if (row["RID"] != null)
                 {
-                    SID = (long)row["SID"];
+                    SID = (long)row["RID"];
                 }
                 subscription = reinstantiate(row);
             }
@@ -58,13 +62,15 @@ namespace ServiceLayer
         {
             return new string[] {
                 s.getSID().ToString(),
-                s.getAccountID().ToString(),
+                s.getAccID().ToString(),
                 s.getRID().ToString(),
                 s.getPurchaseDate().ToString("yyyy-MM-dd"),
                 s.getNotes().ToString(),
-                s.getAmount().ToString(),
-                s.getRenewFrequency.ToString()
+                s.getPurchaseAmount().ToString(),
+                s.getFrequency().ToString()
             };
+
+           
         }
 
         /*
@@ -158,7 +164,7 @@ namespace ServiceLayer
             foreach (BigQueryRow row in this.SubscriptionDataAccess.getSubscriptionsFromAccount(accID))
             {
                 Subscription subscription = reinstantiate(row);
-                subscriptionList.Add(Subscription);
+                subscriptionList.Add(subscription);
             }
             return subscriptionList;
         }
@@ -181,10 +187,10 @@ namespace ServiceLayer
                 The category
         Returns: A list of Transactions associated with user account sorted by category
         */
-        public List<Subscription> getSubscriptionByRenewalFrequency(long accID, string renewFrequency)
+        public List<Subscription> getSubscriptionByRenewalFrequency(long SID, string renewFrequency)
         {
-            List<Transaction> subscriptionList = new List<Subscription>();
-            foreach (BigQueryRow row in this.SubscriptionDataAccess.getSubscriptionByRenewalFrequency(accID, renewFrequency))
+            List<Subscription> subscriptionList = new List<Subscription>();
+            foreach (BigQueryRow row in this.SubscriptionDataAccess.getSubscriptionViaFrequency(SID, renewFrequency))
             {
                 Subscription subscription = reinstantiate(row);
                 subscriptionList.Add(subscription);
