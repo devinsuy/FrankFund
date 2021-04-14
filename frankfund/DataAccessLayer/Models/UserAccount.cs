@@ -8,10 +8,10 @@ namespace DataAccessLayer.Models
     {
         // User Account Attributes
         public readonly long AccountID;
-        public string AccountUsername;
-        public string EmailAddress;
-        public string PasswordHash;
-        public byte[] PasswordSalt;
+        public string AccountUsername { get; set; }
+        public string EmailAddress { get; set; }
+        public string PasswordHash { get; set; }
+        public byte[] PasswordSalt { get; set; }
         // TODO: Have to look into the Facebook and Google API more on what it stores
         //public int FacebookID;
         //public int GoogleID;

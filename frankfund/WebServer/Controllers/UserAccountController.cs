@@ -39,7 +39,7 @@ namespace REST.Controllers
         {
             if (!api.validAPIKey(apiKey))
             {
-                return new UnauthorizedResult();
+                return new UnauthorizedObjectResult("Invalid API key");
             }
             if (accID < 1)
             {
@@ -54,7 +54,7 @@ namespace REST.Controllers
         {
             if (!api.validAPIKey(apiKey))
             {
-                return new UnauthorizedResult();
+                return new UnauthorizedObjectResult("Invalid API key");
             }
             return api.serveJson(uas.getJSON(uas.getUsingUsername(user)));
         }
@@ -65,7 +65,7 @@ namespace REST.Controllers
         {
             if (!api.validAPIKey(apiKey))
             {
-                return new UnauthorizedResult();
+                return new UnauthorizedObjectResult("Invalid API key");
             }
             return api.serveJson(uas.getJSON(uas.getUsingEmail(email)));
         }
@@ -80,7 +80,7 @@ namespace REST.Controllers
         {
             if (!api.validAPIKey(apiKey))
             {
-                return new UnauthorizedResult();
+                return new UnauthorizedObjectResult("Invalid API key");
             }
             if (accID < 1)
             {
@@ -97,7 +97,7 @@ namespace REST.Controllers
         {
             if (!api.validAPIKey(apiKey))
             {
-                return new UnauthorizedResult();
+                return new UnauthorizedObjectResult("Invalid API key");
             }
             uas.deleteUsingUsername(user);
             return new OkResult();
@@ -110,7 +110,7 @@ namespace REST.Controllers
         {
             if (!api.validAPIKey(apiKey))
             {
-                return new UnauthorizedResult();
+                return new UnauthorizedObjectResult("Invalid API key");
             }
             uas.deleteUsingEmail(email);
             return new OkResult();
@@ -125,7 +125,7 @@ namespace REST.Controllers
         {
             if (!api.validAPIKey(apiKey))
             {
-                return new UnauthorizedResult();
+                return new UnauthorizedObjectResult("Invalid API key");
             }
 
             // Validate that the POST request contains all necessary attributes to create a NEW Account and nothing more
@@ -179,20 +179,16 @@ namespace REST.Controllers
         [HttpPatch]
         public IActionResult UpdateByID(long accID, string apiKey, [FromBody] JsonElement reqBody)
         {
-            // TODO: Endpoint not fully implemented
-            return new NotFoundResult();
-
-
             if (!api.validAPIKey(apiKey))
             {
-                return new UnauthorizedResult();
+                return new UnauthorizedObjectResult("Invalid API key");
             }
             if (accID < 1)
             {
                 return BadRequest();
             }
 
-            // Validate the attributes of the PATCH request, each attribute specified
+            // Validate the attributes of the PATCH request, each attribute specified, given account id
             // in the request must be an attribute of a Account
             Dictionary<string, object> req = JsonConvert.DeserializeObject<Dictionary<string, object>>(Convert.ToString(reqBody));
             HashSet<string> reqAttributes = new HashSet<string>(req.Keys);
@@ -206,7 +202,7 @@ namespace REST.Controllers
             // Http POST cannot update a Account that does not exist
             if (acc == null)
             {
-                return NotFound();
+                return NotFound($"No account exists with AccountID {accID}");
             }
 
             // Otherwise fufill the POST request and update the corresponding Account
@@ -215,9 +211,77 @@ namespace REST.Controllers
             // Update the Account with the specified POST attributes
             try
             {
-                // TODO: UserAccount setters
+                if (reqAttributes.Contains("AccountUsername"))
+                {
+                    acc.AccountUsername = Convert.ToString(req["AccountUsername"]);
+                }
+                if (reqAttributes.Contains("EmailAddress"))
+                {
+                    acc.EmailAddress = Convert.ToString(req["EmailAddress"]);
+                }
+                if (reqAttributes.Contains("Password"))
+                {
+                    acc.PasswordHash = Convert.ToString(req["Password"]);
+                }
+            }
+            // Formatting or improper data typing raised exception, bad request
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                return BadRequest();
+            }
 
+            // Write changes, if any
+            uas.update(acc);
+            return new OkResult();
+        }
 
+        // Modify an existing Account without specifying all attributes in payload, given account username
+        // returns Http 404 Not found if doesn't exist
+        [Route("api/account/user={user}&apikey={apiKey}")]
+        [HttpPatch]
+        public IActionResult UpdateByUsername(string user, string apiKey, [FromBody] JsonElement reqBody)
+        {
+            if (!api.validAPIKey(apiKey))
+            {
+                return new UnauthorizedObjectResult("Invalid API key");
+            }
+
+            // Validate the attributes of the PATCH request, each attribute specified, given account id
+            // in the request must be an attribute of a Account
+            Dictionary<string, object> req = JsonConvert.DeserializeObject<Dictionary<string, object>>(Convert.ToString(reqBody));
+            HashSet<string> reqAttributes = new HashSet<string>(req.Keys);
+            if (!api.validAttributes(attributes, reqAttributes))
+            {
+                return BadRequest();
+            }
+
+            UserAccount acc = uas.getUsingUsername(user);
+
+            // Http POST cannot update a Account that does not exist
+            if (acc == null)
+            {
+                return NotFound($"No account exists with useruname {user}");
+            }
+
+            // Otherwise fufill the POST request and update the corresponding Account
+            // Http POST may only specify a few attributes to update or provide all of them
+
+            // Update the Account with the specified POST attributes
+            try
+            {
+                if (reqAttributes.Contains("AccountUsername"))
+                {
+                    acc.AccountUsername = Convert.ToString(req["AccountUsername"]);
+                }
+                if (reqAttributes.Contains("EmailAddress"))
+                {
+                    acc.EmailAddress = Convert.ToString(req["EmailAddress"]);
+                }
+                if (reqAttributes.Contains("Password"))
+                {
+                    acc.PasswordHash = Convert.ToString(req["Password"]);
+                }
             }
             // Formatting or improper data typing raised exception, bad request
             catch (Exception e)
@@ -241,7 +305,7 @@ namespace REST.Controllers
         {
             if (!api.validAPIKey(apiKey))
             {
-                return new UnauthorizedResult();
+                return new UnauthorizedObjectResult("Invalid API key");
             }
             if (accID < 1)
             {
@@ -256,7 +320,7 @@ namespace REST.Controllers
         {
             if (!api.validAPIKey(apiKey))
             {
-                return new UnauthorizedResult();
+                return new UnauthorizedObjectResult("Invalid API key");
             }
             return api.serveJson(uas.getSavingsGoalsFromAccount(user));
         }
@@ -270,7 +334,7 @@ namespace REST.Controllers
         {
             if (!api.validAPIKey(apiKey))
             {
-                return new UnauthorizedResult();
+                return new UnauthorizedObjectResult("Invalid API key");
             }
             return api.serveJson(uas.getTransactionsFromAccount(accID));
         }
@@ -282,7 +346,7 @@ namespace REST.Controllers
         {
             if (!api.validAPIKey(apiKey))
             {
-                return new UnauthorizedResult();
+                return new UnauthorizedObjectResult("Invalid API key");
             }
             return api.serveJson(uas.getTransactionsFromAccount(user));
         }

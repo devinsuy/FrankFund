@@ -1,72 +1,93 @@
 // JavaScript source code for Create New User Account React Component
 
 import React, { Component } from "react";
+import axios from 'axios';
+import swal from 'sweetalert';
 
 export default class CreateUserAccount extends Component {
 
-    constructor(props) {
-        super(props);
+    //constructor(props) {
+    //    super(props);
 
-        this.state = { username: null, email: null, password: null };
-    }
-
-    //onChange(e) {
-    //    this.setState({
-    //        [e.target.name]: e.target.value
-    //    });
+    //    this.state = { username: null, email: null, password: null };
     //}
 
+    //state = {
+    //    AccountUsername: '',
+    //    EmailAddress: '',
+    //    Password: ''
+    //}
+
+    // ----- Testing with static JSON input -----
     //onSubmit(e) {
     //    e.preventDefault();
 
-    //    fetch('/api/account/create', {
-    //        method: 'POST',
-    //        headers: {
-    //            'Accept': 'application/json',
-    //            'Content-Type': 'application/json'
-    //        },
-    //        body: JSON.stringify({ description: this.state.description })
-    //    });
-
-    //    this.setState({ description: '' });
+    //    axios.post('/api/account/create&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0', {
+    //        AccountUsername: 'testing',
+    //        EmailAddress: 'testing@gmail.com',
+    //        Password: 'Password1'
+    //    })
+    //        .then((response) => {
+    //            console.log(response);
+    //        }, (error) => {
+    //            console.log(error);
+    //        });
     //}
 
+    // Function that occurs when the submit button is pressed in the user account creation form
     onSubmit(e) {
         e.preventDefault();
-        // Simple POST request with a JSON body using fetch
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ title: 'React POST Request Example' })
-        };
-        fetch('api/account/create', requestOptions)
-            .then(response => response.json())
-            .then(data => this.setState({ AccountUsername: data.username, EmailAddress: data.email, PasswordHash: data.password }));
-    }
+        // Gets data from the form
+        const form = document.querySelector("form");
+        let data = new FormData(form);
 
+        // Converts form data into JSON
+        var object = {};
+        data.forEach(function (value, key) {
+            object[key] = value;
+        });
+        var json = JSON.stringify(object);
+        console.log(json);
+
+        // Calls axios function to post the JSON data for POST request at API endpoint
+        axios({
+            method: "post",
+            url: "/api/account/create&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0",
+            data: json,
+            headers: {
+                'accept': 'application/json',
+                'content-type': 'application/json'
+            }
+        })
+            .then((res) => {
+                console.log(res);
+                swal("Success!", "Account has successfully been created!", "success");
+            })
+            .catch((err) => {
+                swal("Error!", "An error has occured.", "error");
+                throw err;
+            });
+
+    }
 
     render() {
         return (
-            <form
-                id="create-user-account"
-                action='api/account/create'
-                method= 'post'
-                onSubmit={this.onSubmit}>
+            <form action="" method="post" onSubmit={this.onSubmit}>
                 <h3>Create New User Account</h3>
 
                 <div className="form-group">
                     <label>Username</label>
-                    <input type="AccountUsername" className="form-control" placeholder="Username" />
+                    <input type="text" name="AccountUsername" className="form-control" placeholder="Username" required/>
                 </div>
 
                 <div className="form-group">
                     <label>Email</label>
-                    <input type="EmailAddress" className="form-control" placeholder="Enter email" />
+                    <input type="email" name="EmailAddress" className="form-control" placeholder="Enter email" required/>
                 </div>
 
                 <div className="form-group">
                     <label>Password</label>
-                    <input type="PasswordHash" className="form-control" placeholder="Enter password" />
+                    <input type="password" name="Password" className="form-control" placeholder="Enter password" required/>
                 </div>
 
                 <button type="submit" className="btn btn-dark btn-lg btn-block">Register</button>

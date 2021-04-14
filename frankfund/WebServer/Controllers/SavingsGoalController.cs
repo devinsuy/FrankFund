@@ -62,13 +62,13 @@ namespace REST.Controllers
             };
         }
 
-        [Route("api/SGID={SGID}&apikey={apiKey}")]
+        [Route("api/SavingsGoal/SGID={SGID}&apikey={apiKey}")]
         [HttpGet]
         public IActionResult GetSGByID(long SGID, string apiKey)
         {
             if (!api.validAPIKey(apiKey))
             {
-                return new UnauthorizedResult();
+                return new UnauthorizedObjectResult("Invalid API key");
             }   
             if(SGID < 1) {
                 return BadRequest();
@@ -78,13 +78,13 @@ namespace REST.Controllers
 
 
         // Delete a SavingsGoal, no effect if a SavingsGoal with the given SGID doesn't exist
-        [Route("api/SGID={SGID}&apikey={apiKey}")]
+        [Route("api/SavingsGoal/SGID={SGID}&apikey={apiKey}")]
         [HttpDelete]
         public IActionResult DeleteByID(long SGID, string apiKey)
         {
             if (!api.validAPIKey(apiKey))
             {
-                return new UnauthorizedResult();
+                return new UnauthorizedObjectResult("Invalid API key");
             }
             if (SGID < 1)
             {
@@ -97,13 +97,13 @@ namespace REST.Controllers
 
         // Create a new SavingsGoal with the given SGID.
         // Returns Http 409 Conflict if already exists
-        [Route("api/SGID={SGID}&apikey={apiKey}")]
+        [Route("api/SavingsGoal/SGID={SGID}&apikey={apiKey}")]
         [HttpPost]
         public IActionResult CreateByID(long SGID, string apiKey, [FromBody] JsonElement reqBody)
         {
             if (!api.validAPIKey(apiKey))
             {
-                return new UnauthorizedResult();
+                return new UnauthorizedObjectResult("Invalid API key");
             }
             if (SGID < 1)
             {
@@ -167,95 +167,36 @@ namespace REST.Controllers
         }
 
 
-        // TODO: SavingsGoal API does not support HTTP PUT operation
-        [Route("api/SGID={SGID}&apikey={apiKey}")]
-        [HttpPut]
-        public IActionResult UpdateAllByID(long SGID, string apiKey, [FromBody] JsonElement reqBody)
+        // Create a new SavingsGoal with the next available SGID
+        [Route("api/SavingsGoal&apikey={apiKey}")]
+        [HttpPost]
+        public IActionResult Create(string apiKey, [FromBody] JsonElement reqBody)
         {
-            return new NotFoundResult();
+            long SGID = sgs.getNextAvailID();
+            IActionResult res = CreateByID(SGID, apiKey, reqBody);
+            // Request was invalid, failed to create
+            if (!(res is OkResult))
+            {
+                return res;
+            }
 
-            //if (!api.validAPIKey(apiKey))
-            //{
-            //    return new UnauthorizedResult();
-            //}
-            //if (SGID < 1)
-            //{
-            //    return BadRequest();
-            //}
-
-            //Dictionary<string, object> req = JsonConvert.DeserializeObject<Dictionary<string, object>>(Convert.ToString(reqBody));
-            //HashSet<string> reqAttributes = new HashSet<string>(req.Keys);
-            //SavingsGoal s = sgs.getUsingID(SGID);
-
-            //// Create the SavingsGoal with the given SGID if it doesn't exist
-            //if (s == null)
-            //{
-            //    // PUT requires request to provide key,value pairs for EVERY SavingsGoal attribute except dateSavingsGoalEntered
-            //    bool createByDate = reqAttributes.SetEquals(createDateAttrs);
-            //    bool createByContr = reqAttributes.SetEquals(createContrAttrs);
-            //    if (!createByDate && !createByContr)
-            //    {
-            //        return BadRequest();
-            //    }
-            //    try
-            //    {
-            //        // Create a SavingsGoal by a specified end date
-            //        if (createByDate)
-            //        {
-            //            s = new SavingsGoal(
-            //                SGID: SGID,
-            //                Convert.ToString(req["Name"]),
-            //                goalAmt: Convert.ToDecimal(req["GoalAmt"]),
-            //                period: sgs.castPeriod(Convert.ToString(req["Period"])),
-            //                endDate: Convert.ToDateTime(req["EndDate"])
-            //            );
-            //        }
-            //        // Create a SavingsGoal by a specified contribution amount
-            //        else
-            //        {
-            //            s = new SavingsGoal(
-            //                SGID: SGID,
-            //                Convert.ToString(req["Name"]),
-            //                goalAmt: Convert.ToDecimal(req["GoalAmt"]),
-            //                period: sgs.castPeriod(Convert.ToString(req["Period"])),
-            //                contrAmt: Convert.ToDecimal(req["ContrAmt"])
-            //            );
-            //        }
-            //    }
-            //    // Formatting or improper data typing raised exception, bad request
-            //    catch (Exception e)
-            //    {
-            //        Console.WriteLine(e.ToString());
-            //        return BadRequest();
-            //    }
-
-            //    // Write the new SavingsGoal
-            //    sgs.write(s);
-
-            //    return new OkResult();
-            //}
-
-            //// API does not support conventional SavingsGoals PUT operation
-            //else
-            //{
-            //    return new NotFoundResult();
-            //}
-
+            // Otherwise return the TID of the newly created transaction
+            return api.serveJson(api.getSingleAttrJSON("SGID", SGID.ToString()));
         }
 
 
-        // Modify an existing SavingsGoal without specifying all attributes in payload,
-        // returns Http 404 Not found if doesn't exist
-        // PATCH request body should pass no more than a single attribute unless:
-        //      Updating GoalAmt, in which a boolean ExtendDate should be passed
-        //      Updating ContrAmt AND Period simultaneously
-        [Route("api/SGID={SGID}&apikey={apiKey}")]
+            // Modify an existing SavingsGoal without specifying all attributes in payload,
+            // returns Http 404 Not found if doesn't exist
+            // PATCH request body should pass no more than a single attribute unless:
+            //      Updating GoalAmt, in which a boolean ExtendDate should be passed
+            //      Updating ContrAmt AND Period simultaneously
+            [Route("api/SavingsGoal/SGID={SGID}&apikey={apiKey}")]
         [HttpPatch]
         public IActionResult UpdateByID(long SGID, string apiKey, [FromBody] JsonElement reqBody)
         {
             if (!api.validAPIKey(apiKey))
             {
-                return new UnauthorizedResult();
+                return new UnauthorizedObjectResult("Invalid API key");
             }
             if (SGID < 1)
             {

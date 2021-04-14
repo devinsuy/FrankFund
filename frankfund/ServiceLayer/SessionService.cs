@@ -67,7 +67,6 @@ namespace ServiceLayer
             Session session = new Session(user.AccountUsername, jwtToken);
 
             // Need to make Sessions table in DB in order to add
-            // Need to make SessionDataAccess to write to DB
             this.SessionDataAccess.write(serialize(session));
 
             // Return JWT Token on success , TODO: Return JWT Token on success
