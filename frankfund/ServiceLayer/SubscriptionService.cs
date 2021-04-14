@@ -30,10 +30,21 @@ namespace ServiceLayer
                 this.SubscriptionDataAccess.ParseEnum<SubscriptionFrequency>((string)row["RenewFrequency"]));
         }
 
-        private object ParseEnum<T>(string v)
+
+        public SubscriptionFrequency castFrequency(string p)
         {
-            throw new NotImplementedException();
+            if (p.Equals("Weekly"))
+                return SubscriptionFrequency.Weekly;
+            else if (p.Equals("Monthly"))
+                return SubscriptionFrequency.Monthly;
+            else if (p.Equals("everyThreeMonths"))
+                return SubscriptionFrequency.everyThreeMonths;
+            else if (p.Equals("everySixMonths"))
+                return SubscriptionFrequency.everySixMonths;
+            else
+                return SubscriptionFrequency.Yearly;
         }
+
 
         /* Retrieve a Subscription from db with a given SID
         Params: The SID of the Subscription to retrieve
