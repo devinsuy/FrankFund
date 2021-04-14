@@ -134,7 +134,7 @@ namespace REST.Controllers
         }
 
         // Create a new transaction with the next available TID
-        [Route("api/transaction/TID&apikey={apiKey}")]
+        [Route("api/Transaction&apikey={apiKey}")]
         [HttpPost]
         public IActionResult Create(string apiKey, [FromBody] JsonElement reqBody)
         {
