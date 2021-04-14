@@ -18,6 +18,7 @@ class SavingsGoalsLog extends Component{
     }
 
     async getGoals(){
+        // TODO: Validation, if /goals/{user} != the logged in user return unauthorized (other users shouldn't be able to access data that isn't theirs)
         let user = this.props.match.params.user;                                // Select user from route /goals/{user}
         let apikey = "c55f8d138f6ccfd43612b15c98706943e1f4bea3";
         let url = `/api/account/user=${user}/SavingsGoals&apikey=${apikey}`;
@@ -59,9 +60,10 @@ class SavingsGoalsLog extends Component{
                                 <th>Goal Amount</th>
                                 <th>Contribution Amount</th>
                                 <th>Period</th>
-                                <th>Number of Periods</th>
-                                <th>Start Date</th>
+                                {/* <th>Number of Periods</th>
+                                <th>Start Date</th> */}
                                 <th>End Date</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
