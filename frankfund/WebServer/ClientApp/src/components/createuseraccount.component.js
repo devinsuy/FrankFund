@@ -64,8 +64,8 @@ export default class CreateUserAccount extends Component {
                 swal("Success!", "Account has successfully been created!", "success");
             })
             .catch((err) => {
-                throw err;
                 swal("Error!", "An error has occured.", "error");
+                throw err;
             });
 
     }

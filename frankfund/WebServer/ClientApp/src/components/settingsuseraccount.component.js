@@ -30,8 +30,8 @@ export default class SettingsUserAccount extends Component {
                 swal("Success!", "Account has successfully been updated!", "success");
             })
             .catch((err) => {
-                throw err;
                 swal("Error!", "An error has occured.", "error");
+                throw err;
             });
     }
 
