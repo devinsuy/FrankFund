@@ -34,13 +34,13 @@ namespace DataAccessLayer
         public void write(string[] serializedSubscription)
         {
             string query = $"INSERT INTO {this.tableID} VALUES ("
-                + serializedTransaction[0] + ","                        // Subscription ID
-                + serializedTransaction[1] + ","                        // Account ID
-                + serializedTransaction[2] + ","                        // Receipt ID
-                + $"\"{serializedTransaction[3]}\","                    // Purchase Date
-                + serializedTransaction[4] + ","                        // Notes
-                + $"\"{serializedTransaction[5]}\","                    // Amount
-                + $"\"{serializedTransaction[6]}\"";                    // Renew Frequency
+                + serializedSubscription[0] + ","                        // Subscription ID
+                + serializedSubscription[1] + ","                        // Account ID
+                + serializedSubscription[2] + ","                        // Receipt ID
+                + $"\"{serializedSubscription[3]}\","                    // Purchase Date
+                + serializedSubscription[4] + ","                        // Notes
+                + $"\"{serializedSubscription[5]}\","                    // Amount
+                + $"\"{serializedSubscription[6]}\"";                    // Renew Frequency
            
             //Console.WriteLine("Running Insert Query:\n---------------------\n" + query);
             this.dataHelper.query(query);
@@ -49,7 +49,7 @@ namespace DataAccessLayer
         // Delete an existing Subscription with the given PK identifier
         public void delete(long SID)
         {
-            string query = $"DELETE FROM {this.tableID} WHERE SID = {TID}";
+            string query = $"DELETE FROM {this.tableID} WHERE SID = {SID}";
             this.dataHelper.query(query);
         }
 
@@ -60,7 +60,7 @@ namespace DataAccessLayer
             delete(long.Parse(serializedSubscription[0]));
 
             // Write the updated records
-            write(serializedTransaction);
+            write(serializedSubscription);
         }
 
         // Returns all Subscriptions with a given user ordered by date entered
