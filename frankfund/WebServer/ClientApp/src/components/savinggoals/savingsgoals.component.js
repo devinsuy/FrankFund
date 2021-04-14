@@ -19,7 +19,7 @@ var nouns = {
 
 const Goal = ({ goal }) => {
     // Convert date to readable format 
-    let endDate  = new Date(goal.EndDate).toDateString();
+    let endDate  = goal.EndDate != "" ? new Date(goal.EndDate).toDateString() : "";
 
     // Build api url for this particular goal
     let apikey = "c55f8d138f6ccfd43612b15c98706943e1f4bea3";
@@ -27,7 +27,7 @@ const Goal = ({ goal }) => {
 
     return (
         <>
-            <tr key={goal.SGID}>
+            <tr id={`Goal${goal.SGID}`} key={goal.SGID}>
                 <td id={`Name${goal.SGID}`}> {goal.Name}</td>
                 <td id={`GoalAmt${goal.SGID}`}> {goal.GoalAmt != "" ? "$" + goal.GoalAmt : ""}</td>
                 <td id={`ContrAmt${goal.SGID}`}> {goal.ContrAmt != "" ? "$" + goal.ContrAmt : ""}</td>
@@ -119,7 +119,74 @@ const Goal = ({ goal }) => {
     }
 
     function deleteAlert(){
+        Swal.fire({
+            title: `${goal.Name}`,
+            html: `<p>Are you sure you want to <b>delete</b> your <b>${goal.Name}</b> savings goal? You won't be able to revert this!</p>`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Confirm',
+            showCloseButton: true
+        })
+        document.getElementsByClassName(`swal2-confirm swal2-styled`)[0].addEventListener("click", function(){
+            deleteGoal()
+        });
+        
 
+
+        // Swal.fire({
+        //     title: goal.Name,
+        //     icon: 'warning',
+        //     showCloseButton: true,
+        //     html:
+        //         `<p>A savings goal for the amount of <b>$${goal.GoalAmt}</b> `
+        //         + `will require an average <b>${goal.Period}</b> contribution of <b>$${goal.ContrAmt}</b> `
+        //         + `for <b>${goal.NumPeriods}</b> ${noun} </p>`
+        //         + `<p>${goal.Name} savings goal began on <b>${startDate}</b> and will end on <b>${endDate}</b></p>`
+        // })
+
+    }
+
+    // ------------------------------ Button operations functionality ------------------------------
+
+    async function deleteGoal(){
+        let loading = true;
+        while(loading){
+            Swal.fire({
+                title: 'Updating',
+                html: `<p>Deleting <b>${goal.Name}</b> savings goal</p>`,
+                allowOutsideClick: false,
+                onBeforeOpen: () => { Swal.showLoading()}
+            });
+            let params = { method: "DELETE" }
+            await(fetch(url, params))
+            .then(response => {    
+                if(response.ok){
+                    // Avoid re-rendering entire GoalsLog componeent, simply delete element
+                    // (Fetch will reload changes from API if page refreshed)
+                    document.getElementById(`Goal${goal.SGID}`).remove();
+
+                    // Display success message
+                    Swal.fire({
+                        title: goal.Name,
+                        icon: "success",
+                        html: `<p>Savings goal <b>${goal.Name}</b> was successfully deleted!</p>`,
+                        showCloseButton: true
+                    }) 
+                }
+                else{
+                    Swal.fire({
+                        title: goal.Name,
+                        icon: "error",
+                        html: `<p>Something went wrong, failed to delete ${goal.Name} savings goal</p>`,
+                        showCloseButton: true
+                    })
+                }
+            }) 
+            // Exit loading loop
+            loading = false;
+        }
     }
 
     // --------------- Edit goal attribute handlers ---------------
@@ -141,7 +208,7 @@ const Goal = ({ goal }) => {
         })
         // Make PATCH request and update the name
         if(newName){
-            let loading = true
+            let loading = true;
             while(loading){
                 // Show loading message
                 Swal.fire({
@@ -167,7 +234,7 @@ const Goal = ({ goal }) => {
                         Swal.fire({
                             title: newName,
                             icon: "success",
-                            html: `<p>Goal name successfully updated from <b>${goal.Name}</b> to <b>${newName}</b>.</p>`,
+                            html: `<p>Goal name successfully updated from <b>${goal.Name}</b> to <b>${newName}</b>!</p>`,
                             showCloseButton: true
                         }) 
                         goal.Name = newName;
@@ -264,7 +331,7 @@ const Goal = ({ goal }) => {
                                 icon: "success",
                                 html: 
                                     `<p>Goal contribution period successfully updated from <b>${oldPeriod}</b> to <b>${goal.Period}</b>.</p>`
-                                    + `<p>${goal.Name} end date was updated from <b>${endDate}</b> to <b>${goal.EndDate}</b></p>`,
+                                    + `<p>${goal.Name} end date was updated from <b>${endDate}</b> to <b>${goal.EndDate}</b>!</p>`,
                                 showCloseButton: true
                             })
                         })
@@ -292,6 +359,8 @@ const Goal = ({ goal }) => {
         Swal.close();
     }
 
+
+    
 
 
 
