@@ -1,12 +1,12 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 
-export default class CreateTransaction extends Component {
+export default class ModifyTransaction extends Component {
     render() {
         return (
             <form
-                id="create-transaction"
+                id="modify-transaction"
                 >
-                <h3>Create a New Transaction</h3>
+                <h3>Edit a Transaction</h3>
 
                 <div className="form-group">
                     <label>Transaction Name</label>
@@ -29,12 +29,10 @@ export default class CreateTransaction extends Component {
                 <div className="form-group">
                     <label>Transaction Type</label><br></br>
                     <select>
-                        <option>Past Day</option>
-                        <option>Past Week</option>
-                        <option>Past Month</option>
-                        <option>Past 3 Months</option>
-                        <option>Past 6 Months</option>
-                        <option>Past Year</option>
+                        <option>Food Drinks</option>
+                        <option>Home Utilities</option>
+                        <option>Education</option>
+                        <option>Entertainment</option>
                     </select>
                 </div>
 
