@@ -48,7 +48,7 @@ class SavingsGoalsLog extends Component{
                 <h1 class="display-4 font-weight-bold white-text pt-5 mb-2">Savings Goals</h1>
                 
                 { // Pause loading if data has not been fetched yet
-                !this.state.dataFetched ? <> </> : 
+                !this.state.dataFetched ? <> <a>Loading . . .</a></> : 
 
                 // Otherwise return loaded data
                 <>
@@ -60,8 +60,6 @@ class SavingsGoalsLog extends Component{
                                 <th>Goal Amount</th>
                                 <th>Contribution Amount</th>
                                 <th>Period</th>
-                                {/* <th>Number of Periods</th>
-                                <th>Start Date</th> */}
                                 <th>End Date</th>
                                 <th></th>
                             </tr>
