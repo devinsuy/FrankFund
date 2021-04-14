@@ -1,0 +1,6 @@
+AccountID,AccountUsername,EmailAddress,PasswordHash,PasswordSalt,FacebookID,GoogleID
+1,AutumnNguyen,a.nguyen@gmail.com,password,Null,,
+2,DevinSuy,d.suy@gmail.com,password,Null,,
+3,RachelPai,r.pai@gmail.com,password,Null,,
+4,KennethTran,k.tran@gmail.com,password,Null,,
+5,testlogin,testlogin@example.com,T/yFEW55KdS84mVRSyZIITnfP8F2EqPxyIPtcUgsnpq1xLYI,T/yFEW55KdS84mVRSyZIIQ==,,

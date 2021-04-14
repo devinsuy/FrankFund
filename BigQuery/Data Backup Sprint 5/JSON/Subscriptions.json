@@ -1,0 +1,83 @@
+[
+  {
+    "SID": "2",
+    "AccountID": "1",
+    "RID": null,
+    "PurchaseDate": "2021-02-10",
+    "Notes": "Monthly tea box",
+    "Amount": "25",
+    "RenewFrequency": "Monthly"
+  },
+  {
+    "SID": "3",
+    "AccountID": "3",
+    "RID": "-1",
+    "PurchaseDate": "2021-03-20",
+    "Notes": "CauseBox",
+    "Amount": "50",
+    "RenewFrequency": "Monthly"
+  },
+  {
+    "SID": "4",
+    "AccountID": "5",
+    "RID": "-1",
+    "PurchaseDate": "2021-03-02",
+    "Notes": "Disney Plus",
+    "Amount": "20.97",
+    "RenewFrequency": "Monthly"
+  },
+  {
+    "SID": "5",
+    "AccountID": "4",
+    "RID": "-1",
+    "PurchaseDate": "2021-03-02",
+    "Notes": "Disney Plus",
+    "Amount": "188.73",
+    "RenewFrequency": "Monthly"
+  },
+  {
+    "SID": "8",
+    "AccountID": "1",
+    "RID": "0",
+    "PurchaseDate": "2021-04-13",
+    "Notes": "This subscription does not have any notes attached.",
+    "Amount": "30.14",
+    "RenewFrequency": "everyThreeMonths"
+  },
+  {
+    "SID": "9",
+    "AccountID": "2",
+    "RID": "0",
+    "PurchaseDate": "2021-02-20",
+    "Notes": "This subscription does not have any notes attached.",
+    "Amount": "14.99",
+    "RenewFrequency": "Weekly"
+  },
+  {
+    "SID": "10",
+    "AccountID": "2",
+    "RID": "0",
+    "PurchaseDate": "2021-02-20",
+    "Notes": "This subscription does not have any notes attached.",
+    "Amount": "14.99",
+    "RenewFrequency": "Weekly"
+  },
+  {
+    "SID": "11",
+    "AccountID": "2",
+    "RID": "0",
+    "PurchaseDate": "2021-02-20",
+    "Notes": "This subscription does not have any notes attached.",
+    "Amount": "14.99",
+    "RenewFrequency": "Weekly"
+  },
+  {
+    "SID": "12",
+    "AccountID": "2",
+    "RID": "0",
+    "PurchaseDate": "2021-02-20",
+    "Notes": "This subscription does not have any notes attached.",
+    "Amount": "14.99",
+    "RenewFrequency": "Weekly"
+  }
+]

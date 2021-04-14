@@ -1,0 +1,47 @@
+[
+  {
+    "AccountID": "1",
+    "AccountUsername": "AutumnNguyen",
+    "EmailAddress": "a.nguyen@gmail.com",
+    "PasswordHash": "password",
+    "PasswordSalt": "Null",
+    "FacebookID": null,
+    "GoogleID": null
+  },
+  {
+    "AccountID": "2",
+    "AccountUsername": "DevinSuy",
+    "EmailAddress": "d.suy@gmail.com",
+    "PasswordHash": "password",
+    "PasswordSalt": "Null",
+    "FacebookID": null,
+    "GoogleID": null
+  },
+  {
+    "AccountID": "3",
+    "AccountUsername": "RachelPai",
+    "EmailAddress": "r.pai@gmail.com",
+    "PasswordHash": "password",
+    "PasswordSalt": "Null",
+    "FacebookID": null,
+    "GoogleID": null
+  },
+  {
+    "AccountID": "4",
+    "AccountUsername": "KennethTran",
+    "EmailAddress": "k.tran@gmail.com",
+    "PasswordHash": "password",
+    "PasswordSalt": "Null",
+    "FacebookID": null,
+    "GoogleID": null
+  },
+  {
+    "AccountID": "5",
+    "AccountUsername": "testlogin",
+    "EmailAddress": "testlogin@example.com",
+    "PasswordHash": "T/yFEW55KdS84mVRSyZIITnfP8F2EqPxyIPtcUgsnpq1xLYI",
+    "PasswordSalt": "T/yFEW55KdS84mVRSyZIIQ==",
+    "FacebookID": null,
+    "GoogleID": null
+  }
+]

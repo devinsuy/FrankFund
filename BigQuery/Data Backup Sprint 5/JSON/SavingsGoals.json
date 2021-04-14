@@ -1,0 +1,134 @@
+[
+  {
+    "SGID": "1",
+    "AccountID": "2",
+    "Name": "Birthday",
+    "GoalAmt": "650",
+    "ContrAmt": "30.95",
+    "Period": "Monthly",
+    "NumPeriods": "21",
+    "StartDate": "2021-04-11",
+    "EndDate": "2023-01-01"
+  },
+  {
+    "SGID": "3",
+    "AccountID": "2",
+    "Name": "Christmas Gift",
+    "GoalAmt": "150",
+    "ContrAmt": "33.34",
+    "Period": "BiWeekly",
+    "NumPeriods": "5",
+    "StartDate": "2021-04-11",
+    "EndDate": "2021-06-20"
+  },
+  {
+    "SGID": "5",
+    "AccountID": "1",
+    "Name": "Tuition",
+    "GoalAmt": "3425",
+    "ContrAmt": "428.12",
+    "Period": "BiWeekly",
+    "NumPeriods": "8",
+    "StartDate": "2021-04-13",
+    "EndDate": "2021-08-03"
+  },
+  {
+    "SGID": "6",
+    "AccountID": "1",
+    "Name": "Vacation",
+    "GoalAmt": "2000",
+    "ContrAmt": "250",
+    "Period": "Monthly",
+    "NumPeriods": "8",
+    "StartDate": "2021-04-14",
+    "EndDate": "2021-12-04"
+  },
+  {
+    "SGID": "7",
+    "AccountID": "2",
+    "Name": "Vacation",
+    "GoalAmt": "2000",
+    "ContrAmt": "250",
+    "Period": "Monthly",
+    "NumPeriods": "8",
+    "StartDate": "2021-04-14",
+    "EndDate": "2021-12-04"
+  },
+  {
+    "SGID": "9",
+    "AccountID": "3",
+    "Name": "Dog",
+    "GoalAmt": "1000",
+    "ContrAmt": "83.33",
+    "Period": "BiWeekly",
+    "NumPeriods": "12",
+    "StartDate": "2021-04-14",
+    "EndDate": "2021-09-18"
+  },
+  {
+    "SGID": "10",
+    "AccountID": "3",
+    "Name": "Camera",
+    "GoalAmt": "700",
+    "ContrAmt": "233.33",
+    "Period": "Monthly",
+    "NumPeriods": "3",
+    "StartDate": "2021-04-14",
+    "EndDate": "2021-06-22"
+  },
+  {
+    "SGID": "11",
+    "AccountID": "3",
+    "Name": "Vacation",
+    "GoalAmt": "550",
+    "ContrAmt": "68.75",
+    "Period": "Monthly",
+    "NumPeriods": "8",
+    "StartDate": "2021-04-14",
+    "EndDate": "2021-11-13"
+  },
+  {
+    "SGID": "12",
+    "AccountID": "4",
+    "Name": "PC Build",
+    "GoalAmt": "2000",
+    "ContrAmt": "9.39",
+    "Period": "Daily",
+    "NumPeriods": "213",
+    "StartDate": "2021-04-14",
+    "EndDate": "2021-11-13"
+  },
+  {
+    "SGID": "13",
+    "AccountID": "4",
+    "Name": "Concert",
+    "GoalAmt": "150",
+    "ContrAmt": "10",
+    "Period": "Weekly",
+    "NumPeriods": "15",
+    "StartDate": "2021-04-14",
+    "EndDate": "2021-07-28"
+  },
+  {
+    "SGID": "14",
+    "AccountID": "4",
+    "Name": "Vacation",
+    "GoalAmt": "1600",
+    "ContrAmt": "177.78",
+    "Period": "BiWeekly",
+    "NumPeriods": "9",
+    "StartDate": "2021-04-14",
+    "EndDate": "2021-08-05"
+  },
+  {
+    "SGID": "16",
+    "AccountID": "2",
+    "Name": "Fall Tuition",
+    "GoalAmt": "3425",
+    "ContrAmt": "325",
+    "Period": "Monthly",
+    "NumPeriods": "11",
+    "StartDate": "2021-04-14",
+    "EndDate": "2022-03-10"
+  }
+]

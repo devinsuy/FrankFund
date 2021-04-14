@@ -1,0 +1,24 @@
+TID,AccountID,SGID,TransactionName,Amount,DateTransactionMade,DateTransactionEntered,IsExpense,TransactionCategory
+1,1,1,Netflix,19.98,2021-03-01,2021-03-23,true,Entertainment
+2,1,1,Netflix,9.99,2021-02-01,2021-03-23,true,Entertainment
+4,1,1,Netflix,9.99,2020-12-01,2021-03-23,true,Entertainment
+5,2,1,Hulu,5.99,2021-01-09,2021-03-23,true,Entertainment
+6,3,1,McDonald's,19.99,2021-03-23,2021-03-23,true,Restaurants
+7,2,1,App Store charge,9.99,2021-03-20,2021-03-23,true,Entertainment
+8,2,1,App Store Refund,9.99,2021-03-20,2021-03-23,false,Deposits
+9,4,1,Gucci Retail Store,599.99,2021-02-25,2021-03-23,true,Shopping
+10,4,1,Spotify Premium,4.99,2021-01-02,2021-03-23,true,Entertainment
+11,4,1,Spotify Premium,4.99,2021-02-02,2021-03-23,true,Entertainment
+12,4,1,Spotify Premium,4.99,2021-03-02,2021-03-23,true,Entertainment
+13,4,1,Ralphs,102.89,2020-04-20,2021-03-23,true,Groceries
+14,1,1,CSULB tuition,102.89,2020-08-25,2021-03-23,true,Education
+15,2,1,CSULB tuition,6300,2020-08-25,2021-03-23,true,Education
+16,3,1,CSULB tuition,6300,2020-08-25,2021-03-23,true,Education
+17,4,1,CSULB tuition,6300,2020-08-25,2021-03-23,true,Education
+18,4,1,Rent payment,500,2020-01-01,2021-03-23,true,HomeAndUtilities
+19,4,1,Rent payment,500,2018-01-01,2021-03-23,true,HomeAndUtilities
+20,1,2,Netflix,9.99,2020-12-14,2021-04-11,true,Entertainment
+21,1,2,Netflix,9.99,2020-12-14,2021-04-11,true,Entertainment
+22,1,2,Netflix,9.99,2020-12-14,2021-04-11,true,Entertainment
+23,1,2,NetflixDemo,9.99,2020-12-14,2021-04-14,true,Entertainment
+24,1,2,NetflixDemo,9.99,2020-12-14,2021-04-14,true,Entertainment

@@ -1,0 +1,10 @@
+SID,AccountID,RID,PurchaseDate,Notes,Amount,RenewFrequency
+2,1,,2021-02-10,Monthly tea box,25,Monthly
+3,3,-1,2021-03-20,CauseBox,50,Monthly
+4,5,-1,2021-03-02,Disney Plus,20.97,Monthly
+5,4,-1,2021-03-02,Disney Plus,188.73,Monthly
+8,1,0,2021-04-13,This subscription does not have any notes attached.,30.14,everyThreeMonths
+9,2,0,2021-02-20,This subscription does not have any notes attached.,14.99,Weekly
+10,2,0,2021-02-20,This subscription does not have any notes attached.,14.99,Weekly
+11,2,0,2021-02-20,This subscription does not have any notes attached.,14.99,Weekly
+12,2,0,2021-02-20,This subscription does not have any notes attached.,14.99,Weekly

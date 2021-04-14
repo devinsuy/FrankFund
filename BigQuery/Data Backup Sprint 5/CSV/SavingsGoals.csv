@@ -1,0 +1,13 @@
+SGID,AccountID,Name,GoalAmt,ContrAmt,Period,NumPeriods,StartDate,EndDate
+1,2,Birthday,650,30.95,Monthly,21,2021-04-11,2023-01-01
+3,2,Christmas Gift,150,33.34,BiWeekly,5,2021-04-11,2021-06-20
+5,1,Tuition,3425,428.12,BiWeekly,8,2021-04-13,2021-08-03
+6,1,Vacation,2000,250,Monthly,8,2021-04-14,2021-12-04
+7,2,Vacation,2000,250,Monthly,8,2021-04-14,2021-12-04
+9,3,Dog,1000,83.33,BiWeekly,12,2021-04-14,2021-09-18
+10,3,Camera,700,233.33,Monthly,3,2021-04-14,2021-06-22
+11,3,Vacation,550,68.75,Monthly,8,2021-04-14,2021-11-13
+12,4,PC Build,2000,9.39,Daily,213,2021-04-14,2021-11-13
+13,4,Concert,150,10,Weekly,15,2021-04-14,2021-07-28
+14,4,Vacation,1600,177.78,BiWeekly,9,2021-04-14,2021-08-05
+16,2,Fall Tuition,3425,325,Monthly,11,2021-04-14,2022-03-10
