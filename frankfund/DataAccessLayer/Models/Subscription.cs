@@ -12,7 +12,8 @@ namespace DataAccessLayer.Models
         Monthly,
         everyThreeMonths,
         everySixMonths,
-        Yearly
+        Yearly,
+        NotSpecified
     };
     public class Subscription
     {
@@ -48,26 +49,15 @@ namespace DataAccessLayer.Models
         }
 
         //Constructor without nullable aspects 
-        public Subscription(long accID, long SID, long RID, DateTime purchaseDate, decimal purchaseAmount, SubscriptionFrequency frequency)
+        public Subscription(long accID, long SID, long rID, DateTime purchaseDate, decimal purchaseAmount, SubscriptionFrequency frequency)
         {
             this.accID = accID;
             this.SID = SID;
-            this.RID = RID;
             this.purchaseDate = purchaseDate;
             this.purchaseAmount = purchaseAmount;
             this.frequency = frequency;
         }
 
-        //Constructor for Reinstantiation 
-        public Subscription(long SID, long accID, long RID, decimal purchaseAmount, DateTime purchaseDate, string notes, SubscriptionFrequency frequency)
-        {
-            this.SID = SID;
-            this.accID = accID;
-            this.RID = RID;
-            this.purchaseDate = purchaseDate;
-            this.notes = notes;
-            this.frequency = frequency;
-        }
 
         //Getter methods
         public long getAccID()
@@ -97,6 +87,10 @@ namespace DataAccessLayer.Models
 
         public string getNotes()
         {
+            if (notes == null)
+            {
+                notes = "This subscription does not have any notes attached.";
+            }
             return notes;
         }
 
@@ -106,6 +100,25 @@ namespace DataAccessLayer.Models
         }
 
         //Setters 
+        public void setSubscriptionFrequency(SubscriptionFrequency frequency)
+        {
+            if (frequency.Equals(this.frequency))
+            {
+                return;
+            }
+            this.frequency = frequency;
+            changed = true;
+        }
+
+        public void setRID(long RID)
+        {
+            if (RID == this.RID)
+            {
+                return;
+            }
+
+            changed = true;
+        }
         public void setPurchaseDate(DateTime purchaseDate)
         {
             if (purchaseDate.Equals(this.purchaseDate))
@@ -153,8 +166,8 @@ namespace DataAccessLayer.Models
         public override string ToString()
         {
             return "Subscription with SID #:" + getSID()
-                + $"\n Account ID: $" + getAccID()
-                + $"\n Receipt ID: $" + getRID()
+                + $"\n Account ID: " + getAccID()
+                + $"\n Receipt ID: " + getRID()
                 + $"\n Frequency continues every \"{getFrequency()}\""
                 + $"\n Most recent purchase made on {getPurchaseDate().ToString("yyyy-MM-dd")}"
                 + $"\n Amount: $" + getPurchaseAmount()

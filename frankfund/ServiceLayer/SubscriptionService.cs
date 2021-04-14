@@ -17,16 +17,23 @@ namespace ServiceLayer
 
         public Subscription reinstantiate(BigQueryRow row)
         {
-            long RID = -1;                     // Nullable attribute (receipt ID)
+            long RID = -1;
+            string notes = "";   // Nullable attribute (receipt ID)
             if (row["RID"] != null)
             {
                 RID = (long)row["RID"];
             }
+
+           
+            if (row["Notes"] != null)
+            {
+                notes = (string)row["Notes"];
+            }
+
             return new Subscription(
                 (long)row["SID"], (long)row["AccountID"], RID,
+                (DateTime)row["PurchaseDate"], notes,
                 this.SubscriptionDataAccess.castBQNumeric(row["Amount"]),
-                (DateTime)row["PurchaseDate"],
-                (string)row["Notes"],
                 this.SubscriptionDataAccess.ParseEnum<SubscriptionFrequency>((string)row["RenewFrequency"]));
         }
 
@@ -42,12 +49,18 @@ namespace ServiceLayer
         public Subscription getUsingID(long SID)
         {
             long RID = -1;                     // Nullable attribute
+            string notes = "";
             Subscription subscription = null;
             foreach (BigQueryRow row in this.SubscriptionDataAccess.getUsingID(SID))
             {
                 if (row["RID"] != null)
                 {
-                    SID = (long)row["RID"];
+                    RID = (long)row["RID"];
+                }
+
+                if (row["Notes"] != null)
+                {
+                    notes = (string)row["Notes"];
                 }
                 subscription = reinstantiate(row);
             }
@@ -60,17 +73,31 @@ namespace ServiceLayer
         */
         public string[] serialize(Subscription s)
         {
+            long checkRID = s.getRID();
+            string checkNotes = s.getNotes();
+
+            if (checkRID == null)
+            {
+                checkRID = 0;
+            }
+
+           if (checkNotes == null)
+            {
+                checkNotes = "This subscription has no notes to show.";
+            }
+            
+            
             return new string[] {
                 s.getSID().ToString(),
                 s.getAccID().ToString(),
-                s.getRID().ToString(),
+                checkRID.ToString(),
                 s.getPurchaseDate().ToString("yyyy-MM-dd"),
-                s.getNotes().ToString(),
+                checkNotes.ToString(),
                 s.getPurchaseAmount().ToString(),
                 s.getFrequency().ToString()
             };
 
-           
+       
         }
 
         /*
@@ -198,5 +225,25 @@ namespace ServiceLayer
             return subscriptionList;
         }
 
+        /* Cast a frequency string to subscriptionfreqeuency enum
+         Params: The category string to cast
+         Returns: The corresponding enum subscriptionfrequency
+        */
+        public SubscriptionFrequency castSubscriptionFrequency(string casting)
+        {
+            if (casting.Equals("Weekly"))
+                return SubscriptionFrequency.Weekly;
+            else if (casting.Equals("Monthly"))
+                return SubscriptionFrequency.Monthly;
+            else if (casting.Equals("everyThreeMonths"))
+                return SubscriptionFrequency.everyThreeMonths;
+            else if (casting.Equals("everySixMonths"))
+                return SubscriptionFrequency.everySixMonths;
+            else if (casting.Equals("Yearly"))
+                return SubscriptionFrequency.Yearly;
+            else
+                return SubscriptionFrequency.NotSpecified;
+
+        }
     }
 }
