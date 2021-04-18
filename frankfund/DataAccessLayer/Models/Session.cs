@@ -14,18 +14,15 @@ namespace DataAccessLayer.Models
         public readonly long SessionID; // NEED TODO: getNextSessionID function()
         public string JWTToken { get; set; }
         [Required]
-        public string UserName { get; set; }
+        public string AccountUsername { get; set; }
         [Required]
         public DateTime DateIssued { get; set; }
-        [Required]
-        public DateTime DateExpired { get; set; }
 
         public Session(string userName, string jwtToken)
         {
             this.UserName = userName;
             this.JWTToken = jwtToken;
             this.DateIssued = DateTime.UtcNow;
-            this.DateExpired = DateTime.UtcNow.AddMinutes(30);
         }
     }
 }
