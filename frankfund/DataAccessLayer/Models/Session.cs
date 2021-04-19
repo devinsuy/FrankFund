@@ -24,5 +24,20 @@ namespace DataAccessLayer.Models
             this.JWTToken = jwtToken;
             this.DateIssued = DateTime.UtcNow;
         }
+
+        public Session(string jwtToken, string userName, DateTime date)
+        {
+            this.AccountUsername = userName;
+            this.JWTToken = jwtToken;
+            this.DateIssued = DateTime.UtcNow;
+        }
+
+        public Session(long sessID, string jwtToken, string userName, DateTime date)
+        {
+            this.SessionID = sessID;
+            this.JWTToken = jwtToken;
+            this.AccountUsername = userName;
+            this.DateIssued = date;
+        }
     }
 }
