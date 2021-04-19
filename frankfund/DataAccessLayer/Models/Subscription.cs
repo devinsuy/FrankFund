@@ -36,7 +36,7 @@ namespace DataAccessLayer.Models
         public bool newlyCreated; 
 
         //FULL Constructor 
-        public Subscription(long accID, long SID, long RID, DateTime purchaseDate, string notes, decimal purchaseAmount, SubscriptionFrequency frequency)
+        public Subscription(long SID, long accID, long RID, DateTime purchaseDate, string notes, decimal purchaseAmount, SubscriptionFrequency frequency)
         {
             this.accID = accID;
             this.SID = SID;
@@ -49,7 +49,7 @@ namespace DataAccessLayer.Models
         }
 
         //Constructor without nullable aspects 
-        public Subscription(long accID, long SID, long rID, DateTime purchaseDate, decimal purchaseAmount, SubscriptionFrequency frequency)
+        public Subscription(long SID, long accID, long rID, DateTime purchaseDate, decimal purchaseAmount, SubscriptionFrequency frequency)
         {
             this.accID = accID;
             this.SID = SID;
