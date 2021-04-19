@@ -55,7 +55,10 @@ export default class CreateUserAccount extends Component {
             Swal.fire({
                 title: 'Creating new account...',
                 allowOutsideClick: false,
-                onBeforeOpen: () => { Swal.showLoading() }
+                onBeforeOpen: () => { Swal.showLoading() },
+                onAfterClose() {
+                    Swal.hideLoading()
+                }
             });
             // Calls axios function to post the JSON data for POST request at API endpoint
             axios({
@@ -69,16 +72,15 @@ export default class CreateUserAccount extends Component {
             })
                 .then((res) => {
                     console.log(res);
+                    Swal.close()
                     swal("Success!", "Account has successfully been created!", "success");
-                    // Exit loading loop
-                    loading = false;
                 })
                 .catch((err) => {
                     swal("Error!", "An error has occured.", "error");
-                    // Exit loading loop
-                    loading = false;
                     throw err;
                 })
+            // Exit loading loop
+            loading = false;
         }
 
     }
