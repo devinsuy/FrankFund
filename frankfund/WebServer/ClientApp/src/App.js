@@ -14,6 +14,7 @@ import CreateTransaction from "./components/createtransaction.component";
 import SavingsGoalsLog from "./components/savinggoals/savingsgoalslog.component";
 import ModifyTransaction from './components/updatetransaction.component';
 import DeleteTransaction from './components/deletetransaction.component';
+import ImageUploadDemo from './components/temp/imageuploaddemo.component';
 
 
 function App() {
@@ -35,6 +36,9 @@ function App() {
               <li class="nav-item">
                 { /* TODO: Button click should add current logged in user to the route /goals/{user} */ }
                 <a class="nav-link" href="/goals/DevinSuy">SavingsGoals</a>     
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/receipts/imageupload">ImageUpload Demo</a>     
               </li>
             </ul>
           </div>
@@ -69,6 +73,7 @@ function App() {
             { /* Example: frankfund.appspot.com/goals/DevinSuy */ }
             <Route path="/goals/:user" component={SavingsGoalsLog} />
             <Route path="/transactions/:user" component={TransactionLog} />       
+            <Route path="/receipts/imageupload" component={ImageUploadDemo} />
           </Switch>
         </div>
       </div>
