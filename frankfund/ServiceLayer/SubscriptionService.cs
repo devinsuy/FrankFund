@@ -19,6 +19,7 @@ namespace ServiceLayer
         {
             long RID = -1;
             string notes = "";   // Nullable attribute (receipt ID)
+
             if (row["RID"] != null)
             {
                 RID = (long)row["RID"];
@@ -220,8 +221,8 @@ namespace ServiceLayer
         }
 
         /*
-        Returns all transactions associated with the given user account ID and sorted by the given category.
-        Params: The User Account ID
+        Returns all subscriptions associated with the given SID and sorted by the given category.
+        Params: The SID
                 The category
         Returns: A list of Transactions associated with user account sorted by category
         */

@@ -196,10 +196,10 @@ namespace REST.Controllers
                 subservice.write(s);
             }
 
-            // Otheriwse fufill the PUT request and update the corresponding transaction 
+            // Otheriwse fufill the PUT request and update the corresponding subscription 
             else
             {
-                // HTTP PUT request to update an EXISTING transaction requires ALL fields of the transaction to be specified
+                // HTTP PUT request to update an EXISTING subscription requires ALL fields of the subscription to be specified
                 if (!reqAttributes.SetEquals(updateAttr))
                 {
                     return BadRequest();
@@ -227,10 +227,5 @@ namespace REST.Controllers
 
             return new OkResult();
         }
-
     }
-
-
-
-    
 }

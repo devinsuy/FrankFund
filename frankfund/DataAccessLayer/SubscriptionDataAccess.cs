@@ -38,9 +38,9 @@ namespace DataAccessLayer
                 + serializedSubscription[1] + ","                        // Account ID
                 + serializedSubscription[2] + ","                        // Receipt ID
                 + $"\"{serializedSubscription[3]}\","                    // Purchase Date
-                + serializedSubscription[4] + ","                        // Notes
-                + $"\"{serializedSubscription[5]}\","                    // Amount
-                + $"\"{serializedSubscription[6]}\"";                    // Renew Frequency
+                + $"\"{serializedSubscription[4]}\"" + ","                        // Notes
+                + serializedSubscription[5] + ","                    // Amount
+                + $"\"{serializedSubscription[6]}\")";                    // Renew Frequency
            
             //Console.WriteLine("Running Insert Query:\n---------------------\n" + query);
             this.dataHelper.query(query);
