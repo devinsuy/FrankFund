@@ -32,22 +32,26 @@ namespace ServiceLayer
             return new string[] {
                 sess.SessionID.ToString(),
                 sess.JWTToken,
-                sess.UserName,
-                sess.DateIssued.ToString(),
-                sess.DateExpired.ToString()
+                sess.AccountUsername,
+                sess.DateIssued.ToString()
             };
         }
 
-        public ActionResult Login(string username, string password)
+        public ActionResult Login(string usernameoremail, string password)
         {
             // Steps for Implementation
-            // 1. Check if user exists
+            // 1. Check if user exists through username or email
             // 1.5. Validate Password
             // 2. Create JWT Token ?? TODO
             // 3. Create Session
             // 4. Add Session to DB | TODO
             // 5. Return JWT Token on success ?? TODO
-            var user = UserAccountService.getUsingUsername(username);
+
+            var user = UserAccountService.getUsingUsername(usernameoremail);
+            if (user == null) // If user is not found using username, try with email
+            {
+                user = UserAccountService.getUsingEmail(usernameoremail);
+            }
 
             // Check if user exists, if not found return
             if (user == null)

@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 // Imported React Components
 import CreateUserAccount from "./components/createuseraccount.component";
 import SettingsUserAccount from "./components/settingsuseraccount.component";
+import LoginComponent from "./components/loginuseraccount.component";
 import LandingComponent from "./components/landing.components";
 import TransactionLog from "./components/transactionslog.component";
 import TransactionDetail from "./components/transactiondetail.component";
@@ -40,6 +41,9 @@ function App() {
           <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
             <ul className="navbar-nav ml-auto">
               <li className="nav-item">
+                <Link className="nav-link" to={"/create-user-account"}>Login</Link>
+              </li>
+              <li className="nav-item">
                 <Link className="nav-link" to={"/create-user-account"}>Sign up</Link>
               </li>
               <li className="nav-item">
@@ -56,6 +60,7 @@ function App() {
             <Route exact path='/' component={LandingComponent} />
             <Route path="/create-user-account" component={CreateUserAccount} />
             <Route path="/account-settings" component={SettingsUserAccount} />
+            <Route path="/login" component={LoginComponent} />
             <Route path="/transactions-detail" component={TransactionDetail} />
             <Route path="/transactions-log" component={TransactionLog} />
             <Route path="/create-transaction" component={CreateTransaction} />
