@@ -3,6 +3,7 @@
 import React, { Component } from "react";
 import axios from 'axios';
 import swal from 'sweetalert';
+import Swal from 'sweetalert2'
 
 export default class CreateUserAccount extends Component {
 
@@ -49,24 +50,36 @@ export default class CreateUserAccount extends Component {
         var json = JSON.stringify(object);
         console.log(json);
 
-        // Calls axios function to post the JSON data for POST request at API endpoint
-        axios({
-            method: "post",
-            url: "/api/account/create&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0",
-            data: json,
-            headers: {
-                'accept': 'application/json',
-                'content-type': 'application/json'
-            }
-        })
-            .then((res) => {
-                console.log(res);
-                swal("Success!", "Account has successfully been created!", "success");
-            })
-            .catch((err) => {
-                swal("Error!", "An error has occured.", "error");
-                throw err;
+        let loading = true;
+        while (loading) {
+            Swal.fire({
+                title: 'Creating new account...',
+                allowOutsideClick: false,
+                onBeforeOpen: () => { Swal.showLoading() }
             });
+            // Calls axios function to post the JSON data for POST request at API endpoint
+            axios({
+                method: "post",
+                url: "/api/account/create&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0",
+                data: json,
+                headers: {
+                    'accept': 'application/json',
+                    'content-type': 'application/json'
+                }
+            })
+                .then((res) => {
+                    console.log(res);
+                    swal("Success!", "Account has successfully been created!", "success");
+                    // Exit loading loop
+                    loading = false;
+                })
+                .catch((err) => {
+                    swal("Error!", "An error has occured.", "error");
+                    // Exit loading loop
+                    loading = false;
+                    throw err;
+                })
+        }
 
     }
 

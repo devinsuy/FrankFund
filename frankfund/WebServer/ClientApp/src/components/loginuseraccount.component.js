@@ -45,13 +45,13 @@ export default class LoginUserAccount extends Component {
 
                 <div className="form-group">
                     <label>Username or Email</label>
-                    <input type="text" name="UsernameEmail" className="form-control" placeholder="Need to fill in with previous username" />
+                    <input type="text" name="UsernameEmail" className="form-control" placeholder="Enter your username or email" />
                 </div>
 
 
                 <div className="form-group">
                     <label>Password</label>
-                    <input type="password" name="Password" className="form-control" placeholder="Enter new password" />
+                    <input type="password" name="Password" className="form-control" placeholder="Enter your password" />
                 </div>
 
                 <button type="submit" className="btn btn-dark btn-lg btn-block">Login</button>

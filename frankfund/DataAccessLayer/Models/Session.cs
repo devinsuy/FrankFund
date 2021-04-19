@@ -20,7 +20,7 @@ namespace DataAccessLayer.Models
 
         public Session(string userName, string jwtToken)
         {
-            this.UserName = userName;
+            this.AccountUsername = userName;
             this.JWTToken = jwtToken;
             this.DateIssued = DateTime.UtcNow;
         }
