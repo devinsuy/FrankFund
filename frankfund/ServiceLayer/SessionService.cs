@@ -62,7 +62,7 @@ namespace ServiceLayer
             return session;
         }
 
-        public ActionResult Login(string usernameoremail, string password)
+        public int Login(string usernameoremail, string password)
         {
             // Steps for Implementation
             // 1. Check if user exists through username or email
@@ -81,13 +81,13 @@ namespace ServiceLayer
             // Check if user exists, if not found return
             if (user == null)
             {
-                return new BadRequestObjectResult("User not found.");
+                return 1; // return api.serveErrorMsg("User not found.");
             }
 
             // Validate Password
             if (!PasswordService.ValidatePassword(password, user.PasswordSalt, user.PasswordHash))
             {
-                return new BadRequestObjectResult("Incorrect password.");
+                return 2; // return api.serveErrorMsg("Incorrect Password");
             }
 
             // Create Session
@@ -102,7 +102,8 @@ namespace ServiceLayer
             var jsonString = JsonSerializer.Serialize(session);
             //var jObject = JObject.Parse(jsonString);
             //return new OkObjectResult(jObject.ToString());
-            return new OkObjectResult(jsonString);
+            //return new OkObjectResult(jsonString);
+            return 0;
         }
 
         public ActionResult Logout(long sessID)

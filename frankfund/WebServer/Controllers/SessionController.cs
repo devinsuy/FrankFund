@@ -26,7 +26,7 @@ namespace REST.Controllers
             ss = new SessionService();
             attributes = new HashSet<string>()
             {
-                "JWTToken", "AccountUsername", "DateIssued"
+                "usernameoremail", "password"
             };
         }
 
@@ -83,37 +83,35 @@ namespace REST.Controllers
             HashSet<string> reqAttributes = new HashSet<string>(req.Keys);
             if (!reqAttributes.SetEquals(attributes))
             {
-                return BadRequest("Request body should contain exactly {JWTToken, AccountUsername, DateIssued}");
+                return BadRequest("Request body should contain exactly {usernameoremail, password}");
             }
 
-            Session sess = null;
-            // Create the Account with the given accID using the POST payload
-            try
-            {
-                sess = new Session(
-                        // Removed SessionID out of Session creation because new ID is assigned in SessionService 
-                        jwtToken: Convert.ToString(req["AccountUsername"]),
-                        userName: Convert.ToString(req["EmailAddress"]),
-                        date: Convert.ToDateTime(req["DateIssued"])
-                );
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.ToString());
-                return BadRequest();
-            }
+            //Session sess = null;
+            //// Create the Account with the given accID using the POST payload
+            //try
+            //{
+            //    sess = new Session(
+            //            // Removed SessionID out of Session creation because new ID is assigned in SessionService 
+            //            jwtToken: Convert.ToString(req["usernameoremail"]),
+            //            userName: Convert.ToString(req["password"]),
+            //            date: Convert.ToDateTime(req["DateIssued"])
+            //    );
+            //}
+            //catch (Exception e)
+            //{
+            //    Console.WriteLine(e.ToString());
+            //    return BadRequest();
+            //}
 
-            // Validate username, email, password strength
-            switch (ss.Login(sess))
+            // Calls login function for SessionService
+            switch (ss.Login(Convert.ToString(req["usernameoremail"]), Convert.ToString(req["password"])))
             {
                 case 1:
-                    return api.serveErrorMsg("Invalid or already taken email address");
+                    return api.serveErrorMsg("User not found.");
                 case 2:
-                    return api.serveErrorMsg("Username already taken");
-                case 3:
-                    return api.serveErrorMsg("Password too weak");
+                    return api.serveErrorMsg("Incorrect Password");
                 default:
-                    return new OkObjectResult($"Account {acc.AccountUsername} successfully registered");
+                    return new OkObjectResult($"Login session created for {Convert.ToString(req["usernameoremail"])}");
             }
 
         }
