@@ -76,6 +76,12 @@ export default class CreateUserAccount extends Component {
                     swal("Success!", "Account has successfully been created!", "success");
                 })
                 .catch((err) => {
+                    //Swal.fire({
+                    //    title: "Error!",
+                    //    icon: "error",
+                    //    html: `<p>Unable to create new account, ${err} has occured.</p>`,
+                    //    showCloseButton: true
+                    //})
                     swal("Error!", "An error has occured.", "error");
                     throw err;
                 })
