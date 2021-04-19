@@ -29,7 +29,7 @@ function App() {
           <div class="collapse navbar-collapse" id="navbarNavTransaction">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link" href="/transactions-log">Transactions<span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="/transactions/KennethTran">Transactions<span class="sr-only">(current)</span></a>
               </li>
               <li class="nav-item">
                 { /* TODO: Button click should add current logged in user to the route /goals/{user} */ }
@@ -62,7 +62,8 @@ function App() {
             <Route path="/modify-transaction" component={ModifyTransaction} />
             <Route path="/delete-transaction" component={DeleteTransaction} />
             { /* Example: frankfund.appspot.com/goals/DevinSuy */ }
-            <Route path="/goals/:user" component={SavingsGoalsLog} />             
+            <Route path="/goals/:user" component={SavingsGoalsLog} />
+            <Route path="/transactions/:user" component={TransactionLog} />       
           </Switch>
         </div>
       </div>
