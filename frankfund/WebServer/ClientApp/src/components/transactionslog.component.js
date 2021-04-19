@@ -22,7 +22,7 @@ class TransactionLog extends Component {
     async getTransactions() {
         let user = this.props.match.params.user;
         let apikey = "c55f8d138f6ccfd43612b15c98706943e1f4bea3";
-        let url = `/api/account/user=${user}/Transaction&apikey=${apikey}`;
+        let url = `/api/account/user=${user}/Transactions&apikey=${apikey}`;
 
         // Retrieve all transactions for the user
         await(
