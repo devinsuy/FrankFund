@@ -12,7 +12,7 @@ namespace ServiceLayer
         static void authenticateGCP()
         {
             // Devin's Credentials
-            string pathToCreds = "/Users/devin/GitHub/FrankFund/Credentials/AuthDevin.json";
+            //string pathToCreds = "/Users/devin/GitHub/FrankFund/Credentials/AuthDevin.json";
 
             // Autumn's Credentials
             //string pathToCreds = "/Users/steve/OneDrive/Documents/GitHub/FrankFund/Credentials/AuthAutumn.json";
@@ -21,7 +21,7 @@ namespace ServiceLayer
             //string pathToCreds = "/Users/015909177/Desktop/Github Repos/FrankFund/Credentials/AuthKenny.json";
 
             //Rachel's Credentials 
-            //string pathToCreds = "C:/Data/Spring 2021/CECS 491B/Senior Project/Credentials/AuthRachel.json";
+            string pathToCreds = "C:/Data/Spring 2021/CECS 491B/Senior Project/Credentials/AuthRachel.json";
 
             System.Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", pathToCreds);
         }
@@ -302,7 +302,6 @@ namespace ServiceLayer
                 Console.WriteLine("-----------------------------------------------------------------------");
                 Console.WriteLine(ts.getJSON(t));
             }
-
         }
 
         static void testGetSortedTransactionsByTime(long accID, int num, int choice)
@@ -347,7 +346,7 @@ namespace ServiceLayer
 
             //Create a new Receipt 
             long tempTransactionID = 1;
-            string tempStringURL = "hellothisisatest.png";
+            string tempStringURL = "https://i.pinimg.com/736x/06/5e/86/065e86fe5eea5ff5ed21dff142eeba48.jpg";
 
             Receipt sampleReceipt = new Receipt(RID, tempTransactionID, tempStringURL, new DateTime(2021, 03, 16, 0, 0, 0), "short note", newlyCreated: true);
 
@@ -377,7 +376,7 @@ namespace ServiceLayer
         static Receipt testReinstantiateReceipt(long RID)
         {
             ReceiptService rs = new ReceiptService();
-            Receipt r = rs.getUsingID(10);
+            Receipt r = rs.getUsingID(RID);
             return r;
         }
 
@@ -385,7 +384,7 @@ namespace ServiceLayer
             ReceiptService rs = new ReceiptService();
             Receipt r = rs.getUsingID(10);
             Console.WriteLine(r);
-            r.setNote("short note 3");
+            r.setNote("This purchase is for a purchase!");
             Console.WriteLine("\nAfter change: \n" + r);
             rs.update(r);
         }
@@ -440,8 +439,104 @@ namespace ServiceLayer
             }
         }
 
+        // ---------------------------------------------- Begin Subscription Testing ---------------------------------------------------------
+
+        static void getSubscriptionNextID()
+        {
+            Console.WriteLine("\n-------------------- Test: Getting the next ID available, Write -------------------------");
+            SubscriptionService subservice = new SubscriptionService();
+            long SID = subservice.getNextAvailID();
+            Console.WriteLine("Next available SID that can be assigned: " + SID + "\n");
+        }
+        
+        static Subscription testAddSubscription()
+        {
+            Console.WriteLine("\n-------------------- Test: Creating A New Subscription, Write -------------------------");
+            // Query DB for the next avail ID
+            SubscriptionService subservice = new SubscriptionService();
+            long SID = subservice.getNextAvailID();
+            Console.WriteLine("Next available SID that can be assigned: " + SID + "\n");
+
+            //Create a new Subscription 
+            long tempRID = 2;
+            long tempAccID = 2;
+
+            Subscription sampleSub = new Subscription(SID, tempAccID, tempRID,new DateTime(2021, 02, 20, 0, 0, 0), (decimal)14.99, SubscriptionFrequency.Weekly);
 
 
+            //Print summary of Subscription that was just created
+            Console.WriteLine("Subscription Summary: \n-----------------------");
+            Console.WriteLine(sampleSub);
+            subservice.write(sampleSub);
+
+            return sampleSub;
+        }
+
+        static Subscription testReinstantiateSubscription(long SID)
+        {
+            SubscriptionService subservice = new SubscriptionService();
+            Subscription s = subservice.getUsingID(SID);
+            return s;
+        }
+
+        static void testModifyRewriteSubscription(long SID)
+        {
+            SubscriptionService subservice = new SubscriptionService();
+            Subscription s = subservice.getUsingID(SID);
+
+            Console.WriteLine("This is the testModifyRewriteSubscrition test: \n");
+            Console.WriteLine(" \nWe will change the purchase amount to 3x the amount. \n");
+            //s.setAmount(s.getPurchaseAmount() * 3);
+            s.setAmount(50);
+            subservice.update(s);
+
+        }
+
+        static void testDeleteSubscription(long SID)
+        {
+            SubscriptionService subservice = new SubscriptionService();
+            Console.WriteLine("We will delete ID: " + SID);
+            subservice.delete(SID);
+        }
+
+        static void testDisplaySubscription(long SID)
+        {
+            SubscriptionService subservice = new SubscriptionService();
+            Subscription s = subservice.getUsingID(SID);
+            Console.WriteLine("\n Retrieving Subscription with SID {0} from the database....", SID);
+            Console.WriteLine(subservice.getJSON(s));
+            Console.WriteLine("Displaying summary of Subscription with SID {0}....", SID);
+            Console.WriteLine(s);
+        }
+
+        // Displaying summary of Subscription
+        static void testGetSubscriptionsFromAccount(long accID)
+        {
+            List<Subscription> subscriptions = new List<Subscription>();
+            SubscriptionService subservice = new SubscriptionService();
+            subscriptions = subservice.getSubscriptionsFromAccount(accID);
+            Console.WriteLine("\nDisplaying all Subscriptions for user with account ID {0}...", accID);
+            foreach (Subscription s in subscriptions)
+            {
+                Console.WriteLine("-----------------------------------------------------------------------");
+                Console.WriteLine(s);
+            }
+        }
+
+        //Displays summary of Subscriptions by Frequency
+        static void testGetSubscriptionsByFrequency(long SID, string frequency)
+        {
+            List<Subscription> subscriptions = new List<Subscription>();
+            SubscriptionService subservice = new SubscriptionService();
+            subscriptions = subservice.getSubscriptionByRenewalFrequency(SID, frequency);
+            Console.WriteLine("\nDisplaying all Subscriptions with ID of {0} with frequencies {1}...", SID, frequency);
+            foreach (Subscription s in subscriptions)
+            {
+                Console.WriteLine("-----------------------------------------------------------------------");
+                Console.WriteLine(s);
+            }
+
+        }
 
 
         // --------------------------------------------------- End Testing ---------------------------------------------------
@@ -517,8 +612,8 @@ namespace ServiceLayer
             //Receipt r = testAddReceipt();
             //testSerializeReceipt(r);
             //testReceiptJSON(r);
-            //Console.WriteLine(testReinstantiateReceipt(RID: 10));
-            //testModifyRewriteReceipt(RID: 10);
+            //Console.WriteLine(testReinstantiateReceipt(RID: 23));
+            //testModifyRewriteReceipt(RID: 23);
             //testDeleteReceipt(RID: 11);
 
 
@@ -527,6 +622,33 @@ namespace ServiceLayer
             //testSpendingPerCategory(accID: 1);
             //testGetTotalSpending(accID: 1);
             //testCategoryBreakdown(accID: 1);
+
+            // ---------------------------------------------- Test: Subscriptions ---------------------------------------------------------
+
+            Console.WriteLine("Let's add our first Subscription! \n");
+
+            //getSubscriptionNextID();
+
+            //Subscription firstSampleSub = testAddSubscription();
+
+            //Subscription firstSampleTestR = testReinstantiateSubscription(9);
+
+            //testDisplaySubscription(9);
+
+            testModifyRewriteSubscription(3);
+
+            //Console.WriteLine("Let's display Subscription ID #3 to show the updates. \n");
+
+            //testDisplaySubscription(3);
+
+            //Console.WriteLine("\n");
+
+            //testDeleteSubscription(7);
+
+            //testGetSubscriptionsFromAccount(1);
+
+
+
         }
 
     }
