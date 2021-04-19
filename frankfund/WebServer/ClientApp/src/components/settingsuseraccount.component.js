@@ -3,6 +3,7 @@
 import React, { Component } from "react";
 import axios from 'axios';
 import swal from 'sweetalert';
+import Swal from 'sweetalert2'
 
 export default class SettingsUserAccount extends Component {
 
@@ -16,23 +17,39 @@ export default class SettingsUserAccount extends Component {
         });
         var json = JSON.stringify(object);
         console.log(json);
-        axios({
-            method: "patch",
-            url: "/api/account/accID=5&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0",
-            data: json,
-            headers: {
-                'accept': 'application/json',
-                'content-type': 'application/json'
-            }
-        })
-            .then((res) => {
-                console.log(res);
-                swal("Success!", "Account has successfully been updated!", "success");
-            })
-            .catch((err) => {
-                swal("Error!", "An error has occured.", "error");
-                throw err;
+
+        let loading = true;
+        while (loading) {
+            Swal.fire({
+                title: 'Updating account...',
+                allowOutsideClick: false,
+                onBeforeOpen: () => { Swal.showLoading() },
+                onAfterClose() {
+                    Swal.hideLoading()
+                }
             });
+            // Calls axios function to post the JSON data for PATCH request at API endpoint
+            axios({
+                method: "patch",
+                url: "/api/account/accID=5&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0",
+                data: json,
+                headers: {
+                    'accept': 'application/json',
+                    'content-type': 'application/json'
+                }
+            })
+                .then((res) => {
+                    console.log(res);
+                    Swal.close()
+                    swal("Success!", "Account has successfully been updated!", "success");
+                })
+                .catch((err) => {
+                    swal("Error!", "An error has occured.", "error");
+                    throw err;
+                })
+            // Exit loading loop
+            loading = false;
+        }
     }
 
     render() {
