@@ -102,6 +102,28 @@ namespace ServiceLayer
         {
             return dataAccess.getNextAvailID();
         }
+
+
+        // ------------------------------ Receipt Upload/Download ------------------------------
+
+        // Upload a file to the storage bucket under the given users folder
+        // Returns: the gs:// url of the image file resource
+        public string uploadFile(string userName, string localPathToFile, string fileName)
+        {
+            return this.dataAccess.uploadFile(userName, localPathToFile, fileName);
+        }
+
+        /* Download a file from cloud storage and save it to a given local path: DataAccessLayer/tmp/download/{filename} by default
+           Params:
+                userName: The name of the user's folder the file is contained in
+                fileName: The name of the file in the given folder
+           Returns:
+                The local location the file was saved
+         */
+        public string downloadFile(string userName, string fileName, string dstPath)
+        {
+            return this.dataAccess.downloadFile(userName, fileName, dstPath);
+        }
     }
 
 }

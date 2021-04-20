@@ -6,12 +6,14 @@ namespace DataAccessLayer
     public class ReceiptDataAccess: DataAccess
     {
         private readonly DataHelper dataHelper;
+        private readonly StorageBucketHelper storageHelper;
         private readonly string tableID;
         private readonly string transactionTable;
 
         public ReceiptDataAccess()
         {
             this.dataHelper = new DataHelper();
+            this.storageHelper = new StorageBucketHelper("receipt_imgs");
             this.tableID = this.dataHelper.getQualifiedTableName("Receipts");
             this.tableID = this.dataHelper.getQualifiedTableName("Transactions");
         }
@@ -75,6 +77,29 @@ namespace DataAccessLayer
         public decimal castBQNumeric(object val)
         {
             return this.dataHelper.castBQNumeric(val);
+        }
+
+
+        // ------------------------------ Receipt Upload/Download ------------------------------
+
+        // Upload a file to the storage bucket under the given users folder
+        // Returns: the gs:// url of the image file resource
+        public string uploadFile(string userName, string localPathToFile, string fileName)
+        {
+            return this.storageHelper.uploadFile(userName, localPathToFile, fileName);
+        }
+
+
+        /* Download a file from cloud storage and save it to a given local path: DataAccessLayer/tmp/download/{filename} by default
+           Params:
+                userName: The name of the user's folder the file is contained in
+                fileName: The name of the file in the given folder
+           Returns:
+                The local location the file was saved
+         */
+        public string downloadFile(string userName, string fileName, string dstPath)
+        {
+            return this.storageHelper.downloadFile(userName, fileName, dstPath);
         }
 
 

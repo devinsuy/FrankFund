@@ -3,6 +3,7 @@ using System.IO;
 using ServiceLayer;
 using DataAccessLayer.Models;
 using System.Collections.Generic;
+using DataAccessLayer;
 
 
 namespace ServiceLayer
@@ -12,7 +13,7 @@ namespace ServiceLayer
         static void authenticateGCP()
         {
             // Devin's Credentials
-            //string pathToCreds = "/Users/devin/GitHub/FrankFund/Credentials/AuthDevin.json";
+            string pathToCreds = "/Users/devin/GitHub/FrankFund/Credentials/AuthDevin.json";
 
             // Autumn's Credentials
             //string pathToCreds = "/Users/steve/OneDrive/Documents/GitHub/FrankFund/Credentials/AuthAutumn.json";
@@ -21,7 +22,7 @@ namespace ServiceLayer
             //string pathToCreds = "/Users/015909177/Desktop/Github Repos/FrankFund/Credentials/AuthKenny.json";
 
             //Rachel's Credentials 
-            string pathToCreds = "C:/Data/Spring 2021/CECS 491B/Senior Project/Credentials/AuthRachel.json";
+            //string pathToCreds = "C:/Data/Spring 2021/CECS 491B/Senior Project/Credentials/AuthRachel.json";
 
             System.Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", pathToCreds);
         }
@@ -395,6 +396,20 @@ namespace ServiceLayer
             rs.delete(RID);
         }
 
+        static void testUploadReceipt(string userName, string localPathToFile, string fileName)
+        {
+            ReceiptService rs = new ReceiptService();
+            string url = rs.uploadFile(userName, localPathToFile, fileName);
+            Console.WriteLine($"Uploaded {fileName} to cloud storage at: " + url);
+        }
+
+        static void testDownloadReceipt(string userName, string fileName, string dstPath)
+        {
+            ReceiptService rs = new ReceiptService();
+            string downloadPath = rs.downloadFile(userName, fileName, dstPath);
+            Console.WriteLine($"File {fileName} was downloaded from cloud storage to: {downloadPath}");
+        }
+
 
 
         // --------------------------------------------------- Begin Data Analytics Testing ---------------------------------------------------
@@ -625,7 +640,7 @@ namespace ServiceLayer
 
             // ---------------------------------------------- Test: Subscriptions ---------------------------------------------------------
 
-            Console.WriteLine("Let's add our first Subscription! \n");
+            //Console.WriteLine("Let's add our first Subscription! \n");
 
             //getSubscriptionNextID();
 
@@ -635,7 +650,7 @@ namespace ServiceLayer
 
             //testDisplaySubscription(9);
 
-            testModifyRewriteSubscription(3);
+            //testModifyRewriteSubscription(3);
 
             //Console.WriteLine("Let's display Subscription ID #3 to show the updates. \n");
 
@@ -647,6 +662,12 @@ namespace ServiceLayer
 
             //testGetSubscriptionsFromAccount(1);
 
+
+
+            // ---------------------------------------------- Test: Receipt Upload/Download ---------------------------------------------------------
+            const string sampleImgPath = "../DataAccessLayer/tmp/upload/sample_receipt.jpeg";
+            testUploadReceipt(userName: "RachelPai", localPathToFile: sampleImgPath, fileName: "sample_receipt.jpeg");  // File overwrites if already exists
+            testDownloadReceipt(userName: "RachelPai", fileName: "sample_receipt.jpeg", dstPath: null);                 // Uses DataAccess/tmp/download by default (if null) for API
 
 
         }
