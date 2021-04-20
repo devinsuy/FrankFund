@@ -6,7 +6,7 @@ import swal from 'sweetalert';
 
 export default class LoginUserAccount extends Component {
 
-    onSubmit(e) {
+    login(e) {
         e.preventDefault();
         const form = document.querySelector("form");
         let data = new FormData(form);
@@ -17,8 +17,8 @@ export default class LoginUserAccount extends Component {
         var json = JSON.stringify(object);
         console.log(json);
         axios({
-            method: "patch",
-            url: "/api/account/accID=5&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0",
+            method: "post",
+            url: "/api/session/create&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0",
             data: json,
             headers: {
                 'accept': 'application/json',
@@ -27,10 +27,13 @@ export default class LoginUserAccount extends Component {
         })
             .then((res) => {
                 console.log(res);
-                swal("Success!", "Account has successfully been updated!", "success");
+                swal("Success!", "You have successfully logged in! You will be redirected to the homepage in 1 second.", "success");
+                setTimeout(() => {
+                    this.$router.push("/");
+                }, 1000);
             })
             .catch((err) => {
-                swal("Error!", "An error has occured.", "error");
+                swal("Error!", "An error has occured. Incorrect username or email and password combination", "error");
                 throw err;
             });
     }
@@ -40,7 +43,7 @@ export default class LoginUserAccount extends Component {
             <form
                 id="login"
                 method='post'
-                onSubmit={this.onSubmit}>
+                onSubmit={this.login}>
                 <h3>Login</h3>
 
                 <div className="form-group">

@@ -7,7 +7,7 @@ import Swal from 'sweetalert2'
 
 export default class SettingsUserAccount extends Component {
 
-    onSubmit(e) {
+    update(e) {
         e.preventDefault();
         const form = document.querySelector("form");
         let data = new FormData(form);
@@ -57,7 +57,7 @@ export default class SettingsUserAccount extends Component {
             <form
                 id="account-settings"
                 method= 'patch'
-                onSubmit={this.onSubmit}>
+                onSubmit={this.update}>
                 <h3>Account Settings</h3>
 
                 <div className="form-group">
