@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using DataAccessLayer.Models;
 using ServiceLayer;
 using System;
 using System.Text.Json;
+using System.IO;
+using System.Web;
 using Newtonsoft.Json;
 
 namespace REST.Controllers
@@ -40,7 +43,7 @@ namespace REST.Controllers
                 return new UnauthorizedObjectResult("Invalid API key");
             }
 
-            if(RID < 1)
+            if (RID < 1)
             {
                 return BadRequest();
             }
@@ -137,7 +140,7 @@ namespace REST.Controllers
             // Otherwise return the TID of the newly created transaction
             return api.serveJson(api.getSingleAttrJSON("RID", RID.ToString()));
         }
-   
+
 
         // Update an existing Receipt or create if not exists
         [Route("api/Receipt/RID={RID}&apikey={apiKey}")]
@@ -282,5 +285,24 @@ namespace REST.Controllers
             return new OkResult();
         }
 
+        // Read a receipt image file from request form and upload to GCP cloud storage bucket
+        // NOTE: Unlike all other API requests, this endpoint requires Form data, not JSON
+        [Route("api/Receipt/Upload&apikey={apiKey}")]
+        [HttpPost]
+        public IActionResult ReceiptUpload(string apiKey, IFormFile imageFile)
+        {
+            if (!api.validAPIKey(apiKey))
+            {
+                return new UnauthorizedObjectResult("Invalid API key");
+            }
+            Console.WriteLine(imageFile.FileName);
+            Console.WriteLine(imageFile.Length);
+            // Save the image file to the tmp/upload folder
+            //string path = $"../DataAccessLayer/tmp/upload/{Path.GetFileName(imageFile.FileName)}";
+            //using (FileStream stream = new FileStream(path, FileMode.Create))
+            //    imageFile.CopyTo(stream);
+            
+            return new OkObjectResult("Success");
+        }
     }
 }
