@@ -14,7 +14,7 @@ namespace DataAccessLayer
         public SessionDataAccess()
         {
             this.dataHelper = new DataHelper();
-            this.tableID = dataHelper.getQualifiedTableName("Session");
+            this.tableID = dataHelper.getQualifiedTableName("Sessions");
         }
 
         /*
@@ -40,8 +40,7 @@ namespace DataAccessLayer
                 + getNextAvailID().ToString() + ","               // SessionID
                 + $"\"{serializedSess[1]}\","                        // JWTToken
                 + $"\"{serializedSess[2]}\","                        // Username
-                + $"\"{serializedSess[3]}\","                        // DateIssued
-                + $"\"{serializedSess[4]}\")";                         // DateExpired
+                + $"\"{serializedSess[3]}\")";                        // DateIssued
             Console.WriteLine("Running Insert Query:\n---------------------\n" + query);
             this.dataHelper.query(query);
         }

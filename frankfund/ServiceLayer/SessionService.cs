@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Google.Cloud.BigQuery.V2;
 using Microsoft.AspNetCore.Mvc;
 using DataAccessLayer.Models;
 using System.Text.Json;
@@ -22,6 +23,15 @@ namespace ServiceLayer
             this.UserAccountService = new UserAccountService();
         }
 
+        public Session reinstantiate(BigQueryRow row)
+        {
+            return new Session(
+                    (long)row["SessionID"], (string)row["JWTToken"],
+                    (string)row["AccountUsername"], (DateTime)row["DateIssued"]
+            //(int)row["FacebookID"], (BigQueryNumeric)row["GoogleID"].ToDecimal(LossOfPrecisionHandling.Truncate)
+            );
+        }
+
         /*
         Serialize a Session object into a String array
             Params: A  Session object to serialize
@@ -37,7 +47,22 @@ namespace ServiceLayer
             };
         }
 
-        public ActionResult Login(string usernameoremail, string password)
+        /*
+        Uses DataAccess Layer to get Session via PK Identifier
+            Params: ID - long PK Identifier for Sesion
+            Returns: A Session object
+         */
+        public Session getUsingID(long ID)
+        {
+            Session session = null;
+            foreach (BigQueryRow row in this.SessionDataAccess.getUsingID(ID))
+            {
+                session = reinstantiate(row);
+            }
+            return session;
+        }
+
+        public int Login(string usernameoremail, string password)
         {
             // Steps for Implementation
             // 1. Check if user exists through username or email
@@ -56,13 +81,13 @@ namespace ServiceLayer
             // Check if user exists, if not found return
             if (user == null)
             {
-                return new BadRequestObjectResult("User not found.");
+                return 1; // return api.serveErrorMsg("User not found.");
             }
 
             // Validate Password
             if (!PasswordService.ValidatePassword(password, user.PasswordSalt, user.PasswordHash))
             {
-                return new BadRequestObjectResult("Incorrect password.");
+                return 2; // return api.serveErrorMsg("Incorrect Password");
             }
 
             // Create Session
@@ -77,7 +102,41 @@ namespace ServiceLayer
             var jsonString = JsonSerializer.Serialize(session);
             //var jObject = JObject.Parse(jsonString);
             //return new OkObjectResult(jObject.ToString());
-            return new OkObjectResult(jsonString);
+            //return new OkObjectResult(jsonString);
+            return 0;
+        }
+
+        public ActionResult Logout(long sessID)
+        {
+
+            return new OkObjectResult("Successfully Logged Out");
+        }
+
+        /*
+        Convert a Session object into JSON format
+            Params: A Session object to convert
+            Returns: The JSON string representation of the object
+        */
+        public string getJSON(Session s)
+        {
+            if (s == null)
+            {
+                return "{}";
+            }
+            string[] serialized = serialize(s);
+            string jsonStr = "{"
+                + $"\"SessionID\":{serialized[0]},"
+                + $"\"JWTToken\":\"" + serialized[1] + "\","
+                + $"\"AccountUsername\":\"" + serialized[2] + "\","
+                + $"\"DateIssued\":\"" + serialized[3] + "\""
+            + "}";
+
+            return jsonStr;
+        }
+
+        public long getNextAvailID()
+        {
+            return SessionDataAccess.getNextAvailID();
         }
     }
 }

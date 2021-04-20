@@ -36,7 +36,7 @@ export default class CreateUserAccount extends Component {
     //}
 
     // Function that occurs when the submit button is pressed in the user account creation form
-    onSubmit(e) {
+    register(e) {
         e.preventDefault();
         // Gets data from the form
         const form = document.querySelector("form");
@@ -93,7 +93,7 @@ export default class CreateUserAccount extends Component {
 
     render() {
         return (
-            <form action="" method="post" onSubmit={this.onSubmit}>
+            <form action="" method="post" onSubmit={this.register}>
                 <h3>Create New User Account</h3>
 
                 <div className="form-group">
