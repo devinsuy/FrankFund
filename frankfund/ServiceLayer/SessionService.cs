@@ -84,8 +84,8 @@ namespace ServiceLayer
                 return 1; // return api.serveErrorMsg("User not found.");
             }
 
-            // Validate Password
-            if (!PasswordService.ValidatePassword(password, user.PasswordSalt, user.PasswordHash))
+            // Validate Password, if doesn't match return incorrect password
+            if (PasswordService.ValidatePassword(password, user.PasswordSalt, user.PasswordHash) == false)
             {
                 return 2; // return api.serveErrorMsg("Incorrect Password");
             }
