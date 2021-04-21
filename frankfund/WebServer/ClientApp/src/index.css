@@ -111,3 +111,7 @@ html.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown)
     height: 100% !important; 
     overflow-y: visible !important; 
 }
+.swal2-overflow {
+    overflow-x: visible;
+    overflow-y: visible;
+}

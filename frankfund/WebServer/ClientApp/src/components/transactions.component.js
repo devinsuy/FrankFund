@@ -3,28 +3,38 @@ import Swal from 'sweetalert2'
 export default function Transactions({transactions}) {
     return (
         <>
-            { transactions.map((transaction) => ( <Transaction key={transaction.TID} transaction = {transaction} /> ))}
+            { transactions.map((transaction) => (<Transaction key={transaction.TID} transaction={transaction} />))}
         </>
     )
 }
 
-const Transaction = ({ transaction }) => {
-    let dateMade = transaction.dateTransactionMade != "" ? new Date(transaction.dateTransactionMade).toDateString() : "";
-    let dateEntered = transaction.dateTransactionEntered != "" ? new Date(transaction.dateTransactionEntered).toDateString() : "";
+// Map contribution periods to their corresponding noun
+var nouns = {
+    'Daily': 'day(s)',
+    'Weekly': 'week(s)',
+    'BiWeekly': 'period(s)',
+    'Monthly': 'month(s)',
+    'BiMonthly': 'period(s)'
+};
 
-    // Build api url for this particular transaction
+const Transaction = ({ transaction }) => {
+    // Convert date to readable format 
+    let dateMade = transaction.DateTransactionMade != "" ? new Date(transaction.DateTransactionMade).toDateString() : "";
+    let dateEntered = transaction.DateTransactionEntered != "" ? new Date(transaction.DateTransactionEntered).toDateString() : "";
+
+    // Build api url for this particular goal
     let apikey = "c55f8d138f6ccfd43612b15c98706943e1f4bea3";
-    let url = `/api/Transaction/TID=${transaction.SGID}&apikey=${apikey}`;
+    let url = `/api/Transaction/TID=${transaction.TID}&apikey=${apikey}`;
 
     return (
         <>
             <tr id={`Transaction${transaction.TID}`} key={transaction.TID}>
-                <td id={`transactionName${transaction.TID}`}> {transaction.transactionName}</td>
-                <td id={`amount${transaction.TID}`}> {transaction.amount != "" ? "$" + transaction.amount : ""}</td>
-                <td id={`isExpense${transaction.TID}`}> {transaction.isExpense == "True" ? "Expense" : transaction.isExpense == "False" ? "Income" : ""}</td>
-                <td id={`category${transaction.TID}`}> {transaction.category}</td>
-                <td id={`dateTransactionMade${transaction.TID}`}> {dateMade}</td>
-                <td id={`dateTransactionMade${transaction.TID}`}> {dateEntered}</td>
+                <td id={`TransactionName${transaction.TID}`}> {transaction.TransactionName}</td>
+                <td id={`Amount${transaction.TID}`}> {transaction.Amount != "" ? "$" + transaction.Amount : ""}</td>
+                <td id={`DateTransactionMade${transaction.TID}`}> {dateMade}</td>
+                <td id={`DateTransactionEntered${transaction.TID}`}> {dateEntered}</td>
+                <td id={`IsExpense${transaction.TID}`}> {transaction.IsExpense == true ? "Expense" : transaction.IsExpense == false ? "Income" : "None"}</td>
+                <td id={`TransactionCategory${transaction.TID}`}> {transaction.TransactionCategory}</td>
                 <td>
                     <button onClick={viewAlert} className="btn btn-outline-success btn-sm">View</button>
                     <button onClick={editAlert} className="btn btn-outline-success btn-sm">Edit</button>
@@ -34,30 +44,29 @@ const Transaction = ({ transaction }) => {
         </>
     )
 
-
     // ------------------------------ Button functionality ------------------------------
 
     // View button, display popup for additional information about transaction
     function viewAlert() {
-        let type = transaction.isExpense == "True" ? "Expense" : transaction.isExpense == "False" ? "Income" : "";
-        let dateMade = transaction.dateTransactionMade != "" ? new Date(transaction.dateTransactionMade).toDateString() : "";
-        let dateEntered = transaction.dateTransactionEntered != "" ? new Date(transaction.dateTransactionEntered).toDateString() : "";
+        let type = transaction.IsExpense == true ? "Expense" : transaction.IsExpense == false ? "Income" : "";
+        let dateMade = transaction.DateTransactionMade != "" ? new Date(transaction.DateTransactionMade).toDateString() : "";
+        let dateEntered = transaction.DateTransactionEntered != "" ? new Date(transaction.DateTransactionEntered).toDateString() : "";
 
         Swal.fire({
-            title: transaction.transactionName,
+            title: transaction.TransactionName,
             icon: 'info',
             showCloseButton: true,
             html:
-                `<p>This transaction has an amount of <b>$${transaction.amount}</b> `
-                + `and is an <b>${type}</b>. This transaction is categorized as <b>${transaction.category}</b>. `
-                + `The transaction was made on <b>${dateMade}</b> and was entered into the system on <b>${dateEntered}</b>`
+                `<p>This transaction has an amount of <b>$${transaction.Amount}</b> `
+                + `and is an <b>${type}</b>.<br><br>This transaction is categorized as <b>${transaction.TransactionCategory}</b>. `
+                +`<br><br>The transaction was made on <b>${dateMade}</b> and was entered into the system on <b>${dateEntered}</b>`
         })
     }
 
     // Edit button, display form to modify the transaction
     function editAlert() {
         Swal.fire({
-            title: transaction.transactionName,
+            title: transaction.TransactionName,
             icon: 'question',
             showConfirmButton: false,
             showCloseButton: true,
@@ -73,19 +82,19 @@ const Transaction = ({ transaction }) => {
 
         })
         // Button event handlers
-        document.getElementById(`EditName${transaction.TID}`).addEventListener("click", function(){
+        document.getElementById(`EditName${transaction.TID}`).addEventListener("click", function () {
             editTransactionName()
         });
-        document.getElementById(`EditAmount${transaction.TID}`).addEventListener("click", function(){
+        document.getElementById(`EditAmount${transaction.TID}`).addEventListener("click", function () {
             editTransactionAmount()
         });
-        document.getElementById(`EditType${transaction.TID}`).addEventListener("click", function() {
+        document.getElementById(`EditType${transaction.TID}`).addEventListener("click", function () {
             editTransactionType()
         });
-        document.getElementById(`EditCategory${transaction.TID}`).addEventListener("click", function() {
+        document.getElementById(`EditCategory${transaction.TID}`).addEventListener("click", function () {
             editTransactionCategory()
         });
-        document.getElementById(`EditDateMade${transaction.TID}`).addEventListener("click", function() {
+        document.getElementById(`EditDateMade${transaction.TID}`).addEventListener("click", function () {
             editTransactionDateMade()
         });
     }
@@ -93,7 +102,7 @@ const Transaction = ({ transaction }) => {
     // Delete button, display confirmation screen to delete the transaction
     function deleteAlert() {
         Swal.fire({
-            title: transaction.transactionName,
+            title: transaction.TransactionName,
             html: `<p><h4>WARNING</h4>You will not be able to undo this action!<br><br>Are you sure you want to delete this transaction?</p>`,
             icon: 'warning',
             showCancelButton: true,
@@ -102,51 +111,50 @@ const Transaction = ({ transaction }) => {
             confirmButtonText: 'Confirm',
             showCloseButton: true
         })
-        document.getElementsByClassName(`swal2-confirm swal2-styled`)[0].addEventListener("click", function(){
+        document.getElementsByClassName(`swal2-confirm swal2-styled`)[0].addEventListener("click", function () {
             deleteTransaction()
         });
     }
 
-
     async function deleteTransaction() {
         let loading = true;
-        while(loading){
+        while (loading) {
             Swal.fire({
                 title: 'Updating',
-                html: `<p>Deleting <b>${transaction.transactionName}</b> from the system.</p>`,
+                html: `<p>Deleting <b>${transaction.TransactionName}</b> from the system.</p>`,
                 allowOutsideClick: false,
-                onBeforeOpen: () => {Swal.showLoading()}
+                onBeforeOpen: () => { Swal.showLoading() }
             });
             let params = { method: "DELETE" }
-            await(fetch(url, params))
-            .then(response => {
-                if(response.ok) {
-                    document.getElementById(`Transaction${transaction.TID}`).remove();
+            await (fetch(url, params))
+                .then(response => {
+                    if (response.ok) {
+                        document.getElementById(`Transaction${transaction.TID}`).remove();
 
-                    // Display success message
-                    Swal.fire({
-                        title: transaction.transactionName,
-                        icon: "success",
-                        html: `<p>Transaction <b>${transaction.transactionName}</b> was successfuly removed!</p>`,
-                        showCloseButton: true
-                    })
-                }
-                else{
-                    Swal.fire({
-                        title: transaction.transactionName,
-                        icon: "error",
-                        html: `<p>Something went wrong, failed to remove ${transaction.transactionName} transaction.`,
-                        showCloseButton: true
-                    })
-                }
-            })
+                        // Display success message
+                        Swal.fire({
+                            title: transaction.TransactionName,
+                            icon: "success",
+                            html: `<p>Transaction <b>${transaction.TransactionName}</b> was successfuly removed!</p>`,
+                            showCloseButton: true
+                        })
+                    }
+                    else {
+                        Swal.fire({
+                            title: transaction.transactionName,
+                            icon: "error",
+                            html: `<p>Something went wrong, failed to remove ${transaction.TransactionName} transaction.`,
+                            showCloseButton: true
+                        })
+                    }
+                })
             loading = false;
         }
     }
 
     async function editTransactionName() {
         const { value: newName } = await Swal.fire({
-            title: transaction.transactionName,
+            title: transaction.TransactionName,
             showCloseButton: true,
             icon: "question",
             input: 'text',
@@ -160,9 +168,9 @@ const Transaction = ({ transaction }) => {
             }
         })
         // Make PATCH request and update the name of the transaction
-        if(newName){
+        if (newName) {
             let loading = true;
-            while(loading){
+            while (loading) {
                 // Show loading message
                 Swal.fire({
                     title: 'Updating Transaction Name',
@@ -174,31 +182,31 @@ const Transaction = ({ transaction }) => {
                 let params = {
                     method: "PATCH",
                     headers: { "Content-type": "application/json" },
-                    body: JSON.stringify({ "Name" : newName})
+                    body: JSON.stringify({ "TransactionName": newName })
                 }
-                await(fetch(url, params))
-                .then(response=> {
-                    if(response.ok) {
-                        document.getElementById(`TransactionName${transaction.TID}`).innerHTML = newName; 
-                        
-                        // Display success message
-                        Swal.fire({
-                            title: newName,
-                            icon: "success",
-                            html: `<p>Transaction name has successfully been updated from <b>${transaction.transactionName}</b> to <b>${newName}</b>!</p>`,
-                            showCloseButton: true
-                        })
-                        transaction.transactionName = newName;
-                    }
-                    else {
-                        Swal.fire({
-                            title: transaction.transactionName,
-                            icon: "error",
-                            html: `Something went wrong, failed to update transaction name.</p>`,
-                            showCloseButton: true
-                        })
-                    }
-                })
+                await (fetch(url, params))
+                    .then(response => {
+                        if (response.ok) {
+                            document.getElementById(`TransactionName${transaction.TID}`).innerHTML = newName;
+
+                            // Display success message
+                            Swal.fire({
+                                title: newName,
+                                icon: "success",
+                                html: `<p>Transaction name has successfully been updated from <b>${transaction.TransactionName}</b> to <b>${newName}</b>!</p>`,
+                                showCloseButton: true
+                            })
+                            transaction.TransactionName = newName;
+                        }
+                        else {
+                            Swal.fire({
+                                title: transaction.TransactionName,
+                                icon: "error",
+                                html: `Something went wrong, failed to update transaction name.</p>`,
+                                showCloseButton: true
+                            })
+                        }
+                    })
                 //Exit loading loop
                 loading = false;
             }
@@ -206,19 +214,19 @@ const Transaction = ({ transaction }) => {
     }
 
     async function editTransactionAmount() {
-        const inputVal = parseFloat(transaction.amount)
+        const inputVal = parseFloat(transaction.Amount)
         const inputStep = .01
 
         Swal.fire({
-            title: transaction.transactionName,
+            title: transaction.TransactionName,
             showCancelButton: true,
             showCloseButton: true,
-            html: `<p>Enter the new amount for <b>${transaction.transactionName}</b>:</p>` + 
-            `<input type="number" value="${inputVal}" step="${inputStep}" class="swal2-input id="range-value">`,
+            html: `<p>Enter the new amount for <b>${transaction.TransactionName}</b>:</p>` +
+                `<input type="number" value="${inputVal}" step="${inputStep}" class="swal2-input id="range-value">`,
             input: 'range',
             inputAttributes: {
                 min: 1,
-                max: parseFloat(transaction.amount) * 5,
+                max: parseFloat(transaction.Amount) * 5,
                 step: inputStep
             },
             didOpen: () => {
@@ -228,12 +236,12 @@ const Transaction = ({ transaction }) => {
                 // remove default output
                 inputRange.nextElementSibling.style.display = 'none'
                 inputRange.style.width = '100%'
-        
+
                 // sync input[type=number] with input[type=range]
                 inputRange.addEventListener('input', () => {
                     inputNumber.value = inputRange.value
                 })
-        
+
                 // sync input[type=range] with input[type=number]
                 inputNumber.addEventListener('change', () => {
                     inputRange.value = inputNumber.value
@@ -245,14 +253,14 @@ const Transaction = ({ transaction }) => {
     async function editTransactionType() {
         // Prompt user with dropdown menu for transaction type selection
         const { value: newType } = await Swal.fire({
-            title: transaction.transactionName,
+            title: transaction.TransactionName,
             text: "Select the new transaction type",
             input: 'select',
             icon: "question",
             showCloseButton: true,
             inputOptions: {
-                True    : "Expense",
-                False   : "Income"
+                true: "Expense",
+                false: "Income"
             },
             inputPlaceholder: 'Select an option',
             showCancelButton: true,
@@ -266,59 +274,60 @@ const Transaction = ({ transaction }) => {
 
         // Process input only if user presses submit
         if (newType) {
+            let newTypeToString = transaction.IsExpense == true ? "Expense" : transaction.IsExpense == false ? "Income" : "";
             // Display message if selected type is the same as the old one
-            if(newType == transaction.isExpense) {
+            if (newType == transaction.IsExpense) {
                 Swal.fire({
-                    title: transaction.transactionName,
+                    title: transaction.TransactionName,
                     icon: "warning",
                     html: `<p>The type is already the same as selection. No changes were made.</p>`,
                     showCloseButton: true
                 })
             }
             // Make PATCH request and update type
-            else{
+            else {
                 let loading = true;
-                while(loading) {
+                while (loading) {
                     // show loading message
                     Swal.fire({
                         title: 'Updating transaction type',
-                        html: `<p>Updating the transaction type to <b>${newType}</b></p>`,
+                        html: `<p>Updating the transaction type to <b>${newTypeToString}</b></p>`,
                         allowOutsideClick: false,
-                        onBeforeOpen: () => {Swal.showLoading()}
+                        onBeforeOpen: () => { Swal.showLoading() }
                     });
                     // Async await is blocking operation
                     let params = {
                         method: "PATCH",
                         headers: { "Content-type": "application/json" },
-                        body: JSON.stringify({ "isExpense": newType })
+                        body: JSON.stringify({ "IsExpense": newType })
                     }
-                    await(
+                    await (
                         fetch(url, params)
-                        .then((response) => response.json())
-                        .then((transactionData) =>{
-                            transaction = transactionData
+                            .then((response) => response.json())
+                            .then((transactionData) => {
+                                transaction = transactionData
 
-                            // Update component without full re-render
-                            document.getElementById(`isExpense${transaction.TID}`).innerHTML = transaction.isExpense;
+                                // Update component without full re-render
+                                document.getElementById(`IsExpense${transaction.TID}`).innerHTML = transaction.IsExpense;
 
-                            // Display success message
-                            Swal.fetch({
-                                title: transaction.transactionName,
-                                icon: "success",
-                                html: `<p>The transaction type was successfully updated to <b>${transaction.isExpense}</b>!</p>`,
+                                // Display success message
+                                Swal.fetch({
+                                    title: transaction.TransactionName,
+                                    icon: "success",
+                                    html: `<p>The transaction type was successfully updated to <b>${transaction.IsExpense}</b>!</p>`,
+                                    showCloseButton: true
+                                })
+                            })
+                    )
+                        .catch((err) => {
+                            console.log(err);
+                            Swal.fire({
+                                title: transaction.TransactionName,
+                                icon: "error",
+                                html: `<p>Something went wrong, failed to update transaction type.</p>`,
                                 showCloseButton: true
                             })
-                        })
-                    )
-                    .catch((err) => {
-                        console.log(err);
-                        Swal.fire({
-                            title: transaction.transactionName,
-                            icon: "error",
-                            html: `<p>Something went wrong, failed to update transaction type.</p>`,
-                            showCloseButton: true
-                        })
-                    });
+                        });
                     // exit loading loop
                     loading = false;
                 }
@@ -335,17 +344,17 @@ const Transaction = ({ transaction }) => {
             icon: "question",
             showCloseButton: true,
             inputOptions: {
-                Entertainment    : "Entertainment",
-                Restaurants   : "Restaurants",
-                Transportation   : "Transportation",
-                HomeAndUtilities   : "HomeAndUtilities",
-                Education   : "Education",
-                Insurance   : "Insurance",
-                Health   : "Health",
-                Deposits   : "Deposits",
-                Shopping   : "Shopping",
-                Groceries   : "Groceries",
-                Uncategorized   : "Uncategorized"
+                Entertainment: "Entertainment",
+                Restaurants: "Restaurants",
+                Transportation: "Transportation",
+                HomeAndUtilities: "Home And Utilities",
+                Education: "Education",
+                Insurance: "Insurance",
+                Health: "Health",
+                Deposits: "Deposits",
+                Shopping: "Shopping",
+                Groceries: "Groceries",
+                Uncategorized: "Uncategorized"
 
             },
             inputPlaceholder: 'Select an option',
@@ -357,9 +366,69 @@ const Transaction = ({ transaction }) => {
                 return new Promise((resolve) => { resolve() })
             }
         })
+        // Make PATCH request and update the name of the transaction
+        if (newCategory) {
+            let loading = true;
+            while (loading) {
+                // Show loading message
+                Swal.fire({
+                    title: 'Updating Transaction Category',
+                    html: `<p>Updating category to <b>${newCategory}</b></p>`,
+                    allowOutsideClick: false,
+                    onBeforeOpen: () => { Swal.showLoading() }
+                });
+                // Async await is blocking operation
+                let params = {
+                    method: "PATCH",
+                    headers: { "Content-type": "application/json" },
+                    body: JSON.stringify({ "TransactionCategory": newCategory })
+                }
+                await (fetch(url, params))
+                    .then(response => {
+                        if (response.ok) {
+                            document.getElementById(`TransactionCategory${transaction.TID}`).innerHTML = newCategory;
+
+                            // Display success message
+                            Swal.fire({
+                                title: transaction.TransactionName,
+                                icon: "success",
+                                html: `<p>Transaction category has successfully been updated to <b>${newCategory}</b>!</p>`,
+                                showCloseButton: true
+                            })
+                            transaction.TransactionCategory = newCategory;
+                        }
+                        else {
+                            Swal.fire({
+                                title: transaction.TransactionName,
+                                icon: "error",
+                                html: `Something went wrong, failed to update transaction category.</p>`,
+                                showCloseButton: true
+                            })
+                        }
+                    })
+                //Exit loading loop
+                loading = false;
+            }
+        }
     }
 
     async function editTransactionDateMade() {
-        Swal.close();
+        //Swal.fire({
+        //    title: 'pick a date:',
+        //    type: 'question',
+        //    html: '<input id="datepicker" readonly class="swal2-input">',
+        //    customClass: 'swal2-overflow',
+        //    onOpen: function () {
+        //        $('#datepicker').datepicker({
+        //            dateFormat: 'yy/mm/dd'
+        //        });
+        //    }
+        //}).then(function (result) {
+        //    if (result.value) {
+        //        alert($('#datepicker').val());
+        //    }
+        //});
     }
 }
+
+
