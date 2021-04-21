@@ -202,6 +202,23 @@ namespace ServiceLayer
         }
 
         /*
+        Returns all transactions associated with the given user account ID and sorted by the given category.
+            Params: The User Account ID
+                    The category
+            Returns: A list of Transactions associated with user account sorted by category
+        */
+        public List<Transaction> getTransactionsFromAccountCategorySorted(string username)
+        {
+            List<Transaction> transactionsList = new List<Transaction>();
+            foreach (BigQueryRow row in this.TransactionDataAccess.getTransactionsFromAccountCategorySorted(username))
+            {
+                Transaction transaction = reinstantiate(row);
+                transactionsList.Add(transaction);
+            }
+            return transactionsList;
+        }
+
+        /*
         Returns all transactions associated with a user account ID that was made within X amount of time.
             Params: The User Account ID
                     The number of days, weeks, months, or years

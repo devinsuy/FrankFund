@@ -82,6 +82,22 @@ namespace DataAccessLayer
             return this.dataHelper.query(query, parameters: null);
         }
 
+        public BigQueryResults getTransactionsFromAccountCategorySorted(string username) {
+            string query = "SELECT t.TID, t.AccountID, t.SGID, t.TransactionName, t.Amount, t.DateTransactionMade"
+                + ", t.DateTransactionEntered, t.IsExpense, t.TransactionCategory"
+                + $" FROM {this.tableID} t"
+                + $" INNER JOIN {this.accTable} a"
+                + " ON t.AccountID = a.AccountID"
+                + $" WHERE a.AccountUsername = '{username}'"
+                + " ORDER BY t.TransactionCategory DESC, DateTransactionEntered DESC";
+            Console.WriteLine(query);
+            return this.dataHelper.query(query, parameters: null);
+        }
+
+
+        
+
+
         // Returns all transactions from a user account given a category ordered by date entered
         public BigQueryResults getTransactionsFromCategory(long accID, string category)
         {
