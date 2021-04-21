@@ -1,7 +1,4 @@
 
-
-
-
 # FrankFund REST API
 
 ## Overview
@@ -68,13 +65,8 @@ Returns **HTTP 204 No Content** if no SavingsGoal exists with the given SGID.
 ```[POST] https://frankfund.appspot.com/api/SavingsGoal&apikey={apikey})```
 
 Creates a new SavingsGoal with the next available SGID and JSON request payload. 
-Request returns **HTTP 200 OK** with a JSON similar to the one below, mapping SGID to the SGID the newly created SavingsGoal was assigned:
+Request returns **HTTP 200 OK** with a JSON containing all attributes of the newly created SavingsGoal.
 
-```json
-{
-	"SGID": 1
-}
-```
 
 **Example Requests:** 
 ```HTTP POST https://frankfund.appspot.com/api/SavingsGoal&apikey=c55f8d138f6ccfd43612b15c98706943e1f4bea3```
@@ -96,7 +88,10 @@ Create a **SavingsGoal by date**, system will dynamically calculate { ContrAmt, 
 ```[POST] https://frankfund.appspot.com/api/SavingsGoal/SGID={SGID}&apikey={apikey})```
 
 Creates a new SavingsGoal with the given SavingsGoalID and JSON request payload. 
-Returns **HTTP 409 Conflict** if a SavingsGoal already exists with the given SGID.
+
+Returns **HTTP 409 Conflict** if a SavingsGoal already exists with the given SGID. 
+
+Request returns **HTTP 200 OK** with a JSON containing all attributes of the newly created SavingsGoal.
 
 **Example Requests:** 
 ```HTTP POST https://frankfund.appspot.com/api/SavingsGoal/SGID=1&apikey=c55f8d138f6ccfd43612b15c98706943e1f4bea3```
@@ -152,6 +147,8 @@ For updating parameter **ContrAmt**:
 
 Returns **HTTP 404 Not Found** if no SavingsGoal exists with the given SGID.
 
+Request returns **HTTP 200 OK** with a JSON containing all attributes of the newly updated SavingsGoal.
+
 **Example Requests:** 
 ```HTTP PATCH https://frankfund.appspot.com/api/SavingsGoal/SGID=1&apikey=c55f8d138f6ccfd43612b15c98706943e1f4bea3```
 ```json
@@ -176,7 +173,7 @@ PATCH request with the above JSON request body will update the GoalAmt without a
 ```json
 {
     	"ContrAmt": 425,
-	"Period": "BiWeekly",
+		"Period": "BiWeekly",
 }
 ```
 PATCH request with the above JSON request body will update the ContrAmt per BiWeekly period to $425.00, causing **NumPeriods and EndDate** to dynamically recalculate.  
@@ -305,7 +302,10 @@ Returns **HTTP 204 No Content** if no Transactions exists with the given UserAcc
 ```[PATCH] https://frankfund.appspot.com/api/account/accID={accID}&apikey={apikey})```
 
 Update an existing User Account with the specified AccountID, data payload **does not need to specify all attributes**. Any number of attributes can be specified simultaneously to update the User Account.
+
 Returns **HTTP 404 Not Found** if no User Account exists with the given accID.
+
+Request returns **HTTP 200 OK** with a JSON containing all attributes of the newly updated UserAccount.
 
 **Example Requests:**
 ```https://frankfund.appspot.com/api/account/accID=5&apikey=f2f1178729cb2e1c9188ed847066743c4e843a21```
@@ -331,7 +331,10 @@ PATCH request with this request body will update just the AccountUsername of the
 ```[PATCH] https://frankfund.appspot.com/api/account/user={user}&apikey={apikey})```
 
 Update an existing User Account with the specified AccountID, data payload **does not need to specify all attributes**. Any number of attributes can be specified simultaneously to update the User Account.
+
 Returns **HTTP 404 Not Found** if no User Account exists with the given accID.
+
+Request returns **HTTP 200 OK** with a JSON containing all attributes of the newly updated UserAccount.
 
 **Example Requests:**
 ```https://frankfund.appspot.com/api/account/user=Devin&apikey=f2f1178729cb2e1c9188ed847066743c4e843a21```
@@ -367,12 +370,7 @@ Returns **HTTP 204 No Content** if no Transaction exists with the given TID.
 
 Create a new Transaction with the next available TID and the JSON request payload. Request payload must specify **all attributes except DateTransactionEntered**, otherwise returns **HTTP 400 Bad Request**.
 
-Request returns **HTTP 200 OK** with a JSON similar to the one below, mapping TID to the TID the newly created Transaction was assigned:
-```json
-{
-	"TID": 1
-}
-```
+Request returns **HTTP 200 OK** with a JSON containing all attributes of the newly updated Transaction.
 
 **Example Request:**
 ```HTTP POST https://frankfund.appspot.com/api/Transaction&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0```
@@ -396,6 +394,9 @@ Request returns **HTTP 200 OK** with a JSON similar to the one below, mapping TI
 Create a new Transaction with the specified TransactionID and JSON request payload. Request payload must specify **all attributes except DateTransactionEntered**, otherwise returns **HTTP 400 Bad Request**.
 
 Returns **HTTP 409 Conflict** if a Transaction already exists with the given TID
+
+Request returns **HTTP 200 OK** with a JSON containing all attributes of the newly updated Transaction.
+
 
 **Example Request:**
 ```HTTP POST https://frankfund.appspot.com/api/Transaction/TID=1&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0```
@@ -425,6 +426,8 @@ Delete a Transaction with the specified TramsactopmID, has no effect if no Trans
 ```[PUT] https://frankfund.appspot.com/api/Transaction/TID={TID}&apikey={apikey})```
 
 Update or create a new Transaction with the specified TID and data payload.
+
+Request returns **HTTP 200 OK** with a JSON containing all attributes of the newly updated or created Transaction.
 
 **Example Request:**
 ```HTTP PUT https://frankfund.appspot.com/api/Transaction/TID=1&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0```
@@ -460,7 +463,10 @@ Otherwise if a Transaction with the given TID **already exists** request will up
 ```[PATCH] https://frankfund.appspot.com/api/Transaction/TID={TID}&apikey={apikey})```
 
 Update an existing Transaction with the specified TransactionID, data payload **does not need to specify all attributes**. Any number of attributes can be specified simultaneously to update the Transaction.
+
 Returns **HTTP 404 Not Found** if no Transaction exists with the given TID.
+
+Request returns **HTTP 200 OK** with a JSON containing all attributes of the newly updated Transaction.
 
 **Example Requests:**
 ```HTTP PATCH https://frankfund.appspot.com/api/Transaction/TID=1&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0```
@@ -498,12 +504,7 @@ Returns **HTTP 204 No Content** if no Receipt exists with the given RID.
 
 Create a new Receipt with the next available RID and JSON request payload. Request payload must specify **ALL attributes** to create a new Receipt, returns **HTTP 400 Bad Request** otherwise. 
 
-Request returns **HTTP 200 OK** with a JSON similar to the one below, mapping RID to the RID the newly created Receipt was assigned:
-```json
-{
-	"RID": 1
-}
-```
+Request returns **HTTP 200 OK** with a JSON containing all attributes of the newly updated Receipt.
 
 **Example Request:**
 ```HTTP POST https://frankfund.appspot.com/api/Receipt&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0```
@@ -516,7 +517,6 @@ Request returns **HTTP 200 OK** with a JSON similar to the one below, mapping RI
 	"Notes": "short note"
 }
 ```
----
 
 
 ---
@@ -524,7 +524,10 @@ Request returns **HTTP 200 OK** with a JSON similar to the one below, mapping RI
 ```[POST] https://frankfund.appspot.com/api/Receipt/RID={RID}&apikey={apikey})```
 
 Create a new Receipt with the specified ReceiptID and JSON request payload. Request payload must specify **ALL attributes** to create a new Receipt, returns **HTTP 400 Bad Request** otherwise.
+
 Returns **HTTP 409 Conflict** if a Receipt already exists with the given RID.
+
+Request returns **HTTP 200 OK** with a JSON containing all attributes of the newly created Receipt.
 
 **Example Request:**
 ```HTTP POST https://frankfund.appspot.com/api/Receipt/RID=1&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0```
@@ -566,11 +569,15 @@ Update or create a new Receipt with the specified RID and data payload. Request 
 
 If a Receipt with the given RID **does not exist**, request will create one. Otherwise if a Receipt with the given RID **already exists** request will update it.
 
+Request returns **HTTP 200 OK** with a JSON containing all attributes of the newly created or updated Receipt.
+
 ---
 
 ```[PATCH] https://frankfund.appspot.com/api/Receipt/RID={RID}&apikey={apikey})```
 
-Update an existing Receipt with the specified ReceiptID, request data payload **does not need to specify all attributes**. Any number of attributes can be specified and simultaneously updated for the Receipt.
+Update an existing Receipt with the specified ReceiptID, request data payload **does not need to specify all attributes**.  Any number of attributes can be specified and simultaneously updated for the Receipt.
+
+Request returns **HTTP 200 OK** with a JSON containing all attributes of the  newly updated Receipt.
 
 **Example Requests:**
 ```HTTP PATCH https://frankfund.appspot.com/api/Receipt/RID=1&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0```
