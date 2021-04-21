@@ -1,11 +1,12 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8080/api/auth/";
+const API_URL = "/api/session/create&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0";
 
 class AuthService {
     login(usernameoremail, password) {
         return axios
-            .post(API_URL + "signin", { username, password })
+            //  + "signin", { usernameoremail, password }
+            .post(API_URL)
             .then((response) => {
                 if (response.data.accessToken) {
                     localStorage.setItem("user", JSON.stringify(response.data));
@@ -20,13 +21,13 @@ class AuthService {
     }
 
     // Already implemented in createuseraccount.component ??
-    //register(username, email, password) {
-    //    return axios.post(API_URL + "signup", {
-    //        username,
-    //        email,
-    //        password,
-    //    });
-    //}
+    register(username, email, password) {
+        return axios.post(API_URL + "signup", {
+            username,
+            email,
+            password,
+        });
+    }
 }
 
 export default new AuthService();
