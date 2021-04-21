@@ -168,7 +168,6 @@ namespace REST.Controllers
                 default:
                     return new OkObjectResult($"Account {acc.AccountUsername} successfully registered");
             }
-
         }
 
         // ------------------------------ Account Update Endpoint ------------------------------
@@ -233,7 +232,7 @@ namespace REST.Controllers
 
             // Write changes, if any
             uas.update(acc);
-            return new OkResult();
+            return api.serveJson(uas.getJSON(acc));
         }
 
         // Modify an existing Account without specifying all attributes in payload, given account username
@@ -292,7 +291,7 @@ namespace REST.Controllers
 
             // Write changes, if any
             uas.update(acc);
-            return new OkResult();
+            return api.serveJson(uas.getJSON(acc));
         }
 
 

@@ -163,7 +163,7 @@ namespace REST.Controllers
 
             // Write the new SavingsGoal
             sgs.write(s);
-            return new OkResult();
+            return api.serveJson(sgs.getJSON(s));
         }
 
 
@@ -173,24 +173,16 @@ namespace REST.Controllers
         public IActionResult Create(string apiKey, [FromBody] JsonElement reqBody)
         {
             long SGID = sgs.getNextAvailID();
-            IActionResult res = CreateByID(SGID, apiKey, reqBody);
-            // Request was invalid, failed to create
-            if (!(res is OkResult))
-            {
-                return res;
-            }
-
-            // Otherwise return the TID of the newly created transaction
-            return api.serveJson(api.getSingleAttrJSON("SGID", SGID.ToString()));
+            return CreateByID(SGID, apiKey, reqBody);
         }
 
 
-            // Modify an existing SavingsGoal without specifying all attributes in payload,
-            // returns Http 404 Not found if doesn't exist
-            // PATCH request body should pass no more than a single attribute unless:
-            //      Updating GoalAmt, in which a boolean ExtendDate should be passed
-            //      Updating ContrAmt AND Period simultaneously
-            [Route("api/SavingsGoal/SGID={SGID}&apikey={apiKey}")]
+        // Modify an existing SavingsGoal without specifying all attributes in payload,
+        // returns Http 404 Not found if doesn't exist
+        // PATCH request body should pass no more than a single attribute unless:
+        //      Updating GoalAmt, in which a boolean ExtendDate should be passed
+        //      Updating ContrAmt AND Period simultaneously
+        [Route("api/SavingsGoal/SGID={SGID}&apikey={apiKey}")]
         [HttpPatch]
         public IActionResult UpdateByID(long SGID, string apiKey, [FromBody] JsonElement reqBody)
         {

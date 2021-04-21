@@ -130,7 +130,7 @@ namespace REST.Controllers
 
             // Write the new transaction
             ts.write(t);
-            return new OkResult();
+            return api.serveJson(ts.getJSON(t));
         }
 
         // Create a new transaction with the next available TID
@@ -139,16 +139,7 @@ namespace REST.Controllers
         public IActionResult Create(string apiKey, [FromBody] JsonElement reqBody)
         {
             long TID = ts.getNextAvailID();
-            IActionResult res = CreateByID(TID, apiKey, reqBody);
-
-            // Request was invalid, failed to create
-            if(!(res is OkResult))
-            {
-                return res;
-            }
-
-            // Otherwise return the TID of the newly created transaction
-            return api.serveJson(api.getSingleAttrJSON("TID", TID.ToString()));
+            return CreateByID(TID, apiKey, reqBody);
         }
 
 
@@ -233,7 +224,7 @@ namespace REST.Controllers
                 ts.update(t);
             }
 
-            return new OkResult();
+            return api.serveJson(ts.getJSON(t));
         }
 
 
@@ -310,7 +301,7 @@ namespace REST.Controllers
 
             // Write changes, if any
             ts.update(t);
-            return new OkResult();
+            return api.serveJson(ts.getJSON(t));
         }
 
     }
