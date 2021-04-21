@@ -31,7 +31,7 @@ namespace REST.Controllers
             "SID", "RID", "Notes", "AccountID", "PurchaseDate", "Amount", "RenewFrequency"
             };
 
-            // Attributes that should be specified in request payload if updating an EXISTING transaction
+            // Attributes that should be specified in request payload if updating an EXISTING subscription
             updateAttr = new HashSet<string>
             {
             "SID", "AccountID", "PurchaseDate", "Amount", "RenewFrequency"
@@ -40,7 +40,7 @@ namespace REST.Controllers
 
         // Retrieve a Subscription with the given SID,
         // returns Http 204 NoContent if doesn't exist
-        [Route("api/SID={SID}&apikey={apiKey}")]
+        [Route("api/Subscription/SID={SID}&apikey={apiKey}")]
         [HttpGet]
         public IActionResult GetByID(long SID, string apiKey)
         {
@@ -56,7 +56,7 @@ namespace REST.Controllers
         }
 
         // Delete a Subscription, no effect if a Subscription with the given SID doesn't exist
-        [Route("api/SID={SID}&apikey={apiKey}")]
+        [Route("api/Subscription/SID={SID}&apikey={apiKey}")]
         [HttpDelete]
         public IActionResult DeleteByID(long SID, string apiKey)
         {
@@ -74,7 +74,7 @@ namespace REST.Controllers
 
         // Create a new Subscription with the given SID.
         // Returns Http 409 Conflict if already exists
-        [Route("api/SID={SID}&apikey={apiKey}")]
+        [Route("api/Subscription/SID={SID}&apikey={apiKey}")]
         [HttpPost]
         public IActionResult CreateByID(long SID, string apiKey, [FromBody] JsonElement reqBody)
         {
@@ -125,7 +125,7 @@ namespace REST.Controllers
 
             // Write the new transaction
             subservice.write(s);
-            return new OkResult();
+            return api.serveJson(subservice.getJSON(s));
         }
 
         // Create a new subscription with the next available SID
@@ -134,21 +134,12 @@ namespace REST.Controllers
         public IActionResult Create(string apiKey, [FromBody] JsonElement reqBody)
         {
             long SID = subservice.getNextAvailID();
-            IActionResult res = CreateByID(SID, apiKey, reqBody);
-
-            // Request was invalid, failed to create
-            if (!(res is OkResult))
-            {
-                return res;
-            }
-
-            // Otherwise return the TID of the newly created transaction
-            return api.serveJson(api.getSingleAttrJSON("SID", SID.ToString()));
+            return CreateByID(SID, apiKey, reqBody);
         }
 
 
         // Update an existing subscription or create if not exists
-        [Route("api/TID={TID}&apikey={apiKey}")]
+        [Route("api/Subscription/SID={SID}&apikey={apiKey}")]
         [HttpPut]
         public IActionResult UpdateAllByID(long SID, string apiKey, [FromBody] JsonElement reqBody)
         {
@@ -225,7 +216,74 @@ namespace REST.Controllers
                 subservice.update(s);
             }
 
-            return new OkResult();
+            return api.serveJson(subservice.getJSON(s));
+        }
+
+
+
+        // Modify an existing Subscription without specifying all attributes in payload,
+        // returns Http 404 Not found if doesn't exist
+        [Route("api/Subscription/SID={SID}&apikey={apiKey}")]
+        [HttpPatch]
+        public IActionResult UpdateByID(long SID, string apiKey, [FromBody] JsonElement reqBody)
+        {
+            if (!api.validAPIKey(apiKey))
+            {
+                return new UnauthorizedObjectResult("Invalid API key");
+            }
+            if (SID < 1)
+            {
+                return BadRequest();
+            }
+
+            // Validate the attributes of the PATCH request, each attribute specified
+            // in the request must be an attribute of a SavingsGoal
+            Dictionary<string, object> req = JsonConvert.DeserializeObject<Dictionary<string, object>>(Convert.ToString(reqBody));
+            HashSet<string> reqAttributes = new HashSet<string>(req.Keys);
+            if (!api.validAttributes(updateAttr, reqAttributes))
+            {
+                return BadRequest();
+            }
+
+            Subscription s = subservice.getUsingID(SID);
+
+            // Http PATCH cannot update a Subscription that does not exist
+            if (s == null)
+            {
+                return NotFound();
+            }
+
+            bool attrUpdated = false;
+            try {
+                if (reqAttributes.Contains("PurchaseDate"))
+                {
+                    s.setPurchaseDate(Convert.ToDateTime(req["Amount"]));
+                    attrUpdated = true;
+                }
+                else if (reqAttributes.Contains("Amount"))
+                {
+                    s.setAmount(Convert.ToInt64(req["Amount"]));
+                    attrUpdated = true;
+                }
+                else if (reqAttributes.Contains("RenewFrequency"))
+                {
+                    s.setRenewFrequency(subservice.castSubscriptionFrequency(Convert.ToString(req["RenewFrequency"])));
+                    attrUpdated = true;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                return BadRequest();
+            }
+            if (!attrUpdated)
+            {
+                return BadRequest();
+            }
+
+            // Write changes, if any
+            subservice.update(s);
+            return api.serveJson(subservice.getJSON(s));
         }
     }
 }
