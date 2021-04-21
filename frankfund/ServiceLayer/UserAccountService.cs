@@ -26,7 +26,7 @@ namespace ServiceLayer
         {
             return new UserAccount(
                     (long)row["AccountID"], (string)row["AccountUsername"],
-                    (string)row["EmailAddress"], (string)row["PasswordHash"], (byte[])Encoding.ASCII.GetBytes((string)row["PasswordSalt"])
+                    (string)row["EmailAddress"], (string)row["PasswordHash"], (byte[])Convert.FromBase64String((string)row["PasswordSalt"])
                 //(int)row["FacebookID"], (BigQueryNumeric)row["GoogleID"].ToDecimal(LossOfPrecisionHandling.Truncate)
             );
         }

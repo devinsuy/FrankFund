@@ -21,6 +21,7 @@ namespace DataAccessLayer
                 { this.getQualifiedTableName("Accounts"), "AccountID" },
                 { this.getQualifiedTableName("Receipts"), "RID" },
                 { this.getQualifiedTableName("SavingsGoals"), "SGID" },
+                { this.getQualifiedTableName("Sessions"), "SessionID" },
                 { this.getQualifiedTableName("Subscriptions"), "SID" },
                 { this.getQualifiedTableName("Transactions"), "TID" }
             };

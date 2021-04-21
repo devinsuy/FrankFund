@@ -21,6 +21,7 @@ namespace ServiceLayer
         {
             this.PasswordService = new PasswordService();
             this.UserAccountService = new UserAccountService();
+            this.SessionDataAccess = new SessionDataAccess();
         }
 
         public Session reinstantiate(BigQueryRow row)

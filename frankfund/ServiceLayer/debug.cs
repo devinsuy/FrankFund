@@ -13,10 +13,10 @@ namespace ServiceLayer
         static void authenticateGCP()
         {
             // Devin's Credentials
-            string pathToCreds = "/Users/devin/GitHub/FrankFund/Credentials/AuthDevin.json";
+            //string pathToCreds = "/Users/devin/GitHub/FrankFund/Credentials/AuthDevin.json";
 
             // Autumn's Credentials
-            //string pathToCreds = "/Users/steve/OneDrive/Documents/GitHub/FrankFund/Credentials/AuthAutumn.json";
+            string pathToCreds = "/Users/steve/OneDrive/Documents/GitHub/FrankFund/Credentials/AuthAutumn.json";
 
             // Kenneth's Credentials
             //string pathToCreds = "/Users/015909177/Desktop/Github Repos/FrankFund/Credentials/AuthKenny.json";
@@ -165,9 +165,9 @@ namespace ServiceLayer
             //String existingAccount2 = uaService.getUsingID(2).AccountUsername;
             //Console.WriteLine("Username: " + existingAccount2);
 
-            Console.WriteLine("\n3. Testing Password Minimum Requirements function");
-            UserAccount testAccount = new UserAccount("test", "test@gmail.com", "Password1");
-            uaService.write(testAccount);
+            //Console.WriteLine("\n3. Testing Password Minimum Requirements function");
+            //UserAccount testAccount = new UserAccount("test", "test@gmail.com", "Password1");
+            //uaService.write(testAccount);
             //Console.WriteLine(passService.checkHash("Password1", testAccount));
 
             //Console.WriteLine("Username: " + uaService.getUsingID(5).AccountUsername);
@@ -181,15 +181,21 @@ namespace ServiceLayer
             //uaService.write(testAccount2);
             //Console.WriteLine("Username: " + uaService.getUsingUsername("test2").AccountUsername);
 
-            Console.WriteLine("\n6. Testing UpdateUserAccount function | Prints out new AccountUsername of account");
-            Console.WriteLine("Old Username: " + uaService.getUsingUsername("test").AccountUsername);
-            UserAccount testAccount3 = new UserAccount(5, "testing", "testing@gmail.com", "Password1");
-            uaService.update(testAccount3);
-            Console.WriteLine("New Username: " + uaService.getUsingUsername("testing").AccountUsername);
+            //Console.WriteLine("\n6. Testing UpdateUserAccount function | Prints out new AccountUsername of account");
+            //Console.WriteLine("Old Username: " + uaService.getUsingUsername("test").AccountUsername);
+            //UserAccount testAccount3 = new UserAccount(5, "testing", "testing@gmail.com", "Password1");
+            //uaService.update(testAccount3);
+            //Console.WriteLine("New Username: " + uaService.getUsingUsername("testing").AccountUsername);
 
-            Console.WriteLine("\n7. Testing DeleteUserAccount function | Prints out AccountUsername of deleted account");
-            Console.WriteLine("Disable Username: " + uaService.getUsingUsername("testing").AccountUsername);
-            uaService.delete(5);
+            //Console.WriteLine("\n7. Testing DeleteUserAccount function | Prints out AccountUsername of deleted account");
+            //Console.WriteLine("Disable Username: " + uaService.getUsingUsername("testing").AccountUsername);
+            //uaService.delete(5);
+
+            Console.WriteLine("\n8. Password Validation");
+            var user = uaService.getUsingUsername("test");
+            Console.WriteLine("Username: " + user.AccountUsername);
+            //Console.WriteLine("\nDoes the password match? " + passService.checkHash("Password1", user));
+            Console.WriteLine("Does the password match?: " + passService.ValidatePassword("Password1", user.PasswordSalt, user.PasswordHash));
         }
 
 
@@ -588,7 +594,7 @@ namespace ServiceLayer
 
 
             // ---------------------------------------------- Test: Creating User Account ------------------------------------------------------
-            //testAccCreate();
+            testAccCreate();
 
 
             // ---------------------------------------------- Test: Transaction Create ---------------------------------------------------------
