@@ -121,7 +121,7 @@ namespace REST.Controllers
 
             // Write the new Receipt
             rs.write(r);
-            return new OkResult();
+            return api.serveJson(rs.getJSON(r));
         }
 
         // Create a new Receipt with the next available RID
@@ -130,15 +130,7 @@ namespace REST.Controllers
         public IActionResult Create(string apiKey, [FromBody] JsonElement reqBody)
         {
             long RID = rs.getNextAvailID();
-            IActionResult res = CreateByID(RID, apiKey, reqBody);
-            // Request was invalid, failed to create
-            if (!(res is OkResult))
-            {
-                return res;
-            }
-
-            // Otherwise return the TID of the newly created transaction
-            return api.serveJson(api.getSingleAttrJSON("RID", RID.ToString()));
+            return CreateByID(RID, apiKey, reqBody);
         }
 
 
@@ -217,7 +209,7 @@ namespace REST.Controllers
                 rs.update(r);
             }
 
-            return new OkResult();
+            return api.serveJson(rs.getJSON(r));
         }
 
 
@@ -282,7 +274,7 @@ namespace REST.Controllers
 
             // Write changes, if any
             rs.update(r);
-            return new OkResult();
+            return api.serveJson(rs.getJSON(r));
         }
 
         // Read a receipt image file from request form and upload to GCP cloud storage bucket
