@@ -665,9 +665,9 @@ namespace ServiceLayer
 
 
             // ---------------------------------------------- Test: Receipt Upload/Download ---------------------------------------------------------
-            const string sampleImgPath = "../DataAccessLayer/tmp/upload/sample_receipt.jpeg";
-            testUploadReceipt(userName: "RachelPai", localPathToFile: sampleImgPath, fileName: "sample_receipt.jpeg");  // File overwrites if already exists
-            testDownloadReceipt(userName: "RachelPai", fileName: "sample_receipt.jpeg", dstPath: null);                 // Uses DataAccess/tmp/download by default (if null) for API
+            //const string sampleImgPath = "../DataAccessLayer/tmp/upload/sample_receipt.jpeg";
+            //testUploadReceipt(userName: "RachelPai", localPathToFile: sampleImgPath, fileName: "sample_receipt.jpeg");  // File overwrites if already exists
+            //testDownloadReceipt(userName: "RachelPai", fileName: "sample_receipt.jpeg", dstPath: null);                 // Uses DataAccess/tmp/download by default (if null) for API
 
 
         }
