@@ -3,8 +3,14 @@
 import React, { Component } from "react";
 import axios from 'axios';
 import swal from 'sweetalert';
+import Swal from 'sweetalert2'
+import { Redirect } from 'react-router';
 
-export default class LoginUserAccount extends Component {
+export default class LoginUserAccount extends React.Component {
+
+    state = {
+        redirect: false
+    }
 
     login(e) {
         e.preventDefault();
@@ -16,29 +22,72 @@ export default class LoginUserAccount extends Component {
         });
         var json = JSON.stringify(object);
         console.log(json);
-        axios({
-            method: "post",
-            url: "/api/session/create&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0",
-            data: json,
-            headers: {
-                'accept': 'application/json',
-                'content-type': 'application/json'
-            }
-        })
-            .then((res) => {
-                console.log(res);
-                swal("Success!", "You have successfully logged in! You will be redirected to the homepage in 1 second.", "success");
-                setTimeout(() => {
-                    this.$router.push("/");
-                }, 1000);
-            })
-            .catch((err) => {
-                swal("Error!", "An error has occured. Incorrect username or email and password combination", "error");
-                throw err;
+        //axios({
+        //    method: "post",
+        //    url: "/api/session/create&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0",
+        //    data: json,
+        //    headers: {
+        //        'accept': 'application/json',
+        //        'content-type': 'application/json'
+        //    }
+        //})
+        //    .then((res) => {
+        //        console.log(res);
+        //        swal("Success!", "You have successfully logged in! You will be redirected to the homepage in 1 second.", "success");
+        //        setTimeout(() => {
+        //            this.$router.push("/");
+        //        }, 1000);
+        //    })
+        //    .catch((err) => {
+        //        swal("Error!", "An error has occured. Incorrect username or email and password combination", "error");
+        //        throw err;
+        //    });
+
+        let loading = true;
+        while (loading) {
+            Swal.fire({
+                title: 'Logging in...',
+                allowOutsideClick: false,
+                onBeforeOpen: () => { Swal.showLoading() },
+                onAfterClose() {
+                    Swal.hideLoading()
+                }
             });
+            // Calls axios function to post the JSON data for POST request at API endpoint
+            axios({
+                method: "post",
+                url: "/api/session/create&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0",
+                data: json,
+                headers: {
+                    'accept': 'application/json',
+                    'content-type': 'application/json'
+                }
+            })
+                .then((res) => {
+                    console.log(res);
+                    Swal.close()
+                    swal("Success!", "You have successfully logged in! You will be redirected to the homepage in 1 second.", "success");
+                    // Need to redirect to homepage
+                    //setTimeout(() => {
+                    //    this.setState({ redirect: true })
+                    //}, 500);
+                })
+                .catch((err) => {
+                    Swal.close()
+                    swal("Error!", "An error has occured. Incorrect username or email and password combination", "error");
+                    throw err;
+                })
+            // Exit loading loop
+            loading = false;
+        }
     }
 
+
     render() {
+        const { redirect } = this.state;
+        if (redirect) {
+            return <Redirect to='/' />;
+        }
         return (
             <form
                 id="login"
@@ -48,13 +97,13 @@ export default class LoginUserAccount extends Component {
 
                 <div className="form-group">
                     <label>Username or Email</label>
-                    <input type="text" name="UsernameEmail" className="form-control" placeholder="Enter your username or email" />
+                    <input type="text" name="usernameoremail" className="form-control" placeholder="Enter your username or email" />
                 </div>
 
 
                 <div className="form-group">
                     <label>Password</label>
-                    <input type="password" name="Password" className="form-control" placeholder="Enter your password" />
+                    <input type="password" name="password" className="form-control" placeholder="Enter your password" />
                 </div>
 
                 <button type="submit" className="btn btn-dark btn-lg btn-block">Login</button>

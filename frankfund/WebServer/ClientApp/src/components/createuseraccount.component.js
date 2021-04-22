@@ -72,7 +72,7 @@ export default class CreateUserAccount extends Component {
             })
                 .then((res) => {
                     console.log(res);
-                    Swal.close()
+                    Swal.close();
                     swal("Success!", "Account has successfully been created!", "success");
                 })
                 .catch((err) => {
@@ -82,6 +82,7 @@ export default class CreateUserAccount extends Component {
                     //    html: `<p>Unable to create new account, ${err} has occured.</p>`,
                     //    showCloseButton: true
                     //})
+                    Swal.close();
                     swal("Error!", "An error has occured.", "error");
                     throw err;
                 })
