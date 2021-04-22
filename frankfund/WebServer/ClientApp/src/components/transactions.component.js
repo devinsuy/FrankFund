@@ -1,3 +1,5 @@
+/* global varName */
+/* eslint-env jquery */
 import Swal from 'sweetalert2'
 
 export default function Transactions({transactions}) {
@@ -7,15 +9,6 @@ export default function Transactions({transactions}) {
         </>
     )
 }
-
-// Map contribution periods to their corresponding noun
-var nouns = {
-    'Daily': 'day(s)',
-    'Weekly': 'week(s)',
-    'BiWeekly': 'period(s)',
-    'Monthly': 'month(s)',
-    'BiMonthly': 'period(s)'
-};
 
 const Transaction = ({ transaction }) => {
     // Convert date to readable format 
@@ -214,40 +207,64 @@ const Transaction = ({ transaction }) => {
     }
 
     async function editTransactionAmount() {
-        const inputVal = parseFloat(transaction.Amount)
-        const inputStep = .01
-
-        Swal.fire({
+        const { value: newAmount } = await Swal.fire({
             title: transaction.TransactionName,
-            showCancelButton: true,
             showCloseButton: true,
-            html: `<p>Enter the new amount for <b>${transaction.TransactionName}</b>:</p>` +
-                `<input type="number" value="${inputVal}" step="${inputStep}" class="swal2-input id="range-value">`,
-            input: 'range',
-            inputAttributes: {
-                min: 1,
-                max: parseFloat(transaction.Amount) * 5,
-                step: inputStep
-            },
-            didOpen: () => {
-                const inputRange = Swal.getInput()
-                const inputNumber = Swal.getContent().querySelector('#range-value')
-
-                // remove default output
-                inputRange.nextElementSibling.style.display = 'none'
-                inputRange.style.width = '100%'
-
-                // sync input[type=number] with input[type=range]
-                inputRange.addEventListener('input', () => {
-                    inputNumber.value = inputRange.value
-                })
-
-                // sync input[type=range] with input[type=number]
-                inputNumber.addEventListener('change', () => {
-                    inputRange.value = inputNumber.value
-                })
+            icon: "question",
+            input: 'number',
+            html: `<p>Enter the new amount for <b>${transaction.TransactionName}</b>:</p>`,
+            inputPlaceholder: 'Enter an amount in USD',
+            showCancelButton: true,
+            inputValidator: (value) => {
+                if (!value) {
+                    return 'Amount cannot be blank. Please enter an amount.'
+                }
             }
         })
+        // Make PATCH request and update the name of the transaction
+        if (newAmount) {
+            let loading = true;
+            while (loading) {
+                // Show loading message
+                Swal.fire({
+                    title: 'Updating Transaction amount',
+                    html: `<p>Updating amount to <b>$${newAmount}</b></p>`,
+                    allowOutsideClick: false,
+                    onBeforeOpen: () => { Swal.showLoading() }
+                });
+                // Async await is blocking operation
+                let params = {
+                    method: "PATCH",
+                    headers: { "Content-type": "application/json" },
+                    body: JSON.stringify({ "Amount": newAmount })
+                }
+                await (fetch(url, params))
+                    .then(response => {
+                        if (response.ok) {
+                            document.getElementById(`Amount${transaction.TID}`).innerHTML = newAmount;
+
+                            // Display success message
+                            Swal.fire({
+                                title: transaction.TransactionName,
+                                icon: "success",
+                                html: `<p>Transaction name has successfully been updated to <b>${newAmount}</b>!</p>`,
+                                showCloseButton: true
+                            })
+                            transaction.Amount = newAmount;
+                        }
+                        else {
+                            Swal.fire({
+                                title: transaction.TransactionName,
+                                icon: "error",
+                                html: `Something went wrong, failed to update transaction amount.</p>`,
+                                showCloseButton: true
+                            })
+                        }
+                    })
+                //Exit loading loop
+                loading = false;
+            }
+        }
     }
 
     async function editTransactionType() {
@@ -412,22 +429,9 @@ const Transaction = ({ transaction }) => {
         }
     }
 
+    //TODO
     async function editTransactionDateMade() {
-        //Swal.fire({
-        //    title: 'pick a date:',
-        //    type: 'question',
-        //    html: '<input id="datepicker" readonly class="swal2-input">',
-        //    customClass: 'swal2-overflow',
-        //    onOpen: function () {
-        //        $('#datepicker').datepicker({
-        //            dateFormat: 'yy/mm/dd'
-        //        });
-        //    }
-        //}).then(function (result) {
-        //    if (result.value) {
-        //        alert($('#datepicker').val());
-        //    }
-        //});
+        
     }
 }
 
