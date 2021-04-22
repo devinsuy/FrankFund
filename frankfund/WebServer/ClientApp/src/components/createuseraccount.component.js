@@ -4,14 +4,15 @@ import React, { Component } from "react";
 import axios from 'axios';
 import swal from 'sweetalert';
 import Swal from 'sweetalert2'
+import { withRouter } from "react-router-dom";
 
-export default class CreateUserAccount extends Component {
+class CreateUserAccount extends Component {
 
-    //constructor(props) {
-    //    super(props);
+    constructor(props) {
+        super(props);
 
-    //    this.state = { username: null, email: null, password: null };
-    //}
+        this.register = this.register.bind(this);
+    }
 
     //state = {
     //    AccountUsername: '',
@@ -74,6 +75,9 @@ export default class CreateUserAccount extends Component {
                     console.log(res);
                     Swal.close();
                     swal("Success!", "Account has successfully been created!", "success");
+                    setTimeout(() => {
+                        this.props.history.push("/login");
+                    }, 500);
                 })
                 .catch((err) => {
                     //Swal.fire({
@@ -120,3 +124,5 @@ export default class CreateUserAccount extends Component {
         );
     }
 }
+
+export default withRouter(CreateUserAccount);

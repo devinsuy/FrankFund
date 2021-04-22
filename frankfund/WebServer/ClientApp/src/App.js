@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
-import { BrowserRouter as Router, Switch,  Redirect, Route, Link,  } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Redirect, Route, Link, } from "react-router-dom";
+import { createBrowserHistory } from 'history';
 
 // Imported React Components
 import CreateUserAccount from "./components/createuseraccount.component";
@@ -18,7 +19,7 @@ import ImageUploadDemo from './components/temp/imageuploaddemo.component';
 
 
 function App() {
-    return (<Router>
+    return (<Router history={createBrowserHistory}>
       <div className="App">
       {/* Landing Page and CreateUserAccount component 
           1. Set up HTML template code

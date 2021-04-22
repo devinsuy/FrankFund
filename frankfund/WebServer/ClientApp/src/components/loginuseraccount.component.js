@@ -4,12 +4,14 @@ import React, { Component } from "react";
 import axios from 'axios';
 import swal from 'sweetalert';
 import Swal from 'sweetalert2'
-import { Redirect } from 'react-router';
+import { withRouter } from "react-router-dom";
 
-export default class LoginUserAccount extends React.Component {
+class LoginUserAccount extends Component {
 
-    state = {
-        redirect: false
+    constructor(props) {
+        super(props);
+
+        this.login = this.login.bind(this);
     }
 
     login(e) {
@@ -22,26 +24,6 @@ export default class LoginUserAccount extends React.Component {
         });
         var json = JSON.stringify(object);
         console.log(json);
-        //axios({
-        //    method: "post",
-        //    url: "/api/session/create&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0",
-        //    data: json,
-        //    headers: {
-        //        'accept': 'application/json',
-        //        'content-type': 'application/json'
-        //    }
-        //})
-        //    .then((res) => {
-        //        console.log(res);
-        //        swal("Success!", "You have successfully logged in! You will be redirected to the homepage in 1 second.", "success");
-        //        setTimeout(() => {
-        //            this.$router.push("/");
-        //        }, 1000);
-        //    })
-        //    .catch((err) => {
-        //        swal("Error!", "An error has occured. Incorrect username or email and password combination", "error");
-        //        throw err;
-        //    });
 
         let loading = true;
         while (loading) {
@@ -67,10 +49,10 @@ export default class LoginUserAccount extends React.Component {
                     console.log(res);
                     Swal.close()
                     swal("Success!", "You have successfully logged in! You will be redirected to the homepage in 1 second.", "success");
-                    // Need to redirect to homepage
-                    //setTimeout(() => {
-                    //    this.setState({ redirect: true })
-                    //}, 500);
+                    // Redirect to homepage
+                    setTimeout(() => {
+                        this.props.history.push("/");
+                    }, 500);
                 })
                 .catch((err) => {
                     Swal.close()
@@ -84,10 +66,6 @@ export default class LoginUserAccount extends React.Component {
 
 
     render() {
-        const { redirect } = this.state;
-        if (redirect) {
-            return <Redirect to='/' />;
-        }
         return (
             <form
                 id="login"
@@ -111,3 +89,5 @@ export default class LoginUserAccount extends React.Component {
         );
     }
 }
+
+export default withRouter(LoginUserAccount);
