@@ -87,7 +87,11 @@ class CreateUserAccount extends Component {
                     //    showCloseButton: true
                     //})
                     Swal.close();
-                    swal("Error!", "An error has occured.", "error");
+                    swal("Error!", "An error has occured.\nUsername or email already exists " +
+                        "or the password does not meet the following complexity requirements: " +
+                        "\nOne uppercase letter" +
+                        "\nOne lowercase letter" +
+                        "\nOne number digit", "error");
                     throw err;
                 })
             // Exit loading loop

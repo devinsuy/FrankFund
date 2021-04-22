@@ -55,6 +55,10 @@ body, html, .App, #root, .outer {
     transition: all .3s;
 }
 
+.swal-modal .swal-text {
+    text-align: center;
+}
+
 img.logo {
     display: block;
     margin-left: auto;
