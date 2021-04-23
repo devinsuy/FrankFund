@@ -55,9 +55,28 @@ body, html, .App, #root, .outer {
     transition: all .3s;
 }
 
+
+/* Sweet Alert Pop Up CSS */
 .swal-modal .swal-text {
     text-align: center;
 }
+.order-1 {
+    order: 1;
+}
+
+.order-2 {
+    order: 2;
+}
+
+.order-3 {
+    order: 3;
+}
+
+.right-gap {
+    margin-right: auto;
+}
+
+/* Sweet Alert Pop Up CSS End */
 
 img.logo {
     display: block;

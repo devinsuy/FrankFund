@@ -52,6 +52,62 @@ export default class SettingsUserAccount extends Component {
         }
     }
 
+    // Delete will delete the Account from the database and then
+    // will log out the user, then redirect to landing page.
+    deleteAcc(e) {
+        e.preventDefault();
+        Swal.fire({
+            title: 'Are you sure you want to delete your account?',
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: `Yes`,
+            denyButtonText: `No`,
+            customClass: {
+                cancelButton: 'order-1 right-gap',
+                confirmButton: 'order-2',
+                denyButton: 'order-3',
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                let loading = true;
+                while (loading) {
+                    Swal.fire({
+                        title: 'Deleting account...',
+                        allowOutsideClick: false,
+                        onBeforeOpen: () => { Swal.showLoading() },
+                        onAfterClose() {
+                            Swal.hideLoading()
+                        }
+                    });
+                    // Calls axios function to post the JSON data for PATCH request at API endpoint
+                    // Need to add current user state to delete in accID=
+                    axios({
+                        method: "delete",
+                        url: "/api/account/accID=5&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0",
+                        //data: json,
+                        //headers: {
+                        //    'accept': 'application/json',
+                        //    'content-type': 'application/json'
+                        //}
+                    })
+                        .then((res) => {
+                            console.log(res);
+                            Swal.close()
+                            swal("Success!", "Account has successfully been deleted!", "success");
+                        })
+                        .catch((err) => {
+                            swal("Error!", "An error has occured.", "error");
+                            throw err;
+                        })
+                    // Exit loading loop
+                    loading = false;
+                }
+            } else if (result.isDenied) {
+                Swal.fire('Account has not been deleted.', '', 'info')
+            }
+        })
+    }
+
     render() {
         return (
             <form
@@ -80,9 +136,7 @@ export default class SettingsUserAccount extends Component {
                     <input type="password" className="form-control" placeholder="Confirm new password" />
                 </div>
 
-                <ul>
-                    <li>Disable Account and confirmation needed</li>
-                </ul>
+                <center><button onClick={this.deleteAcc} className="btn btn-outline-danger btn-lg btn-block">Delete Account</button></center>
 
                 <button type="submit" className="btn btn-dark btn-lg btn-block">Update</button>
             </form>
