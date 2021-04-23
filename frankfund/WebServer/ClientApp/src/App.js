@@ -16,6 +16,7 @@ import SavingsGoalsLog from "./components/savinggoals/savingsgoalslog.component"
 import ModifyTransaction from './components/updatetransaction.component';
 import DeleteTransaction from './components/deletetransaction.component';
 import ImageUploadDemo from './components/temp/imageuploaddemo.component';
+import DashboardComponent from './components/dashboard.component';
 
 
 function App() {
@@ -63,6 +64,7 @@ function App() {
         <div className="inner">
           <Switch>
             <Route exact path='/' component={LandingComponent} />
+            <Route exact path='/dashboard' component={DashboardComponent} />
             <Route path="/create-user-account" component={CreateUserAccount} />
             <Route path="/account-settings" component={SettingsUserAccount} />
             <Route path="/login" component={LoginComponent} />

@@ -1,5 +1,5 @@
 import React, {Component, useState, useEffect} from "react";
-import { withRouter } from 'react-router';
+import { withRouter } from 'react-router-dom';
 import Goals from '../savinggoals/savingsgoals.component';
 
 class SavingsGoalsLog extends Component{
