@@ -47,6 +47,9 @@ class LoginUserAccount extends Component {
             })
                 .then((res) => {
                     console.log(res);
+                    if (res.data.JWTToken) {
+                        localStorage.setItem("user", JSON.stringify(res.data));
+                    }
                     Swal.close()
                     swal("Success!", "You have successfully logged in! You will be redirected to the homepage in 1 second.", "success");
                     // Redirect to homepage

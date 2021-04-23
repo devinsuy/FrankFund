@@ -8,6 +8,8 @@ using DataAccessLayer.Models;
 using ServiceLayer;
 using System.Text.Json;
 using Newtonsoft.Json;
+using JWT.Builder;
+using JWT.Algorithms;
 
 namespace REST.Controllers
 {
@@ -18,6 +20,7 @@ namespace REST.Controllers
         private readonly SessionService ss;
         private readonly HashSet<string> attributes;
         private readonly HashSet<string> nullableAttrs;
+        const string secret = "GQDstcKsx0NHjPOuXOYg5MbeJ1XT0uFiwDVvVBrk";
 
         public SessionController(ILogger<SessionController> logger)
         {
@@ -28,6 +31,19 @@ namespace REST.Controllers
             {
                 "usernameoremail", "password"
             };
+        }
+
+        private string generateJwtToken(string user)
+        {
+            var token = JwtBuilder.Create()
+                      .WithAlgorithm(new HMACSHA256Algorithm()) // symmetric
+                      .WithSecret(secret)
+                      .AddClaim("exp", DateTimeOffset.UtcNow.AddHours(1).ToUnixTimeSeconds())
+                      .AddClaim("claim2", "claim2-value")
+                      .Encode();
+
+            Console.WriteLine(token);
+            return token;
         }
 
         // ------------------------------ Session GET endpoints ------------------------------
@@ -86,22 +102,22 @@ namespace REST.Controllers
                 return BadRequest("Request body should contain exactly {usernameoremail, password}");
             }
 
-            //Session sess = null;
-            //// Create the Account with the given accID using the POST payload
-            //try
-            //{
-            //    sess = new Session(
-            //            // Removed SessionID out of Session creation because new ID is assigned in SessionService 
-            //            jwtToken: Convert.ToString(req["usernameoremail"]),
-            //            userName: Convert.ToString(req["password"]),
-            //            date: Convert.ToDateTime(req["DateIssued"])
-            //    );
-            //}
-            //catch (Exception e)
-            //{
-            //    Console.WriteLine(e.ToString());
-            //    return BadRequest();
-            //}
+            Session sess = null;
+            // Create the Account with the given accID using the POST payload
+            try
+            {
+                sess = new Session(
+                        // Removed SessionID out of Session creation because new ID is assigned in SessionService 
+                        jwtToken: generateJwtToken(Convert.ToString(req["usernameoremail"])),
+                        userName: Convert.ToString(req["usernameoremail"])
+                        //date: Convert.ToDateTime(req["DateIssued"])
+                );
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                return BadRequest();
+            }
 
             // Calls login function for SessionService
             switch (ss.Login(Convert.ToString(req["usernameoremail"]), Convert.ToString(req["password"])))
@@ -111,9 +127,9 @@ namespace REST.Controllers
                 case 2:
                     return api.serveErrorMsg("Incorrect Password");
                 default:
-                    return new OkObjectResult($"Login session created for {Convert.ToString(req["usernameoremail"])}");
+                    //return new OkObjectResult($"Login session created for {Convert.ToString(req["usernameoremail"])}");
+                    return api.serveJson(ss.getJSON(sess));
             }
-
         }
     }
 }
