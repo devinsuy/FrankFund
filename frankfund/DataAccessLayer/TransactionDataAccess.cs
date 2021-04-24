@@ -60,89 +60,6 @@ namespace DataAccessLayer
             write(serializedTransaction);
         }
 
-        // Returns all transactions with a given user ordered by date entered
-        public BigQueryResults getTransactionsFromAccount(long accID)
-        {
-            string query = "SELECT * FROM FrankFund.Transactions t"
-                + $" WHERE t.accountID = {accID}"
-                + " ORDER BY DateTransactionMade DESC, DateTransactionEntered DESC";
-            return this.dataHelper.query(query, parameters: null);
-        }
-        // Returns all transactions with a given user ordered by date entered
-        public BigQueryResults getTransactionsFromAccount(string username)
-        {
-            string query = "SELECT t.TID, t.AccountID, t.SGID, t.TransactionName, t.Amount, t.DateTransactionMade"
-                + ", t.DateTransactionEntered, t.IsExpense, t.TransactionCategory"
-                + $" FROM {this.tableID} t"
-                + $" INNER JOIN {this.accTable} a"
-                + " ON t.AccountID = a.AccountID"
-                + $" WHERE a.AccountUsername = '{username}'"
-                + " ORDER BY DateTransactionMade DESC, DateTransactionEntered DESC";
-            Console.WriteLine(query);
-            return this.dataHelper.query(query, parameters: null);
-        }
-
-        public BigQueryResults getTransactionsFromAccountCategorySorted(string username) {
-            string query = "SELECT t.TID, t.AccountID, t.SGID, t.TransactionName, t.Amount, t.DateTransactionMade"
-                + ", t.DateTransactionEntered, t.IsExpense, t.TransactionCategory"
-                + $" FROM {this.tableID} t"
-                + $" INNER JOIN {this.accTable} a"
-                + " ON t.AccountID = a.AccountID"
-                + $" WHERE a.AccountUsername = '{username}'"
-                + " ORDER BY t.TransactionCategory DESC, DateTransactionEntered DESC";
-            Console.WriteLine(query);
-            return this.dataHelper.query(query, parameters: null);
-        }
-
-
-        
-
-
-        // Returns all transactions from a user account given a category ordered by date entered
-        public BigQueryResults getTransactionsFromCategory(long accID, string category)
-        {
-            string query = "SELECT * FROM FrankFund.Transactions t"
-                + $" WHERE t.accountID = {accID} AND t.transactionCategory = \"{category}\""
-                + " ORDER BY DateTransactionMade DESC, DateTransactionEntered DESC";
-            return this.dataHelper.query(query, parameters: null);
-        }
-
-        // Returns all transactions from a user account made in the past n days
-        public BigQueryResults SortTransactionsByDays(long accID, int num)
-        {
-            string query = "SELECT * FROM FrankFund.Transactions t"
-                + $" WHERE t.accountID = {accID} AND DateTransactionMade >= DATE_SUB(CURRENT_DATE(), INTERVAL {num} DAY)"
-                + " ORDER BY DateTransactionMade DESC, DateTransactionEntered DESC";
-            return this.dataHelper.query(query, parameters: null);
-        }
-
-        // Returns all transactions from a user account made in the past n weeks
-        public BigQueryResults SortTransactionsByWeeks(long accID, int num)
-        {
-            string query = "SELECT * FROM FrankFund.Transactions t"
-                + $" WHERE t.accountID = {accID} AND DateTransactionMade >= DATE_SUB(CURRENT_DATE(), INTERVAL {num} WEEK)"
-                + " ORDER BY DateTransactionMade DESC, DateTransactionEntered DESC";
-            return this.dataHelper.query(query, parameters: null);
-        }
-
-        // Returns all transactions from a user account made in the past n weeks
-        public BigQueryResults SortTransactionsByMonths(long accID, int num)
-        {
-            string query = "SELECT * FROM FrankFund.Transactions t"
-                + $" WHERE t.accountID = {accID} AND DateTransactionMade >= DATE_SUB(CURRENT_DATE(), INTERVAL {num} MONTH)"
-                + " ORDER BY DateTransactionMade DESC, DateTransactionEntered DESC";
-            return this.dataHelper.query(query, parameters: null);
-        }
-
-        // Returns all transactions from a user account made in the past n years
-        public BigQueryResults SortTransactionsByYear(long accID, int num)
-        {
-            string query = "SELECT * FROM FrankFund.Transactions t"
-                + $" WHERE t.accountID = {accID} AND DateTransactionMade >= DATE_SUB(CURRENT_DATE(), INTERVAL {num} YEAR)"
-                + " ORDER BY DateTransactionMade DESC, DateTransactionEntered DESC";
-            return this.dataHelper.query(query, parameters: null);
-        }
-
         public long getNextAvailID()
         {
             return this.dataHelper.getNextAvailID(this.tableID);
@@ -160,6 +77,157 @@ namespace DataAccessLayer
         public T ParseEnum<T>(string value)
         {
             return this.dataHelper.ParseEnum<T>(value);
+        }
+
+
+        // --------------------------------------  Transaction From Account --------------------------------------
+
+
+        // Returns all transactions with a given user ordered by date entered
+        public BigQueryResults getTransactionsFromAccount(long accID)
+        {
+            string query = "SELECT * FROM FrankFund.Transactions t"
+                + $" WHERE t.accountID = {accID}"
+                + " ORDER BY DateTransactionMade DESC, DateTransactionEntered DESC";
+            return this.dataHelper.query(query, parameters: null);
+        }
+        public BigQueryResults getTransactionsFromAccount(string username)
+        {
+            string query = "SELECT t.TID, t.AccountID, t.SGID, t.TransactionName, t.Amount, t.DateTransactionMade"
+                + ", t.DateTransactionEntered, t.IsExpense, t.TransactionCategory"
+                + $" FROM {this.tableID} t"
+                + $" INNER JOIN {this.accTable} a"
+                + " ON t.AccountID = a.AccountID"
+                + $" WHERE a.AccountUsername = '{username}'"
+                + " ORDER BY DateTransactionMade DESC, DateTransactionEntered DESC";
+            return this.dataHelper.query(query, parameters: null);
+        }
+
+
+        // Returns all transactions from a user accross all categories, sorted by the category attribute
+        public BigQueryResults getAllTransactionsCategorySorted(string username) {
+            string query = "SELECT t.TID, t.AccountID, t.SGID, t.TransactionName, t.Amount, t.DateTransactionMade"
+                + ", t.DateTransactionEntered, t.IsExpense, t.TransactionCategory"
+                + $" FROM {this.tableID} t"
+                + $" INNER JOIN {this.accTable} a"
+                + " ON t.AccountID = a.AccountID"
+                + $" WHERE a.AccountUsername = '{username}'"
+                + " ORDER BY t.TransactionCategory DESC, DateTransactionEntered DESC";
+            return this.dataHelper.query(query, parameters: null);
+        }
+        public BigQueryResults getAllTransactionsCategorySorted(long accID)
+        {
+            string query = "SELECT * FROM FrankFund.Transactions t"
+                + $" WHERE t.accountID = {accID}"
+                + " ORDER BY t.TransactionCategory DESC, DateTransactionEntered DESC";
+            return this.dataHelper.query(query, parameters: null);
+        }
+
+
+        // Returns all transactions from a user account given a category ordered by date entered
+        public BigQueryResults getTransactionsFromCategory(long accID, string category)
+        {
+            string query = "SELECT * FROM FrankFund.Transactions t"
+                + $" WHERE t.accountID = {accID} AND t.transactionCategory = \"{category}\""
+                + " ORDER BY DateTransactionMade DESC, DateTransactionEntered DESC";
+            return this.dataHelper.query(query, parameters: null);
+        }
+        public BigQueryResults getTransactionsFromCategory(string username, string category)
+        {
+            string query = "SELECT t.TID, t.AccountID, t.SGID, t.TransactionName, t.Amount, t.DateTransactionMade"
+                + ", t.DateTransactionEntered, t.IsExpense, t.TransactionCategory"
+                + $" FROM {this.tableID} t"
+                + $" INNER JOIN {this.accTable} a"
+                + " ON t.AccountID = a.AccountID"
+                + $" WHERE a.AccountUsername = '{username}' AND t.TransactionCategory = '{category}'"
+                + " ORDER BY DateTransactionEntered DESC";
+            return this.dataHelper.query(query, parameters: null);
+        }
+
+
+        // --------------------------------------  Transaction From Account Time Period Sorting --------------------------------------
+
+        // Returns all transactions from a user account made in the past n days
+        public BigQueryResults SortTransactionsByDays(long accID, int num)
+        {
+            string query = "SELECT * FROM FrankFund.Transactions t"
+                + $" WHERE t.accountID = {accID} AND DateTransactionMade >= DATE_SUB(CURRENT_DATE(), INTERVAL {num} DAY)"
+                + " ORDER BY DateTransactionMade DESC, DateTransactionEntered DESC";
+            return this.dataHelper.query(query, parameters: null);
+        }
+        public BigQueryResults SortTransactionsByDays(string username, int num)
+        {
+            string query = "SELECT t.TID, t.AccountID, t.SGID, t.TransactionName, t.Amount, t.DateTransactionMade"
+                + ", t.DateTransactionEntered, t.IsExpense, t.TransactionCategory"
+                + $" FROM {this.tableID} t"
+                + $" INNER JOIN {this.accTable} a"
+                + " ON t.AccountID = a.AccountID"
+                + $" WHERE a.AccountUsername = '{username}' AND DateTransactionMade >= DATE_SUB(CURRENT_DATE(), INTERVAL {num} DAY)"
+                + " ORDER BY DateTransactionMade DESC, DateTransactionEntered DESC";
+            return this.dataHelper.query(query, parameters: null);
+        }
+
+
+        // Returns all transactions from a user account made in the past n weeks
+        public BigQueryResults SortTransactionsByWeeks(long accID, int num)
+        {
+            string query = "SELECT * FROM FrankFund.Transactions t"
+                + $" WHERE t.accountID = {accID} AND DateTransactionMade >= DATE_SUB(CURRENT_DATE(), INTERVAL {num} WEEK)"
+                + " ORDER BY DateTransactionMade DESC, DateTransactionEntered DESC";
+            return this.dataHelper.query(query, parameters: null);
+        }
+        public BigQueryResults SortTransactionsByWeeks(string username, int num)
+        {
+            string query = "SELECT t.TID, t.AccountID, t.SGID, t.TransactionName, t.Amount, t.DateTransactionMade"
+                + ", t.DateTransactionEntered, t.IsExpense, t.TransactionCategory"
+                + $" FROM {this.tableID} t"
+                + $" INNER JOIN {this.accTable} a"
+                + " ON t.AccountID = a.AccountID"
+                + $" WHERE a.AccountUsername = '{username}' AND DateTransactionMade >= DATE_SUB(CURRENT_DATE(), INTERVAL {num} WEEK)"
+                + " ORDER BY DateTransactionMade DESC, DateTransactionEntered DESC";
+            return this.dataHelper.query(query, parameters: null);
+        }
+
+
+        // Returns all transactions from a user account made in the past n weeks
+        public BigQueryResults SortTransactionsByMonths(long accID, int num)
+        {
+            string query = "SELECT * FROM FrankFund.Transactions t"
+                + $" WHERE t.accountID = {accID} AND DateTransactionMade >= DATE_SUB(CURRENT_DATE(), INTERVAL {num} MONTH)"
+                + " ORDER BY DateTransactionMade DESC, DateTransactionEntered DESC";
+            return this.dataHelper.query(query, parameters: null);
+        }
+        public BigQueryResults SortTransactionsByMonths(string username, int num)
+        {
+            string query = "SELECT t.TID, t.AccountID, t.SGID, t.TransactionName, t.Amount, t.DateTransactionMade"
+                + ", t.DateTransactionEntered, t.IsExpense, t.TransactionCategory"
+                + $" FROM {this.tableID} t"
+                + $" INNER JOIN {this.accTable} a"
+                + " ON t.AccountID = a.AccountID"
+                + $" WHERE a.AccountUsername = '{username}' AND DateTransactionMade >= DATE_SUB(CURRENT_DATE(), INTERVAL {num} MONTH)"
+                + " ORDER BY DateTransactionMade DESC, DateTransactionEntered DESC";
+            return this.dataHelper.query(query, parameters: null);
+        }
+
+
+        // Returns all transactions from a user account made in the past n years
+        public BigQueryResults SortTransactionsByYear(long accID, int num)
+        {
+            string query = "SELECT * FROM FrankFund.Transactions t"
+                + $" WHERE t.accountID = {accID} AND DateTransactionMade >= DATE_SUB(CURRENT_DATE(), INTERVAL {num} YEAR)"
+                + " ORDER BY DateTransactionMade DESC, DateTransactionEntered DESC";
+            return this.dataHelper.query(query, parameters: null);
+        }
+        public BigQueryResults SortTransactionsByYear(string username, int num)
+        {
+            string query = "SELECT t.TID, t.AccountID, t.SGID, t.TransactionName, t.Amount, t.DateTransactionMade"
+                + ", t.DateTransactionEntered, t.IsExpense, t.TransactionCategory"
+                + $" FROM {this.tableID} t"
+                + $" INNER JOIN {this.accTable} a"
+                + " ON t.AccountID = a.AccountID"
+                + $" WHERE a.AccountUsername = '{username}' AND DateTransactionMade >= DATE_SUB(CURRENT_DATE(), INTERVAL {num} YEAR)"
+                + " ORDER BY DateTransactionMade DESC, DateTransactionEntered DESC";
+            return this.dataHelper.query(query, parameters: null);
         }
     }
 }

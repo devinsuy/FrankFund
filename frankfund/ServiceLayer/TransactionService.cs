@@ -156,7 +156,7 @@ namespace ServiceLayer
         }
 
         /*
-        Returns all transactions that is associated with the given account ID ordered by date entered
+        Returns all transactions that is associated with the given account ordered by date entered
             Params: The User Account ID 
             Returns: A list of Transactions associated with the given ID
          */
@@ -185,7 +185,7 @@ namespace ServiceLayer
 
 
         /*
-        Returns all transactions associated with the given user account ID and sorted by the given category.
+        Returns all transactions associated with the given account and category.
             Params: The User Account ID
                     The category
             Returns: A list of Transactions associated with user account sorted by category
@@ -200,17 +200,10 @@ namespace ServiceLayer
             }
             return transactionsList;
         }
-
-        /*
-        Returns all transactions associated with the given user account ID and sorted by the given category.
-            Params: The User Account ID
-                    The category
-            Returns: A list of Transactions associated with user account sorted by category
-        */
-        public List<Transaction> getTransactionsFromAccountCategorySorted(string username)
+        public List<Transaction> getTransactionsFromCategory(string username, string category)
         {
             List<Transaction> transactionsList = new List<Transaction>();
-            foreach (BigQueryRow row in this.TransactionDataAccess.getTransactionsFromAccountCategorySorted(username))
+            foreach (BigQueryRow row in this.TransactionDataAccess.getTransactionsFromCategory(username, category))
             {
                 Transaction transaction = reinstantiate(row);
                 transactionsList.Add(transaction);
@@ -219,7 +212,34 @@ namespace ServiceLayer
         }
 
         /*
-        Returns all transactions associated with a user account ID that was made within X amount of time.
+        Returns all transactions associated with the given account and sorted by category (returns transactions from all categories).
+            Params: The User Account ID
+                    The category
+            Returns: A list of Transactions associated with user account sorted by category
+        */
+        public List<Transaction> getAllTransactionsCategorySorted(string username)
+        {
+            List<Transaction> transactionsList = new List<Transaction>();
+            foreach (BigQueryRow row in this.TransactionDataAccess.getAllTransactionsCategorySorted(username))
+            {
+                Transaction transaction = reinstantiate(row);
+                transactionsList.Add(transaction);
+            }
+            return transactionsList;
+        }
+        public List<Transaction> getAllTransactionsCategorySorted(long accID)
+        {
+            List<Transaction> transactionsList = new List<Transaction>();
+            foreach (BigQueryRow row in this.TransactionDataAccess.getAllTransactionsCategorySorted(accID))
+            {
+                Transaction transaction = reinstantiate(row);
+                transactionsList.Add(transaction);
+            }
+            return transactionsList;
+        }
+
+        /*
+        Returns all transactions associated with a user account that was made within X amount of time.
             Params: The User Account ID
                     The number of days, weeks, months, or years
                     The choice of sorting; 0 = days, 1 = weeks, 2 = months, 3 = years.
@@ -265,6 +285,48 @@ namespace ServiceLayer
             }
             return transactionsList;
         }
+        public List<Transaction> getSortedTransactionsByTime(string username, int num, int choice)
+        {
+            List<Transaction> transactionsList = new List<Transaction>();
+            switch (choice)
+            {
+                //day
+                case 0:
+                    foreach (BigQueryRow row in this.TransactionDataAccess.SortTransactionsByDays(username, num))
+                    {
+                        Transaction transaction = reinstantiate(row);
+                        transactionsList.Add(transaction);
+                    }
+                    break;
+                //week
+                case 1:
+                    foreach (BigQueryRow row in this.TransactionDataAccess.SortTransactionsByWeeks(username, num))
+                    {
+                        Transaction transaction = reinstantiate(row);
+                        transactionsList.Add(transaction);
+                    }
+                    break;
+                //month
+                case 2:
+                    foreach (BigQueryRow row in this.TransactionDataAccess.SortTransactionsByMonths(username, num))
+                    {
+                        Transaction transaction = reinstantiate(row);
+                        transactionsList.Add(transaction);
+                    }
+                    break;
+                //year
+                case 3:
+                    foreach (BigQueryRow row in this.TransactionDataAccess.SortTransactionsByYear(username, num))
+                    {
+                        Transaction transaction = reinstantiate(row);
+                        transactionsList.Add(transaction);
+                    }
+                    break;
+            }
+            return transactionsList;
+        }
+
+
 
         /* Cast a category string to transactionCategory enum
             Params: The category string to cast
