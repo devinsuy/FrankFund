@@ -16,6 +16,10 @@ Requests must specify the header **Content-Type: application/json**
 
 [Receipts](#receipts)
 
+[User Transactions](#usertransactions)
+
+[User SavingsGoals](#usersavingsgoals)
+
 ---
 
 # Authentication
@@ -52,7 +56,7 @@ followed immediately by your issued developer API key
 
 # SavingsGoals
 
-```[GET] https://frankfund.appspot.com/api/SavingsGoal/SGID={SGID}&apikey={apikey})```
+```[GET] /api/SavingsGoal/SGID={SGID}&apikey={apikey}```
 
 Serves JSON response of the SavingsGoal data with the given SavingsGoalID.  
 Returns **HTTP 204 No Content** if no SavingsGoal exists with the given SGID.
@@ -62,7 +66,7 @@ Returns **HTTP 204 No Content** if no SavingsGoal exists with the given SGID.
 
 ---
 
-```[POST] https://frankfund.appspot.com/api/SavingsGoal&apikey={apikey})```
+```[POST] /api/SavingsGoal&apikey={apikey}```
 
 Creates a new SavingsGoal with the next available SGID and JSON request payload. 
 Request returns **HTTP 200 OK** with a JSON containing all attributes of the newly created SavingsGoal.
@@ -85,7 +89,7 @@ Create a **SavingsGoal by date**, system will dynamically calculate { ContrAmt, 
 
 ---
 
-```[POST] https://frankfund.appspot.com/api/SavingsGoal/SGID={SGID}&apikey={apikey})```
+```[POST] /api/SavingsGoal/SGID={SGID}&apikey={apikey}```
 
 Creates a new SavingsGoal with the given SavingsGoalID and JSON request payload. 
 
@@ -121,7 +125,7 @@ Create a **SavingsGoal by allotted contribution**, system will dynamically calcu
 
 ---
 
-```[DELETE] https://frankfund.appspot.com/api/SavingsGoal/SGID={SGID}&apikey={apikey})```
+```[DELETE] /api/SavingsGoal/SGID={SGID}&apikey={apikey}```
 
 Delete the SavingsGoal with the given SGID, has no effect it no SavingsGoal exists with the given SGID.
 
@@ -130,7 +134,7 @@ Delete the SavingsGoal with the given SGID, has no effect it no SavingsGoal exis
 
 ---
 
-```[PATCH] https://frankfund.appspot.com/api/SavingsGoal/SGID={SGID}&apikey={apikey})```
+```[PATCH] /api/SavingsGoal/SGID={SGID}&apikey={apikey}```
 
 For updating parameters **Name, Period, EndDate**:
 - Updates a **single attribute** of the SavingsGoal with the given SGID and dynamically recalculate the remaining parameters to reflect the change applies. 
@@ -181,7 +185,7 @@ PATCH request with the above JSON request body will update the ContrAmt per BiWe
 ---
 
 # UserAccounts
-```[POST] https://frankfund.appspot.com/api/account/create&apikey={apikey})```
+```[POST] /api/account/create&apikey={apikey}```
 
 Create a new UserAccount with the specified JSON request payload. Request payload must specify the attributes: **{ AccountUsername, EmailAddress, Password }**, otherwise returns **HTTP 400 Bad Request**. AccountID is automatically assigned as the next available ID.
 
@@ -201,105 +205,43 @@ Returns **HTTP 409 Conflict** if:
 ```
 ---
 
+```[GET] /api/account/accID={accID}&apikey={apikey}```
 
-```[GET] https://frankfund.appspot.com/api/account/accID={accID}&apikey={apikey})```
+```[GET] /api/account/user={user}&apikey={apikey}```
 
-Serves JSON response of the UserAccount data with the given AccountID
+```[GET] /api/account/email={email}&apikey={apikey}```
+
+
+Serves JSON response of the associated UserAccount data.
 Returns **HTTP 204 No Content** if no UserAccount exists with the given accID.
 
 **Example Request:** 
 ```HTTP GET https://frankfund.appspot.com/api/account/accID=1&apikey=f2f1178729cb2e1c9188ed847066743c4e843a21```
 
----
-
-```[GET] https://frankfund.appspot.com/api/account/user={user}&apikey={apikey})```
-
-Serves JSON response of the UserAccount data with the given Username
-Returns **HTTP 204 No Content** if no UserAccount exists with the given Username.
-
-**Example Request:** 
 ```HTTP GET https://frankfund.appspot.com/api/account/user=Devin&apikey=f2f1178729cb2e1c9188ed847066743c4e843a21```
 
----
-
-```[GET] https://frankfund.appspot.com/api/account/email={email}&apikey={apikey})```
-
-Serves JSON response of the UserAccount data with the given EmailAddress
-Returns **HTTP 204 No Content** if no UserAccount exists with the given EmailAddress.
-
-**Example Request:** 
 ```HTTP GET https://frankfund.appspot.com/api/account/email=DevinSuy@gmail.com&apikey=f2f1178729cb2e1c9188ed847066743c4e843a21```
 
 ---
 
-```[DELETE] https://frankfund.appspot.com/api/account/accID={accID}&apikey={apikey})```
+```[DELETE] /api/account/accID={accID}&apikey={apikey}```
 
-Delete the UserAccount with the given AccountID, has no effect if no account exists with the given accID.
+```[DELETE] /api/account/user={user}&apikey={apikey}```
+
+```[DELETE] /api/account/email={email}&apikey={apikey}```
+
+Delete the UserAccount with the given identifier, has no effect if no account exists with the given accID.
 
 **Example Request:** 
 ```HTTP DELETE https://frankfund.appspot.com/api/account/accID=1&apikey=f2f1178729cb2e1c9188ed847066743c4e843a21```
 
----
+```HTTP DELETE https://frankfund.appspot.com/api/account/user=DevinSuy&apikey=f2f1178729cb2e1c9188ed847066743c4e843a21```
 
-```[DELETE] https://frankfund.appspot.com/api/account/user={user}&apikey={apikey})```
-
-Delete the UserAccount with the given Username, has no effect if no account exists with the given Username.
-
-**Example Request:** 
-```HTTP DELETE https://frankfund.appspot.com/api/account/user=Devin&apikey=f2f1178729cb2e1c9188ed847066743c4e843a21```
-
----
-
-```[DELETE] https://frankfund.appspot.com/api/account/email={email}&apikey={apikey})```
-
-Delete the UserAccount with the given Email, has no effect if no account exists with the given Email.
-
-**Example Request:** 
 ```HTTP DELETE https://frankfund.appspot.com/api/account/email=DevinSuy@gmail.com&apikey=f2f1178729cb2e1c9188ed847066743c4e843a21```
 
 ---
 
-```[GET] https://frankfund.appspot.com/api/account/accID={accID}/SavingsGoals&apikey={apikey})```
-
-Serves JSON response of all the SavingsGoals associated with the UserAccount with the given accID
-Returns **HTTP 204 No Content** if no SavingsGoals exists with the given UserAccount or no UserAccount exists with the given accID.
-
-**Example Request:** 
-```HTTP GET https://frankfund.appspot.com/api/account/accID=2/SavingsGoals&apikey=f2f1178729cb2e1c9188ed847066743c4e843a21```
-
----
-
-```[GET] https://frankfund.appspot.com/api/account/user={user}/SavingsGoals&apikey={apikey})```
-
-Serves JSON response of all the SavingsGoals associated with the UserAccount with the given Username
-Returns **HTTP 204 No Content** if no SavingsGoals exists with the given UserAccount or no UserAccount exists with the given Username.
-
-**Example Request:** 
-```HTTP GET https://frankfund.appspot.com/api/account/user=Devin/SavingsGoals&apikey=f2f1178729cb2e1c9188ed847066743c4e843a21```
-
----
-
-```[GET] https://frankfund.appspot.com/api/account/accID={accID}/SavingsGoals&apikey={apikey})```
-
-Serves JSON response of all the Transactions associated with the UserAccount with the given AccountID
-Returns **HTTP 204 No Content** if no Transactions exists with the given UserAccount or no UserAccount exists with the given AccountID.
-
-**Example Request:** 
-```HTTP GET https://frankfund.appspot.com/api/account/accID=2/Transactions&apikey=f2f1178729cb2e1c9188ed847066743c4e843a21```
-
----
-
-```[GET] https://frankfund.appspot.com/api/account/user={user}/SavingsGoals&apikey={apikey})```
-
-Serves JSON response of all the Transactions associated with the UserAccount with the given Username
-Returns **HTTP 204 No Content** if no Transactions exists with the given UserAccount or no UserAccount exists with the given Username.
-
-**Example Request:** 
-```HTTP GET https://frankfund.appspot.com/api/account/user=Devin/Transactions&apikey=f2f1178729cb2e1c9188ed847066743c4e843a21```
-
----
-
-```[PATCH] https://frankfund.appspot.com/api/account/accID={accID}&apikey={apikey})```
+```[PATCH] /api/account/accID={accID}&apikey={apikey}```
 
 Update an existing User Account with the specified AccountID, data payload **does not need to specify all attributes**. Any number of attributes can be specified simultaneously to update the User Account.
 
@@ -328,7 +270,7 @@ PATCH request with this request body will update just the AccountUsername of the
 
 ---
 
-```[PATCH] https://frankfund.appspot.com/api/account/user={user}&apikey={apikey})```
+```[PATCH] /api/account/user={user}&apikey={apikey}```
 
 Update an existing User Account with the specified AccountID, data payload **does not need to specify all attributes**. Any number of attributes can be specified simultaneously to update the User Account.
 
@@ -337,7 +279,7 @@ Returns **HTTP 404 Not Found** if no User Account exists with the given accID.
 Request returns **HTTP 200 OK** with a JSON containing all attributes of the newly updated UserAccount.
 
 **Example Requests:**
-```https://frankfund.appspot.com/api/account/user=Devin&apikey=f2f1178729cb2e1c9188ed847066743c4e843a21```
+```https://frankfund.appspot.com/api/account/user=DevinSuy&apikey=f2f1178729cb2e1c9188ed847066743c4e843a21```
 
 
 ```json
@@ -356,7 +298,7 @@ PATCH request with this request body will update just the Password of the existi
 
 
 # Transactions
-```[GET] https://frankfund.appspot.com/api/Transaction/TID={TID}&apikey={apikey})```
+```[GET] /api/Transaction/TID={TID}&apikey={apikey}```
 
 Serves JSON response of the Transaction data with the given TransactionID.
 Returns **HTTP 204 No Content** if no Transaction exists with the given TID.
@@ -366,7 +308,7 @@ Returns **HTTP 204 No Content** if no Transaction exists with the given TID.
 
 ---
 
-```[POST] https://frankfund.appspot.com/api/Transaction&apikey={apikey})```
+```[POST] /api/Transaction&apikey={apikey}```
 
 Create a new Transaction with the next available TID and the JSON request payload. Request payload must specify **all attributes except DateTransactionEntered**, otherwise returns **HTTP 400 Bad Request**.
 
@@ -389,7 +331,7 @@ Request returns **HTTP 200 OK** with a JSON containing all attributes of the new
 ---
 
 
-```[POST] https://frankfund.appspot.com/api/Transaction/TID={TID}&apikey={apikey})```
+```[POST] /api/Transaction/TID={TID}&apikey={apikey}```
 
 Create a new Transaction with the specified TransactionID and JSON request payload. Request payload must specify **all attributes except DateTransactionEntered**, otherwise returns **HTTP 400 Bad Request**.
 
@@ -414,7 +356,7 @@ Request returns **HTTP 200 OK** with a JSON containing all attributes of the new
 
 ---
 
-```[DELETE] https://frankfund.appspot.com/api/Transaction/TID={TID}&apikey={apikey})```
+```[DELETE] /api/Transaction/TID={TID}&apikey={apikey}```
 
 Delete a Transaction with the specified TramsactopmID, has no effect if no Transaction exists with the given TID.
 
@@ -423,7 +365,7 @@ Delete a Transaction with the specified TramsactopmID, has no effect if no Trans
 
 ---
 
-```[PUT] https://frankfund.appspot.com/api/Transaction/TID={TID}&apikey={apikey})```
+```[PUT] /api/Transaction/TID={TID}&apikey={apikey}```
 
 Update or create a new Transaction with the specified TID and data payload.
 
@@ -460,7 +402,7 @@ Otherwise if a Transaction with the given TID **already exists** request will up
 
 ---
 
-```[PATCH] https://frankfund.appspot.com/api/Transaction/TID={TID}&apikey={apikey})```
+```[PATCH] /api/Transaction/TID={TID}&apikey={apikey}```
 
 Update an existing Transaction with the specified TransactionID, data payload **does not need to specify all attributes**. Any number of attributes can be specified simultaneously to update the Transaction.
 
@@ -490,7 +432,7 @@ PATCH request with this request body will update **both the TransactionName and 
 
 # Receipts
 
-```[GET] https://frankfund.appspot.com/api/Receipt/RID={RID}&apikey={apikey})```
+```[GET] /api/Receipt/RID={RID}&apikey={apikey}```
 
 Serves JSON response of the Receipt data with the given ReceiptID
 Returns **HTTP 204 No Content** if no Receipt exists with the given RID.
@@ -500,7 +442,7 @@ Returns **HTTP 204 No Content** if no Receipt exists with the given RID.
 
 ---
 
-```[POST] https://frankfund.appspot.com/api/Receipt&apikey={apikey})```
+```[POST] /api/Receipt&apikey={apikey}```
 
 Create a new Receipt with the next available RID and JSON request payload. Request payload must specify **ALL attributes** to create a new Receipt, returns **HTTP 400 Bad Request** otherwise. 
 
@@ -518,10 +460,9 @@ Request returns **HTTP 200 OK** with a JSON containing all attributes of the new
 }
 ```
 
-
 ---
 
-```[POST] https://frankfund.appspot.com/api/Receipt/RID={RID}&apikey={apikey})```
+```[POST] /api/Receipt/RID={RID}&apikey={apikey}```
 
 Create a new Receipt with the specified ReceiptID and JSON request payload. Request payload must specify **ALL attributes** to create a new Receipt, returns **HTTP 400 Bad Request** otherwise.
 
@@ -542,7 +483,7 @@ Request returns **HTTP 200 OK** with a JSON containing all attributes of the new
 ```
 ---
 
-```[DELETE] https://frankfund.appspot.com/api/Receipt/RID={TID}&apikey={apikey})```
+```[DELETE] /api/Receipt/RID={TID}&apikey={apikey}```
 
 Delete a Receipt with the specified RID, has no effect if no Receipt exists with the given RID.
 
@@ -551,7 +492,7 @@ Delete a Receipt with the specified RID, has no effect if no Receipt exists with
 
 ---
 
-```[PUT] https://frankfund.appspot.com/api/Receipt/RID={RID}&apikey={apikey})```
+```[PUT] /api/Receipt/RID={RID}&apikey={apikey}```
 
 Update or create a new Receipt with the specified RID and data payload. Request payload must specify **ALL attributes** to create or update the Receipt.
 
@@ -573,7 +514,7 @@ Request returns **HTTP 200 OK** with a JSON containing all attributes of the new
 
 ---
 
-```[PATCH] https://frankfund.appspot.com/api/Receipt/RID={RID}&apikey={apikey})```
+```[PATCH] /api/Receipt/RID={RID}&apikey={apikey}```
 
 Update an existing Receipt with the specified ReceiptID, request data payload **does not need to specify all attributes**.  Any number of attributes can be specified and simultaneously updated for the Receipt.
 
@@ -596,3 +537,113 @@ PATCH request with this request body will update **just the ImgURL parameter** o
 }
 ```
 PATCH request with this request body will update **both the ImgURL and Notes parameters** of the existing receipt.
+
+---
+
+
+# UserTransactions
+
+```[GET] /api/account/user={user}/Transactions&apikey={apikey}```
+
+```[GET] /api/account/accID={accID}/Transactions&apikey={apikey}```
+
+Serves JSON response of all the Transactions associated with the given UserAccount.
+Returns **HTTP 204 No Content** if no Transactions exists with the given UserAccount or no UserAccount exists with the given Username.
+
+
+**Example Requests:** 
+```HTTP GET https://frankfund.appspot.com/api/account/user=DevinSuy/Transactions&apikey=f2f1178729cb2e1c9188ed847066743c4e843a21```
+
+```HTTP GET https://frankfund.appspot.com/api/account/accID=4/Transactions&apikey=f2f1178729cb2e1c9188ed847066743c4e843a21```
+
+---
+
+```[GET] /api/account/user={user}/Transactions/Filter/ByCategory={category}&apikey={apikey}```
+
+```[GET] /api/account/accID={accID}/Transactions/Filter/ByCategory={category}&apikey={apikey}```
+
+Serves JSON response of all the Transactions associated with the given UserAccount filtered down to only those that are labeled with the given category. 
+
+**Transaction Categories**: 
+-  Entertainment
+-  Restaurants
+-  Transportation
+-  HomeAndUtilities
+-  Education 
+-  Insurance 
+-  Health 
+-  Groceries
+-  Deposits
+-  Shopping 
+- Uncategorized
+
+Returns **HTTP 204 No Content** if no Transactions exists with the given UserAccount or no query results.
+
+**Example Requests:** 
+```HTTP GET https://frankfund.appspot.com/api/account/user=DevinSuy/Transactions/Filter/ByCategory=Entertainment&apikey=f2f1178729cb2e1c9188ed847066743c4e843a21```
+
+```HTTP GET https://frankfund.appspot.com/api/account/accID=4/Transactions/Filter/ByCategory=Education&apikey=f2f1178729cb2e1c9188ed847066743c4e843a21```
+
+---
+
+```[GET] /api/account/user={user}/Transactions/Filter/ByTime/num={num}&periodCode={periodCode}&apikey={apikey}```
+
+```[GET] /api/account/accID={accID}/Transactions/Filter/ByTime/num={num}&periodCode={periodCode}&apikey={apikey}```
+
+Serves JSON response of all the Transactions associated with the given UserAccount filtered down to only those within the last **{ num } { periodCode }**. 
+
+**Period Codes**:
+- 0 : days
+- 1 : weeks
+- 2 : months
+- 3 : years
+
+**Example Requests:** 
+
+```HTTP GET https://frankfund.appspot.com/api/account/user=KennethTran/Transactions/Filter/ByTime/num=75&periodCode=0&apikey=f2f1178729cb2e1c9188ed847066743c4e843a21```
+
+Filter user's transactions to those made in the **last 75 days**.
+
+```HTTP GET https://frankfund.appspot.com/api/account/accID=4/Transactions/Filter/ByTime/num=4&periodCode=2&apikey=f2f1178729cb2e1c9188ed847066743c4e843a21```
+
+Filter user's transactions to those made in the **last 4 months**.
+
+---
+
+```[GET] /api/account/user={user}/Transactions/Sorted/ByCategory&apikey={apikey}```
+
+```[GET] /api/account/accID={accID}/Transactions/Sorted/ByCategory&apikey={apikey}```
+
+Retrieve **all** transactions associated with the UserAccount, **sorted by the TransactionCategory** attribute.
+
+**Example Requests:** 
+
+```HTTP GET https://frankfund.appspot.com/api/account/user=KennethTran/Transactions/Sorted/ByCategory&apikey=f2f1178729cb2e1c9188ed847066743c4e843a21```
+
+
+```HTTP GET https://frankfund.appspot.com/api/account/accID=4/Transactions/Sorted/ByCategory&apikey=f2f1178729cb2e1c9188ed847066743c4e843a21```
+
+
+---
+
+# UserSavingsGoals
+
+```[GET] /api/account/accID={accID}/SavingsGoals&apikey={apikey}```
+
+Serves JSON response of all the SavingsGoals associated with the UserAccount with the given accID
+Returns **HTTP 204 No Content** if no SavingsGoals exists with the given UserAccount or no UserAccount exists with the given accID.
+
+**Example Request:** 
+```HTTP GET https://frankfund.appspot.com/api/account/accID=2/SavingsGoals&apikey=f2f1178729cb2e1c9188ed847066743c4e843a21```
+
+---
+
+```[GET] /api/account/user={user}/SavingsGoals&apikey={apikey}```
+
+Serves JSON response of all the SavingsGoals associated with the UserAccount with the given Username
+Returns **HTTP 204 No Content** if no SavingsGoals exists with the given UserAccount or no UserAccount exists with the given Username.
+
+**Example Request:** 
+```HTTP GET https://frankfund.appspot.com/api/account/user=DevinSuy/SavingsGoals&apikey=f2f1178729cb2e1c9188ed847066743c4e843a21```
+
+---
