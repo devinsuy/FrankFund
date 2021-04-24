@@ -51,7 +51,7 @@ namespace REST.Controllers
         // Serve all Transactions associated with a given account, returns only transactions with
         // the specified category
         // returns Http 204 NoContent if doesn't exist
-        [Route("api/account/user={user}/Transactions/Filter/WithCategory={category}&apikey={apikey}")]
+        [Route("api/account/user={user}/Transactions/Filter/ByCategory={category}&apikey={apikey}")]
         [HttpGet]
         public IActionResult GetAllTransactionsCategorySorted(string user, string category, string apikey)
         {
@@ -61,7 +61,7 @@ namespace REST.Controllers
             }
             return api.serveJson(ts.getJSON(ts.getTransactionsFromCategory(user, category)));
         }
-        [Route("api/account/accID={accID}/Transactions/Filter/WithCategory={category}&apikey={apikey}")]
+        [Route("api/account/accID={accID}/Transactions/Filter/ByCategory={category}&apikey={apikey}")]
         [HttpGet]
         public IActionResult GetAllTransactionsCategorySorted(long accID, string category, string apikey)
         {
