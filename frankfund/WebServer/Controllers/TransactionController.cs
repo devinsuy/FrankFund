@@ -33,6 +33,7 @@ namespace REST.Controllers
                 "IsExpense", "TransactionCategory"
             };
 
+
             // Attributes that should be specified in request payload if updating an EXISTING transaction
             updateAttr = new HashSet<string>
             {
@@ -40,6 +41,7 @@ namespace REST.Controllers
                 "DateTransactionEntered", "IsExpense", "TransactionCategory"
             };
         }
+        
 
         // Retrieve a transaction with the given TID,
         // returns Http 204 NoContent if doesn't exist
@@ -69,7 +71,7 @@ namespace REST.Controllers
             }
             if (TID < 1)
             {
-                return BadRequest();
+                return BadRequest("Invalid TID");
             }
             ts.delete(TID);
             return new OkResult();
@@ -88,7 +90,7 @@ namespace REST.Controllers
             }
             if (TID < 1)
             {
-                return BadRequest();
+                return BadRequest("Invalid TID");
             }
 
             // Validate that the POST request contains all necessary attributes to create a NEW transaction and nothing more
@@ -97,14 +99,17 @@ namespace REST.Controllers
 
             if (!reqAttributes.SetEquals(createAttr))
             {
-                return BadRequest();
+                return BadRequest(
+                    "Invalid attribute(s) in request body, expected exactly: { SGID, AccountID, TransactionName, " +
+                    "Amount, DateTransactionMade, IsExpense, TransactionCategory } to create a new Transaction"
+                );
             }
 
             // POST should be used only to create a new Transaction, not allowed if Transaction with given TID already exists
             Transaction t = ts.getUsingID(TID);
             if(t != null)
             {
-                return Conflict();
+                return Conflict($"A Transaction already exists with TID {TID}");
             }
 
             // Create the transaction with the given TID using the POST payload
@@ -154,7 +159,7 @@ namespace REST.Controllers
             }
             if (TID < 1)
             {
-                return BadRequest();
+                return BadRequest("Invalid TID");
             }
 
             Dictionary<string, object> req = JsonConvert.DeserializeObject<Dictionary<string, object>>(Convert.ToString(reqBody));
@@ -167,7 +172,10 @@ namespace REST.Controllers
                 // PUT requires request to provide key,value pairs for EVERY Transaction attribute except dateTransactionEntered
                 if (!reqAttributes.SetEquals(createAttr))
                 {
-                    return BadRequest();
+                    return BadRequest(
+                        "Invalid attribute(s) in request body, expected exactly: { SGID, AccountID, TransactionName, " +
+                        "Amount, DateTransactionMade, IsExpense, TransactionCategory } to create a new Transaction"
+                    );
                 }
                 try
                 {
@@ -199,7 +207,10 @@ namespace REST.Controllers
                 // HTTP PUT request to update an EXISTING transaction requires ALL fields of the transaction to be specified
                 if(!reqAttributes.SetEquals(updateAttr))
                 {
-                    return BadRequest();
+                    return BadRequest(
+                        "Invalid attribute(s) in request body, expected exactly: { SGID, AccountID, TransactionName, Amount, " +
+                        "DateTransactionMade, DateTransactionEntered, IsExpense, TransactionCategory } to update the Transaction"
+                    );
                 }
 
                 // TID and AccountID are never modifiable
@@ -240,7 +251,7 @@ namespace REST.Controllers
             }
             if (TID < 1)
             {
-                return BadRequest();
+                return BadRequest("Invalid TID");
             }
 
             // Validate the attributes of the PATCH request, each attribute specified
@@ -249,14 +260,14 @@ namespace REST.Controllers
             HashSet<string> reqAttributes = new HashSet<string>(req.Keys);
             if (!api.validAttributes(updateAttr, reqAttributes))
             {
-                return BadRequest();
+                return BadRequest("Invalid attribute(s) in request body");
             }
             Transaction t = ts.getUsingID(TID);
 
             // Http POST cannot update a transaction that does not exist
             if (t == null)
             {
-                return NotFound();
+                return NotFound("Cannot update a Transaction that does not exist!");
             }
 
             // Otherwise fufill the POST request and update the corresponding transaction

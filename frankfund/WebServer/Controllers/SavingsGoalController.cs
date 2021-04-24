@@ -71,7 +71,7 @@ namespace REST.Controllers
                 return new UnauthorizedObjectResult("Invalid API key");
             }   
             if(SGID < 1) {
-                return BadRequest();
+                return BadRequest("Invalid SGID specified");
             }
             return api.serveJson(sgs.getJSON(sgs.getUsingID(SGID)));
         }
@@ -88,7 +88,7 @@ namespace REST.Controllers
             }
             if (SGID < 1)
             {
-                return BadRequest();
+                return BadRequest("Invalid SGID specified");
             }
             sgs.delete(SGID);
             return new OkResult();
@@ -107,7 +107,7 @@ namespace REST.Controllers
             }
             if (SGID < 1)
             {
-                return BadRequest();
+                return BadRequest("Invalid SGID specified");
             }
 
             // Validate that the POST request contains all necessary attributes to create a NEW SavingsGoal and nothing more
@@ -117,14 +117,14 @@ namespace REST.Controllers
             bool createByContr = reqAttributes.SetEquals(createContrAttrs);
             if (!createByDate && !createByContr)
             {
-                return BadRequest();
+                return BadRequest("Invalid attribute(s) in request body");
             }
 
             // POST should be used only to create a new SavingsGoal, not allowed if SavingsGoal with given SGID already exists
             SavingsGoal s = sgs.getUsingID(SGID);
             if (s != null)
             {
-                return Conflict();
+                return Conflict($"A SavingsGoal already exists with SGID {SGID}");
             }
 
             // Create the SavingsGoal with the given SGID using the POST payload
@@ -192,7 +192,7 @@ namespace REST.Controllers
             }
             if (SGID < 1)
             {
-                return BadRequest();
+                return BadRequest("Invalid SGID specified");
             }
 
             // Validate the attributes of the PATCH request, each attribute specified
@@ -201,7 +201,7 @@ namespace REST.Controllers
             HashSet<string> reqAttributes = new HashSet<string>(req.Keys);
             if (!api.validAttributes(updateableAttrs, reqAttributes))
             {
-                return BadRequest();
+                return BadRequest("Invalid attribute(s) in request body");
             }
 
             SavingsGoal s = sgs.getUsingID(SGID);
@@ -209,7 +209,7 @@ namespace REST.Controllers
             // Http PATCH cannot update a SavingsGoal that does not exist
             if (s == null)
             {
-                return NotFound();
+                return NotFound("Cannot update a SavingsGoal that does not exist!");
             }
 
             // PATCH request body should pass no more than a single attribute unless:
@@ -223,7 +223,7 @@ namespace REST.Controllers
                     // Updating Goal Amount must also specify ExtendDate
                     if (!reqAttributes.SetEquals(updateGoalAmt))
                     {
-                        return BadRequest();
+                        return BadRequest("Invalid attribute(s) in request body, expected exactly { GoalAmt, ExtendDate }");
                     }
                     s.updateGoalAmt(Convert.ToDecimal(req["GoalAmt"]), Convert.ToBoolean(req["ExtendDate"]));
                 }
@@ -234,7 +234,7 @@ namespace REST.Controllers
                     {
                         if (!reqAttributes.SetEquals(updateContrAmt))
                         {
-                            return BadRequest();
+                            return BadRequest("Invalid attribute(s) in request body, expected exactly { ContrAmt, Period }");
                         }
                         s.updateContrAmtAndPeriod(Convert.ToDecimal(req["ContrAmt"]), sgs.castPeriod(Convert.ToString(req["Period"])));
                     }
@@ -249,7 +249,7 @@ namespace REST.Controllers
                 {
                     if (reqAttributes.Count != 1)
                     {
-                        return BadRequest();
+                        return BadRequest("Invalid attribute(s) in request body, expected only one of the following: { Name, Period, EndDate }");
                     }
                     if (reqAttributes.Contains("Name"))
                     {

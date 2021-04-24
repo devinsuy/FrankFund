@@ -45,7 +45,7 @@ namespace REST.Controllers
 
             if (RID < 1)
             {
-                return BadRequest();
+                return BadRequest("Invalid Receipt ID");
             }
 
             return api.serveJson(rs.getJSON(rs.getUsingID(RID)));
@@ -63,7 +63,7 @@ namespace REST.Controllers
             }
             if (RID < 1)
             {
-                return BadRequest();
+                return BadRequest("Invalid Receipt ID");
             }
             rs.delete(RID);
             return new OkResult();
@@ -82,7 +82,7 @@ namespace REST.Controllers
             }
             if (RID < 1)
             {
-                return BadRequest();
+                return BadRequest("Invalid Receipt ID");
             }
 
             // Validate that the POST request contains all necessary attributes to create a NEW Receipt and nothing more
@@ -90,14 +90,14 @@ namespace REST.Controllers
             HashSet<string> reqAttributes = new HashSet<string>(req.Keys);
             if (!reqAttributes.SetEquals(attributes))
             {
-                return BadRequest();
+                return BadRequest("Invalid attribute(s) in request body, expected exactly { TID, ImgURL, PurchaseDate, Notes }");
             }
 
             // POST should be used only to create a new Receipt, not allowed if Receipt with given RID already exists
             Receipt r = rs.getUsingID(RID);
             if (r != null)
             {
-                return Conflict();
+                return Conflict($"A receipt already exists with RID {RID}");
             }
 
             // Create the Receipt with the given RID using the POST payload
@@ -145,7 +145,7 @@ namespace REST.Controllers
             }
             if (RID < 1)
             {
-                return BadRequest();
+                return BadRequest("Invalid Receipt ID");
             }
 
             Dictionary<string, object> req = JsonConvert.DeserializeObject<Dictionary<string, object>>(Convert.ToString(reqBody));
@@ -158,7 +158,7 @@ namespace REST.Controllers
                 // PUT requires request to provide key,value pairs for EVERY Receipt attribute 
                 if (!reqAttributes.SetEquals(attributes))
                 {
-                    return BadRequest();
+                    return BadRequest("Invalid attribute(s) in request body, expected exactly { TID, ImgURL, PurchaseDate, Notes }");
                 }
                 try
                 {
@@ -188,7 +188,7 @@ namespace REST.Controllers
                 // HTTP PUT request to update an EXISTING Receipt requires ALL fields of the Reciept to be specified
                 if (!reqAttributes.SetEquals(attributes))
                 {
-                    return BadRequest();
+                    return BadRequest("Invalid attribute(s) in request body, expected exactly { TID, ImgURL, PurchaseDate, Notes }");
                 }
 
                 // TID is never modifiable
@@ -225,7 +225,7 @@ namespace REST.Controllers
             }
             if (RID < 1)
             {
-                return BadRequest();
+                return BadRequest("Invalid Receipt ID");
             }
 
             // Validate the attributes of the PATCH request, each attribute specified
@@ -242,7 +242,7 @@ namespace REST.Controllers
             // Http POST cannot update a Receipt that does not exist
             if (r == null)
             {
-                return NotFound();
+                return NotFound("Cannot update a Receipt that does not exist!");
             }
 
             // Otherwise fufill the PATCH request and update the corresponding Receipt

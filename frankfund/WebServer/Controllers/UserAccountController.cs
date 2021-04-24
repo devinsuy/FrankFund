@@ -43,7 +43,7 @@ namespace REST.Controllers
             }
             if (accID < 1)
             {
-                return BadRequest();
+                return BadRequest("Invalid Account ID");
             }
             return api.serveJson(uas.getJSON(uas.getUsingID(accID)));
         }
@@ -84,7 +84,7 @@ namespace REST.Controllers
             }
             if (accID < 1)
             {
-                return BadRequest();
+                return BadRequest("Invalid Account ID");
             }
             uas.delete(accID);
             return new OkResult();
@@ -133,7 +133,7 @@ namespace REST.Controllers
             HashSet<string> reqAttributes = new HashSet<string>(req.Keys);
             if (!reqAttributes.SetEquals(attributes))
             {
-                return BadRequest("Request body should contain exactly { AccountUsername, EmailAddress, Password}");
+                return BadRequest("Request body should contain exactly { AccountUsername, EmailAddress, Password }");
             }
 
             UserAccount acc = null;
@@ -184,7 +184,7 @@ namespace REST.Controllers
             }
             if (accID < 1)
             {
-                return BadRequest();
+                return BadRequest("Invalid Account ID");
             }
 
             // Validate the attributes of the PATCH request, each attribute specified, given account id
@@ -193,7 +193,7 @@ namespace REST.Controllers
             HashSet<string> reqAttributes = new HashSet<string>(req.Keys);
             if (!api.validAttributes(attributes, reqAttributes))
             {
-                return BadRequest();
+                return BadRequest("Invalid attribute(s) in request body");
             }
 
             UserAccount acc = uas.getUsingID(accID);
@@ -252,7 +252,7 @@ namespace REST.Controllers
             HashSet<string> reqAttributes = new HashSet<string>(req.Keys);
             if (!api.validAttributes(attributes, reqAttributes))
             {
-                return BadRequest();
+                return BadRequest("Invalid attribute(s) in request body");
             }
 
             UserAccount acc = uas.getUsingUsername(user);
