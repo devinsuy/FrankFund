@@ -17,6 +17,7 @@ export default class SettingsUserAccount extends Component {
 
     update(e) {
         e.preventDefault();
+        const user = JSON.parse(localStorage.getItem('user'));
         const form = document.querySelector("form");
         let data = new FormData(form);
         var object = {};
@@ -39,7 +40,7 @@ export default class SettingsUserAccount extends Component {
             // Calls axios function to post the JSON data for PATCH request at API endpoint
             axios({
                 method: "patch",
-                url: "/api/account/accID=5&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0",
+                url: "/api/account/accID=" + user.AccountID + "&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0",
                 data: json,
                 headers: {
                     'accept': 'application/json',
@@ -48,6 +49,9 @@ export default class SettingsUserAccount extends Component {
             })
                 .then((res) => {
                     console.log(res);
+                    if (res.data.JWTToken) {
+                        localStorage.setItem("user", JSON.stringify(res.data));
+                    }
                     Swal.close()
                     swal("Success!", "Account has successfully been updated!", "success");
                 })
@@ -64,6 +68,7 @@ export default class SettingsUserAccount extends Component {
     // will log out the user, then redirect to landing page.
     deleteAcc(e) {
         e.preventDefault();
+        const user = JSON.parse(localStorage.getItem('user'));
         Swal.fire({
             title: 'Are you sure you want to delete your account?',
             showDenyButton: true,
@@ -91,7 +96,7 @@ export default class SettingsUserAccount extends Component {
                     // Need to add current user state to delete in accID=
                     axios({
                         method: "delete",
-                        url: "/api/account/accID=5&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0",
+                        url: "/api/account/accID=" + user.AccountID + "&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0",
                         //data: json,
                         //headers: {
                         //    'accept': 'application/json',
