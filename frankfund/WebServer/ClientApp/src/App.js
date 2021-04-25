@@ -72,7 +72,7 @@ function App() {
           3. Connect to backend */}
       <nav className="navbar navbar-expand-lg navbar-light fixed-top">
         <div className="container">
-            <Link className="navbar-brand" to={"/"}>FrankFund</Link>
+          <Link className="navbar-brand" to={"/"}>FrankFund</Link>
           {/* {!isLoggedIn && <Link className="navbar-brand" to={"/"}>FrankFund</Link>}
           {isLoggedIn && <Link className="navbar-brand" to={"/dashboard"}>FrankFund</Link>}*/}
           <div class="collapse navbar-collapse" id="navbarNavTransaction">

@@ -56,7 +56,7 @@ class LoginUserAccount extends Component {
                     setTimeout(() => {
                         this.props.history.push("/dashboard");
                         window.location.reload();
-                    }, 500);
+                    }, 300);
                     //this.props.history.go(1)
                 })
                 .catch((err) => {

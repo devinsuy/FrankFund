@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
     },
     appBar: {
         // zIndex: theme.zIndex.drawer + 1,
-        zIndex: 90,
+        zIndex: 9,
         transition: theme.transitions.create(['width', 'margin'], {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
