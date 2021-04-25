@@ -7,6 +7,15 @@ import Swal from 'sweetalert2'
 
 export default class SettingsUserAccount extends Component {
 
+    constructor(props) {
+        super(props);
+
+        this.update = this.update.bind(this);
+        this.deleteAcc = this.deleteAcc.bind(this);
+
+        const user = JSON.parse(localStorage.getItem('user'));
+    }
+
     update(e) {
         e.preventDefault();
         const form = document.querySelector("form");
@@ -118,7 +127,7 @@ export default class SettingsUserAccount extends Component {
 
                 <div className="form-group">
                     <label>Username</label>
-                    <input type="text" name="AccountUsername" className="form-control" placeholder="Need to fill in with previous username" />
+                    <input type="text" name="AccountUsername" className="form-control" placeholder={user.AccountUsername} />
                 </div>
 
                 <div className="form-group">
@@ -142,4 +151,5 @@ export default class SettingsUserAccount extends Component {
             </form>
         );
     }
+
 }

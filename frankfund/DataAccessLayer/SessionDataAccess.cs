@@ -39,8 +39,10 @@ namespace DataAccessLayer
             query = $"INSERT INTO {this.tableID} VALUES ("
                 + getNextAvailID().ToString() + ","               // SessionID
                 + $"\"{serializedSess[1]}\","                        // JWTToken
-                + $"\"{serializedSess[2]}\","                        // Username
-                + $"\"{serializedSess[3]}\")";                        // DateIssued
+                + $"\"{serializedSess[2]}\","                        // AccountID
+                + $"\"{serializedSess[3]}\","                        // AccountUsername
+                + $"\"{serializedSess[4]}\","                        // Email Adddress
+                + $"\"{serializedSess[5]}\")";                        // DateIssued
             Console.WriteLine("Running Insert Query:\n---------------------\n" + query);
             this.dataHelper.query(query);
         }
@@ -72,9 +74,10 @@ namespace DataAccessLayer
             query = $"INSERT INTO {this.tableID} VALUES ("
                 + serializedSess[0] + ","                          // SessionID
                 + $"\"{serializedSess[1]}\","                        // JWTToken
-                + $"\"{serializedSess[2]}\","                        // Username
-                + $"\"{serializedSess[3]}\","                        // DateIssued
-                + $"\"{serializedSess[4]}\")";                         // DateExpired
+                + $"\"{serializedSess[2]}\","                        // AccountID
+                + $"\"{serializedSess[3]}\","                        // AccountUsername
+                + $"\"{serializedSess[4]}\","                        // Email Adddress
+                + $"\"{serializedSess[5]}\")";                        // DateIssued
             Console.WriteLine("Running Insert Query:\n---------------------\n" + query);
             this.dataHelper.query(query);
         }

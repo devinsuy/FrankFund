@@ -118,6 +118,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Dashboard() {
+    const user = JSON.parse(localStorage.getItem('user'));
+
+
     const classes = useStyles();
     const [open, setOpen] = React.useState(true);
     const handleDrawerOpen = () => {
@@ -170,7 +173,7 @@ export default function Dashboard() {
                         <MenuIcon />
                     </IconButton>
                     <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-                        FrankFund
+                        {"Hello " + user.AccountUsername }
                        </Typography>
                     <IconButton color="inherit">
                         <Badge badgeContent={4} color="secondary">

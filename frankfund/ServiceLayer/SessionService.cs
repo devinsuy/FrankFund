@@ -28,7 +28,8 @@ namespace ServiceLayer
         {
             return new Session(
                     (long)row["SessionID"], (string)row["JWTToken"],
-                    (string)row["AccountUsername"], (DateTime)row["DateIssued"]
+                    (long)row["AccountID"], (string)row["AccountUsername"],
+                    (string)row["EmailAddress"], (DateTime)row["DateIssued"]
             //(int)row["FacebookID"], (BigQueryNumeric)row["GoogleID"].ToDecimal(LossOfPrecisionHandling.Truncate)
             );
         }
@@ -43,7 +44,9 @@ namespace ServiceLayer
             return new string[] {
                 sess.SessionID.ToString(),
                 sess.JWTToken,
+                sess.AccountID.ToString(),
                 sess.AccountUsername,
+                sess.EmailAddress,
                 sess.DateIssued.ToString()
             };
         }
@@ -63,7 +66,7 @@ namespace ServiceLayer
             return session;
         }
 
-        public int Login(string usernameoremail, string password)
+        public int Login(string usernameoremail, string password, string jwtToken)
         {
             // Steps for Implementation
             // 1. Check if user exists through username or email
@@ -92,9 +95,7 @@ namespace ServiceLayer
             }
 
             // Create Session
-            //string jwtToken = JWTService.CreateToken(); // TODO: Need to look into and add JWTToken
-            string jwtToken = "";
-            Session session = new Session(user.AccountUsername, jwtToken);
+            Session session = new Session(jwtToken, user.AccountID, user.AccountUsername, user.EmailAddress);
 
             // Need to make Sessions table in DB in order to add
             this.SessionDataAccess.write(serialize(session));
@@ -128,8 +129,10 @@ namespace ServiceLayer
             string jsonStr = "{"
                 + $"\"SessionID\":{serialized[0]},"
                 + $"\"JWTToken\":\"" + serialized[1] + "\","
-                + $"\"AccountUsername\":\"" + serialized[2] + "\","
-                + $"\"DateIssued\":\"" + serialized[3] + "\""
+                + $"\"SessionID\":{serialized[2]},"
+                + $"\"AccountUsername\":\"" + serialized[3] + "\","
+                + $"\"EmailAddress\":\"" + serialized[4] + "\","
+                + $"\"DateIssued\":\"" + serialized[5] + "\""
             + "}";
 
             return jsonStr;

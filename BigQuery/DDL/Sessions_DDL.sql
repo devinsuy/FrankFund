@@ -2,7 +2,9 @@
 CREATE TABLE FrankFund.Sessions (
 	SessionID	 INT64	NOT NULL,
 	JWTToken	STRING	NOT NULL,
+	AccountID	INT64	NOT NULL,
 	AccountUsername	STRING	NOT NULL,
+	EmailAddress	STRING	NOT NULL,
 	DateIssued	STRING NOT NULL
 );
 ---END DDL---
