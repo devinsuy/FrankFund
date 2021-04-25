@@ -131,7 +131,6 @@ export default function Dashboard() {
     };
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
-    window.location.reload(false);
     return (
         <div className={classes.root}>
             <CssBaseline />
