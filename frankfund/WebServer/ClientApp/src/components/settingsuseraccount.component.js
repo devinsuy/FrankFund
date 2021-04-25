@@ -132,7 +132,7 @@ export default class SettingsUserAccount extends Component {
 
                 <div className="form-group">
                     <label>Email</label>
-                    <input type="email" name="EmailAddress" className="form-control" placeholder="Need to fill in with previous email" />
+                    <input type="email" name="EmailAddress" className="form-control" placeholder={user.EmailAddress} />
                 </div>
 
                 <div className="form-group">

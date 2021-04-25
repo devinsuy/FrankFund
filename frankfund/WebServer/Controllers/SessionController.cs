@@ -28,6 +28,7 @@ namespace REST.Controllers
             _logger = logger;
             api = new APIHelper();
             ss = new SessionService();
+            uas = new UserAccountService();
             attributes = new HashSet<string>()
             {
                 "usernameoremail", "password"
@@ -104,12 +105,11 @@ namespace REST.Controllers
             }
 
             Session sess = null;
-            UserAccount user = new UserAccount();
             var jwt = generateJwtToken(Convert.ToString(req["usernameoremail"]));
             // Create the Session with the given variables using the POST payload
             try
             {
-                user = uas.getUsingUsername(Convert.ToString(req["usernameoremail"]));
+                UserAccount user = uas.getUsingUsername(Convert.ToString(req["usernameoremail"]));
                 if (user == null) // if user is not found using username, try with email
                 {
                     user = uas.getUsingEmail(Convert.ToString(req["usernameoremail"]));
