@@ -27,12 +27,13 @@ function App() {
       <div className="App">
       {/* Landing Page and CreateUserAccount component 
           1. Set up HTML template code
-          TODO:
           2. Add CSS
           3. Connect to backend */}
       <nav className="navbar navbar-expand-lg navbar-light fixed-top">
         <div className="container">
-          <Link className="navbar-brand" to={"/"}>FrankFund</Link>
+            <Link className="navbar-brand" to={"/"}>FrankFund</Link>
+          {/* {!isLoggedIn && <Link className="navbar-brand" to={"/"}>FrankFund</Link>}
+          {isLoggedIn && <Link className="navbar-brand" to={"/dashboard"}>FrankFund</Link>}*/}
           <div class="collapse navbar-collapse" id="navbarNavTransaction">
             <ul class="navbar-nav">
               <li class="nav-item">
@@ -69,8 +70,9 @@ function App() {
       <div className="outer">
         <div className="inner">
           <Switch>
-            <Route exact path='/' component={LandingComponent} />
-            <Route exact path='/dashboard' component={DashboardComponent} />
+            { /* <Route exact path='/' component={LandingComponent} />*/}
+            <Route exact path="/" component={() => isLoggedIn ? <DashboardComponent /> : <LandingComponent />} />
+            { /*<Route exact path='/dashboard' component={DashboardComponent} />*/}
             <Route path="/create-user-account" component={CreateUserAccount} />
             <Route path="/account-settings" component={SettingsUserAccount} />
             <Route path="/login" component={LoginComponent} />
