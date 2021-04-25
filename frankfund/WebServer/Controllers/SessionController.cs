@@ -50,7 +50,7 @@ namespace REST.Controllers
 
         // ------------------------------ Session GET endpoints ------------------------------
 
-        [Route("api/account/sessID={accID}&apikey={apiKey}")]
+        [Route("api/session/sessID={accID}&apikey={apiKey}")]
         [HttpGet]
         public IActionResult GetByID(long sessID, string apiKey)
         {
@@ -67,8 +67,9 @@ namespace REST.Controllers
 
         // ------------------------------ Session DELETE endpoints ------------------------------
 
-        // Delete an account by id, no effect if an account with the given accID doesn't exist
-        [Route("api/account/sessID={accID}&apikey={apiKey}")]
+        // Essentially logs out the user from the application
+        // Delete an sess by id, no effect if an account with the given sessID doesn't exist
+        [Route("api/session/sessID={accID}&apikey={apiKey}")]
         [HttpDelete]
         public IActionResult DeleteByID(long sessID, string apiKey)
         {
@@ -84,9 +85,27 @@ namespace REST.Controllers
             return new OkResult();
         }
 
-        // ------------------------------ Account Create endpoint ------------------------------
+        // Essentially logs out the user from the application
+        // Delete an sess by id, no effect if an account with the given sessID doesn't exist
+        [Route("api/session/jwt={JWTToken}&apikey={apiKey}")]
+        [HttpDelete]
+        public IActionResult DeleteByJWT(string jwt, string apiKey)
+        {
+            if (!api.validAPIKey(apiKey))
+            {
+                return new UnauthorizedObjectResult("Invalid API key");
+            }
+            if (jwt == "")
+            {
+                return BadRequest();
+            }
+            ss.Logout(jwt);
+            return new OkResult();
+        }
 
-        // Create a new account with the next available accID
+        // ------------------------------ Session Create endpoint ------------------------------
+
+        // Create a new session with the next available sessID
         [Route("api/session/create&apikey={apiKey}")]
         [HttpPost]
         public IActionResult Create(string apiKey, [FromBody] JsonElement reqBody)

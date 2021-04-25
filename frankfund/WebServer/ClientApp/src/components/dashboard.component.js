@@ -53,7 +53,8 @@ const useStyles = makeStyles((theme) => ({
         ...theme.mixins.toolbar,
     },
     appBar: {
-        zIndex: theme.zIndex.drawer + 1,
+        // zIndex: theme.zIndex.drawer + 1,
+        zIndex: 90,
         transition: theme.transitions.create(['width', 'margin'], {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
@@ -120,7 +121,6 @@ const useStyles = makeStyles((theme) => ({
 export default function Dashboard() {
     const user = JSON.parse(localStorage.getItem('user'));
 
-
     const classes = useStyles();
     const [open, setOpen] = React.useState(true);
     const handleDrawerOpen = () => {
@@ -131,6 +131,7 @@ export default function Dashboard() {
     };
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
+    window.location.reload(false);
     return (
         <div className={classes.root}>
             <CssBaseline />

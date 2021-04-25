@@ -110,6 +110,14 @@ namespace ServiceLayer
 
         public ActionResult Logout(long sessID)
         {
+            this.SessionDataAccess.delete(sessID);
+
+            return new OkObjectResult("Successfully Logged Out");
+        }
+
+        public ActionResult Logout(string jwt)
+        {
+            this.SessionDataAccess.deleteJWT(jwt);
 
             return new OkObjectResult("Successfully Logged Out");
         }

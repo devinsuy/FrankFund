@@ -60,6 +60,14 @@ namespace DataAccessLayer
             this.dataHelper.query(query);
         }
 
+        public void deleteJWT(string jwt)
+        {
+            string query;
+            query = $"DELETE FROM {this.tableID} WHERE JWTToken = '{jwt}'";
+            Console.WriteLine("Running Delete Query:\n---------------------\n" + query);
+            this.dataHelper.query(query);
+        }
+
         /*
         Use DataHelper.query() to REWRITE an existing object that changed at runtime
         This method should call delete(long ID) followed by write(string[] serializedObj)

@@ -105,8 +105,14 @@ export default class SettingsUserAccount extends Component {
                     })
                         .then((res) => {
                             console.log(res);
+                            localStorage.removeItem("user");
                             Swal.close()
                             swal("Success!", "Account has successfully been deleted!", "success");
+                            // Redirect to homepage
+                            setTimeout(() => {
+                                this.props.history.push("/");
+                            }, 500);
+                            window.location.reload(false);
                         })
                         .catch((err) => {
                             swal("Error!", "An error has occured.", "error");

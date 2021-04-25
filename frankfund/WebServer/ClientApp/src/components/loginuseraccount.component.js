@@ -54,8 +54,9 @@ class LoginUserAccount extends Component {
                     swal("Success!", "You have successfully logged in! You will be redirected to the homepage in 1 second.", "success");
                     // Redirect to homepage
                     setTimeout(() => {
-                        this.props.history.push("/");
+                        this.props.history.push("/dashboard");
                     }, 500);
+                    //this.props.history.go(1)
                 })
                 .catch((err) => {
                     Swal.close()

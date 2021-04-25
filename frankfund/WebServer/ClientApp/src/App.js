@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+import axios from 'axios';
+import swal from 'sweetalert';
+import Swal from 'sweetalert2'
 import { BrowserRouter as Router, Switch, Redirect, Route, Link, } from "react-router-dom";
 import { createBrowserHistory } from 'history';
 
@@ -18,6 +21,44 @@ import DeleteTransaction from './components/deletetransaction.component';
 import ImageUploadDemo from './components/temp/imageuploaddemo.component';
 import DashboardComponent from './components/dashboard.component';
 
+function logout() {
+    const user = JSON.parse(localStorage.getItem('user'));
+    let loading = true;
+    while (loading) {
+        Swal.fire({
+            title: 'Logging out...',
+            allowOutsideClick: false,
+            onBeforeOpen: () => { Swal.showLoading() },
+            onAfterClose() {
+                Swal.hideLoading()
+            }
+        });
+        // Calls axios function to post the JSON data for PATCH request at API endpoint
+        // Need to add current user state to delete in accID=
+        axios({
+            method: "delete",
+            url: "/api/session/jwt=" + user.JWTToken + "&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0",
+            //data: json,
+            //headers: {
+            //    'accept': 'application/json',
+            //    'content-type': 'application/json'
+            //}
+        })
+            .then((res) => {
+                console.log(res);
+                localStorage.removeItem("user");
+                Swal.close()
+                swal("Success!", "You have successfully logged out!", "success");
+                window.location.reload(false);
+            })
+            .catch((err) => {
+                swal("Error!", "An error has occured.", "error");
+                throw err;
+            })
+        // Exit loading loop
+        loading = false;
+    }
+}
 
 function App() {
     const isLoggedIn = window.localStorage.getItem("user") ? true : false;
@@ -60,7 +101,7 @@ function App() {
                 {isLoggedIn && <Link className="nav-link" to={"/account-settings"}>Settings</Link>}
               </li>
               <li className="nav-item">
-                {isLoggedIn && <Link className="nav-link" to={"/"}>Logout</Link>}
+                {isLoggedIn && <Link className="nav-link" to={"/"} onClick={logout}>Logout</Link>}
               </li>
             </ul>
           </div>
@@ -72,7 +113,7 @@ function App() {
           <Switch>
             { /* <Route exact path='/' component={LandingComponent} />*/}
             <Route exact path="/" component={() => isLoggedIn ? <DashboardComponent /> : <LandingComponent />} />
-            { /*<Route exact path='/dashboard' component={DashboardComponent} />*/}
+            <Route exact path='/dashboard' component={DashboardComponent} />
             <Route path="/create-user-account" component={CreateUserAccount} />
             <Route path="/account-settings" component={SettingsUserAccount} />
             <Route path="/login" component={LoginComponent} />
