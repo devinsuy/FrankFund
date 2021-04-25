@@ -18,8 +18,7 @@ class TransactionsLog extends Component {
     }
 
     async getTransactions() {
-        // TODO: Validation, if /goals/{user} != the logged in user return unauthorized (other users shouldn't be able to access data that isn't theirs)
-        let user = this.props.match.params.user;                                // Select user from route /goals/{user}
+        let user = JSON.parse(localStorage.getItem("user")).AccountUsername;
         let apikey = "bd0eecf7cf275751a421a6101272f559b0391fa0";
         let url = `/api/account/user=${user}/Transactions&apikey=${apikey}`;
 

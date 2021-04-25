@@ -20,6 +20,8 @@ import ModifyTransaction from './components/updatetransaction.component';
 import DeleteTransaction from './components/deletetransaction.component';
 import ImageUploadDemo from './components/temp/imageuploaddemo.component';
 import DashboardComponent from './components/dashboard.component';
+import Trends from './components/trends.component';
+import loginuseraccountComponent from './components/loginuseraccount.component';
 
 function logout() {
     const user = JSON.parse(localStorage.getItem('user'));
@@ -60,6 +62,7 @@ function logout() {
     }
 }
 
+
 function App() {
     const isLoggedIn = window.localStorage.getItem("user") ? true : false;
     const user = JSON.parse(localStorage.getItem("user"));
@@ -78,11 +81,14 @@ function App() {
           <div class="collapse navbar-collapse" id="navbarNavTransaction">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link" href="/transactions/KennethTran">Transactions<span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="/transactions">Transactions<span class="sr-only">(current)</span></a>
               </li>
               <li class="nav-item">
                 { /* TODO: Button click should add current logged in user to the route /goals/{user} */ }
-                <a class="nav-link" href="/goals/DevinSuy">SavingsGoals</a>     
+                <a class="nav-link" href="/goals">Goals</a>     
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/trends">Trends</a>     
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="/receipts/imageupload">ImageUpload Demo</a>     
@@ -122,9 +128,9 @@ function App() {
             <Route path="/create-transaction" component={CreateTransaction} />
             <Route path="/modify-transaction" component={ModifyTransaction} />
             <Route path="/delete-transaction" component={DeleteTransaction} />
-            { /* Example: frankfund.appspot.com/goals/DevinSuy */ }
-            <Route path="/goals/:user" component={SavingsGoalsLog} />
-            <Route path="/transactions/:user" component={TransactionLog} />       
+            <Route path="/transactions" component={() => isLoggedIn ? <TransactionLog /> : <LoginComponent/> } />
+            <Route path="/goals" component={() => isLoggedIn ? <SavingsGoalsLog /> : <LoginComponent/> } />
+            <Route path="/trends" component={Trends} />    
             <Route path="/receipts/imageupload" component={ImageUploadDemo} />
           </Switch>
         </div>
