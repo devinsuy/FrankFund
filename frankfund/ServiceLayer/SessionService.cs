@@ -101,7 +101,7 @@ namespace ServiceLayer
             this.SessionDataAccess.write(serialize(session));
 
             // Return JWT Token on success , TODO: Return JWT Token on success
-            var jsonString = JsonSerializer.Serialize(session);
+            //var jsonString = JsonSerializer.Serialize(session);
             //var jObject = JObject.Parse(jsonString);
             //return new OkObjectResult(jObject.ToString());
             //return new OkObjectResult(jsonString);
@@ -129,7 +129,7 @@ namespace ServiceLayer
             string jsonStr = "{"
                 + $"\"SessionID\":{serialized[0]},"
                 + $"\"JWTToken\":\"" + serialized[1] + "\","
-                + $"\"SessionID\":{serialized[2]},"
+                + $"\"AccountID\":{serialized[2]},"
                 + $"\"AccountUsername\":\"" + serialized[3] + "\","
                 + $"\"EmailAddress\":\"" + serialized[4] + "\","
                 + $"\"DateIssued\":\"" + serialized[5] + "\""

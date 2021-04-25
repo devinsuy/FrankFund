@@ -39,7 +39,7 @@ namespace DataAccessLayer
             query = $"INSERT INTO {this.tableID} VALUES ("
                 + getNextAvailID().ToString() + ","               // SessionID
                 + $"\"{serializedSess[1]}\","                        // JWTToken
-                + $"\"{serializedSess[2]}\","                        // AccountID
+                + serializedSess[2] + ","                        // AccountID
                 + $"\"{serializedSess[3]}\","                        // AccountUsername
                 + $"\"{serializedSess[4]}\","                        // Email Adddress
                 + $"\"{serializedSess[5]}\")";                        // DateIssued

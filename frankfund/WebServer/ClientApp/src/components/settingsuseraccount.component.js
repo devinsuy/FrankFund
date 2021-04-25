@@ -13,7 +13,6 @@ export default class SettingsUserAccount extends Component {
         this.update = this.update.bind(this);
         this.deleteAcc = this.deleteAcc.bind(this);
 
-        const user = JSON.parse(localStorage.getItem('user'));
     }
 
     update(e) {
@@ -118,6 +117,7 @@ export default class SettingsUserAccount extends Component {
     }
 
     render() {
+        const user = JSON.parse(localStorage.getItem('user'));
         return (
             <form
                 id="account-settings"

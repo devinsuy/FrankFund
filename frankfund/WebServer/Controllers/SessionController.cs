@@ -104,24 +104,25 @@ namespace REST.Controllers
             }
 
             Session sess = null;
+            UserAccount user = new UserAccount();
             var jwt = generateJwtToken(Convert.ToString(req["usernameoremail"]));
             // Create the Session with the given variables using the POST payload
             try
             {
-                var user = uas.getUsingUsername(Convert.ToString(req["usernameoremail"]));
-                if (user == null) // If user is not found using username, try with email
+                user = uas.getUsingUsername(Convert.ToString(req["usernameoremail"]));
+                if (user == null) // if user is not found using username, try with email
                 {
                     user = uas.getUsingEmail(Convert.ToString(req["usernameoremail"]));
                 }
 
-                // Create a new session with jwtToken, user.AccountID, user.AccountUsername, user.EmailAddress
+                // create a new session with jwttoken, user.accountid, user.accountusername, user.emailaddress
                 sess = new Session(
-                        // Removed SessionID out of Session creation because new ID is assigned in SessionService 
+                        // removed sessionid out of session creation because new id is assigned in sessionservice 
                         jwtToken: jwt,
                         accID: user.AccountID,
                         userName: user.AccountUsername,
                         email: user.EmailAddress
-                        //date: Convert.ToDateTime(req["DateIssued"])
+                //date: convert.todatetime(req["dateissued"])
                 );
             }
             catch (Exception e)
