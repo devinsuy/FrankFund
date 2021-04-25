@@ -1,4 +1,6 @@
 import Swal from 'sweetalert2'
+import swal from 'sweetalert'
+import $ from 'jquery';
 
 export default function Goals({goals}) {
     return (
@@ -18,13 +20,10 @@ var nouns = {
 };
 
 const Goal = ({ goal }) => {
-    // Convert date to readable format 
-    let endDate  = goal.EndDate != "" ? new Date(goal.EndDate).toDateString() : "";
-
     // Build api url for this particular goal
     let apikey = "c55f8d138f6ccfd43612b15c98706943e1f4bea3";
     let url = `/api/SavingsGoal/SGID=${goal.SGID}&apikey=${apikey}`;
-
+    let endDate  = goal.EndDate != "" ? new Date(goal.EndDate).toDateString() : "";
     return (
         <>
             <tr id={`Goal${goal.SGID}`} key={goal.SGID}>
@@ -48,6 +47,7 @@ const Goal = ({ goal }) => {
     // View button, display popup for additional information about goal 
     function viewAlert(){
         let startDate = new Date(goal.StartDate).toDateString();
+        let endDate  = goal.EndDate != "" ? new Date(goal.EndDate).toDateString() : "";
         let noun = nouns[goal.Period];
         Swal.fire({
             title: goal.Name,
@@ -219,81 +219,234 @@ const Goal = ({ goal }) => {
         }
     }
 
-    function editGoalAmount(){
-        const inputValue = parseFloat(goal.GoalAmt)
-        const inputStep = 0.01
-        
-        Swal.fire({
-          title: goal.Name,
-          showCancelButton: true,
-          showCloseButton: true,
-          html: `<p>Enter a new goal amount for <b>${goal.Name}</b>:</p>` +
-            `<input type="number" value="${inputValue}" step="${inputStep}" class="swal2-input" id="range-value">`,
-          input: 'range',
-          inputValue,
-          inputAttributes: {
-            min: 1,
-            max: parseFloat(goal.GoalAmt) * 5,
-            step: inputStep
-          },
-          didOpen: () => {
-            const inputRange = Swal.getInput()
-            const inputNumber = Swal.getContent().querySelector('#range-value')
-        
-            // remove default output
-            inputRange.nextElementSibling.style.display = 'none'
-            inputRange.style.width = '100%'
-        
-            // sync input[type=number] with input[type=range]
-            inputRange.addEventListener('input', () => {
-              inputNumber.value = inputRange.value
-            })
-        
-            // sync input[type=range] with input[type=number]
-            inputNumber.addEventListener('change', () => {
-              inputRange.value = inputNumber.value
-            })
-          }
+
+    // Prompt radio selection UI for whether to extend end date or not
+    // param: Whether or not the new goal amount is > previous goal amount
+    // returns boolean or null if user cancelled
+    async function getExtendDate(dateVerb, contrVerb){
+        const inputOptions = new Promise((resolve) => {
+            let dateOption = dateVerb + ' End Date';
+            let contrOption = contrVerb + ' Contribution';
+            setTimeout(() => {
+              resolve({
+                'true' : dateOption,
+                'false' : contrOption
+              })
+            }, 1000)
         })
+        const { value: extendEndDate } = await Swal.fire({
+            title: goal.Name,
+            input: 'radio',
+            html: `<p>Select whether you would like to <b>${dateVerb.toLowerCase()} the end date</b> 
+                   or <b>${contrVerb.toLowerCase()} the ${goal.Period} contribution amount</b></p>`,
+            inputOptions: inputOptions,
+            showCancelButton: true,
+            showCloseButton: true,
+            inputValidator: (value) => {
+                if (!value) {
+                    return 'Please select an option'
+                }
+            }
+        })
+        return extendEndDate==null ? null : (extendEndDate == 'true');
     }
 
-    function editContribution(){
-        const inputValue = parseFloat(goal.GoalAmt)
-        const inputStep = 0.01
-        
-        Swal.fire({
-          title: goal.Name,
-          showCancelButton: true,
-          showCloseButton: true,
-          html: `<p>Enter a new contribution amount for <b>${goal.Name}</b>:</p>` +
-            `<input type="number" value="${inputValue}" step="${inputStep}" class="swal2-input" id="range-value">`,
-          input: 'range',
-          inputValue,
-          inputAttributes: {
-            min: 1,
-            max: parseFloat(goal.GoalAmt) * 5,
-            step: inputStep
-          },
-          didOpen: () => {
-            const inputRange = Swal.getInput()
-            const inputNumber = Swal.getContent().querySelector('#range-value')
-        
-            // remove default output
-            inputRange.nextElementSibling.style.display = 'none'
-            inputRange.style.width = '100%'
-        
-            // sync input[type=number] with input[type=range]
-            inputRange.addEventListener('input', () => {
-              inputNumber.value = inputRange.value
-            })
-        
-            // sync input[type=range] with input[type=number]
-            inputNumber.addEventListener('change', () => {
-              inputRange.value = inputNumber.value
-            })
-          }
-        })
+    async function editGoalAmount(){
+        // Prompt user to enter a new goal amount        
+        const { value: newGoalAmt } = await Swal.fire({
+            title: goal.Name,
+            input: 'text',
+            showCancelButton: true,
+            showCloseButton: true,
+            inputPlaceholder: '$ Enter an amount',
+            html: `<p>Your ${goal.Name} goal amount is currently set to <b>$${goal.GoalAmt}</b>, enter a new goal amount below.</p>`,
+            inputValidator: (value) => {
+              if(!value) {
+                return 'Please enter a goal amount'
+              }
+              if(isNaN(value)){
+                  return 'Please enter a valid amount'
+              }
+            }
+          })
+        // User entered a new goal amount, update the goal
+        if(newGoalAmt){
+            // Display no change made message if the goal amount submitted is the same
+            if(newGoalAmt == goal.GoalAmt){
+                Swal.fire({
+                    title: goal.Name,
+                    icon: "warning",
+                    html: `<p>${goal.Name} goal amount is <b>already set to $${newGoalAmt}</b>! No changes were made.</p>`,
+                    showCloseButton: true
+                })    
+                return;  
+            }
+
+            // Prompt user to either update the regular contribution amount or end date to 
+            // reflect the changes in goal amount, do nothing if user cancels
+            let dateVerb, dateVerb2, contrVerb, contrVerb2;
+            if(parseFloat(goal.GoalAmt) > parseFloat(newGoalAmt)){
+                dateVerb = "Shorten";
+                dateVerb2 = "shortening";
+                contrVerb = "Reduce";
+                contrVerb2 = "reducing";
+            }
+            else{
+                dateVerb = "Extend";
+                dateVerb2 = "extending";
+                contrVerb = "Increase";
+                contrVerb2 = "increasing";
+            }
+            const extendDate = await getExtendDate(dateVerb, contrVerb);
+            if(extendDate == null) { return; }
+
+            let loading = true;
+            while(loading){
+                let secondAttributeMsg = extendDate ? `${dateVerb2} goal end date` : `${contrVerb2} ${goal.Period.toLowerCase()} contribution amount`;
+                // Show loading message
+                Swal.fire({
+                    title: 'Updating',
+                    html: `<p>Updating <b>${goal.Name}</b> goal amount from <b>$${goal.GoalAmt}</b> to <b>$${newGoalAmt}</b> and <b>${secondAttributeMsg}</b></p>`,
+                    allowOutsideClick: false,
+                    onBeforeOpen: () => { Swal.showLoading() }
+                });
+                let params = {
+                    method: "PATCH",  
+                    headers: { "Content-type": "application/json" },  
+                    body: JSON.stringify({ "GoalAmt" : newGoalAmt, "ExtendDate" : extendDate })
+                }
+                await(
+                    fetch(url, params)
+                    .then((response) => response.json())
+                    .then((goalData) => {  
+                        // Update displayed fields
+                        document.getElementById(`GoalAmt${goal.SGID}`).innerHTML = "$" + newGoalAmt.toString();
+                        
+                        // Generate HTML to display either the changed end date or the changed contribution amount resulting from the goal change
+                        let secondChange;
+                        if(extendDate){
+                            let endDate  = goal.EndDate != "" ? new Date(goal.EndDate).toDateString() : "";
+                            let newEndDate = new Date(goalData.EndDate).toDateString()
+                            document.getElementById(`EndDate${goal.SGID}`).innerHTML = newEndDate;
+                            secondChange = `<p>The end date of the goal was adjusted from <b>${endDate}</b> to <b>${newEndDate}</b></p>`
+                        }
+                        else{
+                            document.getElementById(`ContrAmt${goal.SGID}`).innerHTML = "$" + goalData.ContrAmt.toString();
+                            secondChange = `<p>The regular contribution amount of the goal was adjusted `
+                             + `from <b>$${goal.ContrAmt.toString()}</b> to <b>$${goalData.ContrAmt.toString()}</b></p>`
+                        }
+    
+                        // Display success message
+                        Swal.fire({
+                            title: goal.GoalName,
+                            icon: "success",
+                            html: 
+                                `<p><b>${goal.Name}</b> goal amount successfully updated from <b>$${goal.GoalAmt}</b> to 
+                                 <b>$${newGoalAmt}</b>!</p>` + secondChange,
+                            showCloseButton: true
+                        }) 
+                        goal = goalData;
+                }))
+                .catch((err) => {
+                    Swal.fire({
+                        title: goal.Name,
+                        icon: "error",
+                        html: `<p>Something went wrong, failed to update goal amount.</p>`,
+                        showCloseButton: true
+                    })
+                }) 
+                loading = false;
+            }
+        }
     }
+
+
+    async function editContribution(){
+        // Prompt user to enter a new contribution amount        
+        const { value: newContrAmt } = await Swal.fire({
+            title: goal.Name,
+            input: 'text',
+            showCancelButton: true,
+            showCloseButton: true,
+            inputPlaceholder: '$ Enter an amount',
+            html: `<p>Your ${goal.Name} goal currently has a <b>${goal.Period}</b> contribution of <b>$${goal.ContrAmt}</b>, enter a new contribution amount below.</p>`,
+            inputValidator: (value) => {
+              if(!value) {
+                return 'Please enter a contribution amount'
+              }
+              if(isNaN(value)){
+                  return 'Please enter a valid amount'
+              }
+            }
+          })
+        // User entered a new contribution amount, update the goal
+        if(newContrAmt){
+            // Display no change made message if the goal amount submitted is the same
+            if(newContrAmt == goal.ContrAmt){
+                Swal.fire({
+                    title: goal.Name,
+                    icon: "warning",
+                    html: `<p>${goal.Name} goal <b>${goal.Period}</b> contribution is <b>already set to $${newContrAmt}</b>! No changes were made.</p>`,
+                    showCloseButton: true
+                })    
+                return;  
+            }
+
+            // Prompt user to either update the regular contribution amount or end date to 
+            // reflect the changes in goal amount, do nothing if user cancels
+            let dateVerb = parseFloat(goal.ContrAmt) > parseFloat(newContrAmt) ? "extending" : "shortening"; 
+            let loading = true;
+            while(loading){
+                let secondAttributeMsg = `${dateVerb} goal end date`;
+                // Show loading message
+                Swal.fire({
+                    title: 'Updating',
+                    html: `<p>Updating <b>${goal.Name}</b> goal <b>${goal.Period}</b> contribution from <b>$${goal.ContrAmt}</b> to <b>$${newContrAmt}</b> and <b>${secondAttributeMsg}</b></p>`,
+                    allowOutsideClick: false,
+                    onBeforeOpen: () => { Swal.showLoading() }
+                });
+                let params = {
+                    method: "PATCH",  
+                    headers: { "Content-type": "application/json" },  
+                    body: JSON.stringify({ "ContrAmt" : newContrAmt })
+                }
+                await(
+                    fetch(url, params)
+                    .then((response) => response.json())
+                    .then((goalData) => {  
+                        // Update displayed fields
+                        document.getElementById(`ContrAmt${goal.SGID}`).innerHTML = "$" + newContrAmt.toString();
+                        
+                        // Generate HTML to display either the changed end date or the changed contribution amount resulting from the goal change
+                        let endDate  = goal.EndDate != "" ? new Date(goal.EndDate).toDateString() : "";
+                        let newEndDate = new Date(goalData.EndDate).toDateString()
+                        document.getElementById(`EndDate${goal.SGID}`).innerHTML = newEndDate;
+                        let secondChange = `<p>The end date of the goal was adjusted from <b>${endDate}</b> to <b>${newEndDate}</b></p>`
+    
+                        // Display success message
+                        Swal.fire({
+                            title: goal.GoalName,
+                            icon: "success",
+                            html: 
+                                `<p><b>${goal.Name}</b> goal <b>${goal.Period}</b> contribution successfully updated from <b>$${goal.ContrAmt}</b> to 
+                                 <b>$${newContrAmt}</b>!</p>` + secondChange,
+                            showCloseButton: true
+                        }) 
+                        goal = goalData;
+                }))
+                .catch((err) => {
+                    Swal.fire({
+                        title: goal.Name,
+                        icon: "error",
+                        html: `<p>Something went wrong, failed to update goal amount.</p>`,
+                        showCloseButton: true
+                    })
+                }) 
+                loading = false;
+            }
+        }
+    }
+
 
     async function editPeriod(){
         // Prompt user with dropdown for period selection
@@ -354,11 +507,13 @@ const Goal = ({ goal }) => {
                         .then((goalData) => {
                             // Update pointer to the updated goal JSON from the server
                             let oldPeriod = goal.Period;
+                            let prevEndDate = goal.EndDate != "" ? new Date(goal.EndDate).toDateString() : "";
                             goal = goalData;
+                            let newEndDate = goal.EndDate != "" ? new Date(goal.EndDate).toDateString() : "";
                             
                             // Update component without full re-render
                             document.getElementById(`Period${goal.SGID}`).innerHTML = goal.Period;
-                            document.getElementById(`EndDate${goal.SGID}`).innerHTML = new Date(goal.EndDate).toDateString();
+                            document.getElementById(`EndDate${goal.SGID}`).innerHTML = newEndDate
 
                             // Display success message
                             Swal.fire({
@@ -366,7 +521,7 @@ const Goal = ({ goal }) => {
                                 icon: "success",
                                 html: 
                                     `<p>Goal contribution period successfully updated from <b>${oldPeriod}</b> to <b>${goal.Period}</b>.</p>`
-                                    + `<p>${goal.Name} end date was updated from <b>${endDate}</b> to <b>${goal.EndDate}</b>!</p>`,
+                                    + `<p>${goal.Name} end date was updated from <b>${prevEndDate}</b> to <b>${newEndDate}</b>!</p>`,
                                 showCloseButton: true
                             })
                         })
@@ -388,7 +543,30 @@ const Goal = ({ goal }) => {
     }
 
     async function editEndDate(){
-        Swal.close();
+        // Swal.fire({
+        //     titel: 'Enter date',
+        //     html: '<div id="datepicker"></div>',
+        //     onOpen: function() {
+        //         $('#datepicker').datepicker();
+        //     },
+        // })
+        // await( 
+        //     swal({
+        //         title: 'Date picker',
+        //         html: '<div id="datepicker"></div>',
+        //         onOpen: function() {
+        //             $('#datepicker').datepicker();
+        //         },
+        //         preConfirm: function() {
+        //             return Promise.resolve($('#datepicker').datepicker('getDate'));
+        //         }
+        //     }).then(function(result) {
+        //         swal({
+        //         type: 'success',
+        //         html: 'You entered: <strong>' + result + '</strong>'
+        //         });
+        //     })
+        // );
     }
 
 
