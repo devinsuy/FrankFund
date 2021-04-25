@@ -18,6 +18,7 @@ namespace REST.Controllers
         private readonly ILogger<SessionController> _logger;
         private readonly APIHelper api;
         private readonly SessionService ss;
+        private readonly UserAccountService uas;
         private readonly HashSet<string> attributes;
         private readonly HashSet<string> nullableAttrs;
         const string secret = "GQDstcKsx0NHjPOuXOYg5MbeJ1XT0uFiwDVvVBrk";
@@ -94,7 +95,7 @@ namespace REST.Controllers
                 return new UnauthorizedObjectResult("Invalid API key");
             }
 
-            // Validate that the POST request contains all necessary attributes to create a NEW Account and nothing more
+            // Validate that the POST request contains all necessary attributes to create a NEW Session and nothing more
             Dictionary<string, object> req = JsonConvert.DeserializeObject<Dictionary<string, object>>(Convert.ToString(reqBody));
             HashSet<string> reqAttributes = new HashSet<string>(req.Keys);
             if (!reqAttributes.SetEquals(attributes))
@@ -103,13 +104,23 @@ namespace REST.Controllers
             }
 
             Session sess = null;
-            // Create the Account with the given accID using the POST payload
+            var jwt = generateJwtToken(Convert.ToString(req["usernameoremail"]));
+            // Create the Session with the given variables using the POST payload
             try
             {
+                var user = uas.getUsingUsername(Convert.ToString(req["usernameoremail"]));
+                if (user == null) // If user is not found using username, try with email
+                {
+                    user = uas.getUsingEmail(Convert.ToString(req["usernameoremail"]));
+                }
+
+                // Create a new session with jwtToken, user.AccountID, user.AccountUsername, user.EmailAddress
                 sess = new Session(
                         // Removed SessionID out of Session creation because new ID is assigned in SessionService 
-                        jwtToken: generateJwtToken(Convert.ToString(req["usernameoremail"])),
-                        userName: Convert.ToString(req["usernameoremail"])
+                        jwtToken: jwt,
+                        accID: user.AccountID,
+                        userName: user.AccountUsername,
+                        email: user.EmailAddress
                         //date: Convert.ToDateTime(req["DateIssued"])
                 );
             }
@@ -120,7 +131,7 @@ namespace REST.Controllers
             }
 
             // Calls login function for SessionService
-            switch (ss.Login(Convert.ToString(req["usernameoremail"]), Convert.ToString(req["password"])))
+            switch (ss.Login(Convert.ToString(req["usernameoremail"]), Convert.ToString(req["password"]), jwt))
             {
                 case 1:
                     return api.serveErrorMsg("User not found.");

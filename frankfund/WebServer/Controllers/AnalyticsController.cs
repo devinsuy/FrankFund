@@ -37,7 +37,8 @@ namespace REST.Controllers
             {
                 return new UnauthorizedObjectResult("Invalid API key");
             }
-            return api.serveJson(ts.getJSON(ts.getTransactionsFromAccountCategorySorted(username)));
+            return null; // Autumn commented out the below code because of build errors
+            //return api.serveJson(ts.getJSON(ts.getTransactionsFromAccountCategorySorted(username)));
         }
     }
 }
