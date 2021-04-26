@@ -13,11 +13,7 @@ import SettingsUserAccount from "./components/settingsuseraccount.component";
 import LoginComponent from "./components/loginuseraccount.component";
 import LandingComponent from "./components/landing.components";
 import TransactionLog from "./components/transactionslog.component";
-import TransactionDetail from "./components/transactiondetail.component";
-import CreateTransaction from "./components/createtransaction.component";
 import SavingsGoalsLog from "./components/savingsgoalslog.component";
-import ModifyTransaction from './components/updatetransaction.component';
-import DeleteTransaction from './components/deletetransaction.component';
 import ImageUploadDemo from './components/temp/imageuploaddemo.component';
 import DashboardComponent from './components/dashboard.component';
 //import Subscriptions from './components/subscriptions.component';
@@ -133,11 +129,7 @@ function App() {
             <Route path="/login" component={LoginComponent} />
             <Route path="/subscriptionslog" component={() => isLoggedIn ? <SubscriptionLog /> : <LoginComponent />} />
             <Route path="/subscriptions" component={Subscriptions} />
-            <Route path="/transactions-detail" component={TransactionDetail} />
             <Route path="/transactions-log" component={TransactionLog} />
-            <Route path="/create-transaction" component={CreateTransaction} />
-            <Route path="/modify-transaction" component={ModifyTransaction} />
-            <Route path="/delete-transaction" component={DeleteTransaction} />
             <Route path="/transactions" component={() => isLoggedIn ? <TransactionLog /> : <LoginComponent/> } />
             <Route path="/goals" component={() => isLoggedIn ? <SavingsGoalsLog /> : <LoginComponent/> } />
             <Route path="/subscriptions" component={() => isLoggedIn ? <Subscriptions /> : <LoginComponent/> } />

@@ -17,7 +17,7 @@ class TransactionsLog extends Component {
 
         // Used only if User has no Transactions
         this.emptyTransactions = [{
-            TID: "", AccountID: "", SGID: "", TransactionName: "",
+            TID: "", AccountID: "", SGID: "", TransactionName: "No transactions to display",
             Amount: "", DateTransactionMade: "", DateTransactionEntered: "", IsExpense: "", TransactionCategory: ""
         }]
     }
@@ -37,7 +37,7 @@ class TransactionsLog extends Component {
         )
             .catch((err) => {
                 console.log(err)
-                this.setState({ user: user, userID : user.AccountID, transactions: this.emptyTransactions, dataFetched: true })
+                this.setState({ user: user.AccountUsername, userID : user.AccountID, transactions: this.emptyTransactions, dataFetched: true })
             });
     };
 
