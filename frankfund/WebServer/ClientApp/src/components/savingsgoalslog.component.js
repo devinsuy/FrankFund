@@ -12,6 +12,9 @@ class SavingsGoalsLog extends Component{
             goals: [],
             dataFetched : false
         };
+        this.getGoals = this.getGoals.bind(this);
+        this.handleRefresh = this.handleRefresh.bind(this);
+
         // Used only if User has no SavingsGoals
         this.emptyGoal = [{
             SGID: "", AccountID: "", Name: "No Goals To Display", GoalAmt: "", 
@@ -20,6 +23,7 @@ class SavingsGoalsLog extends Component{
     }
 
     async getGoals(){
+        console.log("got goals")
         let user = JSON.parse(localStorage.getItem("user"));
         let apikey = "c55f8d138f6ccfd43612b15c98706943e1f4bea3";
         let url = `/api/account/user=${user.AccountUsername}/SavingsGoals&apikey=${apikey}`;
@@ -30,6 +34,7 @@ class SavingsGoalsLog extends Component{
             .then((data) => data.json())
             .then((goalsData) => {
                 this.setState({ user: user.AccountUsername, userID: user.AccountID, goals: goalsData.Goals, dataFetched: true })
+                console.log("goals set")
             })
         )
         .catch((err) => { 
@@ -38,9 +43,15 @@ class SavingsGoalsLog extends Component{
         });
     };
 
+    // Fetch and re-render updated goals
+    async handleRefresh(){
+        this.setState({ user: this.state.user, userID: this.state.userID, goals: this.state.goals, dataFetched: false });
+        await(this.getGoals());
+    }
+
     // Update retrieved goals
     componentWillMount() {
-        this.getGoals()
+        this.getGoals();
     }
 
     render(){
@@ -260,16 +271,16 @@ class SavingsGoalsLog extends Component{
 
         return (
             <div className="container">
-                <h1 class="display-4 font-weight-bold white-text pt-5 mb-2">Savings Goals</h1>
-                
+                <h1 class="display-4 font-weight-bold white-text pt-5 mb-2" >Savings Goals</h1>
                 { // Pause loading if data has not been fetched yet
                 !this.state.dataFetched ? <> <a>Loading . . .</a></> : 
 
                 // Otherwise return loaded data
                 <>
                     <button onClick={() => handleAddGoal(this.state.userID)} className="btn btn-dark btn-blk" style={{float: "right"}}>Add New Goal </button>
-                    <h2>Hi {this.state.user}</h2>
-                    <table className="table">
+
+                    <h2 id="Hello">Hi {this.state.user} </h2>
+                    <table className="table" id="AllGoals">
                         <thead>
                             <tr>
                                 <th>Name</th>
@@ -277,7 +288,9 @@ class SavingsGoalsLog extends Component{
                                 <th>Contribution Amount</th>
                                 <th>Period</th>
                                 <th>End Date</th>
-                                <th></th>
+                                <th>
+                                    <input onClick={ this.handleRefresh } type="image" width="30" height="30" style={{float: "right"}} src="https://image.flaticon.com/icons/png/512/61/61444.png" />
+                                </th>
                             </tr>
                         </thead>
                         <tbody>

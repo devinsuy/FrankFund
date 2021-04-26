@@ -12,6 +12,9 @@ class TransactionsLog extends Component {
             transactions: [],
             dataFetched: false
         };
+        this.getTransactions = this.getTransactions.bind(this);
+        this.handleRefresh = this.handleRefresh.bind(this);
+
         // Used only if User has no Transactions
         this.emptyTransactions = [{
             TID: "", AccountID: "", SGID: "", TransactionName: "",
@@ -38,7 +41,13 @@ class TransactionsLog extends Component {
             });
     };
 
-    // Update retrieved goals
+    // Fetch and re-render updated Transactions
+    async handleRefresh(){
+        this.setState({ user: this.state.user, userID: this.state.userID, transactions: this.state.transactions, dataFetched: false });
+        await(this.getTransactions());
+    }
+
+    // Update retrieved Transactions
     componentWillMount() {
         this.getTransactions()
     }
@@ -166,7 +175,9 @@ class TransactionsLog extends Component {
                                         <th>Date Entered</th>
                                         <th>Type</th>
                                         <th>Category</th>
-                                        <th></th>
+                                        <th>
+                                            <input onClick={ this.handleRefresh } type="image" width="30" height="30" style={{float: "right"}} src="https://image.flaticon.com/icons/png/512/61/61444.png" />
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
