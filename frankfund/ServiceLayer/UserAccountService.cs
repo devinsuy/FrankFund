@@ -13,6 +13,7 @@ namespace ServiceLayer
         private readonly UserAccountDataAccess UserAccountDataAccess;
         private readonly TransactionService TransactionService;
         private readonly SavingsGoalService SGService;
+        private readonly ReceiptService RService;
         private PasswordService PasswordService;
         public UserAccountService()
         {
@@ -20,6 +21,7 @@ namespace ServiceLayer
             this.PasswordService = new PasswordService();
             this.TransactionService = new TransactionService();
             this.SGService = new SavingsGoalService();
+            this.RService = new ReceiptService();
         }
 
         public UserAccount reinstantiate(BigQueryRow row)
@@ -95,6 +97,15 @@ namespace ServiceLayer
             return SGService.getJSON(SGService.getSavingsGoalsFromAccount(username));
         }
 
+        // Return the JSON representation of the list of SavingsGoals associated with the given Account
+        public string getReceiptsFromAccount(long accID)
+        {
+            return RService.getJSON(RService.getReceiptsFromAccount(accID));
+        }
+        public string getReceiptsFromAccount(string username)
+        {
+            return RService.getJSON(RService.getReceiptsFromAccount(username));
+        }
 
 
         /*

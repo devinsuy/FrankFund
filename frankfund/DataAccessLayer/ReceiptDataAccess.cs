@@ -9,13 +9,15 @@ namespace DataAccessLayer
         private readonly StorageBucketHelper storageHelper;
         private readonly string tableID;
         private readonly string transactionTable;
+        private readonly string accountTable;
 
         public ReceiptDataAccess()
         {
             this.dataHelper = new DataHelper();
             this.storageHelper = new StorageBucketHelper("receipt_imgs");
             this.tableID = this.dataHelper.getQualifiedTableName("Receipts");
-            this.tableID = this.dataHelper.getQualifiedTableName("Transactions");
+            this.transactionTable = this.dataHelper.getQualifiedTableName("Transactions");
+            this.accountTable = this.dataHelper.getQualifiedTableName("Accounts");
         }
 
         public BigQueryResults getUsingID(long ID)
@@ -77,6 +79,33 @@ namespace DataAccessLayer
         public decimal castBQNumeric(object val)
         {
             return this.dataHelper.castBQNumeric(val);
+        }
+
+
+        // Query the receipts associated with a given user account
+        public BigQueryResults getReceiptsFromAccount(long accID)
+        {
+            string query = "SELECT r.RID, r.TID, r.ImgURL, r.PurchaseDate, r.Notes"
+                + $" FROM {this.tableID} r"
+                + $" INNER JOIN {this.transactionTable} t"
+                + " ON r.TID = t.TID"
+                + $" WHERE t.AccountID = {accID}"
+                + " ORDER BY r.PurchaseDate DESC; ";
+            Console.WriteLine(query);
+            return this.dataHelper.query(query, parameters: null);
+        }
+        public BigQueryResults getReceiptsFromAccount(string username)
+        {
+            string query = "SELECT r.RID, r.TID, r.ImgURL, r.PurchaseDate, r.Notes"
+                + $" FROM {this.tableID} r"
+                + $" INNER JOIN {this.transactionTable} t"
+                + " ON r.TID = t.TID"
+                + $" INNER JOIN {this.accountTable} acc"
+                + " ON t.AccountID = acc.AccountID"
+                + $" WHERE acc.AccountUsername = '{username}'"
+                + " ORDER BY r.PurchaseDate DESC; ";
+            Console.WriteLine(query);
+            return this.dataHelper.query(query, parameters: null);
         }
 
 

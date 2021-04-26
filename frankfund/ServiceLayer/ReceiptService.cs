@@ -2,6 +2,7 @@
 using DataAccessLayer.Models;
 using DataAccessLayer;
 using Google.Cloud.BigQuery.V2;
+using System.Collections.Generic;
 
 namespace ServiceLayer
 {
@@ -27,24 +28,30 @@ namespace ServiceLayer
             dataAccess.write(serializedReceipt);
         }
 
+        public Receipt reinstantiate(BigQueryRow row)
+        {
+            string notes = "";              // Nullable attribute
+            if (row["Notes"] != null)
+            {
+                notes = (string)row["Notes"];
+            }
+
+            return new Receipt(
+                (long)row["RID"], (long)row["TID"],
+                (string)row["ImgURL"],
+                (DateTime)row["PurchaseDate"],
+                notes,
+                newlyCreated: false
+            );
+        }
+
         // Retrieve and return Receipt object from BigQuery with the given PK identifer
         public Receipt getUsingID(long RID)
         {
-            string notes = ""; //nullable attribute
             Receipt receipt = null;
             foreach (BigQueryRow row in this.dataAccess.getUsingID(RID))
             {
-                if(row["Notes"] != null)
-                {
-                    notes = (string)row["Notes"];
-                }
-                receipt = new Receipt(
-                    (long)row["RID"], (long)row["TID"],
-                    (string)row["ImgURL"],
-                    (DateTime)row["PurchaseDate"],
-                    notes,
-                    newlyCreated: false
-                );
+                receipt = reinstantiate(row);
             }
             return receipt;
         }
@@ -82,6 +89,34 @@ namespace ServiceLayer
         }
 
         /*
+        Convert a list of Receipt objects into JSON format
+            Params: A list of Receipt objects to convert
+            Returns: The JSON string representation of the objects
+        */
+        public string getJSON(List<Receipt> receipts)
+        {
+            if (receipts == null || receipts.Count == 0)
+            {
+                return "{}";
+            }
+            string jsonStr = "{\"Receipts\":[";
+            for (int i = 0; i < receipts.Count; i++)
+            {
+                if (i == receipts.Count - 1)
+                {
+                    jsonStr += getJSON(receipts[i]);
+                }
+                else
+                {
+                    jsonStr += (getJSON(receipts[i]) + ", ");
+                }
+            }
+
+            return jsonStr + "]}";
+        }
+
+
+        /*
         Serialize a Receipt object into a String array
             Returns: A string array with each element in order of its column attribute (see Receipts DB schema)
         */
@@ -103,6 +138,28 @@ namespace ServiceLayer
             return dataAccess.getNextAvailID();
         }
 
+
+        // Return the list of Receipts associated with an account
+        public List<Receipt> getReceiptsFromAccount(long accID)
+        {
+            List<Receipt> receiptList = new List<Receipt>();
+            foreach (BigQueryRow row in this.dataAccess.getReceiptsFromAccount(accID))
+            {
+                Receipt receipt = reinstantiate(row);
+                receiptList.Add(receipt);
+            }
+            return receiptList;
+        }
+        public List<Receipt> getReceiptsFromAccount(string username)
+        {
+            List<Receipt> receiptList = new List<Receipt>();
+            foreach (BigQueryRow row in this.dataAccess.getReceiptsFromAccount(username))
+            {
+                Receipt receipt = reinstantiate(row);
+                receiptList.Add(receipt);
+            }
+            return receiptList;
+        }
 
         // ------------------------------ Receipt Upload/Download ------------------------------
 
