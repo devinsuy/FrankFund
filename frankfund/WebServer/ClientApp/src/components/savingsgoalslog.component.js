@@ -1,6 +1,6 @@
 import React, {Component, useState, useEffect} from "react";
 import { withRouter } from 'react-router-dom';
-import Goals from '../savinggoals/savingsgoals.component';
+import Goals from './savingsgoals.component';
 
 class SavingsGoalsLog extends Component{
     constructor(){

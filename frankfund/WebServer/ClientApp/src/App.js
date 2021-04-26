@@ -15,7 +15,7 @@ import LandingComponent from "./components/landing.components";
 import TransactionLog from "./components/transactionslog.component";
 import TransactionDetail from "./components/transactiondetail.component";
 import CreateTransaction from "./components/createtransaction.component";
-import SavingsGoalsLog from "./components/savinggoals/savingsgoalslog.component";
+import SavingsGoalsLog from "./components/savingsgoalslog.component";
 import ModifyTransaction from './components/updatetransaction.component';
 import DeleteTransaction from './components/deletetransaction.component';
 import ImageUploadDemo from './components/temp/imageuploaddemo.component';
