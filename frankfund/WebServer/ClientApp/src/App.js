@@ -20,9 +20,9 @@ import ModifyTransaction from './components/updatetransaction.component';
 import DeleteTransaction from './components/deletetransaction.component';
 import ImageUploadDemo from './components/temp/imageuploaddemo.component';
 import DashboardComponent from './components/dashboard.component';
-import Subscriptions from './components/subscriptions.component';
+//import Subscriptions from './components/subscriptions.component';
 import Trends from './components/trends.component';
-import loginuseraccountComponent from './components/loginuseraccount.component';
+//import loginuseraccountComponent from './components/loginuseraccount.component';
 import SubscriptionLog from './components/subscriptioncomponent';
 import Subscriptions from './components/subscriptions.functionality';
 
