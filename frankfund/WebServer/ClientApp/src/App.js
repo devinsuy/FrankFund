@@ -22,6 +22,8 @@ import ImageUploadDemo from './components/temp/imageuploaddemo.component';
 import DashboardComponent from './components/dashboard.component';
 import Trends from './components/trends.component';
 import loginuseraccountComponent from './components/loginuseraccount.component';
+import SubscriptionLog from './components/subscriptioncomponent';
+import Subscriptions from './components/subscriptions.functionality';
 
 function logout() {
     const user = JSON.parse(localStorage.getItem('user'));
@@ -93,6 +95,9 @@ function App() {
               <li class="nav-item">
                 <a class="nav-link" href="/receipts/imageupload">ImageUpload Demo</a>     
               </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/subscriptions">Subscriptions</a>
+              </li>
             </ul>
           </div>
           <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
@@ -123,6 +128,8 @@ function App() {
             <Route path="/create-user-account" component={CreateUserAccount} />
             <Route path="/account-settings" component={SettingsUserAccount} />
             <Route path="/login" component={LoginComponent} />
+            <Route path="/subscriptionslog" component={() => isLoggedIn ? <SubscriptionLog /> : <LoginComponent />} />
+            <Route path="/subscriptions" component={Subscriptions} />
             <Route path="/transactions-detail" component={TransactionDetail} />
             <Route path="/transactions-log" component={TransactionLog} />
             <Route path="/create-transaction" component={CreateTransaction} />
