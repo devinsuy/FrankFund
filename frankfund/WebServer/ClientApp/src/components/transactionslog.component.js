@@ -8,6 +8,7 @@ class TransactionsLog extends Component {
         super()
         this.state = {
             user: "",
+            userID: -1,
             transactions: [],
             dataFetched: false
         };
@@ -19,21 +20,21 @@ class TransactionsLog extends Component {
     }
 
     async getTransactions() {
-        let user = JSON.parse(localStorage.getItem("user")).AccountUsername;
+        let user = JSON.parse(localStorage.getItem("user"));
         let apikey = "bd0eecf7cf275751a421a6101272f559b0391fa0";
-        let url = `/api/account/user=${user}/Transactions&apikey=${apikey}`;
+        let url = `/api/account/user=${user.AccountUsername}/Transactions&apikey=${apikey}`;
 
         // Retrieve all SavingsGoals for the user
         await (
             fetch(url)
                 .then((data) => data.json())
                 .then((transactionsData) => {
-                    this.setState({ user: user, transactions: transactionsData.Transactions, dataFetched: true })
+                    this.setState({ user: user.AccountUsername, userID: user.AccountID, transactions: transactionsData.Transactions, dataFetched: true })
                 })
         )
             .catch((err) => {
                 console.log(err)
-                this.setState({ user: user, transactions: this.emptyTransactions, dataFetched: true })
+                this.setState({ user: user, userID : user.AccountID, transactions: this.emptyTransactions, dataFetched: true })
             });
     };
 
@@ -45,7 +46,7 @@ class TransactionsLog extends Component {
 
     render() {
         // ------------------------------ Button functionality ------------------------------
-        async function AddAlert() {
+        async function AddAlert(userID) {
             //let user = this.props.match.params.user;
             let apikey = "bd0eecf7cf275751a421a6101272f559b0391fa0";
             let url = `/api/Transaction&apikey=${apikey}`;
@@ -107,7 +108,7 @@ class TransactionsLog extends Component {
                         headers: { "Content-type": "application/json" },
                         body: JSON.stringify({
                             "SGID": 2,
-                            "AccountID": 4,
+                            "AccountID": userID,
                             "TransactionName": formValues[0],
                             "Amount": formValues[1],
                             "DateTransactionMade": formValues[2],
@@ -121,9 +122,11 @@ class TransactionsLog extends Component {
                                 Swal.fire({
                                     title: 'Created Transaction',
                                     icon: "success",
-                                    html: `<p>Transaction has successfully added!</p>`,
+                                    html: `<p>Transaction has successfully added! Refreshing ...</p>`,
                                     showCloseButton: true
                                 })
+                                // Wait 1.5 seconds before reloading the page
+                                setTimeout(function() { window.location.reload(false) }, 1500);                                       
                             }
                             else {
                                 Swal.fire({
@@ -134,7 +137,6 @@ class TransactionsLog extends Component {
                                 })
                             }
                         })
-                    window.location.reload(false);
                     //Exit loading loop
                     loading = false;
                 }
@@ -149,7 +151,7 @@ class TransactionsLog extends Component {
 
                         // Otherwise return loaded data
                         <>
-                            <button onClick={AddAlert} className="btn btn-dark btn-blk" style={{float: "right"}}>New Transaction </button>
+                            <button onClick={() => AddAlert(this.state.userID)} className="btn btn-dark btn-blk" style={{float: "right"}}>New Transaction </button>
                             <h2>Hi {this.state.user}</h2>
                             <table className="table">
                                 <thead>
