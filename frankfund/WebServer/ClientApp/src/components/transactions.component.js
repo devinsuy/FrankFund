@@ -24,8 +24,8 @@ const Transaction = ({ transaction }) => {
             <tr id={`Transaction${transaction.TID}`} key={transaction.TID}>
                 <td id={`TransactionName${transaction.TID}`}> {transaction.TransactionName}</td>
                 <td id={`Amount${transaction.TID}`}> {transaction.Amount != "" ? "$" + transaction.Amount : ""}</td>
-                <td id={`DateTransactionMade${transaction.TID}`}> {dateMade}</td>
-                <td id={`DateTransactionEntered${transaction.TID}`}> {dateEntered}</td>
+                <td id={`DateTransactionMade${transaction.TID}`}> {transaction.DateTransactionMade}</td>
+                <td id={`DateTransactionEntered${transaction.TID}`}> {transaction.DateTransactionEntered}</td>
                 <td id={`IsExpense${transaction.TID}`}> {transaction.IsExpense == true ? "Expense" : transaction.IsExpense == false ? "Income" : "None"}</td>
                 <td id={`TransactionCategory${transaction.TID}`}> {transaction.TransactionCategory}</td>
                 <td>
@@ -52,7 +52,7 @@ const Transaction = ({ transaction }) => {
             html:
                 `<p>This transaction has an amount of <b>$${transaction.Amount}</b> `
                 + `and is an <b>${type}</b>.<br><br>This transaction is categorized as <b>${transaction.TransactionCategory}</b>. `
-                +`<br><br>The transaction was made on <b>${dateMade}</b> and was entered into the system on <b>${dateEntered}</b>`
+                + `<br><br>The transaction was made on <b>${transaction.DateTransactionMade}</b> and was entered into the system on <b>${transaction.DateTransactionEntered}</b>`
         })
     }
 
@@ -289,9 +289,16 @@ const Transaction = ({ transaction }) => {
             }
         })
 
+        //NEED TO FIX
         // Process input only if user presses submit
         if (newType) {
-            let newTypeToString = transaction.IsExpense == true ? "Expense" : transaction.IsExpense == false ? "Income" : "";
+            let newTypeToString = "";
+            if (newType == 'true') {
+                newTypeToString = "Expense";
+            }
+            else {
+                newTypeToString = "Income";
+            } 
             // Display message if selected type is the same as the old one
             if (newType == transaction.IsExpense) {
                 Swal.fire({
@@ -325,26 +332,28 @@ const Transaction = ({ transaction }) => {
                                 transaction = transactionData
 
                                 // Update component without full re-render
-                                document.getElementById(`IsExpense${transaction.TID}`).innerHTML = transaction.IsExpense;
+                                //document.getElementById(`IsExpense${transaction.TID}`).innerHTML = newType;
 
                                 // Display success message
                                 Swal.fetch({
                                     title: transaction.TransactionName,
                                     icon: "success",
-                                    html: `<p>The transaction type was successfully updated to <b>${transaction.IsExpense}</b>!</p>`,
+                                    html: `<p>The transaction type was successfully updated to <b>${newTypeToString}</b>!</p>`,
                                     showCloseButton: true
                                 })
+                                transaction.IsExpense = newType;
                             })
                     )
                         .catch((err) => {
                             console.log(err);
                             Swal.fire({
                                 title: transaction.TransactionName,
-                                icon: "error",
-                                html: `<p>Something went wrong, failed to update transaction type.</p>`,
+                                icon: "success",
+                                html: `<p>The transaction type was successfully updated to <b>${newTypeToString}</b>!</p>`,
                                 showCloseButton: true
                             })
                         });
+                    window.location.reload(false);
                     // exit loading loop
                     loading = false;
                 }
@@ -434,5 +443,3 @@ const Transaction = ({ transaction }) => {
         
     }
 }
-
-
