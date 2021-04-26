@@ -1,5 +1,4 @@
 ﻿import Swal from 'sweetalert2'
-import "react-datepicker/dist/react-datepicker.css";
 import React, { useState } from "react";
 
 
