@@ -1,6 +1,7 @@
 import Swal from 'sweetalert2'
-import swal from 'sweetalert'
-import $ from 'jquery';
+import "react-datepicker/dist/react-datepicker.css";
+import React, { useState } from "react";
+
 
 export default function Goals({goals}) {
     return (
@@ -23,7 +24,8 @@ const Goal = ({ goal }) => {
     // Build api url for this particular goal
     let apikey = "c55f8d138f6ccfd43612b15c98706943e1f4bea3";
     let url = `/api/SavingsGoal/SGID=${goal.SGID}&apikey=${apikey}`;
-    let endDate  = goal.EndDate != "" ? new Date(goal.EndDate).toDateString() : "";
+    let endDate  = goal.EndDate != "" ? new Date(goal.EndDate.replace(/-/g, '\/')).toDateString() : "";
+    let today = new Date().toDateString();
     return (
         <>
             <tr id={`Goal${goal.SGID}`} key={goal.SGID}>
@@ -46,8 +48,8 @@ const Goal = ({ goal }) => {
 
     // View button, display popup for additional information about goal 
     function viewAlert(){
-        let startDate = new Date(goal.StartDate).toDateString();
-        let endDate  = goal.EndDate != "" ? new Date(goal.EndDate).toDateString() : "";
+        let startDate = new Date(goal.StartDate.replace(/-/g, '\/')).toDateString();
+        let endDate  = goal.EndDate != "" ? new Date(goal.EndDate.replace(/-/g, '\/')).toDateString() : "";
         let noun = nouns[goal.Period];
         Swal.fire({
             title: goal.Name,
@@ -325,8 +327,8 @@ const Goal = ({ goal }) => {
                         // Generate HTML to display either the changed end date or the changed contribution amount resulting from the goal change
                         let secondChange;
                         if(extendDate){
-                            let endDate  = goal.EndDate != "" ? new Date(goal.EndDate).toDateString() : "";
-                            let newEndDate = new Date(goalData.EndDate).toDateString()
+                            let endDate  = goal.EndDate != "" ? new Date(goal.EndDate.replace(/-/g, '\/')).toDateString() : "";
+                            let newEndDate = new Date(goalData.EndDate.replace(/-/g, '\/')).toDateString()
                             document.getElementById(`EndDate${goal.SGID}`).innerHTML = newEndDate;
                             secondChange = `<p>The end date of the goal was adjusted from <b>${endDate}</b> to <b>${newEndDate}</b></p>`
                         }
@@ -418,8 +420,8 @@ const Goal = ({ goal }) => {
                         document.getElementById(`ContrAmt${goal.SGID}`).innerHTML = "$" + newContrAmt.toString();
                         
                         // Generate HTML to display either the changed end date or the changed contribution amount resulting from the goal change
-                        let endDate  = goal.EndDate != "" ? new Date(goal.EndDate).toDateString() : "";
-                        let newEndDate = new Date(goalData.EndDate).toDateString()
+                        let endDate  = goal.EndDate != "" ? new Date(goal.EndDate.replace(/-/g, '\/')).toDateString() : "";
+                        let newEndDate = new Date(goalData.EndDate.replace(/-/g, '\/')).toDateString()
                         document.getElementById(`EndDate${goal.SGID}`).innerHTML = newEndDate;
                         let secondChange = `<p>The end date of the goal was adjusted from <b>${endDate}</b> to <b>${newEndDate}</b></p>`
     
@@ -486,7 +488,6 @@ const Goal = ({ goal }) => {
             // Make PATCH request and update the period
             else{
                 let loading = true;
-                let failed = false;
                 while(loading){
                     // Show loading message
                     Swal.fire({
@@ -507,9 +508,9 @@ const Goal = ({ goal }) => {
                         .then((goalData) => {
                             // Update pointer to the updated goal JSON from the server
                             let oldPeriod = goal.Period;
-                            let prevEndDate = goal.EndDate != "" ? new Date(goal.EndDate).toDateString() : "";
+                            let prevEndDate = goal.EndDate != "" ? new Date(goal.EndDate.replace(/-/g, '\/')).toDateString() : "";
                             goal = goalData;
-                            let newEndDate = goal.EndDate != "" ? new Date(goal.EndDate).toDateString() : "";
+                            let newEndDate = goal.EndDate != "" ? new Date(goal.EndDate.replace(/-/g, '\/')).toDateString() : "";
                             
                             // Update component without full re-render
                             document.getElementById(`Period${goal.SGID}`).innerHTML = goal.Period;
@@ -543,34 +544,89 @@ const Goal = ({ goal }) => {
     }
 
     async function editEndDate(){
-        // Swal.fire({
-        //     titel: 'Enter date',
-        //     html: '<div id="datepicker"></div>',
-        //     onOpen: function() {
-        //         $('#datepicker').datepicker();
-        //     },
-        // })
-        // await( 
-        //     swal({
-        //         title: 'Date picker',
-        //         html: '<div id="datepicker"></div>',
-        //         onOpen: function() {
-        //             $('#datepicker').datepicker();
-        //         },
-        //         preConfirm: function() {
-        //             return Promise.resolve($('#datepicker').datepicker('getDate'));
-        //         }
-        //     }).then(function(result) {
-        //         swal({
-        //         type: 'success',
-        //         html: 'You entered: <strong>' + result + '</strong>'
-        //         });
-        //     })
-        // );
+        Swal.fire({
+            title: goal.Name,
+            showCloseButton: true,
+            showCancelButton: true,
+            icon: "question",
+            html: 
+                `<p>Select a new goal end date below</p>`
+                + `<input id="DateBox${goal.SGID}" class="swal2-input" type="date"  value=${goal.EndDate} required>`,
+
+        });
+
+        document.getElementsByClassName("swal2-confirm swal2-styled")[0].addEventListener("click", async function(){
+            // Update the date string for UTC conversion
+            let newDateRaw = document.getElementById(`DateBox${goal.SGID}`).value.replace(/-/g, '\/');
+            const newDate = new Date(newDateRaw).toDateString();
+            const prevDate = new Date(goal.EndDate.replace(/-/g, '\/')).toDateString();
+            console.log(new Date(newDateRaw).toLocaleDateString());
+
+            // User did not enter a date or entered the same date already set
+            if(!newDateRaw || newDate == prevDate || newDate == today){
+                let message = !newDateRaw ? "You did not enter a valid date." : `${goal.Name} goal end date is <b>already set to ${newDate}</b>.`;
+                message = newDate == today ? "Cannot set goal end date to today." : message;
+                Swal.fire({
+                    title: goal.Name,
+                    icon: "warning",
+                    html: `<p>${message} No changes were made.</p>`,
+                    showCloseButton: true
+                })    
+                return;
+            }
+
+            // Otherwise update the date
+            let loading = true;
+            while(loading){
+                // Show loading message
+                Swal.fire({
+                    title: 'Updating',
+                    html: `<p>Updating end date from <b>${prevDate}</b> to <b>${newDate}</b></p>`,
+                    allowOutsideClick: false,
+                    onBeforeOpen: () => { Swal.showLoading()}
+                });
+
+                let params = {  
+                    method: "PATCH",  
+                    headers: { "Content-type": "application/json" },  
+                    body: JSON.stringify({ "EndDate" : new Date(newDateRaw).toLocaleDateString() })
+                }
+                await(
+                    fetch(url, params)
+                    .then((response) => response.json())
+                    .then((goalData) => {
+                        // Update component without full re-render
+                        let prevContr = goal.ContrAmt;
+                        goal = goalData;   
+                        document.getElementById(`EndDate${goal.SGID}`).innerHTML = newDate
+                        document.getElementById(`ContrAmt${goal.SGID}`).innerHTML = `$${goal.ContrAmt}`
+
+                        // Display success message
+                        Swal.fire({
+                            title: goal.Name,
+                            icon: "success",
+                            html: 
+                            `<p>Goal end date successfully updated from <b>${prevDate}</b> to <b>${newDate}</b>!</p>`
+                            + `<p>${goal.Period} contribution amount was updated from <b>$${prevContr}</b> to <b>$${goal.ContrAmt}</b></p>`,
+                            showCloseButton: true
+                        })
+                    })
+                )
+                .catch((err) => {
+                    console.log(err);
+                    Swal.fire({
+                        title: goal.Name,
+                        icon: "error",
+                        html: `<p>Something went wrong, failed to update goal end date.</p>`,
+                        showCloseButton: true
+                    })
+                });
+                // Exit loading loop
+                loading = false;           
+            }
+        });
     }
 
-
-    
 
 
 
