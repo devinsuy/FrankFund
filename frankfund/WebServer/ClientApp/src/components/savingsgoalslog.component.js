@@ -268,7 +268,7 @@ class SavingsGoalsLog extends Component{
                 // Otherwise return loaded data
                 <>
                     <button onClick={() => handleAddGoal(this.state.userID)} className="btn btn-dark btn-blk" style={{float: "right"}}>Add New Goal </button>
-                    <b>Hi {this.state.user}</b>
+                    <h2>Hi {this.state.user}</h2>
                     <table className="table">
                         <thead>
                             <tr>
