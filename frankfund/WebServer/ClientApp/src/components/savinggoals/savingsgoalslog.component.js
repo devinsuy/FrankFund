@@ -18,8 +18,7 @@ class SavingsGoalsLog extends Component{
     }
 
     async getGoals(){
-        // TODO: Validation, if /goals/{user} != the logged in user return unauthorized (other users shouldn't be able to access data that isn't theirs)
-        let user = this.props.match.params.user;                                // Select user from route /goals/{user}
+        let user = JSON.parse(localStorage.getItem("user")).AccountUsername;
         let apikey = "c55f8d138f6ccfd43612b15c98706943e1f4bea3";
         let url = `/api/account/user=${user}/SavingsGoals&apikey=${apikey}`;
 
