@@ -20,6 +20,7 @@ import ModifyTransaction from './components/updatetransaction.component';
 import DeleteTransaction from './components/deletetransaction.component';
 import ImageUploadDemo from './components/temp/imageuploaddemo.component';
 import DashboardComponent from './components/dashboard.component';
+import Subscriptions from './components/subscriptions.component';
 import Trends from './components/trends.component';
 import loginuseraccountComponent from './components/loginuseraccount.component';
 import SubscriptionLog from './components/subscriptioncomponent';
@@ -86,8 +87,10 @@ function App() {
                 <a class="nav-link" href="/transactions">Transactions<span class="sr-only">(current)</span></a>
               </li>
               <li class="nav-item">
-                { /* TODO: Button click should add current logged in user to the route /goals/{user} */ }
                 <a class="nav-link" href="/goals">Goals</a>     
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/subscriptions">Subscriptions</a>     
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="/trends">Trends</a>     
@@ -137,7 +140,8 @@ function App() {
             <Route path="/delete-transaction" component={DeleteTransaction} />
             <Route path="/transactions" component={() => isLoggedIn ? <TransactionLog /> : <LoginComponent/> } />
             <Route path="/goals" component={() => isLoggedIn ? <SavingsGoalsLog /> : <LoginComponent/> } />
-            <Route path="/trends" component={Trends} />    
+            <Route path="/subscriptions" component={() => isLoggedIn ? <Subscriptions /> : <LoginComponent/> } />
+            <Route path="/trends" component={() => isLoggedIn ? <Trends /> : <LoginComponent/> } />
             <Route path="/receipts/imageupload" component={ImageUploadDemo} />
           </Switch>
         </div>

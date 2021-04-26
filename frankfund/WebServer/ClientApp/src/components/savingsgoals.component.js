@@ -1,5 +1,4 @@
 import Swal from 'sweetalert2'
-import "react-datepicker/dist/react-datepicker.css";
 import React, { useState } from "react";
 
 
@@ -229,12 +228,10 @@ const Goal = ({ goal }) => {
         const inputOptions = new Promise((resolve) => {
             let dateOption = dateVerb + ' End Date';
             let contrOption = contrVerb + ' Contribution';
-            setTimeout(() => {
               resolve({
                 'true' : dateOption,
                 'false' : contrOption
               })
-            }, 1000)
         })
         const { value: extendEndDate } = await Swal.fire({
             title: goal.Name,
