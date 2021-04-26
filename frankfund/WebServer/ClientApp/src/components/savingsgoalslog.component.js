@@ -63,7 +63,7 @@ class SavingsGoalsLog extends Component{
 
                     '<h5>Contribution Period</h5>'
                         + `<label for="periods"></label>
-                            <select name="periods" id="swal-input4">
+                            <select name="periods" class="swal2-input" id="swal-input4" style="height: 40px; width:280px;">
                                 <option value="Daily">Daily</option>
                                 <option value="Weekly">Weekly</option>
                                 <option value="BiWeekly">BiWeekly</option>
@@ -153,7 +153,7 @@ class SavingsGoalsLog extends Component{
 
                     '<h5>Contribution Period</h5>'
                         + `<label for="periods"></label>
-                            <select name="periods" id="swal-input4">
+                            <select name="periods" class="swal2-input" id="swal-input4" style="height: 40px; width:280px;">
                                 <option value="Daily">Daily</option>
                                 <option value="Weekly">Weekly</option>
                                 <option value="BiWeekly">BiWeekly</option>
@@ -226,19 +226,17 @@ class SavingsGoalsLog extends Component{
         // returns boolean or null if user cancelled
         async function getByEndDate(){
             const inputOptions = new Promise((resolve) => {
-                setTimeout(() => {
                 resolve({
                     'true' : "Goal by End Date",
                     'false' : "Goal by Contribution"
                 })
-                }, 1000)
             })
             const { value: byEndDate } = await Swal.fire({
                 title: "Select Goal Type",
                 input: 'radio',
                 html: 
                 `<p>Create a new goal by a <b>specified end date:</b></p> <p>Ex: Save $300 by December 25th</p> 
-                <p>Create a new goal by <b>regular contribution amount:</b></p> <p>Ex: Save $300 by contributing $25 weekly</p>`,
+                <p>Create a new goal by <b>regular contribution amount:</b></p> <p>Ex: Save $300 by contributing $25 weekly</p><br></br>`,
                 inputOptions: inputOptions,
                 showCancelButton: true,
                 showCloseButton: true,

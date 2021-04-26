@@ -53,22 +53,22 @@ class TransactionsLog extends Component {
                 title: "Create a Transaction",
                 html:
                     '<h3>Name</h3>' +
-                    '<input id="swal-input1" class="swal2-input" placeholder="Enter the name" required>' +
+                    '<input id="swal-input1" class="swal2-input" placeholder="Enter the name" required style="font-size: 16pt; height: 40px; width:280px;">' +
 
                     '<h3>Amount</h3>' +
-                    '<input id="swal-input2" class="swal2-input" placeholder="Enter the amount in $ " type="number" required>' +
+                    '<input id="swal-input2" class="swal2-input" placeholder="Enter the amount in $ " type="number" required style="height: 40px">' +
 
                     '<h3>Date transaction was made</h3>' +
-                    '<input id="swal-input3" class="swal2-input" placeholder="Choose a date" type="date" required>' +
+                    '<input id="swal-input3" class="swal2-input" placeholder="Choose a date" type="date" required style="height: 40px; width:280px;">' +
 
                     '<h3>Type</h3>' +
-                    '<select id="swal-input4" class="swal2-input" placeholder="Select the type" required>' +
+                    '<select id="swal-input4" class="swal2-input" placeholder="Select the type" required style="height: 40px; width:280px;">' +
                     '<option value="true">Expense</option>' +
                     '<option value="false">Income</option>' +
                     '</select>' +
 
                     '<h3>Category</h3>' +
-                    '<select id="swal-input5" class="swal2-input" placeholder="Select the category" required>' +
+                    '<select id="swal-input5" class="swal2-input" placeholder="Select the category" required style="height: 40px; width:280px;">' +
                     '<option value="Entertainment">Entertainment</option>' +
                     '<option value="Restaurants">Restaurants</option>' +
                     '<option value="Transportation">Transportation</option>' +
