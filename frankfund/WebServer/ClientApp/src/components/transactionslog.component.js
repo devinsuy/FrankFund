@@ -149,13 +149,14 @@ class TransactionsLog extends Component {
 
                         // Otherwise return loaded data
                         <>
+                            <button onClick={AddAlert} className="btn btn-dark btn-blk" style={{float: "right"}}>New Transaction </button>
                             <h2>Hi {this.state.user}</h2>
                             <table className="table">
                                 <thead>
-                                    <tr>
+                                    {/* <tr>
                                         <button onClick={AddAlert} className="btn btn-dark btn-blk">New Transaction</button>
                                         <br></br>
-                                    </tr>
+                                    </tr> */}
                                     <tr>
                                         <th>Name</th>
                                         <th>Amount</th>
