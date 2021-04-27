@@ -23,7 +23,6 @@ class SavingsGoalsLog extends Component{
     }
 
     async getGoals(){
-        console.log("got goals")
         let user = JSON.parse(localStorage.getItem("user"));
         let apikey = "c55f8d138f6ccfd43612b15c98706943e1f4bea3";
         let url = `/api/account/user=${user.AccountUsername}/SavingsGoals&apikey=${apikey}`;
@@ -34,7 +33,6 @@ class SavingsGoalsLog extends Component{
             .then((data) => data.json())
             .then((goalsData) => {
                 this.setState({ user: user.AccountUsername, userID: user.AccountID, goals: goalsData.Goals, dataFetched: true })
-                console.log("goals set")
             })
         )
         .catch((err) => { 
