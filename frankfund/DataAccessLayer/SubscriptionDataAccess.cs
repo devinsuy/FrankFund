@@ -130,6 +130,16 @@ namespace DataAccessLayer
             return this.dataHelper.query(query, parameters: null);
         }
 
+        public BigQueryResults getUserSubscriptionCount(string username)
+        {
+            string query = "SELECT COUNT(*) AS NumSubscriptions"
+                + " FROM `frankfund.FrankFund.Subscriptions` s"
+                + " INNER JOIN `frankfund.FrankFund.Accounts` acc"
+                + " ON s.AccountID = acc.AccountID"
+                + $" WHERE acc.AccountUsername = \"{username}\"";
+
+            return this.dataHelper.query(query, parameters: null);
+        }
 
         public long getNextAvailID()
         {

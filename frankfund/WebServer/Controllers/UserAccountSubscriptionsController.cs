@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ServiceLayer;
+using System;
 
 namespace REST.Controllers
 {
@@ -45,6 +46,17 @@ namespace REST.Controllers
                 return new UnauthorizedObjectResult("Invalid API key");
             }
             return api.serveJson(uas.getSubscriptionsFromAccount(user));
+        }
+
+        [Route("api/account/user={user}/Subscriptions/count&apikey={apiKey}")]
+        [HttpGet]
+        public IActionResult getSubscriptionCount(string user, string apiKey)
+        {
+            if (!api.validAPIKey(apiKey))
+            {
+                return new UnauthorizedObjectResult("Invalid API key");
+            }
+            return api.serveJson(api.getSingleAttrJSON("SubCount", Convert.ToString(uas.getUserSubscriptionCount(user))));
         }
 
 

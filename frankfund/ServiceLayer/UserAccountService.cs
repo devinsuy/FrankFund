@@ -116,6 +116,10 @@ namespace ServiceLayer
             return SubService.getJSON(SubService.getSubscriptionsFromAccount(username));
         }
 
+        public long getUserSubscriptionCount(string username)
+        {
+            return SubService.getUserSubscriptionCount(username);
+        }
 
         /*
         Uses DataAccess Layer to delete via PK Identifier

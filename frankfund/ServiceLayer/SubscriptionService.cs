@@ -108,8 +108,6 @@ namespace ServiceLayer
                 s.getPurchaseAmount().ToString(),
                 s.getFrequency().ToString()
             };
-
-       
         }
 
         /*
@@ -189,6 +187,16 @@ namespace ServiceLayer
         public long getNextAvailID()
         {
             return SubscriptionDataAccess.getNextAvailID();
+        }
+
+        public long getUserSubscriptionCount(string username)
+        {
+            long numSubs = 0;
+            foreach (BigQueryRow row in this.SubscriptionDataAccess.getUserSubscriptionCount(username))
+            {
+                numSubs = Convert.ToInt64(row["NumSubscriptions"]);
+            }
+            return numSubs;
         }
 
         /*
