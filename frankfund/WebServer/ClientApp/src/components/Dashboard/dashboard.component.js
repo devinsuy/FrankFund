@@ -155,7 +155,7 @@ export default function Dashboard() {
                         </Badge>
                     </IconButton>
                 </Toolbar>
-            </AppBar>*/}
+            </AppBar>
             <Drawer
                 variant="permanent"
                 classes={{
@@ -191,7 +191,7 @@ export default function Dashboard() {
                 <List>{mainListItems}</List>
                 <Divider />
                 <List>{secondaryListItems}</List>
-            </Drawer>
+            </Drawer>*/}
             <main className={classes.content}>
                 <div className={classes.appBarSpacer} />
                 <Container maxWidth="lg" className={classes.container}>

@@ -9,38 +9,39 @@ import PeopleIcon from '@material-ui/icons/People';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import LayersIcon from '@material-ui/icons/Layers';
 import AssignmentIcon from '@material-ui/icons/Assignment';
+import { Link } from 'react-router-dom';
 
 export const mainListItems = (
     <div>
-        <ListItem button>
-            <ListItemIcon>
+        <ListItem button component={Link} to="/">
+            <ListItemIcon href="/">
                 <DashboardIcon />
             </ListItemIcon>
-            <ListItemText primary="Dashboard" />
+            <ListItemText primary="Dashboard"/>
         </ListItem>
-        <ListItem button>
+        <ListItem button component={Link} to="/transactions" >
             <ListItemIcon>
                 <ShoppingCartIcon />
             </ListItemIcon>
             <ListItemText primary="Transactions" />
         </ListItem>
-        <ListItem button>
-            <ListItemIcon>
-                <PeopleIcon />
-            </ListItemIcon>
-            <ListItemText primary="Settings" />
-        </ListItem>
-        <ListItem button>
+        <ListItem button component={Link} to="/goals">
             <ListItemIcon>
                 <BarChartIcon />
             </ListItemIcon>
             <ListItemText primary="Savings Goals" />
         </ListItem>
-        <ListItem button>
+        <ListItem button component={Link} to="/subscriptions" >
             <ListItemIcon>
                 <LayersIcon />
             </ListItemIcon>
-            <ListItemText primary="Notifications" />
+            <ListItemText primary="Subscriptions" />
+        </ListItem>
+        <ListItem button component={Link} to="/account-settings">
+            <ListItemIcon>
+                <PeopleIcon />
+            </ListItemIcon>
+            <ListItemText primary="Settings"/>
         </ListItem>
     </div>
 );

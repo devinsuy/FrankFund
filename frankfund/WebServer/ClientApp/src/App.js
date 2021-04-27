@@ -15,7 +15,7 @@ import LandingComponent from "./components/landing.components";
 import TransactionLog from "./components/transactionslog.component";
 import SavingsGoalsLog from "./components/savingsgoalslog.component";
 import ImageUploadDemo from './components/temp/imageuploaddemo.component';
-import DashboardComponent from './components/dashboard.component';
+import DashboardComponent from './components/Dashboard/dashboard.component';
 import Trends from './components/trends.component';
 //import loginuseraccountComponent from './components/loginuseraccount.component';
 import SubscriptionsLog from './components/subscriptionslog.component';
@@ -78,19 +78,19 @@ function App() {
           <div class="collapse navbar-collapse" id="navbarNavTransaction">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link" href="/transactions">Transactions<span class="sr-only">(current)</span></a>
+                <Link className="navbar-link" to={"/transactions"}><a class="nav-link">Transactions<span class="sr-only">(current)</span></a></Link>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/goals">Goals</a>     
+                <Link className="navbar-link" to={"/goals"}><a class="nav-link">Goals</a></Link>     
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/subscriptions">Subscriptions</a>     
+                <Link className="navbar-link" to={"/subscriptions"}><a class="nav-link" >Subscriptions</a></Link>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/trends">Trends</a>     
+                <Link className="navbar-link" to={"/trends"}><a class="nav-link" >Trends</a></Link>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/receipts/imageupload">ImageUpload Demo</a>     
+                <Link className="navbar-link" to={"/receipts/imageupload"}><a class="nav-link">ImageUpload Demo</a></Link>   
               </li>
             </ul>
           </div>
