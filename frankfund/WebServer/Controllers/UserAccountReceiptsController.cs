@@ -23,7 +23,7 @@ namespace REST.Controllers
         // Serve all Receipts associated with a given Accoun
         [Route("api/account/accID={accID}/Receipts&apikey={apiKey}")]
         [HttpGet]
-        public IActionResult getGoals(long accID, string apiKey)
+        public IActionResult getReceipts(long accID, string apiKey)
         {
             if (!api.validAPIKey(apiKey))
             {
@@ -31,14 +31,14 @@ namespace REST.Controllers
             }
             if (accID < 1)
             {
-                return BadRequest();
+                return BadRequest("Invalid Account ID");
             }
             return api.serveJson(uas.getReceiptsFromAccount(accID));
         }
 
         [Route("api/account/user={user}/Receipts&apikey={apiKey}")]
         [HttpGet]
-        public IActionResult getGoals(string user, string apiKey)
+        public IActionResult getReceipts(string user, string apiKey)
         {
             if (!api.validAPIKey(apiKey))
             {
