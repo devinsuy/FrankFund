@@ -2,6 +2,7 @@
 import { useTheme } from '@material-ui/core/styles';
 import { LineChart, Line, XAxis, YAxis, Label, ResponsiveContainer } from 'recharts';
 import Typography from '@material-ui/core/Typography';
+import Link from '@material-ui/core/Link';
 //import Title from './Title';
 
 // Generate Sales Data
@@ -52,6 +53,12 @@ export default function Chart() {
                     <Line type="monotone" dataKey="amount" stroke={theme.palette.primary.main} dot={false} />
                 </LineChart>
             </ResponsiveContainer>
+
+            <div>
+                <Link color="primary" href="/trends">
+                    View trends
+                </Link>
+            </div>
         </React.Fragment>
     );
 }

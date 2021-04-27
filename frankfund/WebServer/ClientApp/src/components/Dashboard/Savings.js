@@ -4,9 +4,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 //import Title from './Title';
 
-function preventDefault(event) {
-    event.preventDefault();
-}
 
 const useStyles = makeStyles({
     depositContext: {
@@ -14,22 +11,24 @@ const useStyles = makeStyles({
     },
 });
 
-export default function Deposits() {
+export default function Savings() {
     const classes = useStyles();
+    const year = new Date().getFullYear()
+
     return (
         <React.Fragment>
             <Typography component="h2" variant="h6" color="primary" gutterBottom>
-                Recent Deposits
+                Recent Savings
             </Typography>
             <Typography component="p" variant="h4">
                 $3,024.00
       </Typography>
             <Typography color="textSecondary" className={classes.depositContext}>
-                on 15 March, 2019
+                since Jan 1st, {year}
       </Typography>
             <div>
-                <Link color="primary" href="#" onClick={preventDefault}>
-                    View balance
+                <Link color="primary" href="/goals">
+                    View goals
         </Link>
             </div>
         </React.Fragment>

@@ -20,7 +20,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { mainListItems, secondaryListItems } from './listItems';
 import Chart from './Chart';
-import Deposits from './Deposits';
+import Savings from './Savings';
 import Orders from './Orders';
 import TransactionLog from './dashboard.transactionslog.component';
 
@@ -32,7 +32,7 @@ function Copyright() {
                 FrankFund
       </Link>{' '}
             {new Date().getFullYear()}
-            {'.'}
+            {''}
         </Typography>
     );
 }
@@ -205,13 +205,13 @@ export default function Dashboard() {
                                 <Chart />
                             </Paper>
                         </Grid>
-                        {/* Recent Deposits*/}
+                        {/* Recent Spending*/}
                         <Grid item xs={12} md={4} lg={3}>
                             <Paper className={fixedHeightPaper}>
-                                <Deposits />
+                                <Savings />
                             </Paper>
                         </Grid>
-                        {/* Recent Orders */}
+                        {/* Recent Transactions */}
                         <Grid item xs={12}>
                             <Paper className={classes.paper}>
                                 <TransactionLog></TransactionLog>
