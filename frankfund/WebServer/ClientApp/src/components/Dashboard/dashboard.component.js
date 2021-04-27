@@ -19,16 +19,17 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { mainListItems, secondaryListItems } from './listItems';
-import Chart from './temp/Chart';
-import Deposits from './temp/Deposits';
-import Orders from './temp/Orders';
+import Chart from './Chart';
+import Deposits from './Deposits';
+import Orders from './Orders';
+import TransactionLog from './dashboard.transactionslog.component';
 
 function Copyright() {
     return (
         <Typography variant="body2" color="textSecondary" align="center">
             {'Copyright © '}
             <Link color="inherit" href="https://material-ui.com/">
-                Your Website
+                FrankFund
       </Link>{' '}
             {new Date().getFullYear()}
             {'.'}
@@ -210,7 +211,7 @@ export default function Dashboard() {
                         {/* Recent Orders */}
                         <Grid item xs={12}>
                             <Paper className={classes.paper}>
-                                <Orders /> 
+                                <TransactionLog></TransactionLog>
                             </Paper>
                         </Grid>
                     </Grid>
