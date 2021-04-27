@@ -18,7 +18,7 @@ class TransactionsLog extends Component {
         // Used only if User has no Transactions
         this.emptyTransactions = [{
             TID: "", AccountID: "", SGID: "", TransactionName: "No transactions to display",
-            Amount: "", DateTransactionMade: "", DateTransactionEntered: "", IsExpense: "", TransactionCategory: ""
+            Amount: "", DateTransactionMade: "", DateTransactionEntered: "", IsExpense: null, TransactionCategory: ""
         }]
     }
 
