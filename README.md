@@ -688,3 +688,20 @@ Returns **HTTP 204 No Content** if no Subscriptions exists with the given UserAc
 ```HTTP GET https://frankfund.appspot.com/api/account/accID=1/Subscriptions&apikey=f2f1178729cb2e1c9188ed847066743c4e843a21```
 
 ---
+
+```[GET] /api/account/accID={accID}/Subscriptions/count&apikey={apikey}```
+
+Serves JSON response of the number of Subscriptions associate with the given UserAccount. 
+Returns **HTTP 204 No Content** if no Subscriptions exists with the given UserAccount or no UserAccount exists with the given Username.
+
+**Example Requests:** 
+```HTTP GET https://frankfund.appspot.com/api/account/user=RachelPai/Subscriptions/Count&apikey=f2f1178729cb2e1c9188ed847066743c4e843a21```
+
+**Example Response:**
+```json
+{
+	"SubCount" : 1
+}
+```
+
+---
