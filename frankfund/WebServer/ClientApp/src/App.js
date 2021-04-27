@@ -81,19 +81,19 @@ function App() {
           <div class="collapse navbar-collapse" id="navbarNavTransaction">
             <ul class="navbar-nav">
               <li class="nav-item">
-                {isLoggedIn && <Link className="navbar-link" to={"/transactions"}><a class="nav-link">Transactions<span class="sr-only">(current)</span></a></Link>}
+                {isLoggedIn && <Link className="nav-link" to={"/transactions"}>Transactions<span class="sr-only">(current)</span></Link>}
               </li>
               <li class="nav-item">
-                {isLoggedIn && <Link className="navbar-link" to={"/goals"}><a class="nav-link">Goals</a></Link>}     
+                {isLoggedIn && <Link className="nav-link" to={"/goals"}>Goals</Link>}     
               </li>
               <li class="nav-item">
-                {isLoggedIn && <Link className="navbar-link" to={"/subscriptions"}><a class="nav-link" >Subscriptions</a></Link>}
+                {isLoggedIn && <Link className="nav-link" to={"/subscriptions"}>Subscriptions</Link>}
               </li>
               <li class="nav-item">
-                {isLoggedIn && <Link className="navbar-link" to={"/trends"}><a class="nav-link" >Trends</a></Link>}
+                {isLoggedIn && <Link className="nav-link" to={"/trends"}>Trends</Link>}
               </li>
               <li class="nav-item">
-                {isLoggedIn && <Link className="navbar-link" to={"/receipts/imageupload"}><a class="nav-link">ImageUpload Demo</a></Link>}   
+                {isLoggedIn && <Link className="nav-link" to={"/receipts/imageupload"}>ImageUpload Demo</Link>}   
               </li>
             </ul>
           </div>
