@@ -160,31 +160,29 @@ class TransactionsLog extends Component {
 
                         // Otherwise return loaded data
                         <>
-                            <button onClick={() => AddAlert(this.state.userID)} className="btn btn-dark btn-blk" style={{float: "right"}}>New Transaction </button>
                             <h2>Hi {this.state.user}</h2>
-                            <table className="table">
-                                <thead>
-                                    {/* <tr>
-                                        <button onClick={AddAlert} className="btn btn-dark btn-blk">New Transaction</button>
-                                        <br></br>
-                                    </tr> */}
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Amount</th>
-                                        <th>Date Made</th>
-                                        <th>Date Entered</th>
-                                        <th>Type</th>
-                                        <th>Category</th>
-                                        <th>
-                                            <input onClick={ this.handleRefresh } type="image" width="30" height="30" style={{float: "right"}} src="https://image.flaticon.com/icons/png/512/61/61444.png" />
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {<Transactions transactions={this.state.transactions} />}
-                                    {this.state.dataFetched = false}
-                                </tbody>
-                            </table>
+                            <div style={{"max-height": "500px", "overflow": "auto"}}>
+                                <button onClick={() => AddAlert(this.state.userID)} className="btn btn-dark btn-blk" style={{float: "right"}}>New Transaction </button>
+                                <table className="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Amount</th>
+                                            <th>Date Made</th>
+                                            <th>Date Entered</th>
+                                            <th>Type</th>
+                                            <th>Category</th>
+                                            <th>
+                                                <input onClick={ this.handleRefresh } type="image" width="30" height="30" style={{float: "right"}} src="https://image.flaticon.com/icons/png/512/61/61444.png" />
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {<Transactions transactions={this.state.transactions} />}
+                                        {this.state.dataFetched = false}
+                                    </tbody>
+                                </table>
+                            </div>
                         </>
                 }
             </div>
