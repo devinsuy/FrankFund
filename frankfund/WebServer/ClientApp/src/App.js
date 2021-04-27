@@ -72,10 +72,27 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
+
 function App() {
     const isLoggedIn = window.localStorage.getItem("user") ? true : false;
     const user = JSON.parse(localStorage.getItem("user"));
     const classes = useStyles();
+    function subscriptionCount() {
+        if (isLoggedIn) {
+            axios({
+                method: "get",
+                url: "/api/account/user=" + user.AccountUsername + "/Subscriptions/count&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0",
+            })
+                .then((res) => {
+                    console.log(res);
+                })
+                .catch((err) => {
+                    throw err;
+                })
+            return 1;
+        }
+    }
+    const subsCount = subscriptionCount();
 
     return (<Router history={createBrowserHistory}>
       <div className="App">
@@ -100,7 +117,7 @@ function App() {
                 {isLoggedIn && <Link className="nav-link" to={"/goals"}>Goals</Link>}     
               </li>
               <li class="nav-item">
-                {isLoggedIn && <Badge badgeContent={4} color="secondary" overlap="circle" classes={{ badge: classes.badge }}>
+                {isLoggedIn && <Badge badgeContent={subsCount} color="secondary" overlap="circle" classes={{ badge: classes.badge }}>
                     <Link className="nav-link" to={"/subscriptions"}>Subscriptions</Link>
                 </Badge>}
               </li>
