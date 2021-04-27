@@ -193,7 +193,10 @@ export default function Dashboard() {
                 <List>{secondaryListItems}</List>
             </Drawer>*/}
             <main className={classes.content}>
-                <div className={classes.appBarSpacer} />
+                {/* <div className={classes.appBarSpacer} />*/}
+                <Typography component="h1" variant="h5" color="inherit" className={classes.title}>
+                    {"Hello " + user.AccountUsername}
+                </Typography>
                 <Container maxWidth="lg" className={classes.container}>
                     <Grid container spacing={3}>
                         {/* Chart */}
