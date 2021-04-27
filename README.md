@@ -1,4 +1,5 @@
 
+
 # FrankFund REST API
 
 ## Overview
@@ -19,6 +20,8 @@ Requests must specify the header **Content-Type: application/json**
 [User Transactions](#usertransactions)
 
 [User SavingsGoals](#usersavingsgoals)
+
+[User Receipts](#userreceipts)
 
 ---
 
@@ -645,5 +648,22 @@ Returns **HTTP 204 No Content** if no SavingsGoals exists with the given UserAcc
 
 **Example Request:** 
 ```HTTP GET https://frankfund.appspot.com/api/account/user=DevinSuy/SavingsGoals&apikey=f2f1178729cb2e1c9188ed847066743c4e843a21```
+
+---
+
+# UserReceipts
+
+```[GET] /api/account/user={user}/Receipts&apikey={apikey}```
+
+```[GET] /api/account/accID={accID}/Receipts&apikey={apikey}```
+
+Serves JSON response of all the Receipts associated with the given UserAccount.
+Returns **HTTP 204 No Content** if no Receipts exists with the given UserAccount or no UserAccount exists with the given Username.
+
+
+**Example Requests:** 
+```HTTP GET https://frankfund.appspot.com/api/account/user=AutumnNguyen/Receipts&apikey=f2f1178729cb2e1c9188ed847066743c4e843a21```
+
+```HTTP GET https://frankfund.appspot.com/api/account/accID=1/Receipts&apikey=f2f1178729cb2e1c9188ed847066743c4e843a21```
 
 ---
