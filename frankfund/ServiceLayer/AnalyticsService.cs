@@ -42,9 +42,9 @@ namespace ServiceLayer
             else
             {
                 for(int i = endMonth + 1; i < 13; i++)
-                    monthSpendingTemplate.Add(Tuple.Create(this.monthMap[i], (decimal)-1.0));
+                    monthSpendingTemplate.Add(Tuple.Create(this.monthMap[i], (decimal) 0));
                 for(int i = 1; i <= endMonth;i++)
-                    monthSpendingTemplate.Add(Tuple.Create(this.monthMap[i], (decimal)-1.0));
+                    monthSpendingTemplate.Add(Tuple.Create(this.monthMap[i], (decimal) 0));
             }
 
             this.categorySpendingTemplate = new Dictionary<string, decimal>
@@ -77,16 +77,11 @@ namespace ServiceLayer
             string jsonStr = "{\"MonthVals\":[";
             for (int i = 0; i < vals.Count; i++)
             {
-                if (i == vals.Count - 1)
-                {
-                    jsonStr += $"{{\"{vals[i].Item1}\":{vals[i].Item2}}}";
-                }
-                else
-                {
-                    jsonStr += $"{{\"{vals[i].Item1}\":{vals[i].Item2}}}, ";
-                }
+                jsonStr += $"{{\"month\":\"{vals[i].Item1}\", \"amt\":{vals[i].Item2}}}, ";
             }
-            return jsonStr + "]}";
+            jsonStr += $"{{\"month\":\"{this.monthMap[(int)DateTime.Now.Month]}\", \"amt\":null}}]}}";
+
+            return jsonStr;
         }
 
         public string getJSON(Dictionary<string, decimal> categoryValues) {
@@ -192,10 +187,10 @@ namespace ServiceLayer
 
 
         // Given an account ID, return the sum of all transactions across ALL categories
-        // Returns -1 if account not found
+        // Returns 0 if account not found
         public decimal getTotalSpending(long accID)
         {
-            decimal totalSpending = -1;
+            decimal totalSpending = 0;
             foreach (BigQueryRow row in dataAccess.getTotalSpending(accID))
             {
                 totalSpending = dataAccess.castBQNumeric(row["TotalExpenses"]);
@@ -204,7 +199,7 @@ namespace ServiceLayer
         }
         public decimal getTotalSpending(string username)
         {
-            decimal totalSpending = -1;
+            decimal totalSpending = 0;
             foreach (BigQueryRow row in dataAccess.getTotalSpending(username))
             {
                 totalSpending = dataAccess.castBQNumeric(row["TotalExpenses"]);

@@ -1,64 +1,76 @@
-﻿import React from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { useTheme } from '@material-ui/core/styles';
 import { LineChart, Line, XAxis, YAxis, Label, ResponsiveContainer } from 'recharts';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
 //import Title from './Title';
 
-// Generate Sales Data
-function createData(time, amount) {
-    return { time, amount };
-}
-
-const data = [
-    createData('00:00', 0),
-    createData('03:00', 300),
-    createData('06:00', 600),
-    createData('09:00', 800),
-    createData('12:00', 1500),
-    createData('15:00', 2000),
-    createData('18:00', 2400),
-    createData('21:00', 2400),
-    createData('24:00', undefined),
-];
 
 export default function Chart() {
     const theme = useTheme();
+    const [dataFetched, setDataFetched] = useState(false);
+    const [data, setData] = useState(null);
 
+    async function fetchData(){
+        let user = JSON.parse(localStorage.getItem("user"));
+        let apikey = "c55f8d138f6ccfd43612b15c98706943e1f4bea3";
+        let url = `/api/Analytics/MonthlySpending/PastYear&user=${user.AccountUsername}&apikey=${apikey}`;
+
+        await(
+            fetch(url)
+            .then((data) => data.json())
+            .then((spendingData) => {
+                setData(spendingData.MonthVals);
+            })
+        )
+        .catch((err) => { 
+            console.log(err) 
+        });        
+        setDataFetched(true);
+    }
+
+    if(!dataFetched){
+        fetchData();
+    }
+    
     return (
-        <React.Fragment>
-            <Typography component="h2" variant="h6" color="primary" gutterBottom>
-                Today
-            </Typography>
-            <ResponsiveContainer>
-                <LineChart
-                    data={data}
-                    margin={{
-                        top: 16,
-                        right: 16,
-                        bottom: 0,
-                        left: 24,
-                    }}
-                >
-                    <XAxis dataKey="time" stroke={theme.palette.text.secondary} />
-                    <YAxis stroke={theme.palette.text.secondary}>
-                        <Label
-                            angle={270}
-                            position="left"
-                            style={{ textAnchor: 'middle', fill: theme.palette.text.primary }}
-                        >
-                            Sales ($)
-            </Label>
-                    </YAxis>
-                    <Line type="monotone" dataKey="amount" stroke={theme.palette.primary.main} dot={false} />
-                </LineChart>
-            </ResponsiveContainer>
+    // Pause loading if data has not been fetched yet
+            !dataFetched ? <> <a>Loading . . .</a></> : 
 
-            <div>
-                <Link color="primary" href="/trends">
-                    View trends
-                </Link>
-            </div>
-        </React.Fragment>
+            // Otherwise return loaded data
+            <>
+                <Typography component="h2" variant="h6" color="primary" gutterBottom>
+                    Your Spending
+                </Typography>
+                <ResponsiveContainer>
+                    <LineChart
+                        data={data}
+                        margin={{
+                            top: 16,
+                            right: 16,
+                            bottom: 0,
+                            left: 24,
+                        }}
+                    >
+                        <XAxis dataKey="month" stroke={theme.palette.text.secondary} />
+                        <YAxis stroke={theme.palette.text.secondary} type ="number">
+                            <Label
+                                angle={270}
+                                position="left"
+                                style={{ textAnchor: 'middle', fill: theme.palette.text.primary }}
+                            >
+                                Spending ($)
+                </Label>
+                        </YAxis>
+                        <Line type="monotone" dataKey="amt" stroke={theme.palette.primary.main} dot={false} />
+                    </LineChart>
+                </ResponsiveContainer>
+
+                <div>
+                    <Link color="primary" href="/trends">
+                        View trends
+                    </Link>
+                </div>
+            </>
     );
 }
