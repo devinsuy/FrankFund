@@ -31,11 +31,14 @@ const Subscription = ({ subscription }) => {
                 <td id={`Notes${subscription.SID}`}> {subscription.Notes}</td>
                 <td id={`Amount${subscription.SID}`}> {subscription.Amount}</td>
                 <td id={`RenewFrequency${subscription.SID}`}> {subscription.RenewFrequency}</td>
-                <td>
-                    <button className="btn btn-outline-success btn-sm">View</button>
-                    <button className="btn btn-outline-success btn-sm">Edit</button>
-                    <button className="btn btn-outline-success btn-sm">Delete</button>
-                </td>
+                {
+                    subscription.SID == "" ? <></> :
+                    <td>
+                        <button className="btn btn-outline-success btn-sm">View</button>
+                        <button className="btn btn-outline-success btn-sm">Edit</button>
+                        <button className="btn btn-outline-success btn-sm">Delete</button>
+                    </td>
+                }
             </tr>
         </>
     )

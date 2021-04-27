@@ -33,11 +33,14 @@ const Goal = ({ goal }) => {
                 <td id={`ContrAmt${goal.SGID}`}> {goal.ContrAmt != "" ? "$" + goal.ContrAmt : ""}</td>
                 <td id={`Period${goal.SGID}`}> {goal.Period}</td>
                 <td id={`EndDate${goal.SGID}`}> {endDate}</td>
-                <td>
-                    <button onClick={viewAlert} className="btn btn-outline-success btn-sm">View</button>
-                    <button onClick={editAlert} className="btn btn-outline-success btn-sm">Edit</button>
-                    <button onClick={deleteAlert} className="btn btn-outline-success btn-sm">Delete</button>
-                </td>
+                {   goal.SGID == "" ? <></> :
+                    <td>
+                        <button onClick={viewAlert} className="btn btn-outline-success btn-sm">View</button>
+                        <button onClick={editAlert} className="btn btn-outline-success btn-sm">Edit</button>
+                        <button onClick={deleteAlert} className="btn btn-outline-success btn-sm">Delete</button>
+                    </td>
+                }
+
             </tr>
         </>
     )
