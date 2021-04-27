@@ -55,6 +55,7 @@ body, html, .App, #root, .outer {
     transition: all .3s;
 }
 
+/* Nav Bar CSS */
 .logo-image {
     width: 35px;
     height: 35px;
@@ -63,7 +64,6 @@ body, html, .App, #root, .outer {
     margin-top: 5px;
     padding-right: 10px;
 }
-
 
 /* Sweet Alert Pop Up CSS */
 .swal-modal .swal-text {
