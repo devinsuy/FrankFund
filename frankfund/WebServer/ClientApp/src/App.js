@@ -72,6 +72,9 @@ function App() {
           3. Connect to backend */}
       <nav className="navbar navbar-expand-lg navbar-light fixed-top">
         <div className="container">
+          <div class="logo-image">
+            <img src="https://lh3.googleusercontent.com/yMIRhv9YgrNwhWYatcVfb8l_BdoYdhYOy7jTPW42BaShPMQqmTxTKXM8XlX9pLZxzBes4HN1HpHIk52wW5drkxvwrQJ4G5_Q6pcBnOn4L_9zILLM41b--QxoUSVbHHVQKpW4Mfks4Q=w2400" class="img-fluid"/>
+          </div>
           <Link className="navbar-brand" to={"/"}>FrankFund</Link>
           {/* {!isLoggedIn && <Link className="navbar-brand" to={"/"}>FrankFund</Link>}
           {isLoggedIn && <Link className="navbar-brand" to={"/dashboard"}>FrankFund</Link>}*/}
