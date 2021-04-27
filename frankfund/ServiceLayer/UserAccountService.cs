@@ -14,6 +14,7 @@ namespace ServiceLayer
         private readonly TransactionService TransactionService;
         private readonly SavingsGoalService SGService;
         private readonly ReceiptService RService;
+        private readonly SubscriptionService SubService;
         private PasswordService PasswordService;
         public UserAccountService()
         {
@@ -22,6 +23,7 @@ namespace ServiceLayer
             this.TransactionService = new TransactionService();
             this.SGService = new SavingsGoalService();
             this.RService = new ReceiptService();
+            this.SubService = new SubscriptionService();
         }
 
         public UserAccount reinstantiate(BigQueryRow row)
@@ -74,30 +76,27 @@ namespace ServiceLayer
         }
 
 
-        // Return the JSON representation of the list of Transactions associated with the given AccountID
+        // Return the JSON representation of the list of Transactions associated with the given Account
         public string getTransactionsFromAccount(long accID)
         {
             return TransactionService.getJSON(TransactionService.getTransactionsFromAccount(accID));
         }
-        // Return the JSON representation of the list of Transactions associated with the given AccounUserName
         public string getTransactionsFromAccount(string username)
         {
             return TransactionService.getJSON(TransactionService.getTransactionsFromAccount(username));
         }
 
-        // Return the JSON representation of the list of SavingsGoals associated with the given AccountID
+        // Return the JSON representation of the list of SavingsGoals associated with the given Account
         public string getSavingsGoalsFromAccount(long accID)
         {
             return SGService.getJSON(SGService.getSavingsGoalsFromAccount(accID));
         }
-
-        // Return the JSON representation of the list of SavingsGoals associated with the given AccountUserName
         public string getSavingsGoalsFromAccount(string username)
         {
             return SGService.getJSON(SGService.getSavingsGoalsFromAccount(username));
         }
 
-        // Return the JSON representation of the list of SavingsGoals associated with the given Account
+        // Return the JSON representation of the list of Receipts associated with the given Account
         public string getReceiptsFromAccount(long accID)
         {
             return RService.getJSON(RService.getReceiptsFromAccount(accID));
@@ -105,6 +104,16 @@ namespace ServiceLayer
         public string getReceiptsFromAccount(string username)
         {
             return RService.getJSON(RService.getReceiptsFromAccount(username));
+        }
+
+        // Return the JSON representation of the list of Subscriptions associated with the given Account
+        public string getSubscriptionsFromAccount(long accID)
+        {
+            return SubService.getJSON(SubService.getSubscriptionsFromAccount(accID));
+        }
+        public string getSubscriptionsFromAccount(string username)
+        {
+            return SubService.getJSON(SubService.getSubscriptionsFromAccount(username));
         }
 
 

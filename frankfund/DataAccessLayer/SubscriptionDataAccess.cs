@@ -75,11 +75,10 @@ namespace DataAccessLayer
         // Returns all Subscriptions with a given user ordered by date entered
         public BigQueryResults getSubscriptionsFromAccount(string username)
         {
-            string query = "SELECT s.SID, s.AccountID, s.RID, s.Amount, s.PurchaseDate"
-                + ", t.RenewFrequency"
+            string query = "SELECT s.SID, s.AccountID, s.RID, s.PurchaseDate, s.Notes, s.Amount, s.RenewFrequency"
                 + $" FROM {this.tableID} s"
                 + $" INNER JOIN {this.accTable} a"
-                + " ON s.tAccountID = a.AccountID"
+                + " ON s.AccountID = a.AccountID"
                 + $" WHERE a.AccountUsername = '{username}'"
                 + " ORDER BY PurchaseDate DESC";
             Console.WriteLine(query);
