@@ -69,28 +69,34 @@ class LoginUserAccount extends Component {
         }
     }
 
+    componentDidMount(){
+        const backgroundTag = document.getElementsByClassName("inner")[0];
+        backgroundTag.style.width = "30%";
+    }
 
     render() {
         return (
-            <form
-                id="login"
-                method='post'
-                onSubmit={this.login}>
-                <h3>Login</h3>
+            <div style={{"text-align": "center"}}>                 
+                <form style={{"width": "80%", "margin-left": "auto", "margin-right": "auto", "text-align" : "left"}}
+                    id="login"
+                    method='post'
+                    onSubmit={this.login}>
+                    <h3>Login</h3>
 
-                <div className="form-group">
-                    <label>Username or Email</label>
-                    <input type="text" name="usernameoremail" className="form-control" placeholder="Enter your username or email" />
-                </div>
+                    <div className="form-group">
+                        <label>Username or Email</label>
+                        <input type="text" name="usernameoremail" className="form-control" placeholder="Enter your username or email" />
+                    </div>
 
 
-                <div className="form-group">
-                    <label>Password</label>
-                    <input type="password" name="password" className="form-control" placeholder="Enter your password" />
-                </div>
+                    <div className="form-group">
+                        <label>Password</label>
+                        <input type="password" name="password" className="form-control" placeholder="Enter your password" />
+                    </div>
 
-                <button type="submit" className="btn btn-dark btn-lg btn-block">Login</button>
-            </form>
+                    <button type="submit" className="btn btn-dark btn-lg btn-block">Login</button>
+                </form>
+            </div>
         );
     }
 }
