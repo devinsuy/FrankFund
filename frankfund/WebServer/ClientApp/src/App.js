@@ -134,8 +134,8 @@ function App() {
       <div className="outer">
         <div className="inner">
           <Switch>
-            { /* <Route exact path='/' component={LandingComponent} />*/}
             <Route exact path="/" component={() => isLoggedIn ? <DashboardComponent /> : <LandingComponent />} />
+            <Route exact path='/landing' component={LandingComponent} />
             <Route exact path='/dashboard' component={DashboardComponent} />
             <Route path="/create-user-account" component={CreateUserAccount} />
             <Route path="/account-settings" component={SettingsUserAccount} />
