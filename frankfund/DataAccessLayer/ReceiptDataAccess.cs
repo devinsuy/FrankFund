@@ -91,7 +91,6 @@ namespace DataAccessLayer
                 + " ON r.TID = t.TID"
                 + $" WHERE t.AccountID = {accID}"
                 + " ORDER BY r.PurchaseDate DESC; ";
-            Console.WriteLine(query);
             return this.dataHelper.query(query, parameters: null);
         }
         public BigQueryResults getReceiptsFromAccount(string username)
@@ -104,7 +103,6 @@ namespace DataAccessLayer
                 + " ON t.AccountID = acc.AccountID"
                 + $" WHERE acc.AccountUsername = '{username}'"
                 + " ORDER BY r.PurchaseDate DESC; ";
-            Console.WriteLine(query);
             return this.dataHelper.query(query, parameters: null);
         }
 
