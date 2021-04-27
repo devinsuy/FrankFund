@@ -129,7 +129,7 @@ namespace ServiceLayer
                 + $"\"AccountID\":{serialized[1]},"
                 + $"\"RID\":{serialized[2]},"
                 + $"\"PurchaseDate\":\"" + serialized[3] + "\","
-                + $"\"Notes\":{serialized[4]},"
+                + $"\"Notes\":\"{serialized[4]}\","
                 + $"\"Amount\":{serialized[5]},"
                 + $"\"RenewFrequency\":\"" + serialized[6] + "\""
             + "}";
