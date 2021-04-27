@@ -129,7 +129,7 @@ namespace REST.Controllers
         }
 
         // Create a new subscription with the next available SID
-        [Route("api/SID&apikey={apiKey}")]
+        [Route("api/Subscription&apikey={apiKey}")]
         [HttpPost]
         public IActionResult Create(string apiKey, [FromBody] JsonElement reqBody)
         {
