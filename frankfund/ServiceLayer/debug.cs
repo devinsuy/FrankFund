@@ -419,46 +419,46 @@ namespace ServiceLayer
 
 
         // --------------------------------------------------- Begin Data Analytics Testing ---------------------------------------------------
-        static void testSpendingPerCategory(long accID)
-        {
-            AnalyticsService a = new AnalyticsService();
-            
-            Dictionary<string, decimal> spendingPerCategory = a.getSpendingPerCategory(accID);
+        //static void testSpendingPerCategory(long accID)
+        //{
+        //    AnalyticsService a = new AnalyticsService();
 
-            // Print the spending per category
-            Console.WriteLine("For user #" + accID);
-            Console.WriteLine("\nSpending Per Category\n---------------------\n");
-            foreach(string category in spendingPerCategory.Keys)
-            {
-                Console.WriteLine("   " + category + " : $" + spendingPerCategory[category]);
-            }
-        }
+        //    Dictionary<string, decimal> spendingPerCategory = a.getAllTimeSpendingPerCategory(accID);
 
-        static void testGetTotalSpending(long accID)
-        {
-            AnalyticsService a = new AnalyticsService();
-            decimal totalSpending = a.getTotalSpending(accID);
+        //    // Print the spending per category
+        //    Console.WriteLine("For user #" + accID);
+        //    Console.WriteLine("\nSpending Per Category\n---------------------\n");
+        //    foreach(string category in spendingPerCategory.Keys)
+        //    {
+        //        Console.WriteLine("   " + category + " : $" + spendingPerCategory[category]);
+        //    }
+        //}
 
-            // Print the total spending
-            Console.WriteLine("For user #" + accID);
-            Console.WriteLine("   Total spending: $" + totalSpending);
-        }
+        //static void testGetTotalSpending(long accID)
+        //{
+        //    AnalyticsService a = new AnalyticsService();
+        //    decimal totalSpending = a.getTotalSpending(accID);
 
-        static void testCategoryBreakdown(long accID)
-        {
-            AnalyticsService a = new AnalyticsService();
-            Dictionary<string, Tuple<decimal, decimal>> breakdown = a.getCategoryBreakdown(accID);
+        //    // Print the total spending
+        //    Console.WriteLine("For user #" + accID);
+        //    Console.WriteLine("   Total spending: $" + totalSpending);
+        //}
 
-            Console.WriteLine("For user #" + accID);
-            Console.WriteLine("\nCategory Breakdown\n---------------\n");
-            foreach(string category in breakdown.Keys)
-            {
-                Tuple<decimal, decimal> categoryVals = breakdown[category];
-                Console.WriteLine("   " + category + ":");
-                Console.WriteLine("      Category Total: $" + categoryVals.Item1);
-                Console.WriteLine("      % of All Spending: " + categoryVals.Item2);
-            }
-        }
+        //static void testCategoryBreakdown(long accID)
+        //{
+        //    AnalyticsService a = new AnalyticsService();
+        //    Dictionary<string, Tuple<decimal, decimal>> breakdown = a.getCategoryBreakdown(accID);
+
+        //    Console.WriteLine("For user #" + accID);
+        //    Console.WriteLine("\nCategory Breakdown\n---------------\n");
+        //    foreach(string category in breakdown.Keys)
+        //    {
+        //        Tuple<decimal, decimal> categoryVals = breakdown[category];
+        //        Console.WriteLine("   " + category + ":");
+        //        Console.WriteLine("      Category Total: $" + categoryVals.Item1);
+        //        Console.WriteLine("      % of All Spending: " + categoryVals.Item2);
+        //    }
+        //}
 
         // ---------------------------------------------- Begin Subscription Testing ---------------------------------------------------------
 
@@ -594,7 +594,7 @@ namespace ServiceLayer
 
 
             // ---------------------------------------------- Test: Creating User Account ------------------------------------------------------
-            testAccCreate();
+            //testAccCreate();
 
 
             // ---------------------------------------------- Test: Transaction Create ---------------------------------------------------------
@@ -643,6 +643,14 @@ namespace ServiceLayer
             //testSpendingPerCategory(accID: 1);
             //testGetTotalSpending(accID: 1);
             //testCategoryBreakdown(accID: 1);
+            AnalyticsService ans = new AnalyticsService();
+            //ans.printTuples();
+            //Console.WriteLine(ans.getJSON(ans.getSpendingPerMonthPastYear("RachelPai")));
+            //Console.WriteLine(ans.getJSON(ans.getAvgSpendingPerMonthPastYear("KennethTran")));
+            //Console.WriteLine(ans.getJSON(ans.getAllTimeSpendingPerCategory("KennethTran")));
+            Console.WriteLine(ans.getJSON(ans.getAllTimeCategoryBreakdown("KennethTran")));
+
+
 
             // ---------------------------------------------- Test: Subscriptions ---------------------------------------------------------
 
@@ -674,6 +682,8 @@ namespace ServiceLayer
             //const string sampleImgPath = "../DataAccessLayer/tmp/upload/sample_receipt.jpeg";
             //testUploadReceipt(userName: "RachelPai", localPathToFile: sampleImgPath, fileName: "sample_receipt.jpeg");  // File overwrites if already exists
             //testDownloadReceipt(userName: "RachelPai", fileName: "sample_receipt.jpeg", dstPath: null);                 // Uses DataAccess/tmp/download by default (if null) for API
+
+
 
 
         }
