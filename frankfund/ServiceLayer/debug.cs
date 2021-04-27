@@ -645,10 +645,9 @@ namespace ServiceLayer
             //testCategoryBreakdown(accID: 1);
             AnalyticsService ans = new AnalyticsService();
             //ans.printTuples();
-            //Console.WriteLine(ans.getJSON(ans.getSpendingPerMonthPastYear("RachelPai")));
-            //Console.WriteLine(ans.getJSON(ans.getAvgSpendingPerMonthPastYear("KennethTran")));
-            //Console.WriteLine(ans.getJSON(ans.getAllTimeSpendingPerCategory("KennethTran")));
-            Console.WriteLine(ans.getJSON(ans.getAllTimeCategoryBreakdown("KennethTran")));
+            Console.WriteLine(ans.getJSON(ans.getSpendingPerMonthPastYear("frankfund")));
+            Console.WriteLine(ans.getJSON(ans.getAllTimeSpendingPerCategory("frankfund")));
+            Console.WriteLine(ans.getJSON(ans.getAllTimeCategoryBreakdown("frankfund")));
 
 
 

@@ -17,28 +17,62 @@ namespace REST.Controllers
     {
         private readonly ILogger<ReceiptController> _logger;
         private readonly APIHelper api;
-        private readonly TransactionService ts;
-        private readonly HashSet<string> attributes;
-
+        private readonly AnalyticsService ans;
         public AnalyticsController(ILogger<ReceiptController> logger)
         {
             _logger = logger;
             api = new APIHelper();
-            ts = new TransactionService();
+            ans = new AnalyticsService();
         }
 
-        // Retreive a receipt with the given RID
-        // returns Http 204 NoContent if doesn't exist
-        [Route("api/Analytics/TransactionsByCategory&apikey={apikey}&username={username}")]
+
+        [Route("api/Analytics/CategoryPercentages/AllTime&user={user}&apikey={apikey}")]
         [HttpGet]
-        public IActionResult GetAllTransactionsCategorySorted(string apikey, string username)
+        public IActionResult GetAllTimeCategoryPercentages(string user, string apikey)
         {
             if (!api.validAPIKey(apikey))
             {
                 return new UnauthorizedObjectResult("Invalid API key");
             }
-            return null; // Autumn commented out the below code because of build errors
-            //return api.serveJson(ts.getJSON(ts.getTransactionsFromAccountCategorySorted(username)));
+            return api.serveJson(ans.getJSON(ans.getAllTimeCategoryBreakdown(user)));
         }
+
+
+        [Route("api/Analytics/CategorySpending/AllTime&user={user}&apikey={apikey}")]
+        [HttpGet]
+        public IActionResult GetAllTimeCategorySpending(string user, string apikey)
+        {
+            if (!api.validAPIKey(apikey))
+            {
+                return new UnauthorizedObjectResult("Invalid API key");
+            }
+            return api.serveJson(ans.getJSON(ans.getAllTimeSpendingPerCategory(user)));
+        }
+
+
+        [Route("api/Analytics/MonthlySpending/PastYear&user={user}&apikey={apikey}")]
+        [HttpGet]
+        public IActionResult GetPastYearMonthlySpending(string user, string apikey)
+        {
+            if (!api.validAPIKey(apikey))
+            {
+                return new UnauthorizedObjectResult("Invalid API key");
+            }
+            return api.serveJson(ans.getJSON(ans.getSpendingPerMonthPastYear(user)));
+        }
+
+
+        [Route("api/Analytics/TotalSpending/AllTime&user={user}&apikey={apikey}")]
+        [HttpGet]
+        public IActionResult GetAllTimeTotalSpending(string user, string apikey)
+        {
+            if (!api.validAPIKey(apikey))
+            {
+                return new UnauthorizedObjectResult("Invalid API key");
+            }
+            return api.serveJson(api.getSingleAttrJSON("Total", Convert.ToString(ans.getTotalSpending(user))));
+        }
+
+
     }
 }

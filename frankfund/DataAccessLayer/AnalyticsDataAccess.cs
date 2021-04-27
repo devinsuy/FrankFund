@@ -75,22 +75,6 @@ namespace DataAccessLayer
             return this.dataHelper.query(query, parameters: null);
         }
 
-        public BigQueryResults getAvgSpendingPerMonthPastYear(string username)
-        {
-            string query = " SELECT * FROM ("
-                + " SELECT ROUND(SUM(t.Amount) / 30, 2) AS Avg, EXTRACT(MONTH FROM t.DateTransactionMade) AS Month"
-                + " FROM `frankfund.FrankFund.Transactions` t"
-                + " INNER JOIN `frankfund.FrankFund.Accounts` acc"
-                + " ON acc.AccountID = t.AccountID"
-                + $" WHERE acc.AccountUsername = '{username}'"
-                + " AND t.DateTransactionMade >= DATE_SUB(CURRENT_DATE(), INTERVAL 1 YEAR)"
-                + " AND t.DateTransactionMade < DATE_TRUNC(CURRENT_DATE(), MONTH)"
-                + " GROUP BY EXTRACT(MONTH FROM t.DateTransactionMade)"
-            + ") ORDER BY Month ASC";
-
-            return this.dataHelper.query(query, parameters: null);
-        }
-
 
         // Overload wrappers to cast BigQuery Numeric type to C# decimal type
         public decimal castBQNumeric(BigQueryNumeric val)

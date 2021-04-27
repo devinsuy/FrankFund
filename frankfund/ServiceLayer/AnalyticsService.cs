@@ -11,6 +11,7 @@ namespace ServiceLayer
         private readonly AnalyticsDataAccess dataAccess;
         private readonly Dictionary<int, string> monthMap;
         private readonly List<Tuple<string, decimal>> monthSpendingTemplate;
+        private readonly Dictionary<string, decimal> categorySpendingTemplate;
         private readonly int endMonth;
 
         public AnalyticsService()
@@ -45,6 +46,14 @@ namespace ServiceLayer
                 for(int i = 1; i <= endMonth;i++)
                     monthSpendingTemplate.Add(Tuple.Create(this.monthMap[i], (decimal)-1.0));
             }
+
+            this.categorySpendingTemplate = new Dictionary<string, decimal>
+            {
+                { "Entertainment", (decimal) 0 },       { "Restaurants", (decimal) 0 },     { "Transportation", (decimal) 0 },
+                { "HomeAndUtilities", (decimal) 0 },    { "Education", (decimal) 0 },       { "Insurance", (decimal) 0 },
+                { "Health", (decimal) 0 },              { "Groceries", (decimal) 0 },       { "Deposits", (decimal) 0 },
+                { "Shopping", (decimal) 0 },            { "Uncategorized", (decimal) 0 }
+            };
         }
 
         public void printTuples()
@@ -111,6 +120,14 @@ namespace ServiceLayer
                 copy.Add(Tuple.Create(t.Item1, t.Item2));
             return copy;
         }
+        // Perform a deep copy of the category to spending templateßßßß
+        public Dictionary<string, decimal> getCategoryTemplate()
+        {
+            Dictionary<string, decimal> copy = new Dictionary<string, decimal>();
+            foreach (var pair in this.categorySpendingTemplate)
+                copy.Add(pair.Key, pair.Value);
+            return copy;
+        }
 
 
         public List<Tuple<string, decimal>> getSpendingPerMonthPastYear(string username) {
@@ -131,24 +148,6 @@ namespace ServiceLayer
             return monthSpending;
         }
 
-        public List<Tuple<string, decimal>> getAvgSpendingPerMonthPastYear(string username)
-        {
-            List<Tuple<string, decimal>> monthSpending = getTemplate();
-            string currMonth;
-            decimal currTotal;
-
-            foreach (BigQueryRow r in this.dataAccess.getAvgSpendingPerMonthPastYear(username))
-            {
-                currTotal = dataAccess.castBQNumeric(r["Avg"]);
-                currMonth = this.monthMap[Convert.ToInt32(r["Month"])];
-                for (int i = 0; i < monthSpending.Count; i++)
-                {
-                    if (monthSpending[i].Item1.Equals(currMonth))
-                        monthSpending[i] = Tuple.Create(currMonth, currTotal);
-                }
-            }
-            return monthSpending;
-        }
 
 
 
@@ -157,14 +156,9 @@ namespace ServiceLayer
         // Returns null if account not found
         public Dictionary<string,decimal> getAllTimeSpendingPerCategory(long accID)
         {
-            Dictionary<string, decimal> spendingPerCategory = new Dictionary<string, decimal>();
+            Dictionary<string, decimal> spendingPerCategory = getCategoryTemplate();
             foreach (BigQueryRow row in dataAccess.getAllTimeSpendingPerCategory(accID))
-            {
-                spendingPerCategory.Add(
-                    key: Convert.ToString(row["TransactionCategory"]),
-                    value: dataAccess.castBQNumeric(row["CategoryTotal"])
-                );
-            }
+                spendingPerCategory[Convert.ToString(row["TransactionCategory"])] = dataAccess.castBQNumeric(row["CategoryTotal"]);
 
             // No acount exists with the given accID
             if(spendingPerCategory.Count == 0)
@@ -179,14 +173,9 @@ namespace ServiceLayer
         }
         public Dictionary<string, decimal> getAllTimeSpendingPerCategory(string username)
         {
-            Dictionary<string, decimal> spendingPerCategory = new Dictionary<string, decimal>();
+            Dictionary<string, decimal> spendingPerCategory = getCategoryTemplate();
             foreach (BigQueryRow row in dataAccess.getAllTimeSpendingPerCategory(username))
-            {
-                spendingPerCategory.Add(
-                    key: Convert.ToString(row["TransactionCategory"]),
-                    value: dataAccess.castBQNumeric(row["CategoryTotal"])
-                );
-            }
+                spendingPerCategory[Convert.ToString(row["TransactionCategory"])] = dataAccess.castBQNumeric(row["CategoryTotal"]);
 
             // No acount exists with the given accID
             if (spendingPerCategory.Count == 0)
@@ -259,7 +248,7 @@ namespace ServiceLayer
         public Dictionary<string, decimal> getAllTimeCategoryBreakdown(string username)
         {
             decimal totalSpending = getTotalSpending(username);
-            Dictionary<string, decimal> categoryBreakdown = new Dictionary<string, decimal>();
+            Dictionary<string, decimal> categoryBreakdown = getCategoryTemplate();
             Dictionary<string, decimal> spendingPerCategory = getAllTimeSpendingPerCategory(username);
             if (spendingPerCategory == null || totalSpending == -1)
             {
@@ -270,8 +259,8 @@ namespace ServiceLayer
             foreach (string category in spendingPerCategory.Keys)
             {
                 currCategoryTotal = spendingPerCategory[category];
-                currPercentage = Math.Round(currCategoryTotal / totalSpending, 2);
-                categoryBreakdown.Add(category, currPercentage);
+                currPercentage = Math.Round(currCategoryTotal / totalSpending, 2) * 100;
+                categoryBreakdown[category] = currPercentage;
             }
             return categoryBreakdown.Count == 0 ? null : categoryBreakdown;
         }
