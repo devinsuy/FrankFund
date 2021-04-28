@@ -50,10 +50,8 @@ class CategoryChart extends Component {
                 Object.keys(categoryData).forEach(function(key) {
                     vals.push(categoryData[key]);
                 });
-                console.log(vals);
                 let currValues = this.state.values;
                 currValues.datasets[0].data = vals;
-                console.log(currValues)
                 this.setState({values: currValues, dataFetched: true})
             })
         )

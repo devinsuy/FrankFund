@@ -67,6 +67,24 @@ namespace DataAccessLayer
                 + " INNER JOIN `frankfund.FrankFund.Accounts` acc"
                 + " ON acc.AccountID = t.AccountID"
                 + $" WHERE acc.AccountUsername = '{username}'"
+                + " AND t.IsExpense = true"
+                + " AND t.DateTransactionMade >= DATE_SUB(CURRENT_DATE(), INTERVAL 1 YEAR)"
+                + " AND t.DateTransactionMade < DATE_TRUNC(CURRENT_DATE(), MONTH)"
+                + " GROUP BY EXTRACT(MONTH FROM t.DateTransactionMade)"
+            + ") ORDER BY Month ASC";
+
+            return this.dataHelper.query(query, parameters: null);
+        }
+
+        public BigQueryResults getSavingsPerMonthPastYear(string username)
+        {
+            string query = " SELECT * FROM ("
+                + " SELECT SUM(t.Amount) AS Total, EXTRACT(MONTH FROM t.DateTransactionMade) AS Month"
+                + " FROM `frankfund.FrankFund.Transactions` t"
+                + " INNER JOIN `frankfund.FrankFund.Accounts` acc"
+                + " ON acc.AccountID = t.AccountID"
+                + $" WHERE acc.AccountUsername = '{username}'"
+                + " AND t.IsExpense = false"
                 + " AND t.DateTransactionMade >= DATE_SUB(CURRENT_DATE(), INTERVAL 1 YEAR)"
                 + " AND t.DateTransactionMade < DATE_TRUNC(CURRENT_DATE(), MONTH)"
                 + " GROUP BY EXTRACT(MONTH FROM t.DateTransactionMade)"
