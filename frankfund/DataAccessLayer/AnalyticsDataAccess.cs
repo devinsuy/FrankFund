@@ -121,5 +121,19 @@ namespace DataAccessLayer
 
             return this.dataHelper.query(query, parameters: null);
         }
+
+        public BigQueryResults getTotalSavingsThisYear(string username)
+        {
+            string query = "SELECT DISTINCT SUM(t.Amount) AS TotalSavings"
+                + " FROM `frankfund.FrankFund.SavingsGoals` s"
+                + " INNER JOIN `frankfund.FrankFund.Transactions` t"
+                + " ON s.SGID = t.SGID"
+                + " INNER JOIN `frankfund.FrankFund.Accounts` acc"
+                + " ON t.AccountID = acc.AccountID"
+                + $" WHERE acc.AccountUsername = \"{username}\""
+                + " AND t.DateTransactionMade >= DATE_TRUNC(CURRENT_DATE(), YEAR);";
+
+            return this.dataHelper.query(query, parameters: null);
+        }
     }
 }

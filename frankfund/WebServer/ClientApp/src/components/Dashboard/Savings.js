@@ -20,7 +20,7 @@ export default function Savings() {
     async function fetchData(){
         let user = JSON.parse(localStorage.getItem("user"));
         let apikey = "c55f8d138f6ccfd43612b15c98706943e1f4bea3";
-        let url = `/api/Analytics/TotalSavings/AllTime&user=${user.AccountUsername}&apikey=${apikey}`;
+        let url = `/api/Analytics/TotalSavings/ThisYear&user=${user.AccountUsername}&apikey=${apikey}`;
 
         await(
             fetch(url)

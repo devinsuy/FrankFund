@@ -217,6 +217,16 @@ namespace ServiceLayer
             }
             return totalSavings;
         }
+        public decimal getTotalSavingsThisYear(string username)
+        {
+            decimal totalSavings = 0;
+            foreach (BigQueryRow row in dataAccess.getTotalSavingsThisYear(username))
+            {
+                totalSavings = dataAccess.castBQNumeric(row["TotalSavings"]);
+            }
+            return totalSavings;
+        }
+
 
 
         // Given an account ID, return a breakdown of the spending per category
