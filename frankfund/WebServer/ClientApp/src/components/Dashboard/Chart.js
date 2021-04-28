@@ -35,7 +35,7 @@ export default function Chart() {
     
     return (
     // Pause loading if data has not been fetched yet
-            !dataFetched ? <> <a>Loading . . .</a></> : 
+            !dataFetched ? <><Typography component="h2" variant="h6" color="primary" gutterBottom>Your Spending</Typography> <a>Loading . . .</a> </>: 
 
             // Otherwise return loaded data
             <>
