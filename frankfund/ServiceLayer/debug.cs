@@ -592,6 +592,11 @@ namespace ServiceLayer
             //testGetAllSGFromAcc(accID: 2);
             //testJSONGoalsList(accID: 2);
 
+            SavingsGoalService sgs = new SavingsGoalService();
+            long periods = sgs.getPeriodsSinceStart(sgs.getUsingID((long)24));
+            Console.WriteLine(periods);
+
+
 
             // ---------------------------------------------- Test: Creating User Account ------------------------------------------------------
             //testAccCreate();
@@ -643,11 +648,11 @@ namespace ServiceLayer
             //testSpendingPerCategory(accID: 1);
             //testGetTotalSpending(accID: 1);
             //testCategoryBreakdown(accID: 1);
-            AnalyticsService ans = new AnalyticsService();
+            //AnalyticsService ans = new AnalyticsService();
             //ans.printTuples();
-            Console.WriteLine(ans.getJSON(ans.getSpendingPerMonthPastYear("frankfund")));
-            Console.WriteLine(ans.getJSON(ans.getAllTimeSpendingPerCategory("frankfund")));
-            Console.WriteLine(ans.getJSON(ans.getAllTimeCategoryBreakdown("frankfund")));
+            //Console.WriteLine(ans.getJSON(ans.getSpendingPerMonthPastYear("frankfund")));
+            //Console.WriteLine(ans.getJSON(ans.getAllTimeSpendingPerCategory("frankfund")));
+            //Console.WriteLine(ans.getJSON(ans.getAllTimeCategoryBreakdown("frankfund")));
 
 
 
@@ -681,6 +686,7 @@ namespace ServiceLayer
             //const string sampleImgPath = "../DataAccessLayer/tmp/upload/sample_receipt.jpeg";
             //testUploadReceipt(userName: "RachelPai", localPathToFile: sampleImgPath, fileName: "sample_receipt.jpeg");  // File overwrites if already exists
             //testDownloadReceipt(userName: "RachelPai", fileName: "sample_receipt.jpeg", dstPath: null);                 // Uses DataAccess/tmp/download by default (if null) for API
+
 
 
 

@@ -20,6 +20,7 @@ namespace REST.Controllers
         private readonly HashSet<string> updateGoalAmt;
         private readonly HashSet<string> updateContrAmt;
         private readonly HashSet<string> updateableAttrs;
+        private readonly HashSet<string> createCustomAttrs;
 
         public SavingsGoalController(ILogger<SavingsGoalController> logger)
         {
@@ -59,6 +60,11 @@ namespace REST.Controllers
             createDateAttrs = new HashSet<string>()
             {
                 "Name", "AccountID", "GoalAmt", "Period", "EndDate"
+            };
+            // Required attributes to create a NEW SavingsGoal by end datewith a custom previous start date
+            createCustomAttrs = new HashSet<string>()
+            {
+                "Name", "AccountID", "GoalAmt", "Period", "StartDate", "EndDate"
             };
         }
 
@@ -166,7 +172,6 @@ namespace REST.Controllers
             return api.serveJson(sgs.getJSON(s));
         }
 
-
         // Create a new SavingsGoal with the next available SGID
         [Route("api/SavingsGoal&apikey={apiKey}")]
         [HttpPost]
@@ -174,6 +179,51 @@ namespace REST.Controllers
         {
             long SGID = sgs.getNextAvailID();
             return CreateByID(SGID, apiKey, reqBody);
+        }
+
+
+        // Create a new SavingsGoal with a custom previous start date
+        [Route("api/SavingsGoal/custom&apikey={apiKey}")]
+        [HttpPost]
+        public IActionResult CreateByID(string apiKey, [FromBody] JsonElement reqBody)
+        {
+            if (!api.validAPIKey(apiKey))
+            {
+                return new UnauthorizedObjectResult("Invalid API key");
+            }
+            long SGID = sgs.getNextAvailID();
+
+            // Validate that the POST request contains all necessary attributes to create a NEW SavingsGoal and nothing more
+            Dictionary<string, object> req = JsonConvert.DeserializeObject<Dictionary<string, object>>(Convert.ToString(reqBody));
+            HashSet<string> reqAttributes = new HashSet<string>(req.Keys);
+            if (!reqAttributes.SetEquals(createCustomAttrs))
+            {
+                return BadRequest("Invalid attribute(s) in request body");
+            }
+
+
+            // Create the SavingsGoal with the given SGID using the POST payload
+            SavingsGoal s;
+            try
+            {
+                s = new SavingsGoal(
+                    SGID: SGID,
+                    accID: Convert.ToInt64(req["AccountID"]),
+                    Convert.ToString(req["Name"]),
+                    goalAmt: Convert.ToDecimal(req["GoalAmt"]),
+                    period: sgs.castPeriod(Convert.ToString(req["Period"])),
+                    startDate: Convert.ToDateTime(req["StartDate"]),
+                    endDate: Convert.ToDateTime(req["EndDate"])
+                );
+            }
+            catch
+            {
+                return BadRequest();
+            }
+
+            // Write the new SavingsGoal
+            sgs.write(s);
+            return api.serveJson(sgs.getJSON(s));
         }
 
 

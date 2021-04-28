@@ -102,6 +102,22 @@ namespace DataAccessLayer.Models
             this.endDate = calcEndDate();
         }
 
+        // Constructor: create SavingsGoal with custom preivous start date
+        public SavingsGoal(long SGID, long accID, string name, decimal goalAmt, contrPeriod period, DateTime startDate, DateTime endDate)
+        {
+            this.SGID = SGID;
+            this.accID = accID;
+            this.name = name;
+            this.goalAmt = goalAmt;
+            this.period = period;
+            this.startDate = startDate.Date;
+            this.newlyCreated = true;
+
+            this.endDate = endDate.Date;
+            this.numPeriods = calcPeriodsWithDate();
+            this.contrAmt = calcContrAmt();
+        }
+
         // Constructor: reinstantiate a pre-existing SavingsGoal from database records
         public SavingsGoal(long SGID, long accID, string name, decimal goalAmt, decimal contrAmt, contrPeriod period, long numPeriods, DateTime startDate, DateTime endDate)
         {

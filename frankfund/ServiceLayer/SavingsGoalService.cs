@@ -182,5 +182,9 @@ namespace ServiceLayer
             return SavingsGoalDataAccess.getNextAvailID();
         }
 
+        public long getPeriodsSinceStart(SavingsGoal s) {
+            return (long)Math.Floor((DateTime.Today - s.startDate).TotalDays / (long)s.period);
+        }
+
     }
 }
