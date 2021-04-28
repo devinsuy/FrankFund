@@ -53,7 +53,7 @@ class TransactionsLog extends Component {
         let apikey = "bd0eecf7cf275751a421a6101272f559b0391fa0";
         let url = `/api/account/user=${user.AccountUsername}/Transactions&apikey=${apikey}`;
 
-        // Retrieve all SavingsGoals for the user
+        // Retrieve all Transactions for the user
         await (
             fetch(url)
                 .then((data) => data.json())
@@ -66,6 +66,271 @@ class TransactionsLog extends Component {
                 this.setState({ user: user.AccountUsername, userID : user.AccountID, transactions: this.emptyTransactions, dataFetched: true })
             });
     };
+
+    async getEntertainment() {
+        let user = JSON.parse(localStorage.getItem("user"));
+        let apikey = "bd0eecf7cf275751a421a6101272f559b0391fa0";
+        let category = "Entertainment"
+        let url = `/api/account/user=${user.AccountUsername}/Transactions/Filter/ByCategory=${category}&apikey=${apikey}`;
+
+        // Retrieve all Transactions for the user
+        await (
+            fetch(url)
+                .then((data) => data.json())
+                .then((transactionsData) => {
+                    this.setState({ user: user.AccountUsername, userID: user.AccountID, transactions: transactionsData.Transactions, dataFetched: true })
+                })
+        )
+            .catch((err) => {
+                console.log(err)
+                this.setState({ user: user.AccountUsername, userID: user.AccountID, transactions: this.emptyTransactions, dataFetched: true })
+            });
+    };
+    async getRestaurants() {
+        let user = JSON.parse(localStorage.getItem("user"));
+        let apikey = "bd0eecf7cf275751a421a6101272f559b0391fa0";
+        let category = "Entertainment"
+        let url = `/api/account/user=${user.AccountUsername}/Transactions/Filter/ByCategory=${category}&apikey=${apikey}`;
+
+        // Retrieve all Transactions for the user
+        await (
+            fetch(url)
+                .then((data) => data.json())
+                .then((transactionsData) => {
+                    this.setState({ user: user.AccountUsername, userID: user.AccountID, transactions: transactionsData.Transactions, dataFetched: true })
+                })
+        )
+            .catch((err) => {
+                console.log(err)
+                this.setState({ user: user.AccountUsername, userID: user.AccountID, transactions: this.emptyTransactions, dataFetched: true })
+            });
+    };
+    async getTransportation() {
+        let user = JSON.parse(localStorage.getItem("user"));
+        let apikey = "bd0eecf7cf275751a421a6101272f559b0391fa0";
+        let category = "Entertainment"
+        let url = `/api/account/user=${user.AccountUsername}/Transactions/Filter/ByCategory=${category}&apikey=${apikey}`;
+
+        // Retrieve all Transactions for the user
+        await (
+            fetch(url)
+                .then((data) => data.json())
+                .then((transactionsData) => {
+                    this.setState({ user: user.AccountUsername, userID: user.AccountID, transactions: transactionsData.Transactions, dataFetched: true })
+                })
+        )
+            .catch((err) => {
+                console.log(err)
+                this.setState({ user: user.AccountUsername, userID: user.AccountID, transactions: this.emptyTransactions, dataFetched: true })
+            });
+    };
+    async getHome() {
+        let user = JSON.parse(localStorage.getItem("user"));
+        let apikey = "bd0eecf7cf275751a421a6101272f559b0391fa0";
+        let category = "Entertainment"
+        let url = `/api/account/user=${user.AccountUsername}/Transactions/Filter/ByCategory=${category}&apikey=${apikey}`;
+
+        // Retrieve all Transactions for the user
+        await (
+            fetch(url)
+                .then((data) => data.json())
+                .then((transactionsData) => {
+                    this.setState({ user: user.AccountUsername, userID: user.AccountID, transactions: transactionsData.Transactions, dataFetched: true })
+                })
+        )
+            .catch((err) => {
+                console.log(err)
+                this.setState({ user: user.AccountUsername, userID: user.AccountID, transactions: this.emptyTransactions, dataFetched: true })
+            });
+    };
+    async getEducation() {
+        let user = JSON.parse(localStorage.getItem("user"));
+        let apikey = "bd0eecf7cf275751a421a6101272f559b0391fa0";
+        let category = "Entertainment"
+        let url = `/api/account/user=${user.AccountUsername}/Transactions/Filter/ByCategory=${category}&apikey=${apikey}`;
+
+        // Retrieve all Transactions for the user
+        await (
+            fetch(url)
+                .then((data) => data.json())
+                .then((transactionsData) => {
+                    this.setState({ user: user.AccountUsername, userID: user.AccountID, transactions: transactionsData.Transactions, dataFetched: true })
+                })
+        )
+            .catch((err) => {
+                console.log(err)
+                this.setState({ user: user.AccountUsername, userID: user.AccountID, transactions: this.emptyTransactions, dataFetched: true })
+            });
+    };
+    async getInsurance() {
+        let user = JSON.parse(localStorage.getItem("user"));
+        let apikey = "bd0eecf7cf275751a421a6101272f559b0391fa0";
+        let category = "Entertainment"
+        let url = `/api/account/user=${user.AccountUsername}/Transactions/Filter/ByCategory=${category}&apikey=${apikey}`;
+
+        // Retrieve all Transactions for the user
+        await (
+            fetch(url)
+                .then((data) => data.json())
+                .then((transactionsData) => {
+                    this.setState({ user: user.AccountUsername, userID: user.AccountID, transactions: transactionsData.Transactions, dataFetched: true })
+                })
+        )
+            .catch((err) => {
+                console.log(err)
+                this.setState({ user: user.AccountUsername, userID: user.AccountID, transactions: this.emptyTransactions, dataFetched: true })
+            });
+    };
+    async getHealth() {
+        let user = JSON.parse(localStorage.getItem("user"));
+        let apikey = "bd0eecf7cf275751a421a6101272f559b0391fa0";
+        let category = "Entertainment"
+        let url = `/api/account/user=${user.AccountUsername}/Transactions/Filter/ByCategory=${category}&apikey=${apikey}`;
+
+        // Retrieve all Transactions for the user
+        await (
+            fetch(url)
+                .then((data) => data.json())
+                .then((transactionsData) => {
+                    this.setState({ user: user.AccountUsername, userID: user.AccountID, transactions: transactionsData.Transactions, dataFetched: true })
+                })
+        )
+            .catch((err) => {
+                console.log(err)
+                this.setState({ user: user.AccountUsername, userID: user.AccountID, transactions: this.emptyTransactions, dataFetched: true })
+            });
+    };
+    async getDeposits() {
+        let user = JSON.parse(localStorage.getItem("user"));
+        let apikey = "bd0eecf7cf275751a421a6101272f559b0391fa0";
+        let category = "Entertainment"
+        let url = `/api/account/user=${user.AccountUsername}/Transactions/Filter/ByCategory=${category}&apikey=${apikey}`;
+
+        // Retrieve all Transactions for the user
+        await (
+            fetch(url)
+                .then((data) => data.json())
+                .then((transactionsData) => {
+                    this.setState({ user: user.AccountUsername, userID: user.AccountID, transactions: transactionsData.Transactions, dataFetched: true })
+                })
+        )
+            .catch((err) => {
+                console.log(err)
+                this.setState({ user: user.AccountUsername, userID: user.AccountID, transactions: this.emptyTransactions, dataFetched: true })
+            });
+    };
+    async getShopping() {
+        let user = JSON.parse(localStorage.getItem("user"));
+        let apikey = "bd0eecf7cf275751a421a6101272f559b0391fa0";
+        let category = "Entertainment"
+        let url = `/api/account/user=${user.AccountUsername}/Transactions/Filter/ByCategory=${category}&apikey=${apikey}`;
+
+        // Retrieve all Transactions for the user
+        await (
+            fetch(url)
+                .then((data) => data.json())
+                .then((transactionsData) => {
+                    this.setState({ user: user.AccountUsername, userID: user.AccountID, transactions: transactionsData.Transactions, dataFetched: true })
+                })
+        )
+            .catch((err) => {
+                console.log(err)
+                this.setState({ user: user.AccountUsername, userID: user.AccountID, transactions: this.emptyTransactions, dataFetched: true })
+            });
+    };
+    async getGroceries() {
+        let user = JSON.parse(localStorage.getItem("user"));
+        let apikey = "bd0eecf7cf275751a421a6101272f559b0391fa0";
+        let category = "Entertainment"
+        let url = `/api/account/user=${user.AccountUsername}/Transactions/Filter/ByCategory=${category}&apikey=${apikey}`;
+
+        // Retrieve all Transactions for the user
+        await (
+            fetch(url)
+                .then((data) => data.json())
+                .then((transactionsData) => {
+                    this.setState({ user: user.AccountUsername, userID: user.AccountID, transactions: transactionsData.Transactions, dataFetched: true })
+                })
+        )
+            .catch((err) => {
+                console.log(err)
+                this.setState({ user: user.AccountUsername, userID: user.AccountID, transactions: this.emptyTransactions, dataFetched: true })
+            });
+    };
+    async getUncat() {
+        let user = JSON.parse(localStorage.getItem("user"));
+        let apikey = "bd0eecf7cf275751a421a6101272f559b0391fa0";
+        let category = "Entertainment"
+        let url = `/api/account/user=${user.AccountUsername}/Transactions/Filter/ByCategory=${category}&apikey=${apikey}`;
+
+        // Retrieve all Transactions for the user
+        await (
+            fetch(url)
+                .then((data) => data.json())
+                .then((transactionsData) => {
+                    this.setState({ user: user.AccountUsername, userID: user.AccountID, transactions: transactionsData.Transactions, dataFetched: true })
+                })
+        )
+            .catch((err) => {
+                console.log(err)
+                this.setState({ user: user.AccountUsername, userID: user.AccountID, transactions: this.emptyTransactions, dataFetched: true })
+            });
+    };
+    // Fetch and re-render updated Transactions
+    async handleEntertainment() {
+        this.setState({ user: this.state.user, userID: this.state.userID, transactions: this.state.transactions, dataFetched: false });
+        await (this.getEntertainment());
+    }
+    // Fetch and re-render updated Transactions
+    async handleRestaurants() {
+        this.setState({ user: this.state.user, userID: this.state.userID, transactions: this.state.transactions, dataFetched: false });
+        await (this.getRestaurants());
+    }
+    // Fetch and re-render updated Transactions
+    async handleTransportation() {
+        this.setState({ user: this.state.user, userID: this.state.userID, transactions: this.state.transactions, dataFetched: false });
+        await (this.getTransportation());
+    }
+    // Fetch and re-render updated Transactions
+    async handleHome() {
+        this.setState({ user: this.state.user, userID: this.state.userID, transactions: this.state.transactions, dataFetched: false });
+        await (this.getHome());
+    }
+    // Fetch and re-render updated Transactions
+    async handleEducation() {
+        this.setState({ user: this.state.user, userID: this.state.userID, transactions: this.state.transactions, dataFetched: false });
+        await (this.getEducation());
+    }
+    // Fetch and re-render updated Transactions
+    async handleInsurance() {
+        this.setState({ user: this.state.user, userID: this.state.userID, transactions: this.state.transactions, dataFetched: false });
+        await (this.getInsurance());
+    }
+    // Fetch and re-render updated Transactions
+    async handleHealth() {
+        this.setState({ user: this.state.user, userID: this.state.userID, transactions: this.state.transactions, dataFetched: false });
+        await (this.getHealth());
+    }
+    // Fetch and re-render updated Transactions
+    async handleDeposits() {
+        this.setState({ user: this.state.user, userID: this.state.userID, transactions: this.state.transactions, dataFetched: false });
+        await (this.getDeposits());
+    }
+    // Fetch and re-render updated Transactions
+    async handleShopping() {
+        this.setState({ user: this.state.user, userID: this.state.userID, transactions: this.state.transactions, dataFetched: false });
+        await (this.getShopping());
+    }
+    // Fetch and re-render updated Transactions
+    async handleGroceries() {
+        this.setState({ user: this.state.user, userID: this.state.userID, transactions: this.state.transactions, dataFetched: false });
+        await (this.getGroceries());
+    }
+    // Fetch and re-render updated Transactions
+    async handleUncat() {
+        this.setState({ user: this.state.user, userID: this.state.userID, transactions: this.state.transactions, dataFetched: false });
+        await (this.getUncat());
+    }
 
     // Fetch and re-render updated Transactions
     async handleRefresh(){
@@ -305,6 +570,114 @@ class TransactionsLog extends Component {
                 }
             }
         }
+
+        async function handleFilter(userID) {
+            //Prompt user to choose to filter transaction by date or by category
+            const byTime = await (getByTime());
+
+            if (byTime == null) return;
+            if (byTime) filterByTime(userID);
+            else filterByCategory();
+        }
+
+        async function getByTime() {
+            const inputOptions = new Promise((resolve) => {
+                resolve({
+                    'true': "Time",
+                    'false': "Category"
+                })
+            })
+            const { value: byTime } = await Swal.fire({
+                title: "How do you want to filter your transactions?",
+                input: 'radio',
+                html: `<p>Filter by <b>Time:</b></p> <p>Ex: Past 3 months</p> 
+                <p>Filter by <b>Category:</b></p> <p>Ex: Entertainment</p><br></br>`,
+                inputOptions: inputOptions,
+                showCancelButton: true,
+                showCloseButton: true,
+                inputValidator: (value) => {
+                    if (!value) {
+                        return 'Please select an option'
+                    }
+                }
+            })
+            return byTime == null ? null : (byTime == 'true')
+        }
+
+        async function filterByTime(userID) {
+            const { value: formValues } = await Swal.fire({
+                title: 'Filter by time',
+                html:
+                    '<h3>Enter the period</h3>' +
+                    '<input id="swal-input1" class="swal2-input" placeholder="Enter a number" type="number" required style="height: 40px">' +
+                    '<select id="swal-input2" class="swal2-input" placeholder="Select the period" required style="height: 40px; width:280px;">' +
+                    '<option value="0">Day(s)</option>' +
+                    '<option value="1">Week(s)</option>' +
+                    '<option value="2">Month(s)</option>' +
+                    '<option value="3">Year(s)</option>',
+                focusConfirm: false,
+                preConfirm: () => {
+                    return [
+                        document.getElementById('swal-input1').value,
+                        document.getElementById('swal-input2').value
+                    ]
+                }
+            })
+
+            if (formValues) {
+                Swal.fire(JSON.stringify(formValues))
+            }
+
+            let user = JSON.parse(localStorage.getItem("user"));
+            let apikey = "bd0eecf7cf275751a421a6101272f559b0391fa0";
+            //let url = `/api/account/user=${user.AccountUsername}/Transactions/Filter/ByTime/num=${num}&periodCode=${periodCode}&apikey=${apikey}`;
+        }
+
+        async function filterByCategory(userID) {
+            const category = await (getCategory());
+            if (category) {
+                Swal.fire(JSON.stringify(category))
+            }
+            let user = JSON.parse(localStorage.getItem("user"));
+            let apikey = "bd0eecf7cf275751a421a6101272f559b0391fa0";
+            let url = `/api/account/user=${user.AccountUsername}/Transactions/Filter/ByCategory=${category}&apikey=${apikey}`;
+
+           
+
+        }
+
+        async function getCategory() {
+            // Prompt user with dropdown menu for transaction type selection
+            const { value: category } = await Swal.fire({
+                title: 'Filter by Category',
+                text: "Select the transaction category",
+                input: 'select',
+                icon: "question",
+                showCloseButton: true,
+                inputOptions: {
+                    Entertainment: "Entertainment",
+                    Restaurants: "Restaurants",
+                    Transportation: "Transportation",
+                    HomeAndUtilities: "Home And Utilities",
+                    Education: "Education",
+                    Insurance: "Insurance",
+                    Health: "Health",
+                    Deposits: "Deposits",
+                    Shopping: "Shopping",
+                    Groceries: "Groceries",
+                    Uncategorized: "Uncategorized"
+
+                },
+                inputPlaceholder: 'Select an option',
+                showCancelButton: true,
+                inputValidator: (value) => {
+                    if (!value) {
+                        return 'Please select an transaction category.'
+                    }
+                    return new Promise((resolve) => { resolve() })
+                }
+            })
+        }
          
         return (
             <div className="container">
@@ -318,6 +691,7 @@ class TransactionsLog extends Component {
                             <h2>Hi {this.state.user}</h2>
                             <div style={{ "max-height": "500px", "overflow": "auto" }}>
                                 <button onClick={() => handleAddTransaction(this.state.userID)} className="btn btn-dark btn-blk" style={{ float: "right" }}>New Transaction </button>
+                                <button onClick={() => handleFilter(this.state.userID)} className="btn btn-light btn-dark" style={{ float: "right" }}>Sort/Filter</button>
                                 <table className="table">
                                     <thead>
                                         <tr>
@@ -328,7 +702,7 @@ class TransactionsLog extends Component {
                                             <th>Type</th>
                                             <th>Category</th>
                                             <th>
-                                                <input onClick={ this.handleRefresh } type="image" width="30" height="30" style={{float: "right"}} src="https://image.flaticon.com/icons/png/512/61/61444.png" />
+                                                <input onClick={this.handleRefresh} type="image" width="30" height="30" style={{ float: "right" }} src="https://image.flaticon.com/icons/png/512/61/61444.png" />
                                             </th>
                                         </tr>
                                     </thead>
