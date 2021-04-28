@@ -108,11 +108,11 @@ namespace ServiceLayer
 
 
         // Perform a deep copy of the month spending template (to copy the ordering)
-        public List<Tuple<string, decimal>> getTemplate()
+        public List<Tuple<string, decimal>> getTemplate(decimal defaultVal)
         {
             List<Tuple<string, decimal>> copy = new List<Tuple<string, decimal>>();
             foreach (Tuple<string, decimal> t in this.monthSpendingTemplate)
-                copy.Add(Tuple.Create(t.Item1, t.Item2));
+                copy.Add(Tuple.Create(t.Item1, defaultVal));
             return copy;
         }
         // Perform a deep copy of the category to spending templateßßßß
@@ -126,7 +126,7 @@ namespace ServiceLayer
 
 
         public List<Tuple<string, decimal>> getSpendingPerMonthPastYear(string username) {
-            List<Tuple<string, decimal>> monthSpending = getTemplate();
+            List<Tuple<string, decimal>> monthSpending = getTemplate(0);
             string currMonth;
             decimal currTotal;
 
@@ -143,8 +143,55 @@ namespace ServiceLayer
             return monthSpending;
         }
 
+        public List<Tuple<string, decimal>> getSavingsPerMonthPastYear(string username)
+        {
+            List<Tuple<string, decimal>> monthSavings= getTemplate(0);
+            string currMonth;
+            decimal currTotal;
 
+            foreach (BigQueryRow r in this.dataAccess.getSavingsPerMonthPastYear(username))
+            {
+                currTotal = dataAccess.castBQNumeric(r["Total"]);
+                currMonth = this.monthMap[Convert.ToInt32(r["Month"])];
+                for (int i = 0; i < monthSavings.Count; i++)
+                {
+                    if (monthSavings[i].Item1.Equals(currMonth))
+                        monthSavings[i] = Tuple.Create(currMonth, currTotal);
+                }
+            }
+            return monthSavings;
+        }
 
+        public List<Tuple<string, decimal>> getExpenseRatioPastYear(string username)
+        {
+            var monthSavings = getSavingsPerMonthPastYear(username);
+            var monthSpending = getSpendingPerMonthPastYear(username);
+            List<Tuple<string, decimal>> monthRatio = getTemplate(1);
+            foreach(var pair in monthRatio)
+            {
+                Console.WriteLine(pair.Item1, pair.Item2);
+            }
+            Tuple<string, decimal> currSavingsPair, currSpendingPair;
+            string currMonth;
+            decimal currMonthRatio, currMonthSpending, currMonthSavings;
+
+            // Calculate and store savings to spending ratio for each month
+            // Value >= 1 means user saves as much or more than they spend for that month
+            for (int i = 0; i < monthSavings.Count; i++)
+            {
+                currSavingsPair = monthSavings[i];
+                currSpendingPair = monthSpending[i];
+                currMonthSavings = currSavingsPair.Item2 == 0 ? 1 : currSavingsPair.Item2;
+                currMonthSpending = currSpendingPair.Item2 == 0 ? 1 : currSpendingPair.Item2;
+            
+                currMonth = currSavingsPair.Item1;
+                currMonthRatio = Math.Round(currMonthSavings / currMonthSpending, 2);
+                monthRatio[i] = Tuple.Create(currMonth, currMonthRatio);
+            }
+            return monthRatio;
+        }
+
+        
 
         // Given an account ID, return a dictionary that maps spending category to the sum of
         // expenses in that category for a particular user
@@ -275,7 +322,7 @@ namespace ServiceLayer
             foreach (string category in spendingPerCategory.Keys)
             {
                 currCategoryTotal = spendingPerCategory[category];
-                currPercentage = Math.Round(currCategoryTotal / totalSpending, 2) * 100;
+                currPercentage = Math.Round(currCategoryTotal / totalSpending, 2);
                 categoryBreakdown[category] = currPercentage;
             }
             return categoryBreakdown.Count == 0 ? null : categoryBreakdown;

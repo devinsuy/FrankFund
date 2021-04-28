@@ -85,6 +85,18 @@ namespace REST.Controllers
             return api.serveJson(api.getSingleAttrJSON("TotalSavings", Convert.ToString(ans.getTotalSavings(user))));
         }
 
+        [Route("api/Analytics/ExpenseRatio/PastYear&user={user}&apikey={apikey}")]
+        [HttpGet]
+        public IActionResult GetPastYearExpenseRatio(string user, string apikey)
+        {
+            if (!api.validAPIKey(apikey))
+            {
+                return new UnauthorizedObjectResult("Invalid API key");
+            }
+            return api.serveJson(ans.getJSON(ans.getExpenseRatioPastYear(user)));
+        }
+
+
         [Route("api/Analytics/TotalSavings/ThisYear&user={user}&apikey={apikey}")]
         [HttpGet]
         public IActionResult GetAllTimeTotalSavingsThisYear(string user, string apikey)

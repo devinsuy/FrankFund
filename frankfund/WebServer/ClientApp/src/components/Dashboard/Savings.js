@@ -27,7 +27,6 @@ export default function Savings() {
             .then((data) => data.json())
             .then((savingsData) => {
                 setSavingsAmt(savingsData.TotalSavings);
-                console.log(savingsAmt)
             })
         )
         .catch((err) => { 

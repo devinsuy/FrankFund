@@ -18,7 +18,7 @@ import TransactionLog from "./components/transactionslog.component";
 import SavingsGoalsLog from "./components/savingsgoalslog.component";
 import ImageUploadDemo from './components/temp/imageuploaddemo.component';
 import DashboardComponent from './components/Dashboard/dashboard.component';
-import Trends from './components/trends.component';
+import Trends from './components/Trends/trends.component';
 //import loginuseraccountComponent from './components/loginuseraccount.component';
 import SubscriptionsLog from './components/subscriptionslog.component';
 
