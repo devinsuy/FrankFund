@@ -35,7 +35,7 @@ def getRandDate() -> datetime:
 def getRandCategory() -> str:
     return random.choice(categories)
 
-def getRandTransaction() -> dict:
+def getRandTransaction(ACC_ID) -> dict:
     return {
         "SGID" : -1,             # Transactions that are expenses are not linked to any savings goal
         "AccountID" : ACC_ID,
@@ -55,5 +55,6 @@ def createTransactions(ACC_ID: int, num_transactions: int):
 
 if __name__ == "__main__":
     ACC_ID = 12                                                 # User account to post transactions on to
-    num_transactions = 100
-    createTransactions(ACC_ID, num_transactions)
+    # num_transactions = 100
+    # createTransactions(ACC_ID, num_transactions)
+    post(getRandTransaction(ACC_ID))

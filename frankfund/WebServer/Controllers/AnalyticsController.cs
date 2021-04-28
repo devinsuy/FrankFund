@@ -74,5 +74,16 @@ namespace REST.Controllers
         }
 
 
+        [Route("api/Analytics/TotalSavings/AllTime&user={user}&apikey={apikey}")]
+        [HttpGet]
+        public IActionResult GetAllTimeTotalSavings(string user, string apikey)
+        {
+            if (!api.validAPIKey(apikey))
+            {
+                return new UnauthorizedObjectResult("Invalid API key");
+            }
+            return api.serveJson(api.getSingleAttrJSON("TotalSavings", Convert.ToString(ans.getTotalSavings(user))));
+        }
+
     }
 }

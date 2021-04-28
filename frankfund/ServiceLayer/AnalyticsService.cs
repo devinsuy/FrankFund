@@ -208,6 +208,17 @@ namespace ServiceLayer
         }
 
 
+        public decimal getTotalSavings(string username)
+        {
+            decimal totalSavings = 0;
+            foreach (BigQueryRow row in dataAccess.getTotalSavings(username))
+            {
+                totalSavings = dataAccess.castBQNumeric(row["TotalSavings"]);
+            }
+            return totalSavings;
+        }
+
+
         // Given an account ID, return a breakdown of the spending per category
         // Returns a dictionary that maps the category to a tuple of spending in the category, and percentage of total spending
         // Returns null if account does not exist
