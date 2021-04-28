@@ -21,7 +21,6 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import { mainListItems, secondaryListItems } from './listItems';
 import Chart from './Chart';
 import Savings from './Savings';
-import Orders from './Orders';
 import TransactionLog from './dashboard.transactionslog.component';
 
 function Copyright() {
