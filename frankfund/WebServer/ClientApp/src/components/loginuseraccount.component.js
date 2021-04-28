@@ -51,10 +51,10 @@ class LoginUserAccount extends Component {
                         localStorage.setItem("user", JSON.stringify(res.data));
                     }
                     Swal.close()
+                    this.props.history.push("/");
                     swal("Success!", "You have successfully logged in! You will be redirected to the homepage in 1 second.", "success");
                     // Redirect to homepage
                     setTimeout(() => {
-                        this.props.history.push("/dashboard");
                         window.location.reload();
                     }, 300);
                     //this.props.history.go(1)
