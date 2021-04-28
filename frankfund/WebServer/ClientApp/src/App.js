@@ -77,22 +77,25 @@ function App() {
     const isLoggedIn = window.localStorage.getItem("user") ? true : false;
     const user = JSON.parse(localStorage.getItem("user"));
     const classes = useStyles();
+
+    const [subsCount, setsubsCount] = useState(0);
+
     function subscriptionCount() {
+        var subs = 0;
         if (isLoggedIn) {
             axios({
                 method: "get",
                 url: "/api/account/user=" + user.AccountUsername + "/Subscriptions/count&apikey=bd0eecf7cf275751a421a6101272f559b0391fa0",
             })
                 .then((res) => {
-                    console.log(res);
+                    setsubsCount(res.data.SubCount);
                 })
                 .catch((err) => {
                     throw err;
                 })
-            return 1;
         }
     }
-    const subsCount = subscriptionCount();
+    subscriptionCount();
 
     return (<Router history={createBrowserHistory}>
       <div className="App">
