@@ -22,11 +22,32 @@ class TransactionsLog extends Component {
             TID: "", AccountID: "", SGID: "", TransactionName: "No transactions to display",
             Amount: "", DateTransactionMade: "", DateTransactionEntered: "", IsExpense: null, TransactionCategory: ""
         }]
+        // Used only if User has no SavingsGoals
+        this.emptyGoal = [{
+            SGID: "", AccountID: "", Name: "No Goals To Display", GoalAmt: "",
+            ContrAmt: "", Period: "", SGID: "", StartDate: "", EndDate: ""
+        }]
     }
 
     async getGoals() {
+        let user = JSON.parse(localStorage.getItem("user"));
+        let apikey = "c55f8d138f6ccfd43612b15c98706943e1f4bea3";
+        let url = `/api/account/user=${user.AccountUsername}/SavingsGoals&apikey=${apikey}`;
 
-    }
+        // Retrieve all SavingsGoals for the user
+        await (
+            fetch(url)
+                .then((data) => data.json())
+                .then((goalsData) => {
+                    this.setState({ user: user.AccountUsername, userID: user.AccountID, goals: goalsData.Goals, dataFetched: true })
+                })
+        )
+            .catch((err) => {
+                console.log(err)
+                this.setState({ user: user.AccountUsername, userID: user.AccountID, goals: this.emptyGoal, dataFetched: true })
+            });
+    };
+
     async getTransactions() {
         let user = JSON.parse(localStorage.getItem("user"));
         let apikey = "bd0eecf7cf275751a421a6101272f559b0391fa0";
@@ -55,6 +76,7 @@ class TransactionsLog extends Component {
     // Update retrieved Transactions
     componentWillMount() {
         this.getTransactions()
+        this.getGoals();
     }
 
 
