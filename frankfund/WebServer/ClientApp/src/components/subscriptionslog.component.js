@@ -280,15 +280,14 @@ class SavingsGoalsLog extends Component {
 
                             <h2 id="Hello">Hi {this.state.user} </h2>
                             <div style={{"max-height": "500px", "overflow": "auto"}}>
-                                <button onClick={() => handleAddGoal(this.state.userID)} className="btn btn-dark btn-blk" style={{ float: "right" }}>Add New Goal </button>
+                                <button className="btn btn-dark btn-blk" style={{ float: "right" }}>Add New Subscription</button>
                                 <table className="table" id="AllGoals">
                                     <thead>
                                         <tr>
-                                            <th>Name</th>
-                                            <th>Goal Amount</th>
-                                            <th>Contribution Amount</th>
-                                            <th>Period</th>
-                                            <th>End Date</th>
+                                            <th>Purchase Date</th>
+                                            <th>Notes</th>
+                                            <th>Amount</th>
+                                            <th>Renew Frequency</th>
                                             <th>
                                                 <input onClick={this.handleRefresh} type="image" width="30" height="30" style={{ float: "right" }} src="https://image.flaticon.com/icons/png/512/61/61444.png" />
                                             </th>

@@ -293,9 +293,7 @@ const Transaction = ({ transaction }) => {
                 return new Promise((resolve) => { resolve() })
             }
         })
-
-        //NEED TO FIX
-        // Process input only if user presses submit
+        // Make PATCH request and update the name of the transaction
         if (newType) {
             let newTypeToString = "";
             if (newType == 'true') {
@@ -304,65 +302,51 @@ const Transaction = ({ transaction }) => {
             else {
                 newTypeToString = "Income";
             } 
-            // Display message if selected type is the same as the old one
-            if (newType == transaction.IsExpense) {
+            let loading = true;
+
+            while (loading) {
+                // Show loading message
                 Swal.fire({
-                    title: transaction.TransactionName,
-                    icon: "warning",
-                    html: `<p>The type is already the same as selection. No changes were made.</p>`,
-                    showCloseButton: true
-                })
-            }
-            // Make PATCH request and update type
-            else {
-                let loading = true;
-                while (loading) {
-                    // show loading message
-                    Swal.fire({
-                        title: 'Updating transaction type',
-                        html: `<p>Updating the transaction type to <b>${newTypeToString}</b></p>`,
-                        allowOutsideClick: false,
-                        onBeforeOpen: () => { Swal.showLoading() }
-                    });
-                    // Async await is blocking operation
-                    let params = {
-                        method: "PATCH",
-                        headers: { "Content-type": "application/json" },
-                        body: JSON.stringify({ "IsExpense": newType })
-                    }
-                    await (fetch(url, params))
-                            .then((response) => response.json())
-                            .then((transactionData) => {
-                                transaction = transactionData
+                    title: 'Updating transaction type',
+                    html: `<p>Updating type to <b>${newTypeToString}</b></p>`,
+                    allowOutsideClick: false,
+                    onBeforeOpen: () => { Swal.showLoading() }
+                });
+                // Async await is blocking operation
+                let params = {
+                    method: "PATCH",
+                    headers: { "Content-type": "application/json" },
+                    body: JSON.stringify({ "IsExpense": newType })
+                }
+                await (fetch(url, params))
+                    .then(response => {
+                        if (response.ok) {
+                            document.getElementById(`IsExpense${transaction.TID}`).innerHTML = newTypeToString;
 
-                                // Update component without full re-render
-                                document.getElementById(`IsExpense${transaction.TID}`).innerHTML = newTypeToString;
-
-                                // Display success message
-                                Swal.fetch({
-                                    title: transaction.TransactionName,
-                                    icon: "success",
-                                    html: `<p>NoopeThe transaction type was successfully updated to <b>${newTypeToString}</b>!</p>`,
-                                    showCloseButton: true
-                                })
-                                transaction.IsExpense = newType;
-                            })
-                        .catch((err) => {
-                            console.log(err);
+                            // Display success message
                             Swal.fire({
                                 title: transaction.TransactionName,
                                 icon: "success",
-                                html: `<p>HelloThe transaction type was successfully updated to <b>${newTypeToString}</b>!</p>`,
+                                html: `<p>Transaction type has successfully been updated to <b>${newTypeToString}</b>!</p>`,
                                 showCloseButton: true
                             })
-                        });
-                    //window.location.reload(false);
-                    // exit loading loop
-                    loading = false;
-                }
+                            transaction.IsExpense = newType;
+                        }
+                        else {
+                            Swal.fire({
+                                title: transaction.TransactionName,
+                                icon: "error",
+                                html: `<p>Something went wrong, failed to update transaction type.</p>`,
+                                showCloseButton: true
+                            })
+                        }
+                    })
+                //Exit loading loop
+                loading = false;
             }
         }
     }
+    
 
     async function editTransactionCategory() {
         // Prompt user with dropdown menu for transaction type selection
@@ -390,7 +374,7 @@ const Transaction = ({ transaction }) => {
             showCancelButton: true,
             inputValidator: (value) => {
                 if (!value) {
-                    return 'Please select an transaction type.'
+                    return 'Please select an transaction category.'
                 }
                 return new Promise((resolve) => { resolve() })
             }
