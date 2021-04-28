@@ -56,7 +56,7 @@ class LoginUserAccount extends Component {
                     // Redirect to homepage
                     setTimeout(() => {
                         window.location.reload();
-                    }, 300);
+                    }, 200);
                     //this.props.history.go(1)
                 })
                 .catch((err) => {
