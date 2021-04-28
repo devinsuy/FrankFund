@@ -28,13 +28,13 @@ namespace REST.Controllers
             // Attributes that should be specified in request payload if creating a NEW Subscription
             createAttr = new HashSet<string>
             {
-            "SID", "RID", "Notes", "AccountID", "PurchaseDate", "Amount", "RenewFrequency"
+            "RID", "Notes", "AccountID", "PurchaseDate", "Amount", "Notes", "RenewFrequency"
             };
 
             // Attributes that should be specified in request payload if updating an EXISTING subscription
             updateAttr = new HashSet<string>
             {
-            "SID", "AccountID", "PurchaseDate", "Amount", "RenewFrequency"
+            "AccountID", "PurchaseDate", "Amount", "Notes", "RenewFrequency"
             };
         }
 
@@ -87,23 +87,23 @@ namespace REST.Controllers
                 return BadRequest();
             }
 
-            // Validate that the POST request contains all necessary attributes to create a NEW transaction and nothing more
+            // Validate that the POST request contains all necessary attributes to create a NEW Subscription and nothing more
             Dictionary<string, object> req = JsonConvert.DeserializeObject<Dictionary<string, object>>(Convert.ToString(reqBody));
             HashSet<string> reqAttributes = new HashSet<string>(req.Keys);
 
             if (!reqAttributes.SetEquals(createAttr))
             {
-                return BadRequest();
+                return BadRequest("Invalid attribute(s) in request body, expected exactly { SID, AccountID, RID, PurchaseDate, Notes, Amount, RenewFrequency }");
             }
 
-            // POST should be used only to create a new Transaction, not allowed if Transaction with given TID already exists
+            // POST should be used only to create a new Subscription, not allowed if Subscription with given SID already exists
             Subscription s = subservice.getUsingID(SID);
-            if (subservice != null)
+            if (s != null)
             {
-                return Conflict();
+                return Conflict($"A subscription already exists with SID {SID}");
             }
 
-            // Create the transaction with the given SID using the POST payload
+            // Create the Subscription with the given SID using the POST payload
             try
             {
                 s = new Subscription(
@@ -156,11 +156,11 @@ namespace REST.Controllers
             HashSet<string> reqAttributes = new HashSet<string>(req.Keys);
             Subscription s = subservice.getUsingID(SID);
 
-            // Create the transaction with the given SID if it doesn't exist
+            // Create the Subscription with the given SID if it doesn't exist
             if (s == null)
             {
-                // PUT requires request to provide key,value pairs for EVERY Transaction attribute except dateTransactionEntered
-                if (!reqAttributes.SetEquals(createAttr))
+                // PUT requires request to provide key,value pairs for EVERY Subscription attribute 
+                if (!reqAttributes.SetEquals(updateAttr))
                 {
                     return BadRequest();
                 }
@@ -183,11 +183,11 @@ namespace REST.Controllers
                     return BadRequest();
                 }
 
-                // Write the new transaction
+                // Write the new Subscription
                 subservice.write(s);
             }
 
-            // Otheriwse fufill the PUT request and update the corresponding subscription 
+            // Otherwise fufill the PUT request and update the corresponding subscription 
             else
             {
                 // HTTP PUT request to update an EXISTING subscription requires ALL fields of the subscription to be specified
@@ -199,7 +199,7 @@ namespace REST.Controllers
                 // SID and AccountID are never modifiable
                 try
                 {
-                    s.setRID(Convert.ToInt64(req["RID"]));
+                    //s.setRID(Convert.ToInt64(req["RID"]));
                     s.setAmount(Convert.ToDecimal(req["Amount"]));
                     s.setPurchaseDate(Convert.ToDateTime(req["PurchaseDate"]));
                     s.setNotes(Convert.ToString(req["Notes"]));
@@ -268,6 +268,12 @@ namespace REST.Controllers
                 else if (reqAttributes.Contains("RenewFrequency"))
                 {
                     s.setRenewFrequency(subservice.castSubscriptionFrequency(Convert.ToString(req["RenewFrequency"])));
+                    attrUpdated = true;
+                }
+
+                else if (reqAttributes.Contains("Notes"))
+                {
+                    s.setNotes((Convert.ToString(req["Notes"])));
                     attrUpdated = true;
                 }
             }
