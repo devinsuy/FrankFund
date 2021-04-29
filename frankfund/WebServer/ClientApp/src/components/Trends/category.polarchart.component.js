@@ -71,11 +71,17 @@ class CategoryChart extends Component {
         return( !this.state.dataFetched ? <> <a>Loading . . .</a> </> :
             <>
                 <main class="container" ref={el => (this.div = el)}>
-                    <Typography component="h2" variant="h6" color="primary" gutterBottom>
-                        Categorical Breakdown
-                    </Typography>
+
                     <Paper className={classes.paper}>
-                        <PolarArea data={this.state.values}/>
+                        <div>
+                            <div align="center">
+                                <br></br>
+                                <Typography component="h2" variant="h6" color="primary" gutterBottom>
+                                    Categorical Breakdown
+                                </Typography>
+                            </div>
+                            <PolarArea data={this.state.values}/>
+                        </div>
                     </Paper>
                 </main>
             </>

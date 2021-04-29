@@ -14,7 +14,7 @@ export default function Chart() {
     async function fetchData(){
         let user = JSON.parse(localStorage.getItem("user"));
         let apikey = "c55f8d138f6ccfd43612b15c98706943e1f4bea3";
-        let url = `/api/Analytics/ExpenseRatio/PastYear&user=${user.AccountUsername}&apikey=${apikey}`;
+        let url = `/api/Analytics/MonthlySpending/PastYear&user=${user.AccountUsername}&apikey=${apikey}`;
 
         await(
             fetch(url)
@@ -74,33 +74,3 @@ export default function Chart() {
             </>
     );
 }
-
-
-
-const counters = document.querySelectorAll('.counter');
-const speed = 200; // The lower the slower
-
-counters.forEach(counter => {
-    const updateCount = () => {
-        const target = +counter.getAttribute('data-target');
-        const count = +counter.innerText;
-
-        // Lower inc to slow and higher to slow
-        const inc = target / speed;
-
-        // console.log(inc);
-        // console.log(count);
-
-        // Check if target is reached
-        if (count < target) {
-            // Add inc to count and output in counter
-            counter.innerText = count + inc;
-            // Call function every ms
-            setTimeout(updateCount, 1);
-        } else {
-            counter.innerText = target;
-        }
-    };
-
-    updateCount();
-});

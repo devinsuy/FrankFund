@@ -39,9 +39,12 @@ export default function RatioChart() {
     
                 // Otherwise return loaded data
                 <>
-                    <Typography component="h2" variant="h6" color="primary" gutterBottom>
-                        Expenditure Ratio
-                    </Typography>
+                    <div>
+                        <Typography component="h2" variant="h6" color="primary" gutterBottom>
+                            Savings To Spending Ratio
+                        </Typography>
+                    </div>
+
                     <ResponsiveContainer>
                         <LineChart
                             data={data}
@@ -52,25 +55,20 @@ export default function RatioChart() {
                                 left: 24,
                             }}
                         >
-                            <XAxis dataKey="month" stroke={theme.palette.text.secondary} />
+                            <XAxis dataKey="month" stroke={theme.palette.text.secondary} >
+                            </XAxis>
                             <YAxis stroke={theme.palette.text.secondary} type ="number">
                                 <Label
                                     angle={270}
                                     position="left"
                                     style={{ textAnchor: 'middle', fill: theme.palette.text.primary }}
                                 >
-                                    Ratio (%)
-                    </Label>
+                                    Ratio
+                                 </Label>
                             </YAxis>
                             <Line type="monotone" dataKey="amt" stroke={theme.palette.primary.main} dot={false} />
                         </LineChart>
                     </ResponsiveContainer>
-    
-                    <div>
-                        <Link color="primary" href="/trends">
-                            View trends
-                        </Link>
-                    </div>
                 </>
         );
     }

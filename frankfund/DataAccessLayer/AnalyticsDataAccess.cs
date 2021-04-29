@@ -93,6 +93,16 @@ namespace DataAccessLayer
             return this.dataHelper.query(query, parameters: null);
         }
 
+        public BigQueryResults getMostExpensiveTransaction(long accID)
+        {
+            string query = "SELECT * FROM `frankfund.FrankFund.Transactions`"
+                + " WHERE AccountID = 12"
+                + " AND Amount = (SELECT MAX(Amount) FROM `frankfund.FrankFund.Transactions` WHERE AccountID = 12)"
+                + " LIMIT 1;";
+
+            return this.dataHelper.query(query, parameters: null);
+        }
+
 
         // Overload wrappers to cast BigQuery Numeric type to C# decimal type
         public decimal castBQNumeric(BigQueryNumeric val)

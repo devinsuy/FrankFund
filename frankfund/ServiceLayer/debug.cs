@@ -592,9 +592,9 @@ namespace ServiceLayer
             //testGetAllSGFromAcc(accID: 2);
             //testJSONGoalsList(accID: 2);
 
-            SavingsGoalService sgs = new SavingsGoalService();
-            long periods = sgs.getPeriodsSinceStart(sgs.getUsingID((long)24));
-            Console.WriteLine(periods);
+            //SavingsGoalService sgs = new SavingsGoalService();
+            //long periods = sgs.getPeriodsSinceStart(sgs.getUsingID((long)24));
+            //Console.WriteLine(periods);
 
 
 
@@ -649,6 +649,7 @@ namespace ServiceLayer
             //testGetTotalSpending(accID: 1);
             //testCategoryBreakdown(accID: 1);
             //AnalyticsService ans = new AnalyticsService();
+            //ans.getTopSpendingCategoryPercentages("frankfund");
             //ans.printTuples();
             //Console.WriteLine(ans.getJSON(ans.getSpendingPerMonthPastYear("frankfund")));
             //Console.WriteLine(ans.getJSON(ans.getAllTimeSpendingPerCategory("frankfund")));

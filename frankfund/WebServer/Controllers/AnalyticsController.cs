@@ -18,10 +18,12 @@ namespace REST.Controllers
         private readonly ILogger<ReceiptController> _logger;
         private readonly APIHelper api;
         private readonly AnalyticsService ans;
+        private readonly TransactionService ts;
         public AnalyticsController(ILogger<ReceiptController> logger)
         {
             _logger = logger;
             api = new APIHelper();
+            ts = new TransactionService();
             ans = new AnalyticsService();
         }
 
@@ -35,6 +37,17 @@ namespace REST.Controllers
                 return new UnauthorizedObjectResult("Invalid API key");
             }
             return api.serveJson(ans.getJSON(ans.getAllTimeCategoryBreakdown(user)));
+        }
+
+        [Route("api/Analytics/TopCategoryPercentages/AllTime&user={user}&apikey={apikey}")]
+        [HttpGet]
+        public IActionResult GetTop3CategoryPercentages(string user, string apikey)
+        {
+            if (!api.validAPIKey(apikey))
+            {
+                return new UnauthorizedObjectResult("Invalid API key");
+            }
+            return api.serveJson(ans.getTopPctsJSON(ans.getTopSpendingCategoryPercentages(user)));
         }
 
 
@@ -108,5 +121,20 @@ namespace REST.Controllers
             return api.serveJson(api.getSingleAttrJSON("TotalSavings", Convert.ToString(ans.getTotalSavingsThisYear(user))));
         }
 
+
+        [Route("api/Analytics/TopTransaction/AllTime&accID={accID}&apikey={apikey}")]
+        [HttpGet]
+        public IActionResult GetAllTimeTotalSavingsThisYear(long accID, string apikey)
+        {
+            if (!api.validAPIKey(apikey))
+            {
+                return new UnauthorizedObjectResult("Invalid API key");
+            }
+            if(accID < 1)
+            {
+                return BadRequest("Invalid Account ID");
+            }
+            return api.serveJson(api.getSingleAttrJSON("Transaction", ts.getJSON(ans.getMostExpensiveTransaction(accID))));
+        }
     }
 }

@@ -3,6 +3,7 @@ using DataAccessLayer;
 using Google.Cloud.BigQuery.V2;
 using DataAccessLayer.Models;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ServiceLayer
 {
@@ -12,11 +13,13 @@ namespace ServiceLayer
         private readonly Dictionary<int, string> monthMap;
         private readonly List<Tuple<string, decimal>> monthSpendingTemplate;
         private readonly Dictionary<string, decimal> categorySpendingTemplate;
+        private readonly TransactionService ts;
         private readonly int endMonth;
 
         public AnalyticsService()
         {
             this.dataAccess = new AnalyticsDataAccess();
+            this.ts = new TransactionService();
             this.monthMap = new Dictionary<int, string>
             {
                 {1, "Jan"},   {2, "Feb"},   {3, "Mar"},   {4, "Apr"},
@@ -104,6 +107,28 @@ namespace ServiceLayer
                 i++;
             }
             return jsonStr + "}";
+        }
+
+        public string getTopPctsJSON(List<Tuple<string, decimal>> vals)
+        {
+            if (vals == null || vals.Count == 0)
+            {
+                return "{}";
+            }
+            string jsonStr = "{\"CategoryPcts\":[";
+            for (int i = 0; i < vals.Count; i++)
+            {
+                if (i == vals.Count - 1)
+                {
+                    jsonStr += $"{{\"category\":\"{vals[i].Item1}\", \"pct\":{vals[i].Item2}}}";
+                }
+                else
+                {
+                    jsonStr += $"{{\"category\":\"{vals[i].Item1}\", \"pct\":{vals[i].Item2}}}, ";
+                }
+            }
+
+            return jsonStr + "]}";
         }
 
 
@@ -274,6 +299,15 @@ namespace ServiceLayer
             return totalSavings;
         }
 
+        public Transaction getMostExpensiveTransaction(long accID)
+        {
+            foreach(BigQueryRow row in dataAccess.getMostExpensiveTransaction(accID))
+            {
+                return ts.reinstantiate(row);
+            }
+            return null;
+        }
+
 
 
         // Given an account ID, return a breakdown of the spending per category
@@ -322,10 +356,30 @@ namespace ServiceLayer
             foreach (string category in spendingPerCategory.Keys)
             {
                 currCategoryTotal = spendingPerCategory[category];
-                currPercentage = Math.Round(currCategoryTotal / totalSpending, 2);
+                currPercentage = Math.Round((currCategoryTotal / totalSpending) * 100, 2);
                 categoryBreakdown[category] = currPercentage;
             }
             return categoryBreakdown.Count == 0 ? null : categoryBreakdown;
         }
+
+
+        // Over all time
+        public List<Tuple<string, decimal>> getTopSpendingCategoryPercentages(string username)
+        {
+            // Extract top 3 categories
+            List<Tuple<string, decimal>> categoryPercentagesSorted = new List<Tuple<string, decimal>>();
+            foreach (KeyValuePair<string, decimal> kvp in getAllTimeCategoryBreakdown(username).OrderByDescending(key => key.Value))
+            {
+                if (categoryPercentagesSorted.Count == 3)
+                    break;
+                if (kvp.Key.Equals("Deposits"))
+                    continue;
+                categoryPercentagesSorted.Add(Tuple.Create(kvp.Key, kvp.Value));
+            }
+
+            return categoryPercentagesSorted;
+
+        }
+
     }
 }
