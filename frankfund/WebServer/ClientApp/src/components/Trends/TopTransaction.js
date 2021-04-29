@@ -46,20 +46,25 @@ export default function TopTransaction() {
             <Typography component="h2" variant="h6" color="primary" gutterBottom>
                 Largest Transaction
             </Typography>
-            <Typography component="p" variant="h4" id="animateValue">
-                { "$" + data.Amount.toLocaleString()}
-            </Typography>
-                    <Typography color="textSecondary" className={classes.depositContext}>
-                        {'"' + data.TransactionName + '"' + " made on " 
-                        + new Date(data.DateTransactionMade.replace(/-/g, '\/')).toDateString().slice(0,3) + ", " 
-                        + new Date(data.DateTransactionMade.replace(/-/g, '\/')).toDateString().slice(4)
-                        }
-            </Typography>
-            <div>
-                <Link color="primary" href="/transactions">
-                    View transactions
-                </Link>
-            </div>
+            {data.Amount == null ? <a>Nothing to display</a> : 
+            <>
+                <Typography component="p" variant="h4" id="animateValue">
+                    {"$" + data.Amount.toLocaleString()}
+                </Typography>
+                        <Typography color="textSecondary" className={classes.depositContext}>
+                            {'"' + data.TransactionName + '"' + " made on " 
+                            + new Date(data.DateTransactionMade.replace(/-/g, '\/')).toDateString().slice(0,3) + ", " 
+                            + new Date(data.DateTransactionMade.replace(/-/g, '\/')).toDateString().slice(4)
+                            }
+                </Typography>
+                <div>
+                    <Link color="primary" href="/transactions">
+                        View transactions
+                    </Link>
+                </div>        
+            </>    
+        }
+
         </React.Fragment>
     );
 }

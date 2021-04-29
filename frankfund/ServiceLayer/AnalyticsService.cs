@@ -345,6 +345,10 @@ namespace ServiceLayer
         public Dictionary<string, decimal> getAllTimeCategoryBreakdown(string username)
         {
             decimal totalSpending = getTotalSpending(username);
+            if(totalSpending == 0)
+            {
+                return new Dictionary<string, decimal>();
+            }
             Dictionary<string, decimal> categoryBreakdown = getCategoryTemplate();
             Dictionary<string, decimal> spendingPerCategory = getAllTimeSpendingPerCategory(username);
             if (spendingPerCategory == null || totalSpending == -1)

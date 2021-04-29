@@ -98,7 +98,8 @@ export default function TopCategoryBars() {
                 <Typography component="h2" variant="h6" color="primary" gutterBottom>Top Spending Categories</Typography>
             </div>
             {!dataFetched ? <> <a>Loading . . .</a></> :
-            <Bar data={data} options={options} />
+            data.datasets[0].label == null ? <> <a> Nothing to display</a> </> :
+                <Bar data={data} options={options} />
             }
         </Paper>
 

@@ -96,7 +96,7 @@ namespace DataAccessLayer
         public BigQueryResults getMostExpensiveTransaction(long accID)
         {
             string query = "SELECT * FROM `frankfund.FrankFund.Transactions`"
-                + " WHERE AccountID = 12"
+                + $" WHERE AccountID = {accID}"
                 + " AND Amount = (SELECT MAX(Amount) FROM `frankfund.FrankFund.Transactions` WHERE AccountID = 12)"
                 + " LIMIT 1;";
 
