@@ -68,6 +68,7 @@ const Subscription = ({ subscription }) => {
         });
     }
 
+
     async function editSubscriptionNotes() {
         const { value: newNote } = await Swal.fire({
             title: subscription.Notes,
@@ -262,6 +263,20 @@ const Subscription = ({ subscription }) => {
         }
     }
 
+    function formatDateForJSON(dateString) {
+        const dateArray = dateString.split('/')
+        let newDate = ''
+        for (let i = dateArray.length - 1; i >= 0; i--) {
+            if (i > 0) {
+                newDate += dateArray[i] + '-'
+            } else {
+                newDate += dateArray[i]
+            }
+        }
+        console.log(newDate)
+        return newDate;
+    }
+
     async function editSubscriptionDate() {
         Swal.fire({
             title: subscription.Notes,
@@ -278,7 +293,13 @@ const Subscription = ({ subscription }) => {
             let newDateRaw = document.getElementById(`DateBox${subscription.SID}`).value.replace(/-/g, '\/');
             const newDate = new Date(newDateRaw).toDateString();
             const prevDate = new Date(subscription.PurchaseDate.replace(/-/g,'\/')).toDateString();
-            console.log(new Date(newDateRaw).toLocaleDateString());
+            const formattedNewDate = newDateRaw.replaceAll("/", "-");
+            //console.log(new Date(newDateRaw).toLocaleDateString());
+           
+            console.log(formattedNewDate, "FORMATTED NEW DATE");
+            console.log(newDateRaw.replaceAll("/", "-"), "NEW DATE RAW");
+            console.log(newDateRaw.replace('\/', /-/g), "NEW DATE RAW WITH REGEX");
+            console.log(newDate, "NEW DAAATE");
 
             //User did not enter a date or entered the same date already set
             if (!newDateRaw || newDate == prevDate) {
@@ -306,7 +327,7 @@ const Subscription = ({ subscription }) => {
                 let params = {
                     method: "PATCH",
                     headers: { "Content-type": "application/json" },
-                    body: JSON.stringify({ "PurchaseDate": new Date(newDateRaw).toLocaleDateString() })
+                    body: JSON.stringify({ "PurchaseDate": formattedNewDate })
                 }
                 await (fetch(url, params))
                     .then(response => {

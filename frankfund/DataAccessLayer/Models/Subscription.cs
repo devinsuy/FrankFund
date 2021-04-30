@@ -87,10 +87,10 @@ namespace DataAccessLayer.Models
 
         public string getNotes()
         {
-            if (notes == null)
-            {
-                notes = "This subscription does not have any notes attached.";
-            }
+            //if (notes == null)
+            //{
+            //    notes = "This subscription does not have any notes attached.";
+           // }
             return notes;
         }
 
@@ -132,7 +132,7 @@ namespace DataAccessLayer.Models
 
         public void setNotes(string notes)
         {
-            if (notes.Equals(notes))
+            if (notes.Equals(this.notes))
             {
                 return;
             }

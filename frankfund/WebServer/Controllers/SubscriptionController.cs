@@ -257,12 +257,12 @@ namespace REST.Controllers
             try {
                 if (reqAttributes.Contains("PurchaseDate"))
                 {
-                    s.setPurchaseDate(Convert.ToDateTime(req["Amount"]));
+                    s.setPurchaseDate(Convert.ToDateTime(req["PurchaseDate"]));
                     attrUpdated = true;
                 }
                 else if (reqAttributes.Contains("Amount"))
                 {
-                    s.setAmount(Convert.ToInt64(req["Amount"]));
+                    s.setAmount(Convert.ToDecimal(req["Amount"]));
                     attrUpdated = true;
                 }
                 else if (reqAttributes.Contains("RenewFrequency"))

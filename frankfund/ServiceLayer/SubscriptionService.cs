@@ -33,7 +33,7 @@ namespace ServiceLayer
 
             return new Subscription(
                 (long)row["SID"], (long)row["AccountID"], RID,
-                (DateTime)row["PurchaseDate"], notes,
+                (DateTime)row["PurchaseDate"], (string)row["Notes"],
                 this.SubscriptionDataAccess.castBQNumeric(row["Amount"]),
                 this.SubscriptionDataAccess.ParseEnum<SubscriptionFrequency>((string)row["RenewFrequency"]));
         }
@@ -104,7 +104,8 @@ namespace ServiceLayer
                 s.getAccID().ToString(),
                 checkRID.ToString(),
                 s.getPurchaseDate().ToString("yyyy-MM-dd"),
-                checkNotes.ToString(),
+                //checkNotes.ToString(),
+                s.getNotes().ToString(),
                 s.getPurchaseAmount().ToString(),
                 s.getFrequency().ToString()
             };
