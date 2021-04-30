@@ -70,17 +70,28 @@ export default class SettingsUserAccount extends Component {
         e.preventDefault();
         const user = JSON.parse(localStorage.getItem('user'));
         Swal.fire({
-            title: 'Are you sure you want to delete your account?',
-            showDenyButton: true,
+            title: "Delete Account?",
+            html: `<p><h4>WARNING</h4>You will not be able to undo this action and all your information will be deleted!<br><br>Are you sure you want to delete your account?</p>`,
+            icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: `Yes`,
-            denyButtonText: `No`,
-            customClass: {
-                cancelButton: 'order-1 right-gap',
-                confirmButton: 'order-2',
-                denyButton: 'order-3',
-            }
-        }).then((result) => {
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Confirm',
+            showCloseButton: true
+        })
+        //Swal.fire({
+        //    title: 'Are you sure you want to delete your account?',
+        //    showDenyButton: true,
+        //    showCancelButton: true,
+        //    confirmButtonText: `Yes`,
+        //    denyButtonText: `No`,
+        //    customClass: {
+        //        cancelButton: 'order-1 right-gap',
+        //        confirmButton: 'order-2',
+        //        denyButton: 'order-3',
+        //    }
+            //})
+            .then((result) => {
             if (result.isConfirmed) {
                 let loading = true;
                 while (loading) {
