@@ -16,6 +16,7 @@ class TransactionsLog extends Component {
         };
         this.getTransactions = this.getTransactions.bind(this);
         this.handleRefresh = this.handleRefresh.bind(this);
+        this.handleFilter = this.handleFilter.bind(this);
 
         // Used only if User has no Transactions
         this.emptyTransactions = [{
@@ -67,10 +68,37 @@ class TransactionsLog extends Component {
             });
     };
 
-    async getEntertainment() {
+    async filterByCategory() {
+        const { value: category } = await Swal.fire({
+            title: 'Filter Transactions',
+            input: 'select',
+            icon: "question",
+            showCloseButton: true,
+            inputOptions: {
+                Entertainment: "Entertainment",
+                Restaurants: "Restaurants",
+                Transportation: "Transportation",
+                HomeAndUtilities: "Home And Utilities",
+                Education: "Education",
+                Insurance: "Insurance",
+                Health: "Health",
+                Deposits: "Deposits",
+                Shopping: "Shopping",
+                Groceries: "Groceries",
+                Uncategorized: "Uncategorized"
+
+            },
+            inputPlaceholder: 'Select an option',
+            showCancelButton: true,
+            inputValidator: (value) => {
+                if (!value) {
+                    return 'Please select an transaction category.'
+                }
+                return new Promise((resolve) => { resolve() })
+            }
+        })
         let user = JSON.parse(localStorage.getItem("user"));
         let apikey = "bd0eecf7cf275751a421a6101272f559b0391fa0";
-        let category = "Entertainment"
         let url = `/api/account/user=${user.AccountUsername}/Transactions/Filter/ByCategory=${category}&apikey=${apikey}`;
 
         // Retrieve all Transactions for the user
@@ -86,11 +114,31 @@ class TransactionsLog extends Component {
                 this.setState({ user: user.AccountUsername, userID: user.AccountID, transactions: this.emptyTransactions, dataFetched: true })
             });
     };
-    async getRestaurants() {
+
+    async filterByDate() {
+        const { value: formValues } = await Swal.fire({
+            title: "Filter Transactions",
+            html:
+                '<h3>Enter the period</h3>' +
+                '<input id="swal-input1" class="swal2-input" placeholder="Enter the number" type="number" required style="height: 40px">' +
+
+                '<select id="swal-input2" class="swal2-input" placeholder="Select an option" required style="height: 40px; width:280px;">' +
+                '<option value="0">Day(s)</option>' +
+                '<option value="1">Week(s)</option>' +
+                '<option value="2">Month(s)</option>' +
+                '<option value="3">Year(s)</option>' +
+                '</select>',
+            focusConfirm: false,
+            preConfirm: () => {
+                return [
+                    document.getElementById("swal-input1").value,
+                    document.getElementById("swal-input2").value
+                ];
+            }
+        });
         let user = JSON.parse(localStorage.getItem("user"));
         let apikey = "bd0eecf7cf275751a421a6101272f559b0391fa0";
-        let category = "Entertainment"
-        let url = `/api/account/user=${user.AccountUsername}/Transactions/Filter/ByCategory=${category}&apikey=${apikey}`;
+        let url = `/api/account/user=${user.AccountUsername}/Transactions/Filter/ByTime/num=${formValues[0]}&periodCode=${formValues[1]}&apikey=${apikey}`;
 
         // Retrieve all Transactions for the user
         await (
@@ -105,11 +153,11 @@ class TransactionsLog extends Component {
                 this.setState({ user: user.AccountUsername, userID: user.AccountID, transactions: this.emptyTransactions, dataFetched: true })
             });
     };
-    async getTransportation() {
+
+    async getSortedTransactons() {
         let user = JSON.parse(localStorage.getItem("user"));
         let apikey = "bd0eecf7cf275751a421a6101272f559b0391fa0";
-        let category = "Entertainment"
-        let url = `/api/account/user=${user.AccountUsername}/Transactions/Filter/ByCategory=${category}&apikey=${apikey}`;
+        let url = `/api/account/user=${user.AccountUsername}/Transactions/Sorted/ByCategory&apikey=${apikey}`;
 
         // Retrieve all Transactions for the user
         await (
@@ -123,213 +171,78 @@ class TransactionsLog extends Component {
                 console.log(err)
                 this.setState({ user: user.AccountUsername, userID: user.AccountID, transactions: this.emptyTransactions, dataFetched: true })
             });
-    };
-    async getHome() {
-        let user = JSON.parse(localStorage.getItem("user"));
-        let apikey = "bd0eecf7cf275751a421a6101272f559b0391fa0";
-        let category = "Entertainment"
-        let url = `/api/account/user=${user.AccountUsername}/Transactions/Filter/ByCategory=${category}&apikey=${apikey}`;
-
-        // Retrieve all Transactions for the user
-        await (
-            fetch(url)
-                .then((data) => data.json())
-                .then((transactionsData) => {
-                    this.setState({ user: user.AccountUsername, userID: user.AccountID, transactions: transactionsData.Transactions, dataFetched: true })
-                })
-        )
-            .catch((err) => {
-                console.log(err)
-                this.setState({ user: user.AccountUsername, userID: user.AccountID, transactions: this.emptyTransactions, dataFetched: true })
-            });
-    };
-    async getEducation() {
-        let user = JSON.parse(localStorage.getItem("user"));
-        let apikey = "bd0eecf7cf275751a421a6101272f559b0391fa0";
-        let category = "Entertainment"
-        let url = `/api/account/user=${user.AccountUsername}/Transactions/Filter/ByCategory=${category}&apikey=${apikey}`;
-
-        // Retrieve all Transactions for the user
-        await (
-            fetch(url)
-                .then((data) => data.json())
-                .then((transactionsData) => {
-                    this.setState({ user: user.AccountUsername, userID: user.AccountID, transactions: transactionsData.Transactions, dataFetched: true })
-                })
-        )
-            .catch((err) => {
-                console.log(err)
-                this.setState({ user: user.AccountUsername, userID: user.AccountID, transactions: this.emptyTransactions, dataFetched: true })
-            });
-    };
-    async getInsurance() {
-        let user = JSON.parse(localStorage.getItem("user"));
-        let apikey = "bd0eecf7cf275751a421a6101272f559b0391fa0";
-        let category = "Entertainment"
-        let url = `/api/account/user=${user.AccountUsername}/Transactions/Filter/ByCategory=${category}&apikey=${apikey}`;
-
-        // Retrieve all Transactions for the user
-        await (
-            fetch(url)
-                .then((data) => data.json())
-                .then((transactionsData) => {
-                    this.setState({ user: user.AccountUsername, userID: user.AccountID, transactions: transactionsData.Transactions, dataFetched: true })
-                })
-        )
-            .catch((err) => {
-                console.log(err)
-                this.setState({ user: user.AccountUsername, userID: user.AccountID, transactions: this.emptyTransactions, dataFetched: true })
-            });
-    };
-    async getHealth() {
-        let user = JSON.parse(localStorage.getItem("user"));
-        let apikey = "bd0eecf7cf275751a421a6101272f559b0391fa0";
-        let category = "Entertainment"
-        let url = `/api/account/user=${user.AccountUsername}/Transactions/Filter/ByCategory=${category}&apikey=${apikey}`;
-
-        // Retrieve all Transactions for the user
-        await (
-            fetch(url)
-                .then((data) => data.json())
-                .then((transactionsData) => {
-                    this.setState({ user: user.AccountUsername, userID: user.AccountID, transactions: transactionsData.Transactions, dataFetched: true })
-                })
-        )
-            .catch((err) => {
-                console.log(err)
-                this.setState({ user: user.AccountUsername, userID: user.AccountID, transactions: this.emptyTransactions, dataFetched: true })
-            });
-    };
-    async getDeposits() {
-        let user = JSON.parse(localStorage.getItem("user"));
-        let apikey = "bd0eecf7cf275751a421a6101272f559b0391fa0";
-        let category = "Entertainment"
-        let url = `/api/account/user=${user.AccountUsername}/Transactions/Filter/ByCategory=${category}&apikey=${apikey}`;
-
-        // Retrieve all Transactions for the user
-        await (
-            fetch(url)
-                .then((data) => data.json())
-                .then((transactionsData) => {
-                    this.setState({ user: user.AccountUsername, userID: user.AccountID, transactions: transactionsData.Transactions, dataFetched: true })
-                })
-        )
-            .catch((err) => {
-                console.log(err)
-                this.setState({ user: user.AccountUsername, userID: user.AccountID, transactions: this.emptyTransactions, dataFetched: true })
-            });
-    };
-    async getShopping() {
-        let user = JSON.parse(localStorage.getItem("user"));
-        let apikey = "bd0eecf7cf275751a421a6101272f559b0391fa0";
-        let category = "Entertainment"
-        let url = `/api/account/user=${user.AccountUsername}/Transactions/Filter/ByCategory=${category}&apikey=${apikey}`;
-
-        // Retrieve all Transactions for the user
-        await (
-            fetch(url)
-                .then((data) => data.json())
-                .then((transactionsData) => {
-                    this.setState({ user: user.AccountUsername, userID: user.AccountID, transactions: transactionsData.Transactions, dataFetched: true })
-                })
-        )
-            .catch((err) => {
-                console.log(err)
-                this.setState({ user: user.AccountUsername, userID: user.AccountID, transactions: this.emptyTransactions, dataFetched: true })
-            });
-    };
-    async getGroceries() {
-        let user = JSON.parse(localStorage.getItem("user"));
-        let apikey = "bd0eecf7cf275751a421a6101272f559b0391fa0";
-        let category = "Entertainment"
-        let url = `/api/account/user=${user.AccountUsername}/Transactions/Filter/ByCategory=${category}&apikey=${apikey}`;
-
-        // Retrieve all Transactions for the user
-        await (
-            fetch(url)
-                .then((data) => data.json())
-                .then((transactionsData) => {
-                    this.setState({ user: user.AccountUsername, userID: user.AccountID, transactions: transactionsData.Transactions, dataFetched: true })
-                })
-        )
-            .catch((err) => {
-                console.log(err)
-                this.setState({ user: user.AccountUsername, userID: user.AccountID, transactions: this.emptyTransactions, dataFetched: true })
-            });
-    };
-    async getUncat() {
-        let user = JSON.parse(localStorage.getItem("user"));
-        let apikey = "bd0eecf7cf275751a421a6101272f559b0391fa0";
-        let category = "Entertainment"
-        let url = `/api/account/user=${user.AccountUsername}/Transactions/Filter/ByCategory=${category}&apikey=${apikey}`;
-
-        // Retrieve all Transactions for the user
-        await (
-            fetch(url)
-                .then((data) => data.json())
-                .then((transactionsData) => {
-                    this.setState({ user: user.AccountUsername, userID: user.AccountID, transactions: transactionsData.Transactions, dataFetched: true })
-                })
-        )
-            .catch((err) => {
-                console.log(err)
-                this.setState({ user: user.AccountUsername, userID: user.AccountID, transactions: this.emptyTransactions, dataFetched: true })
-            });
-    };
-    // Fetch and re-render updated Transactions
-    async handleEntertainment() {
-        this.setState({ user: this.state.user, userID: this.state.userID, transactions: this.state.transactions, dataFetched: false });
-        await (this.getEntertainment());
     }
-    // Fetch and re-render updated Transactions
-    async handleRestaurants() {
-        this.setState({ user: this.state.user, userID: this.state.userID, transactions: this.state.transactions, dataFetched: false });
-        await (this.getRestaurants());
+
+    async handleMainChoice() {
+        const isByDate = await (this.getByDate());
+
+        if (isByDate == null) return;
+        if (isByDate) this.filterByDate();
+        else this.handleCategoryChoice();
     }
-    // Fetch and re-render updated Transactions
-    async handleTransportation() {
-        this.setState({ user: this.state.user, userID: this.state.userID, transactions: this.state.transactions, dataFetched: false });
-        await (this.getTransportation());
+
+    async handleCategoryChoice() {
+        const isFiltering = await (this.getFiltering());
+
+        if (isFiltering == null) return;
+        if (isFiltering) this.filterByCategory();
+        else this.getSortedTransactons();
     }
-    // Fetch and re-render updated Transactions
-    async handleHome() {
-        this.setState({ user: this.state.user, userID: this.state.userID, transactions: this.state.transactions, dataFetched: false });
-        await (this.getHome());
+
+    async getByDate() {
+        const inputOptions = new Promise((resolve) => {
+            resolve({
+                'true': "Filter by time",
+                'false': "Filter by category"
+            })
+        })
+        const { value: isByDate } = await Swal.fire({
+            title: "Select filter options",
+            input: 'radio',
+            html:
+                `<p>Filter transactions by <b>time</b></p> <p>Ex: All transactions in the last 3 months</p> 
+                <p>Filter transactions by <b>category</b></p> <p>Ex: All transactions that are entertainment</p><br></br>`,
+            inputOptions: inputOptions,
+            showCancelButton: true,
+            showCloseButton: true,
+            inputValidator: (value) => {
+                if (!value) {
+                    return 'Please select an option'
+                }
+            }
+        })
+        return isByDate == null ? null : (isByDate == 'true');
     }
-    // Fetch and re-render updated Transactions
-    async handleEducation() {
-        this.setState({ user: this.state.user, userID: this.state.userID, transactions: this.state.transactions, dataFetched: false });
-        await (this.getEducation());
+
+    async getFiltering() {
+        const inputOptions = new Promise((resolve) => {
+            resolve({
+                'true': "Filter by a category",
+                'false': "Sort all transactions by their category"
+            })
+        })
+        const { value: isFiltering } = await Swal.fire({
+            title: "Select filter or sort",
+            input: 'radio',
+            html:
+                `<p>Filter transactions by <b>category:</b></p> <p>Ex: Show only entertainment transactions</p> 
+                <p><b>Sort</b> all transactions:</p> <p>Ex: Show all transactions sorted by their category</p><br></br>`,
+            inputOptions: inputOptions,
+            showCancelButton: true,
+            showCloseButton: true,
+            inputValidator: (value) => {
+                if (!value) {
+                    return 'Please select an option'
+                }
+            }
+        })
+        return isFiltering == null ? null : (isFiltering == 'true');
     }
+
     // Fetch and re-render updated Transactions
-    async handleInsurance() {
+    async handleFilter() {
         this.setState({ user: this.state.user, userID: this.state.userID, transactions: this.state.transactions, dataFetched: false });
-        await (this.getInsurance());
-    }
-    // Fetch and re-render updated Transactions
-    async handleHealth() {
-        this.setState({ user: this.state.user, userID: this.state.userID, transactions: this.state.transactions, dataFetched: false });
-        await (this.getHealth());
-    }
-    // Fetch and re-render updated Transactions
-    async handleDeposits() {
-        this.setState({ user: this.state.user, userID: this.state.userID, transactions: this.state.transactions, dataFetched: false });
-        await (this.getDeposits());
-    }
-    // Fetch and re-render updated Transactions
-    async handleShopping() {
-        this.setState({ user: this.state.user, userID: this.state.userID, transactions: this.state.transactions, dataFetched: false });
-        await (this.getShopping());
-    }
-    // Fetch and re-render updated Transactions
-    async handleGroceries() {
-        this.setState({ user: this.state.user, userID: this.state.userID, transactions: this.state.transactions, dataFetched: false });
-        await (this.getGroceries());
-    }
-    // Fetch and re-render updated Transactions
-    async handleUncat() {
-        this.setState({ user: this.state.user, userID: this.state.userID, transactions: this.state.transactions, dataFetched: false });
-        await (this.getUncat());
+        await (this.handleMainChoice());
     }
 
     // Fetch and re-render updated Transactions
@@ -571,81 +484,6 @@ class TransactionsLog extends Component {
             }
         }
 
-        async function handleFilter(userID) {
-            //Prompt user to choose to filter transaction by date or by category
-            const byTime = await (getByTime());
-
-            if (byTime == null) return;
-            if (byTime) filterByTime(userID);
-            else filterByCategory();
-        }
-
-        async function getByTime() {
-            const inputOptions = new Promise((resolve) => {
-                resolve({
-                    'true': "Time",
-                    'false': "Category"
-                })
-            })
-            const { value: byTime } = await Swal.fire({
-                title: "How do you want to filter your transactions?",
-                input: 'radio',
-                html: `<p>Filter by <b>Time:</b></p> <p>Ex: Past 3 months</p> 
-                <p>Filter by <b>Category:</b></p> <p>Ex: Entertainment</p><br></br>`,
-                inputOptions: inputOptions,
-                showCancelButton: true,
-                showCloseButton: true,
-                inputValidator: (value) => {
-                    if (!value) {
-                        return 'Please select an option'
-                    }
-                }
-            })
-            return byTime == null ? null : (byTime == 'true')
-        }
-
-        async function filterByTime(userID) {
-            const { value: formValues } = await Swal.fire({
-                title: 'Filter by time',
-                html:
-                    '<h3>Enter the period</h3>' +
-                    '<input id="swal-input1" class="swal2-input" placeholder="Enter a number" type="number" required style="height: 40px">' +
-                    '<select id="swal-input2" class="swal2-input" placeholder="Select the period" required style="height: 40px; width:280px;">' +
-                    '<option value="0">Day(s)</option>' +
-                    '<option value="1">Week(s)</option>' +
-                    '<option value="2">Month(s)</option>' +
-                    '<option value="3">Year(s)</option>',
-                focusConfirm: false,
-                preConfirm: () => {
-                    return [
-                        document.getElementById('swal-input1').value,
-                        document.getElementById('swal-input2').value
-                    ]
-                }
-            })
-
-            if (formValues) {
-                Swal.fire(JSON.stringify(formValues))
-            }
-
-            let user = JSON.parse(localStorage.getItem("user"));
-            let apikey = "bd0eecf7cf275751a421a6101272f559b0391fa0";
-            //let url = `/api/account/user=${user.AccountUsername}/Transactions/Filter/ByTime/num=${num}&periodCode=${periodCode}&apikey=${apikey}`;
-        }
-
-        async function filterByCategory(userID) {
-            const category = await (getCategory());
-            if (category) {
-                Swal.fire(JSON.stringify(category))
-            }
-            let user = JSON.parse(localStorage.getItem("user"));
-            let apikey = "bd0eecf7cf275751a421a6101272f559b0391fa0";
-            let url = `/api/account/user=${user.AccountUsername}/Transactions/Filter/ByCategory=${category}&apikey=${apikey}`;
-
-           
-
-        }
-
         async function getCategory() {
             // Prompt user with dropdown menu for transaction type selection
             const { value: category } = await Swal.fire({
@@ -691,14 +529,13 @@ class TransactionsLog extends Component {
                             <h2>Hi {this.state.user}</h2>
                             <div style={{ "max-height": "500px", "overflow": "auto" }}>
                                 <button onClick={() => handleAddTransaction(this.state.userID)} className="btn btn-dark btn-blk" style={{ float: "right" }}>New Transaction </button>
-                                <button onClick={() => handleFilter(this.state.userID)} className="btn btn-light btn-dark" style={{ float: "right" }}>Sort/Filter</button>
+                                <button onClick={this.handleFilter} className="btn btn-light btn-dark" style={{ float: "right" }}>Sort/Filter</button>
                                 <table className="table">
                                     <thead>
                                         <tr>
                                             <th>Name</th>
                                             <th>Amount</th>
                                             <th>Date Made</th>
-                                            <th>Date Entered</th>
                                             <th>Type</th>
                                             <th>Category</th>
                                             <th>
