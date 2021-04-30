@@ -90,7 +90,11 @@ body, html, .App, #root, .outer {
 img.logo {
     display: block;
     margin-left: auto;
-    margin-right: auto
+    margin-right: auto;
+    width: 400px;
+    height:400px;
+    max-width: 100%;
+    max-height: 100%;
 }
 
 .outer .form-control:focus {

@@ -4,6 +4,12 @@ import { Link } from "react-router-dom";
 // reactstrap components
 
 export default class LandingComponent extends React.Component {
+
+    componentDidMount() {
+        const backgroundTag = document.getElementsByClassName("inner")[0];
+        backgroundTag.style.width = "80%";
+    }
+
     render() {
         return (
             <div class="row">
@@ -37,7 +43,7 @@ export default class LandingComponent extends React.Component {
                     </div>
                 </div>
                 <div class="col">
-                    <img class="logo" src="https://lh3.googleusercontent.com/yMIRhv9YgrNwhWYatcVfb8l_BdoYdhYOy7jTPW42BaShPMQqmTxTKXM8XlX9pLZxzBes4HN1HpHIk52wW5drkxvwrQJ4G5_Q6pcBnOn4L_9zILLM41b--QxoUSVbHHVQKpW4Mfks4Q=w2400" width="400" height="400"></img>
+                    <img class="logo" src="https://lh3.googleusercontent.com/yMIRhv9YgrNwhWYatcVfb8l_BdoYdhYOy7jTPW42BaShPMQqmTxTKXM8XlX9pLZxzBes4HN1HpHIk52wW5drkxvwrQJ4G5_Q6pcBnOn4L_9zILLM41b--QxoUSVbHHVQKpW4Mfks4Q=w2400"></img>
                 </div>
             </div >
         )

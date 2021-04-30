@@ -97,7 +97,11 @@ class CreateUserAccount extends Component {
             // Exit loading loop
             loading = false;
         }
+    }
 
+    componentDidMount() {
+        const backgroundTag = document.getElementsByClassName("inner")[0];
+        backgroundTag.style.width = "30%";
     }
 
     render() {
