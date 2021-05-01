@@ -23,7 +23,7 @@ const Transaction = ({ transaction }) => {
         <>
             <tr id={`Transaction${transaction.TID}`} key={transaction.TID}>
                 <td id={`TransactionName${transaction.TID}`}> {transaction.TransactionName}</td>
-                <td id={`Amount${transaction.TID}`}> {transaction.Amount != "" ? "$" + transaction.Amount : ""}</td>
+                <td id={`Amount${transaction.TID}`}> {transaction.IsExpense == true ? "-$" + transaction.Amount : "+$" + transaction.Amount}</td>
                 <td id={`DateTransactionMade${transaction.TID}`}> {dateMade}</td>
                 <td id={`IsExpense${transaction.TID}`}> {transaction.IsExpense == true ? "Expense" : transaction.IsExpense == false ? "Income" : ""}</td>
                 <td id={`TransactionCategory${transaction.TID}`}> {transaction.TransactionCategory}</td>
