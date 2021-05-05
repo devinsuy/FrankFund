@@ -9,6 +9,9 @@ using System.Text.Json;
 using System.IO;
 using System.Web;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
+using System.Threading;
+using System.Linq;
 
 namespace REST.Controllers
 {
@@ -280,21 +283,123 @@ namespace REST.Controllers
         // Read a receipt image file from request form and upload to GCP cloud storage bucket
         // NOTE: Unlike all other API requests, this endpoint requires Form data, not JSON
         [Route("api/Receipt/Upload&apikey={apiKey}")]
-        [HttpPost]
-        public IActionResult ReceiptUpload(string apiKey, IFormFile imageFile)
+        [HttpPost("UploadSingleFile")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> ReceiptUpload(string apiKey, List<IFormFile> imageFile, CancellationToken cancellationToken)
         {
+
+            //var filePath = Path.Combine(Directory.GetCurrentDirectory(), "DataAccessLayer\\tmp\\upload");
+            //var filePath = "C:\\Data\\Spring 2021\\CECS 491B\\Senior Project\\frankfund\\WebServer\\DataAccessLayer\\tmp\\upload\\files";
+            var filePath2 = Path.GetTempFileName();
+
             if (!api.validAPIKey(apiKey))
             {
                 return new UnauthorizedObjectResult("Invalid API key");
             }
-            Console.WriteLine(imageFile.FileName);
-            Console.WriteLine(imageFile.Length);
+
+            long size = imageFile.Sum(f => f.Length);
+            Console.WriteLine("This is the size of the file", size);
+
+            foreach (var formFile in imageFile)
+            {
+                var filePath = Path.GetTempFileName();
+               
+
+                using (var stream = System.IO.File.Create(filePath))
+               {
+                    await formFile.CopyToAsync(stream);
+                }
+            }
+            
+            if (imageFile != null)
+            {
+                Console.WriteLine("OK");
+            }
+        
+            //if (imageFile.Length > 0)
+            //{
+            //    using (var stream = new FileStream(filePath, FileMode.Create))
+            //        await imageFile.CopyToAsync(stream);
+
+            //}
+
+            return Ok(new { count = imageFile.Count, size, filePath2 });
+            //List<string> uploadedFiles = new List<string>();
+            //foreach (IFormFile postedFile in imageFile)
+            //{
+            //    string fileName = Path.GetFileName(postedFile.FileName);
+            //    using (FileStream stream = new FileStream(Path.Combine(pathBuilt, fileName), FileMode.Create))
+            //    {
+            //        postedFile.CopyTo(stream);
+            //        uploadedFiles.Add(fileName);
+            //        Console.WriteLine("File uploaded!!", fileName);
+            //        //ViewBag.Message += string.Format("<b>{0}</b> uploaded.<br />", fileName);
+            //    }
+            //}
+
+            //if(CheckIfImageFile(imageFile))
+            //{
+            //    await WriteFile(imageFile);
+            //    //rs.uploadFile("rachelpai", Directory.GetCurrentDirectory() + "DataAccessLayer\\tmp\\upload\\files", imageFile.FileName);
+            //}
+
+            //else
+            //{
+            //    return BadRequest(new { message = "invalid file extension" });
+            //}
+
+            //Console.WriteLine(imageFile.FileName);
+            //Console.WriteLine(imageFile.Length);
             // Save the image file to the tmp/upload folder
             //string path = $"../DataAccessLayer/tmp/upload/{Path.GetFileName(imageFile.FileName)}";
             //using (FileStream stream = new FileStream(path, FileMode.Create))
             //    imageFile.CopyTo(stream);
-            
-            return new OkObjectResult("Success");
+
+            //return new OkObjectResult("Success");
+        }
+
+        private bool CheckIfImageFile(IFormFile file)
+        {
+            var extension = "";
+            //var extension = "." + file.FileName.Split(".")[file.FileName.Split('.').Length - 1];
+            //return (extension == ".png" || extension == ".jpg"); //take either picture format  
+            return true;
+        }
+
+        private async Task<bool> WriteFile(IFormFile file)
+        {
+            bool isSaveSuccess = false;
+            string fileName;
+            try
+            {
+                //var extension = "." + file.FileName.Split('.')[file.FileName.Split('.').Length - 1];
+                fileName = DateTime.Now.Ticks + ".jpg"; //create a new file name for the file 
+
+                var pathBuilt = Path.Combine(Directory.GetCurrentDirectory(), "DataAccessLayer\\tmp\\upload");
+
+                if(!Directory.Exists(pathBuilt))
+                {
+                    Directory.CreateDirectory(pathBuilt);
+                }
+
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "DataAccessLayer\\tmp\\upload", fileName);
+
+                using (var stream = new FileStream(path, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+
+                isSaveSuccess = true;
+
+            }
+
+            catch(Exception e)
+            {
+                Console.WriteLine("There's an error!");
+            }
+
+            return isSaveSuccess;
         }
     }
 }
