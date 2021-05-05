@@ -226,7 +226,7 @@ class TransactionsLog extends Component {
             input: 'radio',
             html:
                 `<p>Filter transactions by <b>category:</b></p> <p>Ex: Show only entertainment transactions</p> 
-                <p><b>Sort</b> all transactions:</p> <p>Ex: Show all transactions sorted by their category</p><br></br>`,
+                <p><b>Sort</b> all transactions by their category:</p> <p>Ex: Show all transactions sorted by their category</p><br></br>`,
             inputOptions: inputOptions,
             showCancelButton: true,
             showCloseButton: true,

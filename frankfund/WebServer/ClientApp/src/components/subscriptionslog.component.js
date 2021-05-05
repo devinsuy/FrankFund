@@ -161,7 +161,7 @@ class SubscriptionsLog extends Component {
 
                             <h2 id="Hello">Hi {this.state.user} </h2>
                             <div style={{ "max-height": "500px", "overflow": "auto" }}>
-                                <button onClick={() => createByDate(this.state.userID)} className="btn btn-dark btn-blk" style={{ float: "right" }}>Add New Goal </button>
+                                <button onClick={() => createByDate(this.state.userID)} className="btn btn-dark btn-blk" style={{ float: "right" }}>Add New Subscription </button>
                                 <table className="table" id="AllGoals">
                                     <thead>
                                         <tr>
