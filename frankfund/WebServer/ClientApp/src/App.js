@@ -127,9 +127,9 @@ function App() {
               <li class="nav-item">
                 {isLoggedIn && <Link className="nav-link" to={"/trends"}>Trends</Link>}
               </li>
-              <li class="nav-item">
+              { /*<li class="nav-item">
                 {isLoggedIn && <Link className="nav-link" to={"/receipts/imageupload"}>ImageUpload Demo</Link>}   
-              </li>
+              </li> */}
             </ul>
           </div>
           <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
