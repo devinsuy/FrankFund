@@ -92,7 +92,7 @@ export default class SettingsUserAccount extends Component {
         //    }
             //})
             .then((result) => {
-            if (result.isConfirmed) {
+            //if (result.isConfirmed) {
                 let loading = true;
                 while (loading) {
                     Swal.fire({
@@ -132,9 +132,9 @@ export default class SettingsUserAccount extends Component {
                     // Exit loading loop
                     loading = false;
                 }
-            } else if (result.isDenied) {
-                Swal.fire('Account has not been deleted.', '', 'info')
-            }
+            //} else if (result.isDenied) {
+            //    Swal.fire('Account has not been deleted.', '', 'info')
+            //}
         })
     }
 

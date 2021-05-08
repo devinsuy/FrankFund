@@ -1,6 +1,7 @@
 /* global varName */
 /* eslint-env jquery */
 import Swal from 'sweetalert2'
+import axios, { post } from 'axios';
 
 export default function Transactions({transactions}) {
     return (
@@ -23,7 +24,7 @@ const Transaction = ({ transaction }) => {
         <>
             <tr id={`Transaction${transaction.TID}`} key={transaction.TID}>
                 <td id={`TransactionName${transaction.TID}`}> {transaction.TransactionName}</td>
-                <td id={`Amount${transaction.TID}`}> {transaction.IsExpense == true ? "-$" + transaction.Amount : "+$" + transaction.Amount}</td>
+                <td id={`Amount${transaction.TID}`}> {(transaction.IsExpense == true ? "-" : "+") + "$" + transaction.Amount}</td>
                 <td id={`DateTransactionMade${transaction.TID}`}> {dateMade}</td>
                 <td id={`IsExpense${transaction.TID}`}> {transaction.IsExpense == true ? "Expense" : transaction.IsExpense == false ? "Income" : ""}</td>
                 <td id={`TransactionCategory${transaction.TID}`}> {transaction.TransactionCategory}</td>
@@ -34,6 +35,7 @@ const Transaction = ({ transaction }) => {
                         <button onClick={viewAlert} className="btn btn-outline-success btn-sm">View</button>
                         <button onClick={editAlert} className="btn btn-outline-success btn-sm">Edit</button>
                         <button onClick={deleteAlert} className="btn btn-outline-success btn-sm">Delete</button>
+                        <button onClick={promptUpload} className="btn btn-outline-success btn-sm">Upload Receipt</button>
                     </td>
                 }
 
@@ -245,13 +247,13 @@ const Transaction = ({ transaction }) => {
                 await (fetch(url, params))
                     .then(response => {
                         if (response.ok) {
-                            document.getElementById(`Amount${transaction.TID}`).innerHTML = newAmount;
+                            document.getElementById(`Amount${transaction.TID}`).innerHTML = (transaction.IsExpense == true ? "-" : "+") + "$" + newAmount;
 
                             // Display success message
                             Swal.fire({
                                 title: transaction.TransactionName,
                                 icon: "success",
-                                html: `<p>Transaction name has successfully been updated to <b>${newAmount}</b>!</p>`,
+                                html: `<p>Transaction name has successfully been updated to <b>$${newAmount}</b>!</p>`,
                                 showCloseButton: true
                             })
                             transaction.Amount = newAmount;
@@ -498,5 +500,145 @@ const Transaction = ({ transaction }) => {
                 loading = false;
             }
         });
+    }
+
+    //prompt and upload image functions
+    async function promptUpload() {
+        const { value: file } = await Swal.fire({
+            title: 'Select image to upload',
+            input: 'file',
+            showCloseButton: true,
+            showCancelButton: true,
+            inputAttributes: {
+                'accept': 'image/jpeg',
+                'aria-label': 'Upload your profile picture',
+                id: "fileToUpload"
+            }
+        })
+
+        if (file) {
+            const reader = new FileReader()
+            reader.onload = async (eventReader) => {
+                let fileInput = eventReader.target
+                console.log('EVENT', eventReader)
+                console.log('FILEINPUTTTT', fileInput)
+                let file = fileInput.result;
+                let formData = new FormData();
+                formData.append('imageFile', eventReader.target.result);
+                for (var pair of formData.entries()) {
+                    console.log('PAIRRRR', pair[0]);
+                }
+                await writeFile(formData);
+                Swal.fire({
+                    title: 'Your uploaded picture',
+                    imageUrl: eventReader.target.result,
+                    imageAlt: 'The uploaded picture'
+                })
+            }
+            reader.readAsDataURL(file)
+        }
+
+
+        else {
+            Swal.fire("Nothing uploaded");
+            return null;
+        }
+
+        //const { value: file } = await Swal.fire({
+        //  title: 'Select image',
+        //  input: 'file',
+        //  inputAttributes: {
+        //    'accept': 'image/*',
+        //    'aria-label': 'Upload your profile picture'
+        //  }
+        //})
+
+        //if (file) {
+        //  const reader = new FileReader()
+        //  reader.onload = (e) => {
+        //      Swal.fire({
+        //        title: 'Your uploaded picture',
+        //        imageUrl: e.target.result,
+        //        imageAlt: 'The uploaded picture'
+        //      })
+        //    }
+        //    reader.readAsDataURL(file)
+        //  }
+    }
+
+    //Make HTTP POST request to server to save the file into cloud storage
+    async function writeFile(formData) {
+
+        const apikey = "c55f8d138f6ccfd43612b15c98706943e1f4bea3";
+        const endpoint = `/api/receipt/upload&apikey=${apikey}`;
+        var fdata = new FormData();
+        fdata.append("imageFile",
+            {
+                type: 'image/jpeg'
+            });
+        console.log("Inside write file")
+
+        const config = {
+            headers: {
+                'content-type': 'multipart/form-data'
+            }
+        }
+
+        // Build the request
+        const params = {
+            method: 'POST',
+            body: formData
+        }
+        axios.post(endpoint, formData);
+
+        // Send the request containing the image file to the api
+        let imgUrl;
+        let loading = true;
+        while (loading) {
+            // Show loading message
+            Swal.fire({
+                title: `Uploading File`,
+                html: `<p>Uploading file to cloud storage</p>`,
+                allowOutsideClick: false,
+                onBeforeOpen: () => { Swal.showLoading() }
+            });
+            //$.ajax({
+            //    method: "POST",
+            //    url: endpoint,
+            //    processData: false,
+            //    contentType: false,
+            //    data: formData
+            //}).done(function (data) { console.log(data); });
+
+            await (
+                fetch(endpoint, params)
+                    .then(response => response.json())
+                    .then(data => {
+                        imgUrl = endpoint; //data.url;
+                        // Display success message
+                        Swal.fire({
+                            title: "Image Upload Demo",
+                            icon: "success",
+                            html: `Image was successfully uploaded to cloud storage bucket: ${imgUrl}`,
+                            showCloseButton: true
+                        });
+                    })
+                    .catch(err => {
+                        // Display failed message
+                        console.log(err);
+                        Swal.fire({
+                            title: "Image Upload Demo",
+                            icon: "error",
+                            html: `<p>Something went wrong, failed to upload image file!`,
+                            showCloseButton: true
+                        });
+                    })
+            );
+            loading = false;
+        }
+        return post(imgUrl, formData, config);
+
+
+
     }
 }
