@@ -6,8 +6,6 @@
 ## Overview
 REST API data endpoints using standard HTTP Requests for **GET/POST/DELETE/PUT/PATCH** methods. 
 
-Requests must specify the header **Content-Type: application/json**
-
 
 ### Jump To API Documentation
 [Savings Goals](#savingsgoals)
